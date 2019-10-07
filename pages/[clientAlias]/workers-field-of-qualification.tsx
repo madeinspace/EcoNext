@@ -2,6 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { formatNumber, formatChangeNumber } from '../../src/Utils';
+import EntityTable from '../../components/table/EntityTable';
 
 const LocalWorkerFieldofQualififcation = ({ clients }) => {
   const router = useRouter();
@@ -21,11 +22,17 @@ const LocalWorkerFieldofQualififcation = ({ clients }) => {
     <div>
       <h1>Workers field of qualification</h1>
       <p>Client alias is {clientAlias}</p>
+
       <select>
         {clients.map(client => (
           <option key={client.ClientID}>{client.Name}</option>
         ))}
       </select>
+
+      <EntityTable
+        data={tableData}
+        name={'Local workers - field of qualification'}
+      />
     </div>
   );
 };
