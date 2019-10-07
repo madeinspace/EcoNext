@@ -6,10 +6,18 @@ const handle = async (req, res) => {
 
   const clients = await commClient.raw(ClientSQL);
   const client = clientFromAlias(clientAlias, clients);
-  const industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
-  const geo = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  // const industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
+  // const geo = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  const tableData = await commDataEconomy.raw(
+    tableDataQuery({
+      ClientID: client.ClientID,
+      IGBMID: 23001,
+      Indkey: 40,
+      Sex: 3
+    })
+  );
 
-  res.json({ title: 'Hello World', clients, industries, geo });
+  res.json({ title: 'Hello World', clients, tableData });
 };
 
 const clientFromAlias = (clientAlias, clients) =>
@@ -81,3 +89,17 @@ const BenchMarkGeoQuery = ClientID =>
     WHERE ClientID = ${ClientID}
     AND NOT WebID = 10
   `;
+
+const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
+      ${ClientID},
+      10,
+      ${IGBMID},
+      2016,
+      2011,
+      'WP',
+      ${Sex},
+      1,
+      null,
+      ${Indkey}
+      ) order by LabelKey`;

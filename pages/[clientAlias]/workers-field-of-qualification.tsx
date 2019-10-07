@@ -4,16 +4,16 @@ import { useRouter } from 'next/router';
 import { formatNumber, formatChangeNumber } from '../../src/Utils';
 import EntityTable from '../../components/table/EntityTable';
 
-const LocalWorkerFieldofQualififcation = ({ clients }) => {
+const LocalWorkerFieldofQualififcation = ({ clients, tableData }) => {
   const router = useRouter();
   const { clientAlias } = router.query;
 
-  const tableData = tableBuilder({
+  const tableParams = tableBuilder({
     prettyName: 'prettyName',
     indName: 'indName',
     bmName: 'bmName',
     genderName: 'female',
-    TabularData: []
+    TabularData: tableData
   });
 
   console.log('tableData', tableData);
@@ -30,7 +30,7 @@ const LocalWorkerFieldofQualififcation = ({ clients }) => {
       </select>
 
       <EntityTable
-        data={tableData}
+        data={tableParams}
         name={'Local workers - field of qualification'}
       />
     </div>
@@ -73,11 +73,11 @@ const tableBuilder = ({
   const footerRows = data.filter(item => item.IndustryName === 'Total');
   const parents = _.sortBy(
     data.filter(
-      item => item.Heirarchy === 'P' && item.IndustryName !== 'Total'
+      item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'
     ),
     item => item.LabelKey
   );
-  const children = data.filter(item => item.Heirarchy === 'C');
+  const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
     parent.children = children.filter(

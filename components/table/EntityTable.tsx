@@ -279,59 +279,58 @@ class EntityTable extends React.Component<any, any> {
 
   // #region table export
   private export = format => {
-    switch (format.id) {
-      case 1:
-        this.exportToExcel();
-        break;
-      case 2:
-        this.exportToWord();
-        break;
-      case 3:
-        this.exportToExcel(this.fullExcelWorkbook());
-        break;
-      case 4:
-        this.exportToWord(this.fullExcelWorkbook());
-        break;
-
-      default:
-        break;
-    }
+    // switch (format.id) {
+    //   case 1:
+    //     this.exportToExcel();
+    //     break;
+    //   case 2:
+    //     this.exportToWord();
+    //     break;
+    //   case 3:
+    //     this.exportToExcel(this.fullExcelWorkbook());
+    //     break;
+    //   case 4:
+    //     this.exportToWord(this.fullExcelWorkbook());
+    //     break;
+    //   default:
+    //     break;
+    // }
   };
 
-  public attachToWordDocument = (document, excelWorkBook?) => {
-    const excelSheet = excelWorkBook
-      ? excelWorkBook.Sheets['Sheet1']
-      : XLSX.utils.table_to_sheet(this.tableRef.current);
-    const tableRange = excelSheet['!ref'];
-    const decodedRange = XLSX.utils.decode_range(tableRange);
-    const colCount = decodedRange.e.c + 1;
-    const rowCount = decodedRange.e.r + 1;
-    // creates an empty table with rows and cols matching the excel spreadsheet row/col counts
-    const table = document.createTable({ rows: rowCount, columns: colCount });
+  // public attachToWordDocument = (document, excelWorkBook?) => {
+  //   const excelSheet = excelWorkBook
+  //     ? excelWorkBook.Sheets['Sheet1']
+  //     : XLSX.utils.table_to_sheet(this.tableRef.current);
+  //   const tableRange = excelSheet['!ref'];
+  //   const decodedRange = XLSX.utils.decode_range(tableRange);
+  //   const colCount = decodedRange.e.c + 1;
+  //   const rowCount = decodedRange.e.r + 1;
+  //   // creates an empty table with rows and cols matching the excel spreadsheet row/col counts
+  //   const table = document.createTable({ rows: rowCount, columns: colCount });
 
-    // looping through the excelSheet rows and colums to get their content
-    for (let r = 0; r < rowCount; r++) {
-      for (let c = 0; c < colCount; c++) {
-        const cellName = XLSX.utils.encode_cell({ r, c });
-        const cellData = excelSheet[cellName];
-        if (cellData === undefined) {
-          continue;
-        }
-        // find the corresponding cell in the table created earlier
-        const cell = table.getCell(r, c);
-        // and stuff the data exctracted from the excel spreaddheet's cell into the table cell
-        cell.addParagraph(new docx.Paragraph(cellData.v));
-      }
-    }
-    // merge the cells that need to be merged
-    excelSheet['!merges'].reverse().forEach(cellMerge => {
-      const rowNum = cellMerge.s.r;
-      const row = table.getRow(rowNum);
-      row.mergeCells(cellMerge.s.c, cellMerge.e.c);
-    });
+  //   // looping through the excelSheet rows and colums to get their content
+  //   for (let r = 0; r < rowCount; r++) {
+  //     for (let c = 0; c < colCount; c++) {
+  //       const cellName = XLSX.utils.encode_cell({ r, c });
+  //       const cellData = excelSheet[cellName];
+  //       if (cellData === undefined) {
+  //         continue;
+  //       }
+  //       // find the corresponding cell in the table created earlier
+  //       const cell = table.getCell(r, c);
+  //       // and stuff the data exctracted from the excel spreaddheet's cell into the table cell
+  //       cell.addParagraph(new docx.Paragraph(cellData.v));
+  //     }
+  //   }
+  //   // merge the cells that need to be merged
+  //   excelSheet['!merges'].reverse().forEach(cellMerge => {
+  //     const rowNum = cellMerge.s.r;
+  //     const row = table.getRow(rowNum);
+  //     row.mergeCells(cellMerge.s.c, cellMerge.e.c);
+  //   });
 
-    return Promise.resolve(document);
-  };
+  //   return Promise.resolve(document);
+  // };
 
   private exportToWord = (excelWorkbook?: any) => {
     // const { name } = this.props;
@@ -374,46 +373,46 @@ class EntityTable extends React.Component<any, any> {
         };
   };
 
-  private fullExcelWorkbook = () => {
-    const { headRows, cols, rows, footRows, rawDataSource } = this.props.data;
-    const headRowsData = headRows.map(row =>
-      _.flatMap(row.cols, col => {
-        const cols = new Array(col.colSpan);
-        cols.fill('');
-        cols[0] = col.displayText;
-        return cols;
-      })
-    );
-    const colsData = cols.map(col => {
-      return col.displayText;
-    });
+  // private fullExcelWorkbook = () => {
+  //   const { headRows, cols, rows, footRows, rawDataSource } = this.props.data;
+  //   const headRowsData = headRows.map(row =>
+  //     _.flatMap(row.cols, col => {
+  //       const cols = new Array(col.colSpan);
+  //       cols.fill('');
+  //       cols[0] = col.displayText;
+  //       return cols;
+  //     })
+  //   );
+  //   const colsData = cols.map(col => {
+  //     return col.displayText;
+  //   });
 
-    const footer = footRows.map(row => row.cols.map(col => col.displayText));
-    footer.push([rawDataSource]);
+  //   const footer = footRows.map(row => row.cols.map(col => col.displayText));
+  //   footer.push([rawDataSource]);
 
-    const fullData = rows.reduce(
-      (acc, current: any) => {
-        const parent = current.formattedData;
-        const children = current.childRows.map(row => row.formattedData);
-        return [...acc, parent, ...children, []];
-      },
-      [...headRowsData, colsData, []]
-    );
+  //   const fullData = rows.reduce(
+  //     (acc, current: any) => {
+  //       const parent = current.formattedData;
+  //       const children = current.childRows.map(row => row.formattedData);
+  //       return [...acc, parent, ...children, []];
+  //     },
+  //     [...headRowsData, colsData, []]
+  //   );
 
-    fullData.push(...footer);
+  //   fullData.push(...footer);
 
-    const workSheet = XLSX.utils.aoa_to_sheet(fullData);
+  //   const workSheet = XLSX.utils.aoa_to_sheet(fullData);
 
-    workSheet['!merges'] = [
-      { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
-      { s: { r: 1, c: 1 }, e: { r: 1, c: 3 } },
-      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } }
-    ];
+  //   workSheet['!merges'] = [
+  //     { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
+  //     { s: { r: 1, c: 1 }, e: { r: 1, c: 3 } },
+  //     { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } }
+  //   ];
 
-    const workBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workBook, workSheet, `Sheet1`);
-    return workBook;
-  };
+  //   const workBook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workBook, workSheet, `Sheet1`);
+  //   return workBook;
+  // };
 
   // #endregion
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { RenderContext } from '../src/word-renderer/word-render';
+// import { RenderContext } from '../src/word-renderer/word-render';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const ExportDropdown: React.FC<any> = props => {
@@ -312,17 +312,18 @@ const _Actions = styled.div`
 
 export class Actions extends React.Component {
   public render = () => {
-    return (
-      <RenderContext.Consumer>
-        {renderContext =>
-          renderContext === 'word' ? (
-            <React.Fragment />
-          ) : (
-            <_Actions>{this.props.children}</_Actions>
-          )
-        }
-      </RenderContext.Consumer>
-    );
+    //   return (
+    //     <RenderContext.Consumer>
+    //       {renderContext =>
+    //         renderContext === 'word' ? (
+    //           <React.Fragment />
+    //         ) : (
+    //           <_Actions>{this.props.children}</_Actions>
+    //         )
+    //       }
+    //     </RenderContext.Consumer>
+    //   );
+    return null;
   };
 }
 
