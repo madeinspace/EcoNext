@@ -1,11 +1,11 @@
 // #region imports
 import * as _ from 'lodash';
 import * as React from 'react';
-import { getClassNames } from '../../src/Utils';
+import { getClassNames } from '../../Utils';
 import TableRow from './TableRow';
 import { buildCells } from './Utils/buildCells';
 import { FooterRow } from './FooterRow';
-import * as TableSorter from '../../src/Utils';
+import * as TableSorter from '../../Utils';
 import SourceAndTopicNotes from './SourceAndTopicNote';
 import $ from 'jquery';
 import {

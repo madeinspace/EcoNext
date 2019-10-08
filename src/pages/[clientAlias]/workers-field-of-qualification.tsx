@@ -1,12 +1,23 @@
 import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
-import { useRouter } from 'next/router';
-import { formatNumber, formatChangeNumber } from '../../src/Utils';
+import Router, { useRouter } from 'next/router';
+import qs from 'qs';
+import { formatNumber, formatChangeNumber } from '../../Utils';
 import EntityTable from '../../components/table/EntityTable';
+import ControlPanel from '../../components/ControlPanel/ControlPanel';
+import React from 'react';
 
-const LocalWorkerFieldofQualififcation = ({ clients, tableData }) => {
+const LocalWorkerFieldsOfQualififcation = ({
+  clients,
+  tableData,
+  IGBM,
+  Industries,
+  Sexes,
+  filters
+}) => {
   const router = useRouter();
   const { clientAlias } = router.query;
+  console.log('clientAlias: ', clientAlias);
 
   const tableParams = tableBuilder({
     prettyName: 'prettyName',
@@ -16,7 +27,25 @@ const LocalWorkerFieldofQualififcation = ({ clients, tableData }) => {
     TabularData: tableData
   });
 
-  console.log('tableData', tableData);
+  // const [currentIndustry, setIndustry] = React.useState(defaults.industry);
+  // const [currentBenchmark, setBenchmark] = React.useState(defaults.benchmark);
+  // const [gender, setGender] = React.useState(defaults.gender);
+
+  const currentIndustry = filters.Indkey;
+  const currentBenchmark = filters.benchmark;
+  const gender = filters.gender;
+
+  const setIndustry = value => {
+    console.log('router: ', router);
+    Router.push({
+      pathname: router.pathname,
+      query: { Indkey: value }
+    });
+  };
+  const setBenchmark = value => {};
+  const setGender = value => {};
+
+  const handleControlPanelReset = () => {};
 
   return (
     <div>
@@ -29,6 +58,33 @@ const LocalWorkerFieldofQualififcation = ({ clients, tableData }) => {
         ))}
       </select>
 
+      <ControlPanel
+        onReset={handleControlPanelReset}
+        dropdowns={[
+          {
+            title: 'Current industry:',
+            value: currentIndustry,
+            handleChange: e => {
+              setIndustry(e.target.value);
+            },
+            items: Industries
+          },
+          ,
+          {
+            title: 'Current benchmark:',
+            value: currentBenchmark,
+            handleChange: e => setBenchmark(e.target.value),
+            items: IGBM
+          },
+          {
+            title: 'Gender:',
+            value: gender,
+            handleChange: e => setGender(e.target.value),
+            items: Sexes
+          }
+        ]}
+      />
+
       <EntityTable
         data={tableParams}
         name={'Local workers - field of qualification'}
@@ -37,14 +93,23 @@ const LocalWorkerFieldofQualififcation = ({ clients, tableData }) => {
   );
 };
 
-export default LocalWorkerFieldofQualififcation;
+export default LocalWorkerFieldsOfQualififcation;
 
-LocalWorkerFieldofQualififcation.getInitialProps = async function() {
+LocalWorkerFieldsOfQualififcation.getInitialProps = async function({ query }) {
+  const defaultFilters = {
+    Indkey: 23000,
+    benchmark: 40,
+    gender: 3
+  };
+  const filters = { ...defaultFilters, ...query };
+
   const res = await fetch(
-    'http://localhost:3000/api/monash/workers-field-of-qualification'
+    `http://localhost:3000/api/monash/workers-field-of-qualification?${qs.stringify(
+      filters
+    )}`
   );
   const data = await res.json();
-
+  data.filters = filters;
   return data;
 };
 

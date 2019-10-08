@@ -1,23 +1,35 @@
 import _ from 'lodash';
-import { commClient, commDataEconomy } from '../../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../../../server/dbConnection';
 
 const handle = async (req, res) => {
-  const { clientAlias } = req.query;
-
+  const { clientAlias, Indkey } = req.query;
+  console.log('req: ', req);
   const clients = await commClient.raw(ClientSQL);
   const client = clientFromAlias(clientAlias, clients);
-  // const industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
-  // const geo = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
+  const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  const Sexes = [
+    { ID: 1, Name: 'Males' },
+    { ID: 2, Name: 'Females' },
+    { ID: 3, Name: 'Persons' }
+  ];
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
       ClientID: client.ClientID,
       IGBMID: 23001,
-      Indkey: 40,
+      Indkey: Indkey,
       Sex: 3
     })
   );
 
-  res.json({ title: 'Hello World', clients, tableData });
+  res.json({
+    title: 'Workers fields of qualification',
+    clients,
+    tableData,
+    Industries,
+    IGBM,
+    Sexes
+  });
 };
 
 const clientFromAlias = (clientAlias, clients) =>

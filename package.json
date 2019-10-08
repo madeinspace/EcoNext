@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@wicked_query/react-sticky": "^1.0.0-rc1",
     "@zeit/next-sass": "^1.0.1",
     "docx": "^5.0.0-rc6",
     "dotenv": "^8.1.0",
@@ -24,6 +25,7 @@
     "node-sass": "^4.12.0",
     "numeral": "^2.0.6",
     "pubsub-js": "^1.7.0",
+    "qs": "^6.9.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-reconciler": "^0.22.2",
