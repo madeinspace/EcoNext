@@ -13,6 +13,7 @@
   "dependencies": {
     "@wicked_query/react-sticky": "^1.0.0-rc1",
     "@zeit/next-sass": "^1.0.1",
+    "babel-plugin-styled-components": "^1.10.6",
     "docx": "^5.0.0-rc6",
     "dotenv": "^8.1.0",
     "file-saver": "^2.0.2",
