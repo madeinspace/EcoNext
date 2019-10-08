@@ -36,9 +36,9 @@ const LocalWorkerFieldsOfQualififcation = ({
   const gender = filters.gender;
 
   const setIndustry = value => {
-    console.log('router: ', router);
+    console.log('router: ', router, router.query.clientAlias);
     Router.push({
-      pathname: router.pathname,
+      pathname: `/${clientAlias}/workers-field-of-qualification`,
       query: { Indkey: value }
     });
   };
@@ -52,11 +52,11 @@ const LocalWorkerFieldsOfQualififcation = ({
       <h1>Workers field of qualification</h1>
       <p>Client alias is {clientAlias}</p>
 
-      <select>
+      {/* <select>
         {clients.map(client => (
           <option key={client.ClientID}>{client.Name}</option>
         ))}
-      </select>
+      </select> */}
 
       <ControlPanel
         onReset={handleControlPanelReset}
@@ -95,16 +95,17 @@ const LocalWorkerFieldsOfQualififcation = ({
 
 export default LocalWorkerFieldsOfQualififcation;
 
-LocalWorkerFieldsOfQualififcation.getInitialProps = async function({ query }) {
+LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   const defaultFilters = {
     Indkey: 23000,
     benchmark: 40,
     gender: 3
   };
   const filters = { ...defaultFilters, ...query };
+  const { clientAlias } = query;
 
   const res = await fetch(
-    `http://localhost:3000/api/monash/workers-field-of-qualification?${qs.stringify(
+    `http://localhost:3000/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
       filters
     )}`
   );
