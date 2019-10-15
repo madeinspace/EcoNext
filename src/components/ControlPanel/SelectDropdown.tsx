@@ -1,25 +1,8 @@
-import React from "react"
-import styled from "styled-components"
-
-const _SelectDropdown = styled.div`
-  h5 {
-    margin: 0 0 6px 0;
-  }
-`
-
-const _Select = styled.select`
-  height: 25px;
-  border: none;
-  padding-left: 5px;
-`
-
-const _Option = styled.option`
-  height: 40px;
-  padding: 5px 0;
-`
+import React from 'react';
+import styled from 'styled-components';
 
 const SelectDropdown: React.FC<any> = props => {
-  const { title, list, value, handleChange } = props
+  const { title, list, value, handleChange } = props;
 
   return (
     <_SelectDropdown>
@@ -32,7 +15,23 @@ const SelectDropdown: React.FC<any> = props => {
         ))}
       </_Select>
     </_SelectDropdown>
-  )
-}
+  );
+};
 
-export default SelectDropdown
+export default SelectDropdown;
+
+const _SelectDropdown = styled.div`
+  h5 {
+    margin: 0 0 6px 0;
+  }
+`;
+const _Select = styled.select`
+  height: 25px;
+  border: none;
+  padding-left: 5px;
+`;
+
+const _Option = styled.option`
+  height: 40px;
+  padding: 5px 0;
+`;

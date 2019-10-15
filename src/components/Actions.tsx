@@ -195,7 +195,7 @@ const DropdownListItem = styled.li`
 `;
 
 const DropdownList = styled.ul`
-  visibility: ${props => (props.dropdownVisible ? 'visible' : 'hidden')};
+  visibility: ${(props: any) => (props.dropdownVisible ? 'visible' : 'hidden')};
   z-index: 100;
   position: absolute;
   right: 0;

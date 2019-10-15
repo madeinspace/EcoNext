@@ -17,7 +17,6 @@ const LocalWorkerFieldsOfQualififcation = ({
 }) => {
   const router = useRouter();
   const { clientAlias } = router.query;
-  console.log('clientAlias: ', clientAlias);
 
   const tableParams = tableBuilder({
     prettyName: 'prettyName',
@@ -27,23 +26,18 @@ const LocalWorkerFieldsOfQualififcation = ({
     TabularData: tableData
   });
 
-  // const [currentIndustry, setIndustry] = React.useState(defaults.industry);
-  // const [currentBenchmark, setBenchmark] = React.useState(defaults.benchmark);
-  // const [gender, setGender] = React.useState(defaults.gender);
-
   const currentIndustry = filters.Indkey;
-  const currentBenchmark = filters.benchmark;
-  const gender = filters.gender;
+  const currentBenchmark = filters.IGBMID;
+  const gender = filters.Sex;
 
-  const setIndustry = value => {
-    console.log('router: ', router, router.query.clientAlias);
+  const setQuery = (key, value) => {
+    const query = { ...qs.parse(location.search, { ignoreQueryPrefix: true }) };
+    query[key] = value;
     Router.push({
       pathname: `/${clientAlias}/workers-field-of-qualification`,
-      query: { Indkey: value }
+      query: { ...query }
     });
   };
-  const setBenchmark = value => {};
-  const setGender = value => {};
 
   const handleControlPanelReset = () => {};
 
@@ -65,7 +59,7 @@ const LocalWorkerFieldsOfQualififcation = ({
             title: 'Current industry:',
             value: currentIndustry,
             handleChange: e => {
-              setIndustry(e.target.value);
+              setQuery('Indkey', e.target.value);
             },
             items: Industries
           },
@@ -73,13 +67,13 @@ const LocalWorkerFieldsOfQualififcation = ({
           {
             title: 'Current benchmark:',
             value: currentBenchmark,
-            handleChange: e => setBenchmark(e.target.value),
+            handleChange: e => setQuery('IGBMID', e.target.value),
             items: IGBM
           },
           {
             title: 'Gender:',
             value: gender,
-            handleChange: e => setGender(e.target.value),
+            handleChange: e => setQuery('Sex', e.target.value),
             items: Sexes
           }
         ]}
@@ -98,8 +92,8 @@ export default LocalWorkerFieldsOfQualififcation;
 LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   const defaultFilters = {
     Indkey: 23000,
-    benchmark: 40,
-    gender: 3
+    IGBMID: 40,
+    Sex: 3
   };
   const filters = { ...defaultFilters, ...query };
   const { clientAlias } = query;

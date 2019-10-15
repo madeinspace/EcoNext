@@ -1,9 +1,8 @@
 import _ from 'lodash';
-import { commClient, commDataEconomy } from '../../../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../../server/dbConnection';
 
 const handle = async (req, res) => {
-  const { clientAlias, Indkey } = req.query;
-  console.log('req: ', req);
+  const { clientAlias, Indkey, IGBMID, Sex } = req.query;
   const clients = await commClient.raw(ClientSQL);
   const client = clientFromAlias(clientAlias, clients);
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
@@ -16,9 +15,9 @@ const handle = async (req, res) => {
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
       ClientID: client.ClientID,
-      IGBMID: 23001,
-      Indkey: Indkey,
-      Sex: 3
+      IGBMID,
+      Indkey,
+      Sex
     })
   );
 
