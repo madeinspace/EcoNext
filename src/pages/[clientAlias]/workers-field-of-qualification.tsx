@@ -6,6 +6,7 @@ import { formatNumber, formatChangeNumber } from '../../Utils';
 import EntityTable from '../../components/table/EntityTable';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import React from 'react';
+import Layout from '../../layouts/main';
 
 const LocalWorkerFieldsOfQualififcation = ({
   clients,
@@ -13,7 +14,9 @@ const LocalWorkerFieldsOfQualififcation = ({
   IGBM,
   Industries,
   Sexes,
-  filters
+  filters,
+  navigation,
+  clientProducts
 }) => {
   const router = useRouter();
   const { clientAlias } = router.query;
@@ -42,16 +45,9 @@ const LocalWorkerFieldsOfQualififcation = ({
   const handleControlPanelReset = () => {};
 
   return (
-    <div>
+    <Layout alias={clientAlias} navnodes={navigation} products={clientProducts}>
       <h1>Workers field of qualification</h1>
       <p>Client alias is {clientAlias}</p>
-
-      {/* <select>
-        {clients.map(client => (
-          <option key={client.ClientID}>{client.Name}</option>
-        ))}
-      </select> */}
-
       <ControlPanel
         onReset={handleControlPanelReset}
         dropdowns={[
@@ -63,7 +59,6 @@ const LocalWorkerFieldsOfQualififcation = ({
             },
             items: Industries
           },
-          ,
           {
             title: 'Current benchmark:',
             value: currentBenchmark,
@@ -83,7 +78,7 @@ const LocalWorkerFieldsOfQualififcation = ({
         data={tableParams}
         name={'Local workers - field of qualification'}
       />
-    </div>
+    </Layout>
   );
 };
 

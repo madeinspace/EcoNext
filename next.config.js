@@ -3,6 +3,11 @@ const webpack = require('webpack');
 require('dotenv').config();
 
 module.exports = withSass({
+  exportPathMap: function() {
+    return {
+      '/': { page: '/' }
+    };
+  },
   cssModules: true,
   webpack: config => {
     // Fixes npm packages that depend on `fs` module

@@ -1,10 +1,12 @@
 import _ from 'lodash';
+const knex = require('knex');
 import { commClient, commDataEconomy } from '../../../server/dbConnection';
 
 const handle = async (req, res) => {
   const { clientAlias, Indkey, IGBMID, Sex } = req.query;
   const clients = await commClient.raw(ClientSQL);
-  const client = clientFromAlias(clientAlias, clients);
+  const client: any = clientFromAlias(clientAlias, clients);
+  const navigation = await commClient.raw(MainNavigationSQL({ client }));
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
   const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
   const Sexes = [
@@ -12,6 +14,7 @@ const handle = async (req, res) => {
     { ID: 2, Name: 'Females' },
     { ID: 3, Name: 'Persons' }
   ];
+  const clientProducts = await commClient.raw(ClientProductsSQL({ client }));
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
       ClientID: client.ClientID,
@@ -27,7 +30,9 @@ const handle = async (req, res) => {
     tableData,
     Industries,
     IGBM,
-    Sexes
+    Sexes,
+    navigation,
+    clientProducts
   });
 };
 
@@ -103,14 +108,50 @@ const BenchMarkGeoQuery = ClientID =>
 
 const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-      ${ClientID},
-      10,
-      ${IGBMID},
-      2016,
-      2011,
-      'WP',
-      ${Sex},
-      1,
-      null,
-      ${Indkey}
-      ) order by LabelKey`;
+    ${ClientID},
+    10,
+    ${IGBMID},
+    2016,
+    2011,
+    'WP',
+    ${Sex},
+    1,
+    null,
+    ${Indkey}
+    ) order by LabelKey
+  `;
+
+const MainNavigationSQL = ({ client }) => `
+SELECT [ClientID]
+  ,cp.[PageID]
+  ,COALESCE(cp.[Alias], p.Alias) AS Alias
+  ,p.ParentPageID
+  ,p.MenuTitle
+  ,[Disabled]
+  ,pg.Name AS GroupName
+FROM [CommClient].[dbo].[ClientPage] cp
+RIGHT JOIN [CommApp].dbo.Page p 
+  ON cp.pageId = p.pageID 
+INNER JOIN [CommApp].[dbo].[PageGroup] pg
+  ON p.PageGroupID = pg.PageGroupID
+  AND p.ApplicationID = 4
+WHERE ClientID = ${client.ClientID}
+`;
+
+const ClientProductsSQL = ({ client }) => `
+  SELECT 
+     c.Alias AS Alias
+    ,c.name AS ClientLongName
+    ,c.ShortName AS ClientShortName
+    ,cad.ClientID
+    ,cad.ApplicationID
+    ,a.SubDomainName
+    ,a.FullName AS ProductName
+  FROM CommClient.dbo.ClientAppDisable AS cad
+  LEFT OUTER JOIN [CommApp].[dbo].[Application] AS a 
+    ON cad.ApplicationID = a.ApplicationID
+  LEFT OUTER JOIN [CommClient].[dbo].[Client] AS c
+    ON cad.ClientID = c.ClientID
+  WHERE cad.IsDisabled = 0
+    AND cad.ClientID = ${client.ClientID}
+`;
