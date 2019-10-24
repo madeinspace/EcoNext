@@ -1,12 +1,11 @@
-import React from "react"
-import styled from "styled-components"
-import groupBy from "lodash/groupBy"
-import { pathParts, IsGatsbyPage } from "./Utils"
-import _ from "lodash"
-import { Link } from "@reach/router"
-import { Location } from "@reach/router"
-import { FooterRow, SiteMapGrid } from "./grid"
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`)
+import React from 'react';
+import styled from 'styled-components';
+import groupBy from 'lodash/groupBy';
+import { pathParts, IsNextPage } from './Utils';
+import _ from 'lodash';
+import Link from 'next/link';
+import { FooterRow, SiteMapGrid } from './grid';
+const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiteMapHeader = styled.h1`
   margin: 0;
@@ -14,29 +13,29 @@ const SiteMapHeader = styled.h1`
   padding-top: 1em;
   font-size: 26px;
   border-bottom: 1px solid #d2d2d2;
-`
+`;
 const Subtitle = styled.h2`
   color: #70b859;
   font-size: 20px;
   padding-top: 1em;
-`
+`;
 
 const FooterContents = styled.div`
   grid-area: footer;
   margin: 0;
-`
+`;
 
 const SitemapWrapper = styled.div`
   background-color: ${variables.grayLightest};
   margin-top: 40px;
   padding-bottom: 1.5em;
-`
+`;
 
 const ProductItems = styled.ul`
   margin: 0;
   list-style: none;
   grid-area: footer;
-`
+`;
 const ProductItem = styled.li`
   position: relative;
   line-height: 30px;
@@ -67,7 +66,7 @@ const ProductItem = styled.li`
       color: ${variables.colorEconomy};
     }
   }
-`
+`;
 
 const GroupName = styled.h2`
   font-size: 11px;
@@ -77,34 +76,34 @@ const GroupName = styled.h2`
   text-transform: uppercase;
   line-height: 20px;
   color: #70b859;
-`
+`;
 
 const PageList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-`
+`;
 const PageItem = styled.li`
   font-size: 11px;
   line-height: 16px;
-`
+`;
 const DisabledLink = styled(PageItem)`
   color: ${variables.grayLight};
   text-decoration: none;
   cursor: default;
-`
+`;
 
 const MonolithOrGatsbyLink = props => {
-  const { to, children, style, className } = props
-  return IsGatsbyPage(to) ? (
+  const { to, children, style, className } = props;
+  return IsNextPage(to) ? (
     <Link {...props} />
   ) : (
     <a
       href={`https://economy.id.com.au${to}`}
       {...{ children, style, className }}
     />
-  )
-}
+  );
+};
 
 const StyledLink = styled(MonolithOrGatsbyLink)`
   font-size: 11px;
@@ -115,31 +114,36 @@ const StyledLink = styled(MonolithOrGatsbyLink)`
   &:hover {
     text-decoration: underline;
   }
-`
+`;
 
 const ColumnGroup = styled.div`
   margin-top: 10px;
-`
+`;
 
 const Column = styled.div`
   grid-area: ${props => `col${props.col}`};
-`
+`;
 
 const buildSiteMap = (clientAlias, columns, navigationNodes) => {
   return columns.map((column, i) => {
     return (
       <Column key={i} col={i + 1}>
         {column.map((groups, i) => {
-          const pageIDs = groups.Pages.split(",").map(Number)
+          const pageIDs = groups.Pages.split(',').map(Number);
           const pages = navigationNodes.filter(node =>
             pageIDs.includes(node.PageID)
-          )
+          );
           return (
             <ColumnGroup key={i}>
               <GroupName>{groups.GroupName}</GroupName>
               <PageList>
                 {pages.map((page, i) => {
-                  const { Alias: pageAlias, PageID, MenuTitle, Disabled } = page
+                  const {
+                    Alias: pageAlias,
+                    PageID,
+                    MenuTitle,
+                    Disabled
+                  } = page;
                   return (
                     <React.Fragment key={PageID}>
                       {Disabled ? (
@@ -152,19 +156,19 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
                         </li>
                       )}
                     </React.Fragment>
-                  )
+                  );
                 })}
               </PageList>
             </ColumnGroup>
-          )
+          );
         })}
       </Column>
-    )
-  })
-}
+    );
+  });
+};
 
 const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
-  const columns = _.values(groupBy(colGroups, "ColNumber"))
+  const columns = _.values(groupBy(colGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
       <FooterRow>
@@ -192,11 +196,11 @@ const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
                     {product.ProductName}
                   </a>
                 </ProductItem>
-              )
+              );
             })}
         </ProductItems>
       </FooterRow>
     </SitemapWrapper>
-  )
-}
-export default SiteMap
+  );
+};
+export default SiteMap;
