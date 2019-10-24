@@ -50,6 +50,8 @@ const ClientSQL = `
     INNER JOIN RDAS
       ON client.ClientID = RDAS.ClientID
     WHERE clientMeta.IsDisabled = 0
+
+    
       AND clientMeta.ApplicationID = 4
       AND RDAS.IsRDA = 0
     ${ignoreClients

@@ -2,36 +2,60 @@ import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
 import Router, { useRouter } from 'next/router';
 import qs from 'qs';
-import { formatNumber, formatChangeNumber } from '../../Utils';
+import {
+  formatNumber,
+  formatChangeNumber,
+  formatShortDecimal
+} from '../../Utils';
 import EntityTable from '../../components/table/EntityTable';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import React from 'react';
 import Layout from '../../layouts/main';
+import EntityChart from '../../components/chart/EntityChart';
+import IsoChart from '../../components/isoChart/chart';
 
 const LocalWorkerFieldsOfQualififcation = ({
-  clients,
+  client,
   tableData,
   IGBM,
   Industries,
   Sexes,
   filters,
   navigation,
-  clientProducts
+  clientProducts,
+  sitemapGroups
 }) => {
   const router = useRouter();
   const { clientAlias } = router.query;
+  const currentIndustryID = filters.Indkey;
+  const currentBenchmarkID = filters.IGBMID;
+  const currentGenderID = filters.Sex;
+
+  const getNameByID = (id, arr) => {
+    const result = arr.find(i => i.ID.toString() === id.toString());
+    return (result || {})['Name'];
+  };
+
+  const currentIndustyName = getNameByID(currentIndustryID, Industries);
+  const currentBenchmarkName = getNameByID(currentBenchmarkID, IGBM);
+  const currentGenderName = getNameByID(currentGenderID, Sexes);
 
   const tableParams = tableBuilder({
-    prettyName: 'prettyName',
-    indName: 'indName',
-    bmName: 'bmName',
-    genderName: 'female',
+    prettyName: client.ShortName,
+    indName: currentIndustyName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
     TabularData: tableData
   });
 
-  const currentIndustry = filters.Indkey;
-  const currentBenchmark = filters.IGBMID;
-  const gender = filters.Sex;
+  const chartData = chartBuilder({
+    prettyName: client.ShortName,
+    indName: currentIndustyName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
+    TabularData: tableData
+  });
+  console.log('chartData: ', chartData);
 
   const setQuery = (key, value) => {
     const query = { ...qs.parse(location.search, { ignoreQueryPrefix: true }) };
@@ -45,39 +69,43 @@ const LocalWorkerFieldsOfQualififcation = ({
   const handleControlPanelReset = () => {};
 
   return (
-    <Layout alias={clientAlias} navnodes={navigation} products={clientProducts}>
+    <Layout
+      client={client}
+      navnodes={navigation}
+      products={clientProducts}
+      sitemapGroup={sitemapGroups}
+    >
       <h1>Workers field of qualification</h1>
-      <p>Client alias is {clientAlias}</p>
+      <h3>Local workers - Field of qualification - {currentIndustyName}</h3>
       <ControlPanel
         onReset={handleControlPanelReset}
         dropdowns={[
           {
             title: 'Current industry:',
-            value: currentIndustry,
-            handleChange: e => {
-              setQuery('Indkey', e.target.value);
-            },
+            value: currentIndustryID,
+            handleChange: e => setQuery('Indkey', e.target.value),
             items: Industries
           },
           {
             title: 'Current benchmark:',
-            value: currentBenchmark,
+            value: currentBenchmarkID,
             handleChange: e => setQuery('IGBMID', e.target.value),
             items: IGBM
           },
           {
             title: 'Gender:',
-            value: gender,
+            value: currentGenderID,
             handleChange: e => setQuery('Sex', e.target.value),
             items: Sexes
           }
         ]}
       />
-
       <EntityTable
         data={tableParams}
         name={'Local workers - field of qualification'}
       />
+      <EntityChart data={chartData} />
+      <IsoChart />
     </Layout>
   );
 };
@@ -118,6 +146,7 @@ const Source = () => (
   </>
 );
 
+// #region table builders
 const tableBuilder = ({
   prettyName: clientName,
   indName: industry,
@@ -334,3 +363,134 @@ const tableBuilder = ({
     noOfRowsOnInit: 16
   };
 };
+// #endregion
+
+// #region chart builders
+const chartBuilder = ({
+  prettyName: clientName,
+  indName: currentIndustry,
+  bmName: currentBenchmark,
+  genderName: gender,
+  TabularData: data
+}) => {
+  const parents = _.sortBy(
+    data.filter(
+      item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'
+    ),
+    item => item.LabelKey
+  );
+  const children = data.filter(item => item.Hierarchy === 'C');
+  parents.forEach(parent => {
+    parent.children = children.filter(
+      child =>
+        child.LabelKey > parent.LabelKey &&
+        child.LabelKey < parent.LabelKey + 1000
+    );
+  });
+  const perYear1Serie = _.map(parents, item => {
+    return {
+      name: item.LabelName,
+      y: item.PerYear1,
+      drilldown: `${item.LabelName}-peryear`
+    };
+  });
+  const BMYear1Serie = _.map(parents, item => {
+    return {
+      name: item.LabelName,
+      y: item.BMYear1,
+      drilldown: `${item.LabelName}-change`
+    };
+  });
+  const drilldownPerYear1Serie = _.map(parents, parent => {
+    return {
+      name: `${currentIndustry}`,
+      id: `${parent.LabelName}-peryear`,
+      data: _.map(parent.children, child => {
+        return [`${child.LabelName}`, child.PerYear1];
+      })
+    };
+  });
+  const drilldownChangeYear1Serie = _.map(parents, parent => {
+    return {
+      name: `${currentBenchmark}`,
+      id: `${parent.LabelName}-change`,
+      data: _.map(parent.children, child => {
+        return [`${child.LabelName}`, child.BMYear1];
+      })
+    };
+  });
+  drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
+  console.log(`${clientName} - ${currentIndustry} - ${gender}`);
+  return {
+    highchartOptions: {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Local workers field of qualification, 2016',
+        align: 'left'
+      },
+      subtitle: {
+        text: `${clientName} - ${currentIndustry} - ${gender}`,
+        align: 'left'
+      },
+      tooltip: {
+        pointFormatter: function() {
+          return `<span class="highcharts-color-${
+            this.colorIndex
+          }">\u25CF</span> ${this.series.name}: ${formatShortDecimal(this.y)}%`;
+        }
+      },
+      series: [
+        {
+          name: `${clientName}`,
+          data: perYear1Serie
+        },
+        {
+          name: `${currentBenchmark}`,
+          data: BMYear1Serie
+        }
+      ],
+      drilldown: {
+        allowPointDrilldown: false,
+        activeAxisLabelStyle: {
+          textDecoration: 'none',
+          fontStyle: 'italic'
+        },
+        activeDataLabelStyle: {
+          textDecoration: 'none',
+          fontStyle: 'italic'
+        },
+        series: drilldownPerYear1Serie
+      },
+      xAxis: {
+        type: 'category',
+        title: {
+          text: 'Field of qualification',
+          align: 'low'
+        }
+      },
+      yAxis: [
+        {
+          title: {
+            text: `Percentage of ${gender} workers`
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return `${this.value}%`;
+            }
+          }
+        }
+      ]
+    },
+    rawDataSource:
+      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+    dataSource: <Source />,
+    chartContainerID: 'chart1',
+    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
+    entityID: 1,
+    chartTemplate: 'Standard'
+  };
+};
+// #endregion

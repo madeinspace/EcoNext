@@ -9,6 +9,7 @@ const handle = async (req, res) => {
   const navigation = await commClient.raw(MainNavigationSQL({ client }));
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
   const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const Sexes = [
     { ID: 1, Name: 'Males' },
     { ID: 2, Name: 'Females' },
@@ -26,13 +27,14 @@ const handle = async (req, res) => {
 
   res.json({
     title: 'Workers fields of qualification',
-    clients,
+    client,
     tableData,
     Industries,
     IGBM,
     Sexes,
     navigation,
-    clientProducts
+    clientProducts,
+    sitemapGroups
   });
 };
 
@@ -68,7 +70,7 @@ WITH RDAS AS (
     client.LongName,
     client.Alias
   FROM Client AS client
-  INNER JOIN ClientAppDisable AS clientMeta
+  INNER JOIN CommClient.dbo.ClientAppDisable AS clientMeta
     ON clientMeta.ClientID = client.ClientID
   INNER JOIN RDAS
     ON client.ClientID = RDAS.ClientID
@@ -154,4 +156,16 @@ const ClientProductsSQL = ({ client }) => `
     ON cad.ClientID = c.ClientID
   WHERE cad.IsDisabled = 0
     AND cad.ClientID = ${client.ClientID}
+`;
+
+const SitemapGroupsSQL = () => `
+  SELECT TOP (1000) [ApplicationID]
+    ,[GroupName]
+    ,[SitemapName]
+    ,[ColNumber]
+    ,[SortOrder]
+    ,[Pages]
+  FROM [CommApp].[dbo].[SitemapInfo]
+  where SitemapName like 'footer'
+  and ApplicationID = 4
 `;
