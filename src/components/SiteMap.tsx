@@ -93,19 +93,21 @@ const DisabledLink = styled(PageItem)`
   cursor: default;
 `;
 
-const MonolithOrGatsbyLink = props => {
-  const { to, children, style, className } = props;
-  return IsNextPage(to) ? (
-    <Link {...props} />
+const MonolithOrNextLink = props => {
+  const { href, children, style, className } = props;
+  return IsNextPage(href) ? (
+    <Link href={`${href}`}>
+      <a {...{ children, style, className }} />
+    </Link>
   ) : (
     <a
-      href={`https://economy.id.com.au${to}`}
+      href={`https://economy.id.com.au${href}`}
       {...{ children, style, className }}
     />
   );
 };
 
-const StyledLink = styled(MonolithOrGatsbyLink)`
+const StyledLink = styled(MonolithOrNextLink)`
   font-size: 11px;
   line-height: 16px;
   text-decoration: none;
@@ -150,7 +152,7 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
                         <DisabledLink>{MenuTitle}</DisabledLink>
                       ) : (
                         <li>
-                          <StyledLink to={`/${clientAlias}/${pageAlias}/`}>
+                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>
                             {MenuTitle}
                           </StyledLink>
                         </li>

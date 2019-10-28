@@ -24,9 +24,8 @@ const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
             <DisabledLink>{MenuTitle}</DisabledLink>
           ) : (
             <StyledLink
-              partiallyActive={true}
-              to={`/${clientAlias}/${Alias}`}
-              activeClassName={'active'}
+              href={`/${clientAlias}/${Alias}`}
+              className={currentPageAlias === Alias && 'active'}
             >
               {MenuTitle}
             </StyledLink>
@@ -34,18 +33,21 @@ const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
         </React.Fragment>
       );
     });
+
   return <SiblingsMenuContainer>{siblings}</SiblingsMenuContainer>;
 };
 
 export default SiblingsMenu;
 
-const MonolithOrGatsbyLink = props => {
-  const { to, children, style, className } = props;
-  return IsNextPage(to) ? (
-    <Link {...props} />
+const MonolithOrNextLink = props => {
+  const { href, children, style, className } = props;
+  return IsNextPage(href) ? (
+    <Link href={`${href}`}>
+      <a {...{ children, style, className }} />
+    </Link>
   ) : (
     <a
-      href={`https://economy.id.com.au${to}`}
+      href={`https://economy.id.com.au${href}`}
       {...{ children, style, className }}
     />
   );
@@ -60,7 +62,7 @@ const SiblingsMenuContainer = styled.div`
   border-bottom: 1px solid ${variables.grayLighter};
 `;
 
-const StyledLink = styled(MonolithOrGatsbyLink)`
+const StyledLink = styled(MonolithOrNextLink)`
   text-decoration: none;
   color: ${variables.gray};
   padding: 0px 12px 0 12px;

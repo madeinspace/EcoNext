@@ -8,6 +8,7 @@ import { detectIE } from '../Utils';
 import { ExportDropdown, Actions, EntityContainer } from '../Actions';
 import styled from 'styled-components';
 import { saveAs } from 'file-saver';
+import { IChartProps, IChartState } from './Interfaces.chart';
 // import { RenderContext, Image as WordImage } from "../../../lib/docx-render.jsx"
 
 // #endregion

@@ -3,7 +3,7 @@ import { ChartFactory } from './ChartFactory';
 import { ChartFooter } from './ChartFooter';
 // import { RenderContext } from "../../../lib/word-renderer/word-render"
 
-const EntityChart: React.SFC<EntityChartProps> = props => {
+const EntityChart: React.SFC<any> = props => {
   const {
     data,
     data: { chartTemplate, dataSource, cssClass }

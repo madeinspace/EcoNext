@@ -1,7 +1,7 @@
-import * as React from "react"
-import * as _ from "lodash"
+import * as React from 'react';
+import * as _ from 'lodash';
 
-const styles = require("./EntityTable.module.scss")
+const styles = require('./EntityTable.module.scss');
 
 export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
   !_.isEmpty(source) && (
@@ -18,6 +18,6 @@ export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
         </a>
       </div>
     </div>
-  )
+  );
 
-export default SourceAndTopicNotes
+export default SourceAndTopicNotes;

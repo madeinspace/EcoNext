@@ -39,6 +39,7 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
         const { pageAlias: currentPageAlias } = pathParts(location);
         const isCurrent = buildIsCurrent(currentPageAlias);
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
+        const isActive = childIsCurrent || pageAlias === currentPageAlias;
 
         return (
           <MenuItem key={i} className={isParent && 'parent'}>
@@ -46,10 +47,8 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
               <DisabledLink>{MenuTitle}</DisabledLink>
             ) : (
               <StyledLink
-                partiallyActive={true}
-                activeClassName={'active'}
-                className={childIsCurrent && 'active'}
-                to={`/${clientAlias}/${pageAlias}`}
+                className={isActive && 'active'}
+                href={`/${clientAlias}/${pageAlias}`}
               >
                 {MenuTitle}
               </StyledLink>
@@ -67,36 +66,37 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
 };
 
 const MonolithOrNextLink = props => {
-  const { to, children, style, className } = props;
-  return IsNextPage(to) ? (
-    <Link {...props} />
+  const { href, children, className } = props;
+  return IsNextPage(href) ? (
+    <Link href={`${href}`}>
+      <a {...{ children, className }} />
+    </Link>
   ) : (
-    <a
-      href={`https://economy.id.com.au${to}`}
-      {...{ children, style, className }}
-    />
+    <a href={`https://economy.id.com.au${href}`} {...{ children, className }} />
   );
 };
 
-const MainNavigation = ({ alias, navigationNodes }) => (
-  <MainNav>
-    <Menu>
-      {buildMenu(alias, navigationNodes)}
-      <GroupName>Other resources</GroupName>
-      {OtherResources.map((link, i) => (
-        <MenuItem key={i}>
-          <HardCodedLink
-            href={link.url}
-            target="_blank"
-            title={link.displayText}
-          >
-            {link.displayText}
-          </HardCodedLink>
-        </MenuItem>
-      ))}
-    </Menu>
-  </MainNav>
-);
+const MainNavigation = ({ alias, navigationNodes }) => {
+  return (
+    <MainNav>
+      <Menu>
+        {buildMenu(alias, navigationNodes)}
+        <GroupName>Other resources</GroupName>
+        {OtherResources.map((link, i) => (
+          <MenuItem key={i}>
+            <HardCodedLink
+              href={link.url}
+              target="_blank"
+              title={link.displayText}
+            >
+              {link.displayText}
+            </HardCodedLink>
+          </MenuItem>
+        ))}
+      </Menu>
+    </MainNav>
+  );
+};
 
 export default MainNavigation;
 

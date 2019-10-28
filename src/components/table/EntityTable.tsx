@@ -23,6 +23,13 @@ import { saveAs } from 'file-saver';
 //@ts-ignore
 import styled from 'styled-components';
 import PubSub from 'pubsub-js';
+import {
+  IColumn,
+  IRow,
+  IHeaderRow,
+  ICell,
+  ISourceAndTopicNotesProps
+} from './Interfaces.table';
 const styles = require('./EntityTable.module.scss');
 // #endregion
 
