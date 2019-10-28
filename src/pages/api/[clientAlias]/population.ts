@@ -8,7 +8,7 @@ const handle = async (req, res) => {
   const navigation = await commClient.raw(MainNavigationSQL({ client }));
   const clientProducts = await commClient.raw(ClientProductsSQL({ client }));
 
-  res.json({ clients, navigation, clientProducts });
+  res.json({ client, navigation, clientProducts });
 };
 export default handle;
 
