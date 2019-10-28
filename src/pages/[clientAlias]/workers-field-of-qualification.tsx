@@ -55,7 +55,6 @@ const LocalWorkerFieldsOfQualififcation = ({
     genderName: currentGenderName,
     TabularData: tableData
   });
-  console.log('chartData: ', chartData);
 
   const setQuery = (key, value) => {
     const query = { ...qs.parse(location.search, { ignoreQueryPrefix: true }) };
@@ -65,7 +64,7 @@ const LocalWorkerFieldsOfQualififcation = ({
       query: { ...query }
     });
   };
-
+  const handleControlPanelChange = () => {};
   const handleControlPanelReset = () => {};
 
   return (
@@ -105,7 +104,6 @@ const LocalWorkerFieldsOfQualififcation = ({
         name={'Local workers - field of qualification'}
       />
       <EntityChart data={chartData} />
-      <IsoChart />
     </Layout>
   );
 };
@@ -420,7 +418,6 @@ const chartBuilder = ({
     };
   });
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
-  console.log(`${clientName} - ${currentIndustry} - ${gender}`);
   return {
     highchartOptions: {
       chart: {

@@ -1,3 +1,9 @@
-export default () => {
-  return <h1>Home page</h1>;
+export default ({ clients }) => {
+  return (
+    <ul>
+      {/* {clients.map(client => (
+        <li key={client.ClientID}>{client.Name}</li>
+      ))} */}
+    </ul>
+  );
 };

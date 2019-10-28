@@ -2,17 +2,15 @@ import fetch from 'isomorphic-unfetch';
 import { useRouter } from 'next/router';
 import Layout from '../../layouts/main';
 
-const Population = ({ clients, navigation, clientProducts }) => {
+const Population = ({ client, navigation, clientProducts, sitemapGroups }) => {
   const { clientAlias } = useRouter().query;
   return (
-    <Layout alias={clientAlias} navnodes={navigation} products={clientProducts}>
-      <p>Client alias is {clientAlias}</p>
-      <ul>
-        {clients.map(client => (
-          <li key={client.ClientID}>{client.Name}</li>
-        ))}
-      </ul>
-    </Layout>
+    <Layout
+      client={client}
+      navnodes={navigation}
+      products={clientProducts}
+      sitemapGroup={sitemapGroups}
+    ></Layout>
   );
 };
 
