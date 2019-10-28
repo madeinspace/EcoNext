@@ -18,5 +18,18 @@ module.exports = withCSS(
 
       return config;
     }
+    // exportPathMap: async function() {
+    //   return {
+    //     '/': { page: '/' },
+    //     '/[clientAlias]/population': {
+    //       page: '/[clientAlias]/population',
+    //       query: { clientAlias: 'monash' }
+    //     },
+    //     '/[clientAlias]/workers-field-of-qualification': {
+    //       page: '/[clientAlias]/workers-field-of-qualification',
+    //       query: { clientAlias: 'monash' }
+    //     }
+    //   };
+    // }
   })
 );
