@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import NextPages from '../pages/_NextPages';
+import NextPages from './_NextPages';
 import numeral from 'numeral';
 
 export const getClassNames = (styles: any, classes: string) => {
