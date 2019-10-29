@@ -1,38 +1,41 @@
 import knex from 'knex';
 
-const DEFAULT_DATABASE_HOST = '192.168.16.15';
-const DEFAULT_DATABASE_USER = 'CommUser';
-const DEFAULT_DATABASE_PASS = 'idCommUser&1admin';
-const DEFAULT_DATABASE_NAME = 'CommClient';
-const DATA_DATABASE_NAME = 'CommData_Economy';
-const COMMAPP_DATABASE_NAME = 'CommApp';
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`
+});
 
-const CommDataEconomyDBConnection = () => ({
+const getScopedEnvVar = (scope, db_env_var) => {
+  return (
+    process.env[`${scope}_${db_env_var}`] ||
+    process.env[`DEFAULT_${db_env_var}`]
+  );
+};
+
+const CommClientDBConnection = () => ({
   client: 'mssql',
   connection: {
-    host: DEFAULT_DATABASE_HOST,
-    user: DEFAULT_DATABASE_USER,
-    password: DEFAULT_DATABASE_PASS,
-    database: DEFAULT_DATABASE_NAME,
+    host: getScopedEnvVar('CLIENT', 'DATABASE_HOST'),
+    user: getScopedEnvVar('CLIENT', 'DATABASE_USER'),
+    password: getScopedEnvVar('CLIENT', 'DATABASE_PASS'),
+    database: getScopedEnvVar('CLIENT', 'DATABASE_NAME'),
     requestTimeout: 0,
     options: { encrypt: false }
   },
   acquireConnectionTimeout: 600000
 });
 
-const CommClientDBConnection = () => ({
+const CommDataEconomyDBConnection = () => ({
   client: 'mssql',
   connection: {
-    host: DEFAULT_DATABASE_HOST,
-    user: DEFAULT_DATABASE_USER,
-    password: DEFAULT_DATABASE_PASS,
-    database: DEFAULT_DATABASE_NAME,
+    host: getScopedEnvVar('DATA', 'DATABASE_HOST'),
+    user: getScopedEnvVar('DATA', 'DATABASE_USER'),
+    password: getScopedEnvVar('DATA', 'DATABASE_PASS'),
+    database: getScopedEnvVar('DATA', 'DATABASE_NAME'),
+    requestTimeout: 0,
     options: { encrypt: false }
-  }
+  },
+  acquireConnectionTimeout: 600000
 });
-
-const getScopedEnvVar = (scope, db_env_var) =>
-  process.env[`${scope}_${db_env_var}`] || process.env[`DEFAULT_${db_env_var}`];
 
 export const commDataEconomy = knex(CommDataEconomyDBConnection());
 export const commClient = knex(CommClientDBConnection());
