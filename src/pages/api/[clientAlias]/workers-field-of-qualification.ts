@@ -4,21 +4,23 @@ import { commClient, commDataEconomy } from '../../../server/dbConnection';
 
 const handle = async (req, res) => {
   const { clientAlias, Indkey, IGBMID, Sex } = req.query;
-  const clients = await commClient.raw(ClientSQL);
-  const client: any = clientFromAlias(clientAlias, clients);
-  const navigation = await commClient.raw(MainNavigationSQL({ client }));
+  const client = await commClient
+    .raw(ClientSQL({ clientAlias }))
+    .then(res => res[0]);
+  const ClientID = client.ClientID;
+  const navigation = await commClient.raw(MainNavigationSQL({ ClientID }));
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
-  const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(client.ClientID));
+  const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(ClientID));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const Sexes = [
     { ID: 1, Name: 'Males' },
     { ID: 2, Name: 'Females' },
     { ID: 3, Name: 'Persons' }
   ];
-  const clientProducts = await commClient.raw(ClientProductsSQL({ client }));
+  const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
-      ClientID: client.ClientID,
+      ClientID,
       IGBMID,
       Indkey,
       Sex
@@ -47,7 +49,22 @@ const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
 
 export default handle;
 
-const ClientSQL = `
+const ClientSQL = ({ clientAlias }) => `
+  SELECT
+    client.ClientID,
+    client.Name,
+    client.ShortName,
+    client.LongName,
+    client.Alias
+  FROM Client AS client
+  INNER JOIN CommClient.dbo.ClientAppDisable AS clientMeta
+    ON clientMeta.ClientID = client.ClientID
+  WHERE clientMeta.IsDisabled = 0
+    AND clientMeta.ApplicationID = 4
+    AND Alias = '${clientAlias}'
+`;
+
+const AllClientsSQL = `
 WITH RDAS AS (
   SELECT
     DISTINCT(areas.ClientID),
@@ -123,7 +140,7 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
     ) order by LabelKey
   `;
 
-const MainNavigationSQL = ({ client }) => `
+const MainNavigationSQL = ({ ClientID }) => `
 SELECT [ClientID]
   ,cp.[PageID]
   ,COALESCE(cp.[Alias], p.Alias) AS Alias
@@ -137,10 +154,10 @@ RIGHT JOIN [CommApp].dbo.Page p
 INNER JOIN [CommApp].[dbo].[PageGroup] pg
   ON p.PageGroupID = pg.PageGroupID
   AND p.ApplicationID = 4
-WHERE ClientID = ${client.ClientID}
+WHERE ClientID = ${ClientID}
 `;
 
-const ClientProductsSQL = ({ client }) => `
+const ClientProductsSQL = ({ ClientID }) => `
   SELECT 
      c.Alias AS Alias
     ,c.name AS ClientLongName
@@ -155,7 +172,7 @@ const ClientProductsSQL = ({ client }) => `
   LEFT OUTER JOIN [CommClient].[dbo].[Client] AS c
     ON cad.ClientID = c.ClientID
   WHERE cad.IsDisabled = 0
-    AND cad.ClientID = ${client.ClientID}
+    AND cad.ClientID = ${ClientID}
 `;
 
 const SitemapGroupsSQL = () => `
