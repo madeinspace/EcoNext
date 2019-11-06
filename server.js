@@ -1,9 +1,9 @@
-const express = require("express");
-const next = require("next");
-const LRUCache = require("lru-cache");
+const express = require('express');
+const next = require('next');
+const LRUCache = require('lru-cache');
 
 const port = parseInt(process.env.WEBSITES_PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -22,18 +22,18 @@ const ssrCache = new LRUCache({
 app.prepare().then(() => {
   const server = express();
 
-  server.get("/_next/*", (req, res) => {
+  server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
     handle(req, res);
   });
 
-  server.get("/api/*", (req, res) => {
+  server.get('/api/*', (req, res) => {
     /* serving _next static content using next.js handler */
 
     handle(req, res);
   });
 
-  server.get("*", (req, res) => {
+  server.get('*', (req, res) => {
     /* serving page */
     return renderAndCache(req, res);
   });
@@ -59,7 +59,7 @@ async function renderAndCache(req, res) {
   // If we have a page in the cache, let's serve it
   if (ssrCache.has(key)) {
     //console.log(`serving from cache ${key}`);
-    res.setHeader("x-cache", "HIT");
+    res.setHeader('x-cache', 'HIT');
     res.send(ssrCache.get(key));
     return;
   }
@@ -78,7 +78,7 @@ async function renderAndCache(req, res) {
     // Let's cache this page
     ssrCache.set(key, html);
 
-    res.setHeader("x-cache", "MISS");
+    res.setHeader('x-cache', 'MISS');
     res.send(html);
   } catch (err) {
     app.renderError(err, req, res, req.path, req.query);
