@@ -2,6 +2,9 @@ import _ from 'lodash';
 // import GatsbyPages from './GatsbyPages';
 import numeral from 'numeral';
 
+export const getPort = (): number =>
+  parseInt(process.env.WEBSITES_PORT, 10) || 3000;
+
 export const getClassNames = (styles: any, classes: string) => {
   if (_.isEmpty(classes)) {
     return;
