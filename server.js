@@ -27,6 +27,12 @@ app.prepare().then(() => {
     handle(req, res);
   });
 
+  server.get('/api/*', (req, res) => {
+    /* serving _next static content using next.js handler */
+
+    handle(req, res);
+  });
+
   server.get('*', (req, res) => {
     /* serving page */
     return renderAndCache(req, res);
