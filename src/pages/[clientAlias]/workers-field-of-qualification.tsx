@@ -5,7 +5,8 @@ import qs from 'qs';
 import {
   formatNumber,
   formatChangeNumber,
-  formatShortDecimal
+  formatShortDecimal,
+  getPort
 } from '../../Utils';
 import EntityTable from '../../components/table/EntityTable';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
@@ -120,9 +121,7 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   const { clientAlias } = query;
 
   const res = await fetch(
-    `http://localhost:${
-      process.env.PORT
-    }/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
+    `http://localhost:${getPort()}/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
       filters
     )}`
   );
