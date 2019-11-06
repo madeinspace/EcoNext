@@ -120,7 +120,9 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   const { clientAlias } = query;
 
   const res = await fetch(
-    `http://localhost:3000/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
+    `http://localhost:${
+      process.env.PORT
+    }/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
       filters
     )}`
   );

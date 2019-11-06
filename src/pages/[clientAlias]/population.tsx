@@ -19,7 +19,7 @@ export default Population;
 Population.getInitialProps = async function({ query }) {
   const { clientAlias } = query;
   const data = await fetch(
-    `http://localhost:3000/api/${clientAlias}/population`
+    `http://localhost:${process.env.PORT}/api/${clientAlias}/population`
   ).then(res => res.json());
   return data;
 };
