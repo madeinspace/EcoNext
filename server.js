@@ -4,7 +4,7 @@ const LRUCache = require('lru-cache');
 
 require('dotenv').config();
 
-const port = parseInt(process.env.WEBSITES_PORT, 10) || 3000;
+const port = process.env.WEBSITES_PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();

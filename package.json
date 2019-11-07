@@ -8,7 +8,7 @@
     "build": "next build",
     "export": "next build && next export",
     "start": "next start -p 8080",
-    "postinstall": "npm rebuild node-sass"
+    "preinstall": "npm rebuild node-sass"
   },
   "author": "",
   "license": "ISC",
