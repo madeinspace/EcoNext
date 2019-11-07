@@ -124,7 +124,12 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
     `http://localhost:${getPort()}/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
       filters
     )}`
-  );
+  ).then(function(response) {
+    if (response.status >= 400) {
+      throw new Error('Bad response from server');
+    }
+    return response;
+  });
   const data = await res.json();
   data.filters = filters;
   return data;
