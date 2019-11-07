@@ -8,7 +8,7 @@
     "build": "next build",
     "export": "next build && next export",
     "start": "NODE_ENV=production node server.js",
-    "postinstall": "next build"
+    "postinstall": "npm rebuild node-sass && next build"
   },
   "author": "",
   "license": "ISC",
