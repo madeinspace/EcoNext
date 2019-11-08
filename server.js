@@ -4,7 +4,8 @@ const LRUCache = require('lru-cache');
 
 require('dotenv').config();
 
-const port = process.env.WEBSITES_PORT || 3000;
+const CACHE_ENABLED = process.env.CACHE_ENABLED === 'true' || false;
+const port = parseInt(process.env.WEBSITES_PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -59,7 +60,7 @@ async function renderAndCache(req, res) {
   const key = getCacheKey(req);
 
   // If we have a page in the cache, let's serve it
-  if (ssrCache.has(key)) {
+  if (ssrCache.has(key) && CACHE_ENABLED) {
     //console.log(`serving from cache ${key}`);
     res.setHeader('x-cache', 'HIT');
     res.send(ssrCache.get(key));
@@ -78,7 +79,9 @@ async function renderAndCache(req, res) {
     }
 
     // Let's cache this page
-    ssrCache.set(key, html);
+    if (CACHE_ENABLED) {
+      ssrCache.set(key, html);
+    }
 
     res.setHeader('x-cache', 'MISS');
     res.send(html);
