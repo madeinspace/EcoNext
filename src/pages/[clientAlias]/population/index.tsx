@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-unfetch';
 import { useRouter } from 'next/router';
-import Layout from '../../layouts/main';
-import { getPort } from '../../Utils';
+import Layout from '../../../layouts/main';
+import { getPort } from '../../../Utils';
+import fetchData from './api';
 
 const Population = ({ client, navigation, clientProducts, sitemapGroups }) => {
   const { clientAlias } = useRouter().query;
@@ -19,8 +20,8 @@ export default Population;
 
 Population.getInitialProps = async function({ query }) {
   const { clientAlias } = query;
-  const data = await fetch(
-    `http://localhost:${getPort()}/api/${clientAlias}/population`
-  ).then(res => res.json());
+  
+  const data = await fetchData({clientAlias})
+
   return data;
 };

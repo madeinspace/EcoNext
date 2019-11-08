@@ -1,16 +1,17 @@
 import _ from 'lodash';
 import { commClient, commDataEconomy } from '../../../server/dbConnection';
 
-const handle = async (req, res) => {
-  const { clientAlias } = req.query;
+const fetchData = async (filters) => {
+  const { clientAlias } = filters;
   const clients = await commClient.raw(ClientSQL);
   const client: any = clientFromAlias(clientAlias, clients);
   const navigation = await commClient.raw(MainNavigationSQL({ client }));
   const clientProducts = await commClient.raw(ClientProductsSQL({ client }));
 
-  res.json({ client, navigation, clientProducts });
+  return { client, navigation, clientProducts, filters };
 };
-export default handle;
+
+export default fetchData;
 
 const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
   ? []
