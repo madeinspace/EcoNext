@@ -1,8 +1,8 @@
 import knex from 'knex';
 
-// require('dotenv').config({
-//   path: `.env.${process.env.NODE_ENV}`
-// });
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`
+});
 
 const getScopedEnvVar = (scope, db_env_var) => {
   return (
