@@ -54,7 +54,7 @@ app.prepare().then(() => {
  * an immediate page change (e.g a locale stored in req.session)
  */
 function getCacheKey(req) {
-  return `${req.path}`;
+  return `${req.path}${JSON.stringify(req.query)}`;
 }
 
 async function renderAndCache(req, res) {
