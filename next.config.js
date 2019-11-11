@@ -5,7 +5,7 @@ require('dotenv').config();
 
 module.exports = withCSS(
   withSass({
-    cssModules: true,
+    cssModules: false,
     webpack(config) {
       config.module.rules.push({
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,

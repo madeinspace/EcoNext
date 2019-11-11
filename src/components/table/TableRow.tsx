@@ -1,9 +1,9 @@
-import * as React from "react"
-import styled from "styled-components"
+import * as React from 'react';
+import styled from 'styled-components';
 interface ITableRowProps {
-  cells: any[]
-  cssClass: string
-  onExpand: (id: number) => any
+  cells: any[];
+  cssClass: string;
+  onExpand: (id: number) => any;
 }
 
 const Row = styled.tr`
@@ -18,15 +18,15 @@ const Row = styled.tr`
       }
     }
   }
-`
+`;
 
 const TableRow: React.FunctionComponent<ITableRowProps> = props => {
-  const { cells, cssClass, onExpand } = props
+  const { cells, cssClass, onExpand } = props;
   return (
     <Row onClick={onExpand || function() {}} className={cssClass}>
       {cells}
     </Row>
-  )
-}
+  );
+};
 
-export default TableRow
+export default TableRow;

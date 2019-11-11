@@ -1,10 +1,10 @@
+@import './variables.scss';
+@import './zurich.scss';
+@import './id-icons.scss';
 @import './flexboxgrid.min.scss';
 @import './layout.scss';
-@import './variables.scss';
 @import './mixins.scss';
 @import './highcharts.scss';
-@import './zurich.scss';
-// @import './id-icons.scss';
 
 body {
   font-family: 'Arial', 'Zurich', sans-serif !important;

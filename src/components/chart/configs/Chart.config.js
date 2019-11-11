@@ -13,7 +13,8 @@ export const ChartDefault = (...opts) => {
     spacingLeft: 30,
     marginLeft: null,
     zoomType: 'x',
-    className: 'standard-chart'
+    className: 'standard-chart',
+    styledMode: true
   };
 
   chartDefaults.exporting = {

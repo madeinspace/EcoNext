@@ -40,10 +40,13 @@ class HighChart extends React.Component<IChartProps, IChartState> {
 
   componentDidMount(): void {
     const { config, highchartOptions, chartContainerID } = this.props;
-    Highcharts.chart(
+
+    const chart = Highcharts.chart(
       chartContainerID,
       config({ ...highchartOptions, oneToOne: true })
     );
+
+    console.log('Highcharts: ', chart);
   }
 
   componentWillUnmount(): void {

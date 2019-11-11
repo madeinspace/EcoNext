@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 
-const styles = require('./EntityTable.module.scss');
+const styles = require('./EntityTable.scss');
 
 export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
   !_.isEmpty(source) && (
-    <div className={`${styles.dataTableSource}`}>
+    <div className="dataTableSource">
       <div>{source}</div>
-      <div className={styles.dataNotes}>
+      <div className="dataNotes">
         <a
           className="tableFooterNotes"
           target="_blank"

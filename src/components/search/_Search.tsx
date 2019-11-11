@@ -280,9 +280,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       showSearch
     } = this.state;
 
-    const showSearchClassName = showSearch
-      ? styles.searchopened
-      : styles.searchclosed;
+    const showSearchClassName = showSearch ? 'searchopened' : 'searchclosed';
 
     return (
       <React.Fragment>

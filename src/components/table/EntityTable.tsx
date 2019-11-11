@@ -30,7 +30,6 @@ import {
   ICell,
   ISourceAndTopicNotesProps
 } from './Interfaces.table';
-const styles = require('./EntityTable.module.scss');
 // #endregion
 
 const SourceCell = styled.td`
@@ -51,8 +50,7 @@ const DataRow = ({
   colClass,
   i
 }) => {
-  const cssClassName =
-    i % 2 === 0 ? `${styles.odd} ${cssClass}` : `${styles.even} ${cssClass} `;
+  const cssClassName = i % 2 === 0 ? `odd ${cssClass}` : `even ${cssClass} `;
   const hasXLink = crossLink != null || false;
 
   const cellProps: any = {
@@ -169,7 +167,7 @@ class EntityTable extends React.Component<any, any> {
       const { displayText, cssClass, colSpan } = cell;
       const headerCellProps = {
         colSpan,
-        className: getClassNames(styles, cssClass),
+        className: cssClass,
         key: i
       };
 
@@ -177,7 +175,7 @@ class EntityTable extends React.Component<any, any> {
     });
 
     return (
-      <tr className={styles[headerRow.cssClass]} key={headerRow.key}>
+      <tr className={headerRow.cssClass} key={headerRow.key}>
         {cells}
       </tr>
     );
@@ -189,13 +187,11 @@ class EntityTable extends React.Component<any, any> {
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
         className:
-          (_.has(col, 'sortable') && col.sortable
-            ? ' ' + styles.sortable
-            : '') +
+          (_.has(col, 'sortable') && col.sortable ? ' ' + 'sortable' : '') +
           ' ' +
-          getClassNames(styles, col.cssClass) +
+          col.cssClass +
           ' ' +
-          getClassNames(styles, col.dataType)
+          col.dataType
       };
 
       // keeping the classes for the rows' cells out of the state.
@@ -229,6 +225,7 @@ class EntityTable extends React.Component<any, any> {
     );
   };
   private renderFooters(footerRow: any, val: any): any {
+    console.log('footfooterRow.cssClasserRow: ', footerRow.cssClass);
     return (
       <FooterRow
         key={val}
@@ -245,9 +242,9 @@ class EntityTable extends React.Component<any, any> {
     // sort the rows
     const sortedRows = this.sortRows(colIndex, sortDirection);
     // clear dir class from all sortable the
-    $(`.${styles.sortable}`).removeClass(`${styles.asc} ${styles.desc}`);
+    $(`.sortable`).removeClass(`asc desc`);
     // reapply the style to target
-    $(e.target).addClass(styles[sortDirection]);
+    $(e.target).addClass('sortDirection');
 
     this.setState({
       rows: sortedRows.map(this.renderRow),
@@ -275,7 +272,7 @@ class EntityTable extends React.Component<any, any> {
   private resetSort = (): void => {
     PubSub.publish('table.reset', {});
     // clear dir class from all sortable th
-    $(`.${styles.sortable}`).removeClass(`${styles.asc} ${styles.desc}`);
+    $(`.sortable`).removeClass(`asc desc`);
     // mystery
     this.setState({
       rows: _.sortBy(this.initialRows, 'id').map(this.renderRow),
@@ -445,11 +442,7 @@ class EntityTable extends React.Component<any, any> {
               handleExport={this.export}
             />
           </Actions>
-          <table
-            ref={this.tableRef}
-            className={styles['entity-table']}
-            id="mytable"
-          >
+          <table ref={this.tableRef} className="entity-table">
             <thead>
               {headRows}
               {cols}
