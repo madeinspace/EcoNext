@@ -6,7 +6,14 @@ require('dotenv').config();
 module.exports = withCSS(
   withSass({
     cssModules: true,
-    webpack(config) {
+
+    webpack(config, { isServer }) {
+      if (!isServer) {
+        config.node = {
+          fs: 'empty'
+        }
+      }
+
       config.module.rules.push({
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         use: {

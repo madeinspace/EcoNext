@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
 import Router, { useRouter } from 'next/router';
 import qs from 'qs';
@@ -6,14 +5,15 @@ import {
   formatNumber,
   formatChangeNumber,
   formatShortDecimal,
-  getPort
-} from '../../Utils';
-import EntityTable from '../../components/table/EntityTable';
-import ControlPanel from '../../components/ControlPanel/ControlPanel';
+} from '../../../Utils';
+import EntityTable from '../../../components/table/EntityTable';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React from 'react';
-import Layout from '../../layouts/main';
-import EntityChart from '../../components/chart/EntityChart';
-import IsoChart from '../../components/isoChart/chart';
+import Layout from '../../../layouts/main';
+import EntityChart from '../../../components/chart/EntityChart';
+import IsoChart from '../../../components/isoChart/chart';
+
+import fetchData from './api'
 
 const LocalWorkerFieldsOfQualififcation = ({
   client,
@@ -118,15 +118,9 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
     Sex: 3
   };
   const filters = { ...defaultFilters, ...query };
-  const { clientAlias } = query;
 
-  const res = await fetch(
-    `http://localhost:${getPort()}/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
-      filters
-    )}`
-  );
-  const data = await res.json();
-  data.filters = filters;
+  const data = await fetchData(filters);
+
   return data;
 };
 
