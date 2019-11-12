@@ -312,18 +312,7 @@ const _Actions = styled.div`
 
 export class Actions extends React.Component {
   public render = () => {
-    //   return (
-    //     <RenderContext.Consumer>
-    //       {renderContext =>
-    //         renderContext === 'word' ? (
-    //           <React.Fragment />
-    //         ) : (
-    //           <_Actions>{this.props.children}</_Actions>
-    //         )
-    //       }
-    //     </RenderContext.Consumer>
-    //   );
-    return null;
+    return <_Actions>{this.props.children}</_Actions>;
   };
 }
 

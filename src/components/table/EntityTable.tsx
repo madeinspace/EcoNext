@@ -225,7 +225,6 @@ class EntityTable extends React.Component<any, any> {
     );
   };
   private renderFooters(footerRow: any, val: any): any {
-    console.log('footfooterRow.cssClasserRow: ', footerRow.cssClass);
     return (
       <FooterRow
         key={val}

@@ -6,12 +6,12 @@ import { ChartFooter } from './ChartFooter';
 const EntityChart: React.SFC<any> = props => {
   const {
     data,
-    data: { chartTemplate, dataSource, cssClass }
+    data: { chartTemplate, dataSource }
   } = props;
   const Chart = ChartFactory.getChart(chartTemplate, data);
 
   return (
-    <div className={'entity-chart ' + cssClass || 'standard'}>
+    <div className={`entity-chart ${chartTemplate}`}>
       {Chart}
       <ChartFooter dataSource={dataSource} />
     </div>

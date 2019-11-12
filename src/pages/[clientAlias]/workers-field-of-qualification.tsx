@@ -1,3 +1,4 @@
+// #region imports
 import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
 import Router, { useRouter } from 'next/router';
@@ -6,15 +7,39 @@ import {
   formatNumber,
   formatChangeNumber,
   formatShortDecimal,
-  getPort
+  getPort,
+  formatPercent
 } from '../../Utils';
 import EntityTable from '../../components/table/EntityTable';
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import React from 'react';
 import Layout from '../../layouts/main';
 import EntityChart from '../../components/chart/EntityChart';
-import IsoChart from '../../components/isoChart/chart';
+import {
+  TitleContainer,
+  MainTitle,
+  SubTitle,
+  Headline,
+  PageIntro,
+  Note,
+  Highlight,
+  AnalysisContainer,
+  SourceBubble,
+  RelatedPagesCTA,
+  ItemWrapper,
+  CrossLink,
+  ProfileProductIcon
+} from '../../styles/MainContentStyles';
+import {
+  Actions,
+  Share,
+  ExportPage,
+  EntityContainer
+} from '../../components/Actions';
+import InfoBox from '../../components/InfoBox';
+// #endregion
 
+// #region page
 const LocalWorkerFieldsOfQualififcation = ({
   client,
   tableData,
@@ -56,6 +81,13 @@ const LocalWorkerFieldsOfQualififcation = ({
     genderName: currentGenderName,
     TabularData: tableData
   });
+  const chartChangeData = chartBuilderChange({
+    prettyName: client.ShortName,
+    indName: currentIndustyName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
+    TabularData: tableData
+  });
 
   const setQuery = (key, value) => {
     const query = { ...qs.parse(location.search, { ignoreQueryPrefix: true }) };
@@ -67,6 +99,168 @@ const LocalWorkerFieldsOfQualififcation = ({
   };
   const handleControlPanelChange = () => {};
   const handleControlPanelReset = () => {};
+  const handleExport = () => {};
+  const hasProfile = () =>
+    _.some(clientProducts, product => product.ApplicationID === 1);
+
+  // #region autotext / dynamic content
+
+  const TopLevelQualifications = data => {
+    return data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
+  };
+
+  const HighestQualifications = (quals, sortKey) =>
+    _.sortBy(_.filter(quals, sortKey), sortKey);
+
+  const Top = n => quals =>
+    _(quals)
+      .takeRight(n)
+      .reverse()
+      .value();
+
+  const TopThree = Top(3);
+  const TopFour = Top(4);
+
+  const HighestQualification = () => {
+    const topquals = TopLevelQualifications(tableData);
+    const highestQuals = HighestQualifications(topquals, 'NoYear1');
+    const biggest: any = highestQuals.pop();
+    return <>{biggest.LabelName}</>;
+  };
+
+  const TopThreeFields = () => {
+    const topquals = TopLevelQualifications(tableData);
+    const highestQuals = HighestQualifications(topquals, 'NoYear1');
+    const topThree = TopThree(highestQuals);
+
+    const totalPeople = _.sumBy(topThree, 'NoYear1');
+    const totalPercent = _.sumBy(topThree, 'PerYear1');
+
+    return (
+      <>
+        <ul>
+          {topThree.map((qual: any, i) => (
+            <li key={i}>
+              {qual.LabelName} ({formatNumber(qual.NoYear1)} or{' '}
+              {formatPercent(qual.PerYear1)}%)
+            </li>
+          ))}
+        </ul>
+        <p>
+          In combination these three fields accounted for{' '}
+          {formatNumber(totalPeople)} people in total or 6
+          {formatPercent(totalPercent)}% of {currentIndustyName}.
+        </p>
+      </>
+    );
+  };
+
+  const ComparisonBenchmark = () => {
+    let CurrentBenchmarkName: any = currentBenchmarkName;
+
+    const industryBenchmark = currentBenchmarkID > 1000;
+    if (industryBenchmark) {
+      CurrentBenchmarkName = `the ${currentBenchmarkName} workforce in ${client.LongName}`;
+    }
+
+    const topquals = TopLevelQualifications(tableData);
+    const highestQuals = HighestQualifications(topquals, 'BMYear1');
+    const topThree: any = TopThree(highestQuals);
+
+    return (
+      <p>
+        In comparison, {currentBenchmarkName} employed{' '}
+        {formatPercent(topThree[0].BMYear1)}% in {topThree[0].LabelName};{' '}
+        {formatPercent(topThree[1].BMYear1)}% in {topThree[1].LabelName}; and{' '}
+        {formatPercent(topThree[2].BMYear1)}% in {topThree[2].LabelName}.
+      </p>
+    );
+  };
+
+  const MajorDifferencesHeading = () => {
+    let industryText = currentIndustyName;
+    if (currentIndustryID == 23000) {
+      //All Industries === 23000
+      industryText = 'total';
+    }
+    industryText = `the ${industryText} workforce`;
+
+    let benchmarkText = currentBenchmarkName;
+    const industryBenchmark = currentBenchmarkID > 1000;
+    if (industryBenchmark) {
+      if (currentBenchmarkID == 23000) {
+        benchmarkText = 'total';
+      }
+      benchmarkText = `the ${benchmarkText} workforce`;
+    }
+
+    return (
+      <Highlight>
+        The major differences between the fields of qualifications of{' '}
+        {industryText} in {client.LongName} and {benchmarkText} were:
+      </Highlight>
+    );
+  };
+
+  const MajorDifferences = () => {
+    const topquals = TopLevelQualifications(tableData);
+    const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
+    const majorDifferences = _.sortBy(qualsWithData, qual => {
+      const compare = [qual.PerYear1, qual.BMYear1];
+      return _.max(compare) - _.min(compare);
+    });
+    const topFour = TopFour(majorDifferences);
+
+    return (
+      <>
+        <MajorDifferencesHeading />
+        <ul>
+          {topFour.map((qual: any, i) => (
+            <li key={i}>
+              A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em>{' '}
+              percentage of local workers qualified in the field of{' '}
+              {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
+              {formatPercent(qual.BMYear1)}%)
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
+  const EmergingGroupsHeading = () => {
+    let industryText = currentIndustyName;
+    if (currentIndustryID == 23000) {
+      //All Industries === 23000
+      industryText = 'total';
+    }
+    industryText = `the ${industryText} workforce`;
+
+    return (
+      <Highlight>
+        The largest changes in fields of qualifications of {industryText} in{' '}
+        {client.LongName} between 2011 and 2016 were:
+      </Highlight>
+    );
+  };
+
+  const EmergingGroups = () => {
+    const topquals = TopLevelQualifications(tableData);
+    const highestQuals = HighestQualifications(topquals, 'Change12');
+    const topFour = TopFour(highestQuals);
+
+    return (
+      <ul>
+        {topFour.map((qual: any, i) => (
+          <li key={i}>
+            {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  // #endregion
 
   return (
     <Layout
@@ -75,36 +269,215 @@ const LocalWorkerFieldsOfQualififcation = ({
       products={clientProducts}
       sitemapGroup={sitemapGroups}
     >
-      <h1>Workers field of qualification</h1>
-      <h3>Local workers - Field of qualification - {currentIndustyName}</h3>
-      <ControlPanel
-        onReset={handleControlPanelReset}
-        dropdowns={[
-          {
-            title: 'Current industry:',
-            value: currentIndustryID,
-            handleChange: e => setQuery('Indkey', e.target.value),
-            items: Industries
-          },
-          {
-            title: 'Current benchmark:',
-            value: currentBenchmarkID,
-            handleChange: e => setQuery('IGBMID', e.target.value),
-            items: IGBM
-          },
-          {
-            title: 'Gender:',
-            value: currentGenderID,
-            handleChange: e => setQuery('Sex', e.target.value),
-            items: Sexes
-          }
-        ]}
-      />
-      <EntityTable
-        data={tableParams}
-        name={'Local workers - field of qualification'}
-      />
-      <EntityChart data={chartData} />
+      <EntityContainer>
+        <TitleContainer>
+          <MainTitle>{client.LongName}</MainTitle>
+          <SubTitle>
+            Local workers - Field of qualification - {currentIndustyName}
+          </SubTitle>
+        </TitleContainer>
+        <Actions>
+          <Share />
+          <ExportPage
+            onExport={e => handleExport()}
+            exportOptions={{
+              formats: [{ displayText: 'Word' } /*, { name: "PDF" }*/]
+            }}
+          />
+        </Actions>
+      </EntityContainer>
+      <Headline>
+        Within the {client.LongName}, there are more workers in{' '}
+        {currentIndustyName} with <HighestQualification /> qualifications than
+        any other field of qualification.
+      </Headline>
+      <PageIntro>
+        <div>
+          <p>
+            Field of Qualification presents the primary field of study for the
+            highest qualification the person has received.&nbsp;While this is
+            likely to have some relationship to the current occupation, this is
+            not necessarily the case.{' '}
+          </p>
+          <p>The field of study relates to a number of factors, such as:</p>
+          <ul>
+            <li>The age of the workforce;</li>
+            <li>The type of qualification required to enter an industry;</li>
+            <li>
+              The availability of jobs related to fields of qualification in{' '}
+              {client.LongName};
+            </li>
+            <li>
+              The types of occupations which are available in an area or
+              industry.
+            </li>
+          </ul>
+          <p>
+            The fields of qualification held by local workers in a particular
+            industry are likely to show the type of skills required in that
+            industry. &nbsp;Large numbers of a particular field of qualification
+            in an industry may indicate that it is a pre-requisite for that
+            industry. The presence of fields of qualification outside the main
+            range of qualifications used in that industry may indicate that the
+            industry values employees of a broad educational background, or that
+            people haven't been able to find employment in their chosen field.
+          </p>
+          <p>
+            Field of Qualification information should be looked at in
+            conjunction with{' '}
+            <a href={`${clientAlias}/workers-level-of-qualifications?`}>
+              Level of qualification{' '}
+            </a>
+            and <a href={`${clientAlias}/workers-occupations?`}>Occupation</a>{' '}
+            data for a clearer picture of the skills available for the local
+            workers in {client.LongName}.
+          </p>
+        </div>
+        <SourceBubble>
+          <div>
+            <h3>Data source</h3>
+            <p>
+              Australian Bureau of Statistics (ABS) – Census 2011 (experimental
+              imputed) &amp; 2016 – by place of work
+            </p>
+          </div>
+        </SourceBubble>
+      </PageIntro>
+      <Note>
+        <strong>Please note</strong> – The 2016 Census used a new methodology to
+        “impute” a work location to people who didn’t state their workplace
+        address. As a result, 2016 and 2011 place of work data are not normally
+        comparable. To allow comparison between 2011 and 2016, .id has sourced a
+        2011 dataset from the ABS which was experimentally imputed using the
+        same methodology. To provide this detail, {client.LongName} in 2011 had
+        to be constructed from a best fit of Work Destination Zones (DZNs).
+        While it may not be an exact match to the LGA or region boundary, it is
+        considered close enough to allow some comparison. Users should treat
+        this time series data with caution, however, and not compare directly
+        with 2011 data from any other source.
+      </Note>
+
+      <ItemWrapper>
+        <ControlPanel
+          onReset={handleControlPanelReset}
+          dropdowns={[
+            {
+              title: 'Current industry:',
+              value: currentIndustryID,
+              handleChange: e => setQuery('Indkey', e.target.value),
+              items: Industries
+            },
+            {
+              title: 'Current benchmark:',
+              value: currentBenchmarkID,
+              handleChange: e => setQuery('IGBMID', e.target.value),
+              items: IGBM
+            },
+            {
+              title: 'Gender:',
+              value: currentGenderID,
+              handleChange: e => setQuery('Sex', e.target.value),
+              items: Sexes
+            }
+          ]}
+        />
+      </ItemWrapper>
+
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a data row in the table
+          you will be able to see sub categories.
+        </span>
+      </InfoBox>
+
+      <ItemWrapper>
+        <EntityTable
+          data={tableParams}
+          name={'Local workers - field of qualification'}
+        />
+      </ItemWrapper>
+
+      {hasProfile() && (
+        <CrossLink>
+          <ProfileProductIcon />
+          <a
+            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
+            target="_blank"
+            title="link to forecast"
+          >
+            Residents qualifications by small area
+          </a>
+        </CrossLink>
+      )}
+
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a category in the chart
+          below you will be able to drilldown to the sub categories.
+        </span>
+      </InfoBox>
+
+      <ItemWrapper>
+        <EntityChart data={chartData} />
+      </ItemWrapper>
+
+      <ItemWrapper>
+        <EntityChart data={chartChangeData} />
+      </ItemWrapper>
+
+      {
+        // #region dominant and emerging groups
+      }
+      <AnalysisContainer>
+        <h3>Dominant groups</h3>
+        <p>
+          Analysis of the fields of qualifications of the {currentIndustyName}{' '}
+          shows that the three largest fields of qualification were:
+        </p>
+        <TopThreeFields />
+        <ComparisonBenchmark />
+        <MajorDifferences />
+      </AnalysisContainer>
+      <AnalysisContainer>
+        <h3>Emerging groups</h3>
+        <EmergingGroupsHeading />
+        <EmergingGroups />
+      </AnalysisContainer>
+      {
+        // #endregion
+      }
+      {
+        // #region related pages
+      }
+      <RelatedPagesCTA>
+        <h3>To continue building your economic story go to...</h3>
+        <ul>
+          <li>
+            <a
+              href={`${clientAlias}/monash/workers-level-of-qualifications`}
+              title="Qualifications"
+            >
+              Qualifications
+            </a>
+          </li>
+          <li>
+            <a
+              href={`${clientAlias}/workers-field-of-qualification`}
+              title="Field of qualification"
+            >
+              Field of qualification
+            </a>
+          </li>
+          <li>
+            <a href={`${clientAlias}/workers-income`} title="Income">
+              Income
+            </a>
+          </li>
+        </ul>
+      </RelatedPagesCTA>
+      {
+        // #endregion
+      }
     </Layout>
   );
 };
@@ -496,4 +869,89 @@ const chartBuilder = ({
     chartTemplate: 'Standard'
   };
 };
+// #endregion
+
+// #region chart builder change
+const chartBuilderChange = ({
+  prettyName: clientName,
+  indName: currentIndustry,
+  bmName: currentBenchmark,
+  genderName: gender,
+  TabularData: data
+}) => {
+  const parents = _.sortBy(
+    data.filter(
+      item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'
+    ),
+    item => item.LabelKey
+  );
+  const categories = _.map(parents, 'LabelName');
+  return {
+    cssClass: '',
+    highchartOptions: {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Change in local workers field of qualification, 2016',
+        align: 'left'
+      },
+      subtitle: {
+        text: `${clientName} - ${currentIndustry}-${gender}`,
+        align: 'left'
+      },
+      tooltip: {
+        pointFormatter: function() {
+          return `<span class="highcharts-color-${
+            this.colorIndex
+          }">\u25CF</span> ${this.series.name}: ${formatShortDecimal(this.y)}%`;
+        }
+      },
+      series: [
+        {
+          color: '',
+          yAxis: 0,
+          name: `${currentIndustry}`,
+          data: _.map(parents, 'Change12')
+        }
+      ],
+      xAxis: {
+        categories,
+        croshair: false,
+        title: {
+          text: 'Field of qualification',
+          align: 'low'
+        },
+
+        labels: {
+          staggerLines: 0,
+          format: ''
+        },
+        opposite: false
+      },
+      yAxis: [
+        {
+          title: {
+            text: `Change in ${gender} local workers`
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return formatChangeNumber(this.value);
+            }
+          },
+          opposite: false
+        }
+      ]
+    },
+    rawDataSource:
+      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+    dataSource: <Source />,
+    chartContainerID: 'chart2',
+    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
+    entityID: 1,
+    chartTemplate: 'Standard'
+  };
+};
+
 // #endregion
