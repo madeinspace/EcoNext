@@ -1,11 +1,10 @@
-import * as React from "react"
-const styles = require("./search.module.scss")
+import * as React from 'react';
 
 export const CloseButton: React.FunctionComponent<any> = props => {
   return (
     <div
       id="ms_searchClose"
-      className={styles.searchResults__header__closeBtn}
+      className={'searchResults__header__closeBtn'}
       onClick={props.handleClick}
     >
       <p>Return to {props.clientLongName}</p>
@@ -22,5 +21,5 @@ export const CloseButton: React.FunctionComponent<any> = props => {
         />
       </svg>
     </div>
-  )
-}
+  );
+};

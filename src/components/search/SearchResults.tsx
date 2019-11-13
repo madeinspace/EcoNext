@@ -2,7 +2,6 @@
 import { KnowledgeBaseCTA } from './ResultsCTAs/ResultsKnoledgebaseTeaser';
 import { SearchResultsFilters } from './SearchResultsFilters';
 import { SearchResultsList } from './SearchResultsList';
-const styles = require('./search.module.scss');
 import styled from 'styled-components';
 import { HeaderRow } from '../grid';
 
@@ -37,8 +36,7 @@ export default class Searchresults extends React.PureComponent<
       clientLogo
     } = this.props;
 
-    const showOrNot =
-      results.length > 0 || noResults ? styles.show : styles.hide;
+    const showOrNot = results.length > 0 || noResults ? 'show' : 'hide';
 
     const SearchResultsContainer = styled.div`
       grid-area: header;

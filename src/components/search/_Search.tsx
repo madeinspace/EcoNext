@@ -490,7 +490,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
                 clientLogo={this.props.clientImage}
               />
             </ResultScroller>
-            {results.length > 0 && <div className={styles.underlay} />}
+            {results.length > 0 && <div className={'underlay'} />}
           </ResultsContainer>
         </MainSearchWrapper>
       </React.Fragment>
