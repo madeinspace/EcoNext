@@ -169,13 +169,19 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
   });
 };
 
-const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
+const SiteMap = ({
+  alias,
+  products,
+  prettyname,
+  navigationNodes,
+  colGroups
+}) => {
   const columns = _.values(groupBy(colGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
       <FooterRow>
         <FooterContents>
-          <SiteMapHeader>{longName}</SiteMapHeader>
+          <SiteMapHeader>{prettyname}</SiteMapHeader>
         </FooterContents>
       </FooterRow>
       <FooterRow>

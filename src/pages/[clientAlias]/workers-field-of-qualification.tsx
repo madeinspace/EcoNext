@@ -483,7 +483,9 @@ const LocalWorkerFieldsOfQualififcation = ({
 };
 
 export default LocalWorkerFieldsOfQualififcation;
+// #endregion
 
+// #region initial props
 LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   const defaultFilters = {
     Indkey: 23000,
@@ -507,7 +509,9 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
   data.filters = filters;
   return data;
 };
+// #endregion
 
+// #region table builders
 const Source = () => (
   <>
     Source: Australian Bureau of Statistics, Regional Population Growth,
@@ -523,7 +527,6 @@ const Source = () => (
   </>
 );
 
-// #region table builders
 const tableBuilder = ({
   prettyName: clientName,
   indName: industry,

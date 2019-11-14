@@ -4,7 +4,6 @@ import React from 'react';
 import styled from 'styled-components';
 import ClientProductsNav from './ClientProductsNav';
 import { HeaderRow } from './grid';
-// import Img from "gatsby-image"
 
 const ClientLogo = styled.div`
   align-self: flex-end;
@@ -69,35 +68,33 @@ const HeaderWrapper = styled.div`
 
 export const ClientHeader = ({
   alias,
-  longName,
+  prettyname,
   products,
   isLite,
   clientImage
-}) => (
-  <Decoration>
-    <HeaderRow>
-      <HeaderWrapper>
-        <Header>
-          <Stack>
-            <Title>
-              <ClientName>{longName} </ClientName>
-              <Separator />
-              <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
-            </Title>
-            <ClientProductsNav products={products} alias={alias} />
-          </Stack>
-          <ClientLogo>
-            {/* <Img
-              fixed={clientImage}
-              alt={`${longName} Logo`}
-              title={longName}
-            /> */}
-          </ClientLogo>
-        </Header>
-      </HeaderWrapper>
-    </HeaderRow>
-  </Decoration>
-);
+}) => {
+  return (
+    <Decoration>
+      <HeaderRow>
+        <HeaderWrapper>
+          <Header>
+            <Stack>
+              <Title>
+                <ClientName>{prettyname} </ClientName>
+                <Separator />
+                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
+              </Title>
+              <ClientProductsNav products={products} alias={alias} />
+            </Stack>
+            <ClientLogo>
+              <img src={clientImage} />
+            </ClientLogo>
+          </Header>
+        </HeaderWrapper>
+      </HeaderRow>
+    </Decoration>
+  );
+};
 
 ClientHeader.propTypes = {
   clientID: PropTypes.number,

@@ -32,6 +32,7 @@
     "lru-cache": "^5.1.1",
     "mssql": "^5.1.0",
     "next": "^9.0.8",
+    "next-images": "^1.2.0",
     "node-sass": "^4.12.0",
     "numeral": "^2.0.6",
     "pubsub-js": "^1.7.0",

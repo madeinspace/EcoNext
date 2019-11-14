@@ -15,6 +15,8 @@ import SiblingsMenu from '../components/SiblingsMenu';
 const IsLite = nodes => some(nodes, 'Disabled');
 
 const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
+  const { Alias: alias, clientID, LongName: prettyname, Name: name } = client;
+  const logo = require(`../images/logos/${alias}.png`);
   return (
     <>
       {useRouter().pathname === '/' ? (
@@ -22,35 +24,35 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
       ) : (
         <>
           <SearchApp
-            alias={client.Alias}
-            clientID={client.clientID}
-            longName={client.LongName}
-            clientImage={'data.clientLogo.imageData.fixed'}
+            alias={alias}
+            clientID={clientID}
+            prettyname={prettyname}
+            clientImage={logo}
           />
           <ClientHeader
-            alias={client.Alias}
-            name={client.Name}
-            longName={client.LongName}
+            alias={alias}
+            name={name}
+            prettyname={prettyname}
             products={products}
-            clientID={client.clientID}
-            clientImage={'data.clientLogo.imageData.fixed'}
+            clientID={clientID}
+            clientImage={logo}
             isLite={IsLite(navnodes)}
           />
         </>
       )}
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={client.Alias} navigationNodes={navnodes} />
+          <MainNavigation alias={alias} navigationNodes={navnodes} />
         </SidebarNav>
         <SiteContent>
-          <SiblingsMenu navigationNodes={navnodes} clientAlias={client.Alias} />
+          <SiblingsMenu navigationNodes={navnodes} clientAlias={alias} />
           {children}
         </SiteContent>
       </ContentRow>
       <SiteMap
-        alias={client.Alias}
+        alias={alias}
         colGroups={sitemapGroup}
-        longName={client.LongName}
+        prettyname={prettyname}
         products={products}
         navigationNodes={navnodes}
       />
