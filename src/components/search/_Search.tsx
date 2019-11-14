@@ -92,6 +92,15 @@ const ResultsContainer = styled.div`
 const MainSearchWrapper = styled.div`
   height: 155px;
   background-color: #f2f2f2;
+  opacity: 1;
+  margin-top: 0;
+  background-color: #f2f2f2;
+  z-index: 101;
+  position: relative;
+
+  .underlay {
+    display: block;
+  }
 `;
 
 const SearchTermInputContainer = styled.div`
@@ -280,8 +289,6 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       showSearch
     } = this.state;
 
-    const showSearchClassName = showSearch ? 'searchopened' : 'searchclosed';
-
     return (
       <React.Fragment>
         <HeaderID>
@@ -448,51 +455,53 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
             )}
           </FauxWrapper>
         </HeaderID>
-        <MainSearchWrapper className={showSearchClassName}>
-          <SearchInputWrapper>
-            <SearchTermInputContainer>
-              <SearchTermInput>
-                <OptionSwitch
-                  activeOption={searchOption}
-                  onSwitch={this.handleOptionSwitch}
-                  client={this.searchConfig.getClientLongName}
-                />
-                <SearchInput
-                  searchOption={searchOption}
-                  searchTerms={searchTerms}
-                  onUserInput={this.updateTerms}
-                  onSearch={this.search}
-                  onSearchFocus={this.searchFocus}
-                  inProgress={inProgress}
-                  close={this.closeSearch}
-                  placeholder={placeholder}
-                />
-                <CloseButton
-                  handleClick={this.closeSearch}
-                  clientLongName={this.searchConfig.getClientLongName}
-                />
-              </SearchTermInput>
-            </SearchTermInputContainer>
-          </SearchInputWrapper>
+        {showSearch && (
+          <MainSearchWrapper>
+            <SearchInputWrapper>
+              <SearchTermInputContainer>
+                <SearchTermInput>
+                  <OptionSwitch
+                    activeOption={searchOption}
+                    onSwitch={this.handleOptionSwitch}
+                    client={this.searchConfig.getClientLongName}
+                  />
+                  <SearchInput
+                    searchOption={searchOption}
+                    searchTerms={searchTerms}
+                    onUserInput={this.updateTerms}
+                    onSearch={this.search}
+                    onSearchFocus={this.searchFocus}
+                    inProgress={inProgress}
+                    close={this.closeSearch}
+                    placeholder={placeholder}
+                  />
+                  <CloseButton
+                    handleClick={this.closeSearch}
+                    clientLongName={this.searchConfig.getClientLongName}
+                  />
+                </SearchTermInput>
+              </SearchTermInputContainer>
+            </SearchInputWrapper>
 
-          <ResultsContainer>
-            <ResultScroller>
-              <SearchResults
-                noResults={noResults}
-                results={results}
-                tabs={tabs}
-                currentTab={currentTab}
-                filter={this.filterResultsByTab}
-                countTotal={this.initialSearchResults.length}
-                searchOption={searchOption}
-                hasRegistered={hasRegistered}
-                client={this.searchConfig.getClientLongName}
-                clientLogo={this.props.clientImage}
-              />
-            </ResultScroller>
-            {results.length > 0 && <div className={'underlay'} />}
-          </ResultsContainer>
-        </MainSearchWrapper>
+            <ResultsContainer>
+              <ResultScroller>
+                <SearchResults
+                  noResults={noResults}
+                  results={results}
+                  tabs={tabs}
+                  currentTab={currentTab}
+                  filter={this.filterResultsByTab}
+                  countTotal={this.initialSearchResults.length}
+                  searchOption={searchOption}
+                  hasRegistered={hasRegistered}
+                  client={this.searchConfig.getClientLongName}
+                  clientLogo={this.props.clientImage}
+                />
+              </ResultScroller>
+              {results.length > 0 && <div className={'underlay'} />}
+            </ResultsContainer>
+          </MainSearchWrapper>
+        )}
       </React.Fragment>
     );
   }
