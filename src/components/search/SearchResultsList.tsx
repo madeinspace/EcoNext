@@ -95,7 +95,8 @@ export function SearchResultsList(props: ISearchResultsListProps) {
       </div>
     );
   }
-  //
+
+  // topic
   else if (searchOption === 'topic' && !noResults) {
     const topicList = results.map((item, i) => {
       return <SearchResultTopic key={'item' + i} itemData={item} />;
@@ -109,5 +110,5 @@ export function SearchResultsList(props: ISearchResultsListProps) {
   } else {
     ResultsList = <NoSearchResultItem key={1} clientLongName={clientName} />;
   }
-  return <div className={`${'scroller'} resultScroller`}>{ResultsList}</div>;
+  return <div className={`Scroller resultScroller`}>{ResultsList}</div>;
 }

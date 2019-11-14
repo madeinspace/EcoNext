@@ -18,41 +18,36 @@ export interface ISearchresultsProps {
   clientLogo: string;
 }
 
-export default class Searchresults extends React.PureComponent<
-  ISearchresultsProps,
-  any
-> {
-  public render() {
-    const {
-      noResults,
-      results,
-      tabs,
-      currentTab,
-      filter,
-      countTotal,
-      searchOption,
-      hasRegistered,
-      client,
-      clientLogo
-    } = this.props;
+const Searchresults = ({
+  noResults,
+  results,
+  tabs,
+  currentTab,
+  filter,
+  countTotal,
+  searchOption,
+  hasRegistered,
+  client,
+  clientLogo
+}) => {
+  const show = results.length > 0 || noResults ? true : false;
 
-    const showOrNot = results.length > 0 || noResults ? 'show' : 'hide';
+  const SearchResultsContainer = styled.div`
+    grid-area: header;
+    color: #5f6062;
+    font-size: 16px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+    font-weight: 300;
 
-    const SearchResultsContainer = styled.div`
-      grid-area: header;
-      color: #5f6062;
-      font-size: 16px;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      line-height: 1.4;
-      font-weight: 300;
+    background: #fff;
+    margin-top: 30px;
+  `;
 
-      background: #fff;
-      margin-top: 30px;
-    `;
-
-    return (
-      <HeaderRow>
-        <SearchResultsContainer className={`${showOrNot} row`}>
+  return (
+    <HeaderRow>
+      {show && (
+        <SearchResultsContainer className={`row`}>
           {/* // Tabs */}
           <div className={'col-md-4 col-sm-12 col-xs-12'}>
             <SearchResultsFilters
@@ -76,7 +71,9 @@ export default class Searchresults extends React.PureComponent<
             />
           </div>
         </SearchResultsContainer>
-      </HeaderRow>
-    );
-  }
-}
+      )}
+    </HeaderRow>
+  );
+};
+
+export default Searchresults;
