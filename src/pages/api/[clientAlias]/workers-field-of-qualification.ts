@@ -1,7 +1,10 @@
+/* #region imports*/
 import _ from 'lodash';
 const knex = require('knex');
 import { commClient, commDataEconomy } from '../../../server/dbConnection';
+/* #endregion */
 
+/* #region handle */
 const handle = async (req, res) => {
   const { clientAlias, Indkey, IGBMID, Sex } = req.query;
   const client = await commClient
@@ -39,6 +42,7 @@ const handle = async (req, res) => {
     sitemapGroups
   });
 };
+export default handle;
 
 const clientFromAlias = (clientAlias, clients) =>
   _.find(clients, { Alias: clientAlias });
@@ -46,9 +50,9 @@ const clientFromAlias = (clientAlias, clients) =>
 const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
   ? []
   : process.env.IGNORE_CLIENTS.split(' ');
+/* #endregion */
 
-export default handle;
-
+/* #region ClientSQL*/
 const ClientSQL = ({ clientAlias }) => `
   SELECT
     client.ClientID,
@@ -63,7 +67,9 @@ const ClientSQL = ({ clientAlias }) => `
     AND clientMeta.ApplicationID = 4
     AND Alias = '${clientAlias}'
 `;
+/* #endregion */
 
+/* #region  allclientsSQL Query */
 const AllClientsSQL = `
 WITH RDAS AS (
   SELECT
@@ -98,7 +104,9 @@ WITH RDAS AS (
     .map(clientAlias => `  AND NOT client.Alias = '${clientAlias}'`)
     .join('\n')}
 `;
+/* #endregion */
 
+/* #region  BenchMarkIndustriesQuery */
 const BenchMarkIndustriesQuery = IGBMID => `
   SELECT
     CAST(23000 AS INT) AS ID,
@@ -114,7 +122,9 @@ const BenchMarkIndustriesQuery = IGBMID => `
   WHERE I.IndustryWebKey != ${IGBMID} AND (I.IndustryWebKey NOT IN(23020,23045))
     AND I.IndustryWebKey = IP.IndustryWebKey
 `;
+/* #endregion */
 
+/* #region  BenchMarkGeoQuery */
 const BenchMarkGeoQuery = ClientID =>
   `
     SELECT
@@ -124,7 +134,9 @@ const BenchMarkGeoQuery = ClientID =>
     WHERE ClientID = ${ClientID}
     AND NOT WebID = 10
   `;
+/* #endregion */
 
+/* #region  tableDataQuery */
 const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
     ${ClientID},
@@ -139,7 +151,9 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
     ${Indkey}
     ) order by LabelKey
   `;
+/* #endregion */
 
+/* #region  MainNavigationSQL */
 const MainNavigationSQL = ({ ClientID }) => `
 SELECT [ClientID]
   ,cp.[PageID]
@@ -156,7 +170,9 @@ INNER JOIN [CommApp].[dbo].[PageGroup] pg
   AND p.ApplicationID = 4
 WHERE ClientID = ${ClientID}
 `;
+/* #endregion */
 
+/* #region  ClientProductsSQL */
 const ClientProductsSQL = ({ ClientID }) => `
   SELECT 
      c.Alias AS Alias
@@ -174,7 +190,9 @@ const ClientProductsSQL = ({ ClientID }) => `
   WHERE cad.IsDisabled = 0
     AND cad.ClientID = ${ClientID}
 `;
+/* #endregion */
 
+/* #region  SitemapGroupsSQL */
 const SitemapGroupsSQL = () => `
   SELECT TOP (1000) [ApplicationID]
     ,[GroupName]
@@ -186,3 +204,4 @@ const SitemapGroupsSQL = () => `
   where SitemapName like 'footer'
   and ApplicationID = 4
 `;
+/* #endregion */
