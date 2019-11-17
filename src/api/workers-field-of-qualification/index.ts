@@ -1,7 +1,7 @@
 /* #region imports*/
 import _ from 'lodash';
 const knex = require('knex');
-import { commClient, commDataEconomy } from '../../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../server/dbConnection';
 /* #endregion */
 
 const fetchData = async filters => {

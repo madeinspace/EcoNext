@@ -25,7 +25,7 @@ import EntityChart from '../../../components/chart/EntityChart';
 import qs from 'qs';
 // #endregion
 
-import fetchData from './api';
+import fetchData from '../../../api/population';
 
 // #region population page
 const Population = ({
