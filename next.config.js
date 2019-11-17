@@ -8,7 +8,13 @@ module.exports = withCSS(
   withSass(
     withImages({
       cssModules: false,
-      webpack(config) {
+      webpack(config, { isServer }) {
+        if (!isServer) {
+          config.node = {
+            fs: 'empty'
+          };
+        }
+
         config.module.rules.push({
           test: /\.(eot|ttf|woff|woff2)$/,
           use: {

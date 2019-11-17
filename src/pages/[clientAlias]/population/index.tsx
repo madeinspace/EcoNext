@@ -1,15 +1,13 @@
 // #region imports
-import fetch from 'isomorphic-unfetch';
 import Router, { useRouter } from 'next/router';
 import _ from 'lodash';
-import Layout from '../../layouts/main';
+import Layout from '../../../layouts/main';
 import {
   formatShortDecimal,
   formatNumber,
   formatChangeNumber,
-  formatChangePercent,
-  getPort
-} from '../../Utils';
+  formatChangePercent
+} from '../../../Utils';
 import {
   TitleContainer,
   MainTitle,
@@ -20,12 +18,14 @@ import {
   CrossLink,
   EntityContainer,
   ForecastProductIcon
-} from '../../styles/MainContentStyles';
-import { Actions, Share, ExportPage } from '../../components/Actions';
-import EntityTable from '../../components/table/EntityTable';
-import EntityChart from '../../components/chart/EntityChart';
+} from '../../../styles/MainContentStyles';
+import { Actions, Share, ExportPage } from '../../../components/Actions';
+import EntityTable from '../../../components/table/EntityTable';
+import EntityChart from '../../../components/chart/EntityChart';
 import qs from 'qs';
 // #endregion
+
+import fetchData from './api';
 
 // #region population page
 const Population = ({
@@ -132,9 +132,9 @@ export default Population;
 // #region getInitialProps
 Population.getInitialProps = async function({ query }) {
   const { clientAlias } = query;
-  const data = await fetch(
-    `http://localhost:${getPort()}/api/${clientAlias}/population`
-  ).then(res => res.json());
+
+  const data = await fetchData({ clientAlias });
+
   return data;
 };
 // #endregion

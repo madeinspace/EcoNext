@@ -4,9 +4,9 @@ const knex = require('knex');
 import { commClient, commDataEconomy } from '../../../server/dbConnection';
 /* #endregion */
 
-/* #region handle */
-const handle = async (req, res) => {
-  const { clientAlias, Indkey, IGBMID, Sex } = req.query;
+const fetchData = async filters => {
+  const { clientAlias, Indkey, IGBMID, Sex } = filters;
+
   const client = await commClient
     .raw(ClientSQL({ clientAlias }))
     .then(res => res[0]);
@@ -30,7 +30,7 @@ const handle = async (req, res) => {
     })
   );
 
-  res.json({
+  return {
     title: 'Workers fields of qualification',
     client,
     tableData,
@@ -39,10 +39,12 @@ const handle = async (req, res) => {
     Sexes,
     navigation,
     clientProducts,
-    sitemapGroups
-  });
+    sitemapGroups,
+    filters
+  };
 };
-export default handle;
+
+export default fetchData;
 
 const clientFromAlias = (clientAlias, clients) =>
   _.find(clients, { Alias: clientAlias });
@@ -51,8 +53,6 @@ const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
   ? []
   : process.env.IGNORE_CLIENTS.split(' ');
 /* #endregion */
-
-/* #region ClientSQL*/
 const ClientSQL = ({ clientAlias }) => `
   SELECT
     client.ClientID,

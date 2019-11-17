@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { commClient, commDataEconomy } from '../../../server/dbConnection';
 
-const handle = async (req, res) => {
-  const { clientAlias } = req.query;
+const fetchData = async filters => {
+  const { clientAlias } = filters;
   const client = await commClient
     .raw(ClientSQL({ clientAlias }))
     .then(res => res[0]);
@@ -12,9 +12,17 @@ const handle = async (req, res) => {
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const tableData = await commDataEconomy.raw(PopulationDataSQL({ ClientID }));
 
-  res.json({ client, tableData, navigation, clientProducts, sitemapGroups });
+  return {
+    client,
+    tableData,
+    navigation,
+    clientProducts,
+    filters,
+    sitemapGroups
+  };
 };
-export default handle;
+
+export default fetchData;
 
 const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
   ? []

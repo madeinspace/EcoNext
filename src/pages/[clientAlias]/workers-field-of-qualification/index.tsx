@@ -1,5 +1,3 @@
-// #region imports
-import fetch from 'isomorphic-unfetch';
 import _ from 'lodash';
 import Router, { useRouter } from 'next/router';
 import qs from 'qs';
@@ -9,12 +7,12 @@ import {
   formatShortDecimal,
   getPort,
   formatPercent
-} from '../../Utils';
-import EntityTable from '../../components/table/EntityTable';
-import ControlPanel from '../../components/ControlPanel/ControlPanel';
+} from '../../../Utils';
+import EntityTable from '../../../components/table/EntityTable';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React from 'react';
-import Layout from '../../layouts/main';
-import EntityChart from '../../components/chart/EntityChart';
+import Layout from '../../../layouts/main';
+import EntityChart from '../../../components/chart/EntityChart';
 import {
   TitleContainer,
   MainTitle,
@@ -29,15 +27,17 @@ import {
   ItemWrapper,
   CrossLink,
   ProfileProductIcon
-} from '../../styles/MainContentStyles';
+} from '../../../styles/MainContentStyles';
 import {
   Actions,
   Share,
   ExportPage,
   EntityContainer
-} from '../../components/Actions';
-import InfoBox from '../../components/InfoBox';
+} from '../../../components/Actions';
+import InfoBox from '../../../components/InfoBox';
 // #endregion
+
+import fetchData from './api';
 
 // #region page
 const LocalWorkerFieldsOfQualififcation = ({
@@ -493,20 +493,9 @@ LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
     Sex: 3
   };
   const filters = { ...defaultFilters, ...query };
-  const { clientAlias } = query;
 
-  const res = await fetch(
-    `http://localhost:${getPort()}/api/${clientAlias}/workers-field-of-qualification?${qs.stringify(
-      filters
-    )}`
-  ).then(function(response) {
-    if (response.status >= 400) {
-      throw new Error('Bad response from server');
-    }
-    return response;
-  });
-  const data = await res.json();
-  data.filters = filters;
+  const data = await fetchData(filters);
+
   return data;
 };
 // #endregion
