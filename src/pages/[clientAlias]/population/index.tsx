@@ -17,7 +17,8 @@ import {
   ItemWrapper,
   CrossLink,
   EntityContainer,
-  ForecastProductIcon
+  ForecastProductIcon,
+  PageIntroFullWidth
 } from '../../../styles/MainContentStyles';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import EntityTable from '../../../components/table/EntityTable';
@@ -41,7 +42,37 @@ const Population = ({
     _.some(clientProducts, product => product.ApplicationID === 3);
 
   const FormattedNumber = number => <>{formatNumber(number)}</>;
-  const handleExport = () => {};
+  const handleExport = async () => {
+    const IDReportRequest = { url: window.location };
+    console.log('window.location: ', window.location);
+    try {
+      const data = await postData(
+        'https://idreportserviceweb.azurewebsites.net/api/idreportservice/',
+        IDReportRequest
+      );
+      console.log(JSON.stringify(data)); // JSON-string from `response.json()` call
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const postData = async (url = '', data = {}) => {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'omit', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+  };
 
   const setQuery = (key, value) => {
     const query = { ...qs.parse(location.search, { ignoreQueryPrefix: true }) };
@@ -82,7 +113,7 @@ const Population = ({
         The Estimated Resident Population of the {prettyName} was{' '}
         <FormattedNumber number={12} /> as of the 30th June [latestYear].
       </Headline>
-      <PageIntro>
+      <PageIntroFullWidth>
         <p>
           The Estimated Resident Population (ERP) is the official population of
           the area. It is updated annually by the Australian Bureau of
@@ -92,7 +123,7 @@ const Population = ({
           economy, but this is not necessarily the case and depends on the
           residential role and function of the area.
         </p>
-      </PageIntro>
+      </PageIntroFullWidth>
 
       <ItemWrapper>
         <EntityChart data={chartData} />
