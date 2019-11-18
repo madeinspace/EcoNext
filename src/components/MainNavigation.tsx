@@ -1,10 +1,9 @@
 import React from 'react';
-import Link from 'next/link';
+import Link from '../components/Link';
 import styled from 'styled-components';
-import { pathParts, IsNextPage } from './Utils';
+import { pathParts } from './Utils';
 import _ from 'lodash';
-import Router, { useRouter } from 'next/router';
-// import { Location } from '@reach/router';
+import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
@@ -65,17 +64,6 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
   ));
 };
 
-const MonolithOrNextLink = props => {
-  const { href, children, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, className }} />
-    </Link>
-  ) : (
-    <a href={`https://economy.id.com.au${href}`} {...{ children, className }} />
-  );
-};
-
 const MainNavigation = ({ alias, navigationNodes }) => {
   return (
     <MainNav>
@@ -100,7 +88,7 @@ const MainNavigation = ({ alias, navigationNodes }) => {
 
 export default MainNavigation;
 
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
   display: block;

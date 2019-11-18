@@ -1,8 +1,9 @@
 import React from 'react';
-import { pathParts, IsNextPage } from './Utils';
-import Link from 'next/link';
+import { pathParts } from './Utils';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import Link from '../components/Link';
+
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
@@ -39,20 +40,6 @@ const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
 
 export default SiblingsMenu;
 
-const MonolithOrNextLink = props => {
-  const { href, children, style, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, style, className }} />
-    </Link>
-  ) : (
-    <a
-      href={`https://economy.id.com.au${href}`}
-      {...{ children, style, className }}
-    />
-  );
-};
-
 const SiblingsMenuContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -62,7 +49,7 @@ const SiblingsMenuContainer = styled.div`
   border-bottom: 1px solid ${variables.grayLighter};
 `;
 
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
   padding: 0px 12px 0 12px;
