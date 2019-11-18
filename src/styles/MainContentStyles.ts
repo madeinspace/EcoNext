@@ -71,8 +71,17 @@ export const PageIntro = styled.div`
   }
 `;
 
+export const PageIntroFullWidth = styled.div`
+  display: grid;
+  grid-template-areas: 'text . bubble';
+  grid-template-columns: 100%;
+  p {
+    line-height: 18px;
+  }
+`;
+
 export const ItemWrapper = styled.div`
-  margin-bottom: 20px;
+  margin: 20px 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
