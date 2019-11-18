@@ -43,11 +43,22 @@ const Population = ({
 
   const FormattedNumber = number => <>{formatNumber(number)}</>;
   const handleExport = async () => {
-    const IDReportRequest = { url: window.location };
-    console.log('window.location: ', window.location);
+    const IDReportRequest = {
+      FileName: `Population - ${prettyName}`,
+      Urls: [
+        {
+          Title: `Population - ${prettyName}`,
+          url: window.location
+        }
+      ],
+      Action: 0,
+      EmailAddress: 'fabrice@id.com.au'
+    };
+
+    console.log('IDReportRequest: ', IDReportRequest);
     try {
       const data = await postData(
-        'https://idreportserviceweb.azurewebsites.net/api/idreportservice/',
+        'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
         IDReportRequest
       );
       console.log(JSON.stringify(data)); // JSON-string from `response.json()` call
@@ -62,7 +73,7 @@ const Population = ({
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'omit', // include, *same-origin, omit
+      credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
         // 'Content-Type': 'application/x-www-form-urlencoded',
