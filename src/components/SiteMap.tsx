@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import groupBy from 'lodash/groupBy';
-import { pathParts, IsNextPage } from './Utils';
 import _ from 'lodash';
-import Link from 'next/link';
+import Link from '../components/Link';
 import { FooterRow, SiteMapGrid } from './grid';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -93,21 +92,7 @@ const DisabledLink = styled(PageItem)`
   cursor: default;
 `;
 
-const MonolithOrNextLink = props => {
-  const { href, children, style, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, style, className }} />
-    </Link>
-  ) : (
-    <a
-      href={`https://economy.id.com.au${href}`}
-      {...{ children, style, className }}
-    />
-  );
-};
-
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   font-size: 11px;
   line-height: 16px;
   text-decoration: none;
