@@ -37,7 +37,7 @@ import {
 import InfoBox from '../../../components/InfoBox';
 // #endregion
 
-import fetchData from './api';
+import fetchData from '../../../api/workers-field-of-qualification';
 
 // #region page
 const LocalWorkerFieldsOfQualififcation = ({

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { commClient, commDataEconomy } from '../../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../server/dbConnection';
 
 const fetchData = async filters => {
   const { clientAlias } = filters;
