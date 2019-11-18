@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 
-const styles = require('./EntityTable.scss');
-
 export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
   !_.isEmpty(source) && (
     <div className="dataTableSource">

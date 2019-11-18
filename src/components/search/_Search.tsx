@@ -8,7 +8,6 @@ import { withCookies, Cookies } from 'react-cookie';
 import { getHashParams } from '../Utils';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-const styles = require('./search.module.scss');
 import { HeaderRow } from '../grid';
 
 interface ISearchConfig {
