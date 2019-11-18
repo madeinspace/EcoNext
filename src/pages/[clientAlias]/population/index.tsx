@@ -55,20 +55,20 @@ const Population = ({
       EmailAddress: 'fabrice@id.com.au'
     };
 
-    console.log('IDReportRequest: ', IDReportRequest);
     try {
       const data = await postData(
         'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
         IDReportRequest
-      );
-      console.log(JSON.stringify(data));
+      ).then(res => {
+        console.log('Report Ok: ', res);
+      });
+      console.log(`Page report request: Population - ${prettyName}`);
     } catch (error) {
       console.error(error);
     }
   };
 
   const postData = async (url = '', data = {}) => {
-    console.log('data: ', JSON.stringify(data));
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -76,7 +76,7 @@ const Population = ({
         'Content-Type': 'application/json'
       }
     });
-    return await response.json();
+    return response.json();
   };
 
   const { clientAlias } = useRouter().query;
@@ -101,7 +101,7 @@ const Population = ({
           <ExportPage
             onExport={e => handleExport()}
             exportOptions={{
-              formats: [{ displayText: 'Word' } /*, { name: "PDF" }*/]
+              formats: [{ displayText: 'PDF' } /*, { name: "PDF" }*/]
             }}
           />
         </Actions>
