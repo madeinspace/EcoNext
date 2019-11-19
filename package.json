@@ -18,7 +18,7 @@
     "@zeit/next-sass": "^1.0.1",
     "babel-plugin-styled-components": "^1.10.6",
     "deepmerge": "^4.2.1",
-    "docx": "^5.0.0-rc3",
+    "docx": "5.0.0-rc3",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",

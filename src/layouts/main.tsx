@@ -44,7 +44,7 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
         <SidebarNav>
           <MainNavigation alias={alias} navigationNodes={navnodes} />
         </SidebarNav>
-        <SiteContent>
+        <SiteContent id={'main-content'}>
           <SiblingsMenu navigationNodes={navnodes} clientAlias={alias} />
           {children}
         </SiteContent>
