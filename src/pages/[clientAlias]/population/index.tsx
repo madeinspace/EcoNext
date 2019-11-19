@@ -1,45 +1,29 @@
 // #region imports
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import _ from 'lodash';
 import Layout from '../../../layouts/main';
+import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../Utils';
 import {
-  formatShortDecimal,
-  formatNumber,
-  formatChangeNumber,
-  formatChangePercent
-} from '../../../Utils';
-import {
-  TitleContainer,
   MainTitle,
   SubTitle,
   Headline,
-  PageIntro,
   ItemWrapper,
   CrossLink,
-  EntityContainer,
+  PageIntroFullWidth,
   ForecastProductIcon,
-  PageIntroFullWidth
 } from '../../../styles/MainContentStyles';
-import { Actions, Share, ExportPage } from '../../../components/Actions';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import qs from 'qs';
+import PageHeader from '../../../components/PageHeader';
 // #endregion
 
 import fetchData from '../../../api/population';
 
 // #region population page
-const Population = ({
-  client,
-  tableData,
-  navigation,
-  clientProducts,
-  sitemapGroups
-}) => {
+const Population = ({ client, tableData, navigation, clientProducts, sitemapGroups }) => {
   const { LongName: prettyName } = client;
-  const router = useRouter();
-  const hasForecast = clientProducts =>
-    _.some(clientProducts, product => product.ApplicationID === 3);
+
+  const hasForecast = clientProducts => _.some(clientProducts, product => product.ApplicationID === 3);
 
   const FormattedNumber = number => <>{formatNumber(number)}</>;
   const handleExport = async () => {
@@ -48,17 +32,17 @@ const Population = ({
       Urls: [
         {
           Title: `Population - ${prettyName}`,
-          url: window.location.href
-        }
+          url: window.location.href,
+        },
       ],
       Action: 0,
-      EmailAddress: 'fabrice@id.com.au'
+      EmailAddress: 'fabrice@id.com.au',
     };
 
     try {
       const data = await postData(
         'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
-        IDReportRequest
+        IDReportRequest,
       ).then(res => {
         console.log('Report Ok: ', res);
       });
@@ -73,8 +57,8 @@ const Population = ({
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
     return response.json();
   };
@@ -85,40 +69,22 @@ const Population = ({
   const tableParams = tableBuilder(clientAlias, tableData);
 
   return (
-    <Layout
-      client={client}
-      navnodes={navigation}
-      products={clientProducts}
-      sitemapGroup={sitemapGroups}
-    >
-      <EntityContainer>
-        <TitleContainer>
-          <MainTitle>{prettyName}</MainTitle>
-          <SubTitle>Population</SubTitle>
-        </TitleContainer>
-        <Actions>
-          <Share />
-          <ExportPage
-            onExport={e => handleExport()}
-            exportOptions={{
-              formats: [{ displayText: 'PDF' } /*, { name: "PDF" }*/]
-            }}
-          />
-        </Actions>
-      </EntityContainer>
+    <Layout client={client} navnodes={navigation} products={clientProducts} sitemapGroup={sitemapGroups}>
+      <PageHeader handleExport={handleExport}>
+        <MainTitle>{prettyName}</MainTitle>
+        <SubTitle>Population</SubTitle>
+      </PageHeader>
       <Headline>
-        The Estimated Resident Population of the {prettyName} was{' '}
-        <FormattedNumber number={12} /> as of the 30th June [latestYear].
+        The Estimated Resident Population of the {prettyName} was <FormattedNumber number={12} /> as of the 30th June
+        [latestYear].
       </Headline>
       <PageIntroFullWidth>
         <p>
-          The Estimated Resident Population (ERP) is the official population of
-          the area. It is updated annually by the Australian Bureau of
-          Statistics, and reassessed every Census. The chart and table show last
-          10 years ERP for {prettyName}, the state and Australia, with
-          percentage comparisons. A growing population can indicate a growing
-          economy, but this is not necessarily the case and depends on the
-          residential role and function of the area.
+          The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the
+          Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for{' '}
+          {prettyName}, the state and Australia, with percentage comparisons. A growing population can indicate a
+          growing economy, but this is not necessarily the case and depends on the residential role and function of the
+          area.
         </p>
       </PageIntroFullWidth>
 
@@ -131,10 +97,7 @@ const Population = ({
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable
-          data={tableParams}
-          name={'Local workers - field of qualification'}
-        />
+        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
       </ItemWrapper>
 
       {hasForecast(clientProducts) && (
@@ -170,13 +133,9 @@ Population.getInitialProps = async function({ query }) {
 // #region Source
 const Source = () => (
   <>
-    Source: Australian Bureau of Statistics, Regional Population Growth,
-    Australia (3218.0). Compiled and presented in economy.id by{' '}
-    <a
-      href="http://home.id.com.au/about-us/"
-      target="_blank"
-      title=".id website"
-    >
+    Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
+    economy.id by{' '}
+    <a href="http://home.id.com.au/about-us/" target="_blank" title=".id website">
       .id, the population experts.
       <span className="hidden"> (opens a new window)</span>
     </a>
@@ -203,10 +162,10 @@ const tableBuilder = (alias, nodes) => {
             cssClass: 'table-area-name',
             displayText: 'Annual change in Estimated Resident Population (ERP)',
             colSpan: 10,
-            rowSpan: 0
-          }
+            rowSpan: 0,
+          },
         ],
-        key: 'hr0'
+        key: 'hr0',
       },
       {
         cssClass: '',
@@ -215,29 +174,29 @@ const tableBuilder = (alias, nodes) => {
             cssClass: '',
             displayText: '',
             colSpan: 1,
-            rowSpan: 0
+            rowSpan: 0,
           },
           {
             cssClass: 'xeven start-year',
             displayText: nodes[0].ClientGeoName,
             colSpan: 3,
-            rowSpan: 0
+            rowSpan: 0,
           },
           {
             cssClass: 'xodd end-year',
             displayText: nodes[0].BenchmarkGeoName,
             colSpan: 3,
-            rowSpan: 0
+            rowSpan: 0,
           },
           {
             cssClass: 'xeven start-year',
             displayText: nodes[0].AusGeoName,
             colSpan: 3,
-            rowSpan: 0
-          }
+            rowSpan: 0,
+          },
         ],
-        key: 'hr1'
-      }
+        key: 'hr1',
+      },
     ],
     cols: [
       {
@@ -245,7 +204,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Year (ending June 30)',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd xfirst'
+        cssClass: 'xodd xfirst',
       },
       {
         id: 1,
@@ -253,7 +212,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'int',
         sortable: true,
         cssClass: 'xeven latest',
-        format: '{0:#,0}'
+        format: '{0:#,0}',
       },
       {
         id: 2,
@@ -261,7 +220,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'xeven latest',
-        format: '{0:+#,0;-#,0;0}'
+        format: '{0:+#,0;-#,0;0}',
       },
       {
         id: 3,
@@ -269,7 +228,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'xeven latest',
-        format: '{0:+#,0;-#,0;0}'
+        format: '{0:+#,0;-#,0;0}',
       },
       {
         id: 4,
@@ -278,7 +237,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'int',
         sortable: true,
         cssClass: 'xodd',
-        format: '{0:#,0}'
+        format: '{0:#,0}',
       },
       {
         id: 5,
@@ -286,7 +245,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'per xodd',
-        format: '{0:+#,0;-#,0;0}'
+        format: '{0:+#,0;-#,0;0}',
       },
       {
         id: 6,
@@ -294,7 +253,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'xodd',
-        format: '{0:+#,0;-#,0;0}'
+        format: '{0:+#,0;-#,0;0}',
       },
       {
         id: 7,
@@ -303,7 +262,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'int',
         sortable: true,
         cssClass: 'xeven',
-        format: '{0:#,0}'
+        format: '{0:#,0}',
       },
       {
         id: 8,
@@ -311,7 +270,7 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'per xeven',
-        format: '{0:+#,0;-#,0;0}'
+        format: '{0:+#,0;-#,0;0}',
       },
       {
         id: 9,
@@ -319,8 +278,8 @@ const tableBuilder = (alias, nodes) => {
         dataType: 'money',
         sortable: true,
         cssClass: 'xeven',
-        format: '{0:+#,0;-#,0;0}'
-      }
+        format: '{0:+#,0;-#,0;0}',
+      },
     ],
     footRows: [],
     rows: nodes.map(
@@ -335,9 +294,9 @@ const tableBuilder = (alias, nodes) => {
           BenchmarkChangeper,
           AusNumber,
           AusChangeYear1Year2,
-          AusChangeper
+          AusChangeper,
         },
-        i: number
+        i: number,
       ) => ({
         data: [
           ClientYear,
@@ -349,7 +308,7 @@ const tableBuilder = (alias, nodes) => {
           BenchmarkChangeper,
           AusNumber,
           AusChangeYear1Year2,
-          AusChangeper
+          AusChangeper,
         ],
         formattedData: [
           ClientYear,
@@ -361,12 +320,12 @@ const tableBuilder = (alias, nodes) => {
           formatChangePercent(BenchmarkChangeper, '--'),
           formatNumber(AusNumber),
           formatChangeNumber(AusChangeYear1Year2, '--'),
-          formatChangePercent(AusChangeper, '--')
+          formatChangePercent(AusChangeper, '--'),
         ],
-        id: i
-      })
+        id: i,
+      }),
     ),
-    noOfRowsOnInit: 11
+    noOfRowsOnInit: 11,
   };
 };
 // #endregion
@@ -377,70 +336,70 @@ const chartLineBuilder = nodes => {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'line'
+        type: 'line',
       },
       title: {
         text: 'Estimated Resident Population (ERP)',
-        align: 'left'
+        align: 'left',
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${
-            this.colorIndex
-          }">\u25CF</span> ${this.series.name}: ${formatShortDecimal(this.y)}%`;
-        }
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+            this.series.name
+          }: ${formatShortDecimal(this.y)}%`;
+        },
       },
       series: [
         {
           color: '',
           yAxis: 0,
           name: nodes[0].ClientGeoName,
-          data: _.map(nodes, 'ClientChangeper').reverse()
+          data: _.map(nodes, 'ClientChangeper').reverse(),
         },
         {
           color: '',
           yAxis: 0,
           name: nodes[0].BenchmarkGeoName,
-          data: _.map(nodes, 'BenchmarkChangeper').reverse()
+          data: _.map(nodes, 'BenchmarkChangeper').reverse(),
         },
         {
           color: '',
           yAxis: 0,
           name: nodes[0].AusGeoName,
-          data: _.map(nodes, 'AusChangeper').reverse()
-        }
+          data: _.map(nodes, 'AusChangeper').reverse(),
+        },
       ],
       xAxis: {
         categories: _.map(nodes, 'ClientYear').reverse(),
         croshair: false,
         title: {
           text: 'Year ending June',
-          align: 'low'
+          align: 'low',
         },
 
         labels: {
           staggerLines: 0,
-          format: ''
+          format: '',
         },
         opposite: false,
-        plotBands: []
+        plotBands: [],
       },
       yAxis: [
         {
           croshair: false,
           title: {
-            text: 'Percentage change'
+            text: 'Percentage change',
           },
           labels: {
             staggerLines: 0,
             formatter: function() {
               return formatChangeNumber(this.value);
-            }
+            },
           },
           opposite: false,
-          plotBands: []
-        }
-      ]
+          plotBands: [],
+        },
+      ],
     },
     rawDataSource:
       'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
@@ -448,7 +407,7 @@ const chartLineBuilder = nodes => {
     chartContainerID: 'chart2',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
     entityID: 1,
-    chartTemplate: 'Standard'
+    chartTemplate: 'Standard',
   };
 };
 // #endregion
@@ -460,55 +419,55 @@ const chartBuilder = nodes => {
     highchartOptions: {
       chart: {
         type: 'column',
-        styledMode: true
+        styledMode: true,
       },
       title: {
         text: 'Estimated Resident Population (ERP)',
-        align: 'left'
+        align: 'left',
       },
       subtitle: {
         text: nodes[0].ClientGeoName,
-        align: 'left'
+        align: 'left',
       },
       series: [
         {
           color: '',
           yAxis: 0,
           name: nodes[0].ClientGeoName,
-          data: _.map(nodes, 'ClientNumber').reverse()
-        }
+          data: _.map(nodes, 'ClientNumber').reverse(),
+        },
       ],
       xAxis: {
         categories: _.map(nodes, 'ClientYear').reverse(),
         croshair: false,
         title: {
           text: 'Year ending June',
-          align: 'low'
+          align: 'low',
         },
         labels: {
           staggerLines: 0,
-          format: ''
+          format: '',
         },
         opposite: false,
-        plotBands: []
+        plotBands: [],
       },
       yAxis: [
         {
           croshair: false,
           title: {
             text: 'Total Estimated Resident Population (ERP)',
-            align: 'low'
+            align: 'low',
           },
           labels: {
             staggerLines: 0,
             formatter: function() {
               return formatNumber(this.value);
-            }
+            },
           },
           opposite: false,
-          plotBands: []
-        }
-      ]
+          plotBands: [],
+        },
+      ],
     },
     rawDataSource:
       'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
@@ -516,7 +475,7 @@ const chartBuilder = nodes => {
     chartContainerID: 'chart1',
     logoUrl: '/images/id-logo.png',
     entityID: 1,
-    chartTemplate: 'Standard'
+    chartTemplate: 'Standard',
   };
 };
 // #endregion
