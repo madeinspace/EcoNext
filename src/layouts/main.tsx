@@ -11,12 +11,22 @@ import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
 import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
-
+import { IsDisabled } from '../utils/';
+import DisabledPageWarning from '../components/DisabledPageWarning';
 const IsLite = nodes => some(nodes, 'Disabled');
 
-const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
+const Layout = ({
+  children,
+  client,
+  navnodes,
+  products,
+  sitemapGroup,
+  currentPageAlias
+}) => {
   const { Alias: alias, clientID, LongName: prettyname, Name: name } = client;
   const logo = require(`../images/logos/${alias}.png`);
+  const isDisabled = IsDisabled(navnodes, currentPageAlias);
+
   return (
     <>
       {useRouter().pathname === '/' ? (
@@ -46,7 +56,7 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
         </SidebarNav>
         <SiteContent id={'main-content'}>
           <SiblingsMenu navigationNodes={navnodes} clientAlias={alias} />
-          {children}
+          {isDisabled ? <DisabledPageWarning client={client} /> : children}
         </SiteContent>
       </ContentRow>
       <SiteMap

@@ -7,7 +7,7 @@ import drilldown from 'highcharts/modules/drilldown';
 
 import * as _ from 'lodash';
 import * as React from 'react';
-import { detectIE } from '../Utils';
+import { detectIE } from '../../utils/';
 import { ExportDropdown, Actions } from '../Actions';
 import styled from 'styled-components';
 import { saveAs } from 'file-saver';

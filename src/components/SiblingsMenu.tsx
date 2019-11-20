@@ -1,5 +1,5 @@
 import React from 'react';
-import { pathParts } from './Utils';
+import { pathParts } from '../utils/';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import Link from '../components/Link';

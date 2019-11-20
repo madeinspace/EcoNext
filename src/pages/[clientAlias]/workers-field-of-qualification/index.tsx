@@ -5,9 +5,10 @@ import {
   formatNumber,
   formatChangeNumber,
   formatShortDecimal,
-  getPort,
-  formatPercent
-} from '../../../Utils';
+  formatPercent,
+  IsDisabled,
+  pathParts
+} from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React from 'react';
@@ -35,12 +36,12 @@ import {
   EntityContainer
 } from '../../../components/Actions';
 import InfoBox from '../../../components/InfoBox';
-// #endregion
 
 import fetchData from '../../../api/workers-field-of-qualification';
+// #endregion
 
 // #region page
-const LocalWorkerFieldsOfQualififcation = ({
+const LocalWorkerFieldsOfQualificationPage = ({
   client,
   tableData,
   IGBM,
@@ -56,6 +57,7 @@ const LocalWorkerFieldsOfQualififcation = ({
   const currentIndustryID = filters.Indkey;
   const currentBenchmarkID = filters.IGBMID;
   const currentGenderID = filters.Sex;
+  const { pageAlias: currentPageAlias } = pathParts(useRouter().asPath);
 
   const getNameByID = (id, arr) => {
     const result = arr.find(i => i.ID.toString() === id.toString());
@@ -268,6 +270,7 @@ const LocalWorkerFieldsOfQualififcation = ({
       navnodes={navigation}
       products={clientProducts}
       sitemapGroup={sitemapGroups}
+      currentPageAlias={currentPageAlias}
     >
       <EntityContainer>
         <TitleContainer>
@@ -482,11 +485,14 @@ const LocalWorkerFieldsOfQualififcation = ({
   );
 };
 
-export default LocalWorkerFieldsOfQualififcation;
+export default LocalWorkerFieldsOfQualificationPage;
 // #endregion
 
 // #region initial props
-LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
+LocalWorkerFieldsOfQualificationPage.getInitialProps = async ({
+  query,
+  res
+}) => {
   const defaultFilters = {
     Indkey: 23000,
     IGBMID: 40,

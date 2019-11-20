@@ -1,5 +1,5 @@
 // #region imports
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import _ from 'lodash';
 import Layout from '../../../layouts/main';
 import {
@@ -7,13 +7,12 @@ import {
   formatNumber,
   formatChangeNumber,
   formatChangePercent
-} from '../../../Utils';
+} from '../../../utils/numeralFormatters';
 import {
   TitleContainer,
   MainTitle,
   SubTitle,
   Headline,
-  PageIntro,
   ItemWrapper,
   CrossLink,
   EntityContainer,
@@ -23,10 +22,9 @@ import {
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import qs from 'qs';
-// #endregion
-
 import fetchData from '../../../api/population';
+import { pathParts } from '../../../utils/';
+// #endregion
 
 // #region population page
 const Population = ({
@@ -40,7 +38,7 @@ const Population = ({
   const router = useRouter();
   const hasForecast = clientProducts =>
     _.some(clientProducts, product => product.ApplicationID === 3);
-
+  const { pageAlias: currentPageAlias } = pathParts(router.asPath);
   const FormattedNumber = number => <>{formatNumber(number)}</>;
   const handleExport = async () => {
     const IDReportRequest = {
@@ -90,6 +88,7 @@ const Population = ({
       navnodes={navigation}
       products={clientProducts}
       sitemapGroup={sitemapGroups}
+      currentPageAlias={currentPageAlias}
     >
       <EntityContainer>
         <TitleContainer>

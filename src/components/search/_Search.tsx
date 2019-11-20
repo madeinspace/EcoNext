@@ -5,7 +5,7 @@ import SearchResults from './SearchResults';
 import OptionSwitch from './SearchOptionSwitch';
 import { CloseButton } from './CloseButton';
 import { withCookies, Cookies } from 'react-cookie';
-import { getHashParams } from '../Utils';
+import { getHashParams } from '../../utils/';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HeaderRow } from '../grid';

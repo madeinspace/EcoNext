@@ -1,5 +1,5 @@
 // default chart: vertical
-import { getParameterByName } from '../../Utils';
+import { getParameterByName } from '../../../utils/';
 import * as deepmerge from 'deepmerge';
 
 export const ChartDefault = (...opts) => {

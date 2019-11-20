@@ -1,34 +1,67 @@
 // #region imports
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import _ from 'lodash';
 import Layout from '../../../layouts/main';
 import {
-  formatShortDecimal,
   formatNumber,
-  formatChangeNumber,
-  formatChangePercent,
-  formatPercent
-} from '../../../Utils';
+  formatPercent,
+  pathParts,
+  formatMillionsCurrency
+} from '../../../utils/';
 import {
   TitleContainer,
   MainTitle,
   SubTitle,
   Headline,
-  PageIntro,
   ItemWrapper,
-  CrossLink,
   EntityContainer,
-  ForecastProductIcon,
   PageIntroFullWidth
 } from '../../../styles/MainContentStyles';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import qs from 'qs';
 // #endregion
 
 import fetchData from '../../../api/value-of-building-approvals';
-import { formatMillionsCurrency } from '../../../components/Utils';
+
+// #region page export
+const requestPDF = async (pageName, prettyName) => {
+  const IDReportRequest = {
+    FileName: `${pageName} - ${prettyName}`,
+    Urls: [
+      {
+        Title: `${pageName} - ${prettyName}`,
+        url: window.location.href
+      }
+    ],
+    Action: 0,
+    EmailAddress: 'fabrice@id.com.au'
+  };
+
+  try {
+    console.log(`Page report request: Population - ${prettyName}`);
+    await postData(
+      'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
+      IDReportRequest
+    ).then(res => {
+      console.log('Report Ok: ', res);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const postData = async (url = '', data = {}) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.json();
+};
+// #endregion
 
 // #region population page
 const ValueOfBuildingApprovalsPage = ({
@@ -38,8 +71,11 @@ const ValueOfBuildingApprovalsPage = ({
   clientProducts,
   sitemapGroups
 }) => {
-  const { LongName: prettyName } = client;
+  const { LongName: prettyName, clientAlias } = client;
   const pageName = 'Value of total building approvals';
+  const { pageAlias: currentPageAlias } = pathParts(useRouter().asPath);
+  const chartData = chartBuilder(tableData);
+  const tableParams = tableBuilder(clientAlias, tableData);
 
   const FormattedTotalValueBuildingApprovals = () => {
     const num = _.filter(tableData, { Yr: 2019 }).pop();
@@ -47,46 +83,7 @@ const ValueOfBuildingApprovalsPage = ({
     return <>{formatedNumber}</>;
   };
 
-  const handleExport = async () => {
-    const IDReportRequest = {
-      FileName: `${pageName} - ${prettyName}`,
-      Urls: [
-        {
-          Title: `${pageName} - ${prettyName}`,
-          url: window.location.href
-        }
-      ],
-      Action: 0,
-      EmailAddress: 'fabrice@id.com.au'
-    };
-
-    try {
-      await postData(
-        'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
-        IDReportRequest
-      ).then(res => {
-        console.log('Report Ok: ', res);
-      });
-      console.log(`Page report request: Population - ${prettyName}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const postData = async (url = '', data = {}) => {
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    return response.json();
-  };
-
-  const { clientAlias } = useRouter().query;
-  const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  const handleExport = () => requestPDF(pageName, prettyName);
 
   return (
     <Layout
@@ -94,6 +91,7 @@ const ValueOfBuildingApprovalsPage = ({
       navnodes={navigation}
       products={clientProducts}
       sitemapGroup={sitemapGroups}
+      currentPageAlias={currentPageAlias}
     >
       <EntityContainer>
         <TitleContainer>
@@ -151,10 +149,9 @@ export default ValueOfBuildingApprovalsPage;
 
 // #region getInitialProps
 ValueOfBuildingApprovalsPage.getInitialProps = async function({ query }) {
+  console.log('query: ', query);
   const { clientAlias } = query;
-
   const data = await fetchData({ clientAlias });
-
   return data;
 };
 // #endregion

@@ -4,7 +4,7 @@ import * as React from 'react';
 import TableRow from './TableRow';
 import { buildCells } from './Utils/buildCells';
 import { FooterRow } from './FooterRow';
-import * as TableSorter from '../../Utils';
+import * as TableSorter from '../../utils/';
 import SourceAndTopicNotes from './SourceAndTopicNote';
 import $ from 'jquery';
 import {

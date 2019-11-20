@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from '../components/Link';
 import styled from 'styled-components';
-import { pathParts } from './Utils';
+import { pathParts } from '../utils/';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
