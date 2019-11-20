@@ -237,3 +237,5 @@ export const formatChangePercent = (number, zero = '0') =>
   number ? numeral(number).format('+0,0.00') : zero;
 export const formatShortDecimal = (number, zero = '0') =>
   number ? numeral(number).format('0.0') : zero;
+export const formatMillionsCurrency = (number, zero = '0') =>
+  number ? numeral(number).format('$0.0a') : zero;
