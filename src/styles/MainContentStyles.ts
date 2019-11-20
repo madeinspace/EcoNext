@@ -73,7 +73,7 @@ export const PageIntro = styled.div`
 
 export const PageIntroFullWidth = styled.div`
   display: grid;
-  grid-template-areas: 'text . bubble';
+  grid-template-areas: 'text';
   grid-template-columns: 100%;
   p {
     line-height: 18px;
