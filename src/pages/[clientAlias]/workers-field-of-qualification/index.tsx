@@ -429,23 +429,24 @@ const LocalWorkerFieldsOfQualificationPage = ({
     </Layout>
   );
 };
-
-export default LocalWorkerFieldsOfQualificationPage;
 // #endregion
 
 // #region initial props
-LocalWorkerFieldsOfQualificationPage.getInitialProps = async ({ query, res }) => {
+LocalWorkerFieldsOfQualificationPage.getInitialProps = async context => {
   const defaultFilters = {
     Indkey: 23000,
     IGBMID: 40,
     Sex: 3,
   };
-  const filters = { ...defaultFilters, ...query };
+  const filters = { ...defaultFilters, ...context.query, containers: context.req.containers };
 
   const data = await fetchData(filters);
 
   return data;
 };
+
+export default LocalWorkerFieldsOfQualificationPage;
+
 // #endregion
 
 // #region table builders

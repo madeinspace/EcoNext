@@ -1,33 +1,36 @@
 /* #region imports*/
 import _ from 'lodash';
 const knex = require('knex');
-import { commClient, commDataEconomy } from '../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../utils/sql';
+import fetchNavigation from '../../utils/fetchNavigation';
 /* #endregion */
 
-const fetchData = async filters => {
+const fetchData = async ({ containers, ...filters }) => {
   const { clientAlias, Indkey, IGBMID, Sex } = filters;
 
-  const client = await commClient
-    .raw(ClientSQL({ clientAlias }))
-    .then(res => res[0]);
+  const client = await commClient.raw(ClientSQL({ clientAlias })).then(res => res[0]);
   const ClientID = client.ClientID;
-  const navigation = await commClient.raw(MainNavigationSQL({ ClientID }));
+
+  const navigation = await fetchNavigation({ ClientID, containers });
+
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
   const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(ClientID));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
+
   const Sexes = [
     { ID: 1, Name: 'Males' },
     { ID: 2, Name: 'Females' },
-    { ID: 3, Name: 'Persons' }
+    { ID: 3, Name: 'Persons' },
   ];
+
   const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
       ClientID,
       IGBMID,
       Indkey,
-      Sex
-    })
+      Sex,
+    }),
   );
 
   return {
@@ -40,18 +43,13 @@ const fetchData = async filters => {
     navigation,
     clientProducts,
     sitemapGroups,
-    filters
+    filters,
   };
 };
 
 export default fetchData;
 
-const clientFromAlias = (clientAlias, clients) =>
-  _.find(clients, { Alias: clientAlias });
-
-const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
-  ? []
-  : process.env.IGNORE_CLIENTS.split(' ');
+const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS) ? [] : process.env.IGNORE_CLIENTS.split(' ');
 /* #endregion */
 const ClientSQL = ({ clientAlias }) => `
   SELECT
@@ -100,9 +98,7 @@ WITH RDAS AS (
   WHERE clientMeta.IsDisabled = 0
     AND clientMeta.ApplicationID = 4
     AND RDAS.IsRDA = 0
-  ${ignoreClients
-    .map(clientAlias => `  AND NOT client.Alias = '${clientAlias}'`)
-    .join('\n')}
+  ${ignoreClients.map(clientAlias => `  AND NOT client.Alias = '${clientAlias}'`).join('\n')}
 `;
 /* #endregion */
 
@@ -151,25 +147,6 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
     ${Indkey}
     ) order by LabelKey
   `;
-/* #endregion */
-
-/* #region  MainNavigationSQL */
-const MainNavigationSQL = ({ ClientID }) => `
-SELECT [ClientID]
-  ,cp.[PageID]
-  ,COALESCE(cp.[Alias], p.Alias) AS Alias
-  ,p.ParentPageID
-  ,p.MenuTitle
-  ,[Disabled]
-  ,pg.Name AS GroupName
-FROM [CommClient].[dbo].[ClientPage] cp
-RIGHT JOIN [CommApp].dbo.Page p 
-  ON cp.pageId = p.pageID 
-INNER JOIN [CommApp].[dbo].[PageGroup] pg
-  ON p.PageGroupID = pg.PageGroupID
-  AND p.ApplicationID = 4
-WHERE ClientID = ${ClientID}
-`;
 /* #endregion */
 
 /* #region  ClientProductsSQL */

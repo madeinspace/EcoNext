@@ -127,18 +127,19 @@ const Population = ({ client, tableData, navigation, clientProducts, sitemapGrou
   );
 };
 
-export default Population;
 // #endregion
 
 // #region getInitialProps
-Population.getInitialProps = async function({ query }) {
-  const { clientAlias } = query;
+Population.getInitialProps = async function(context) {
+  const { clientAlias } = context.query;
 
-  const data = await fetchData({ clientAlias });
+  const data = await fetchData({ clientAlias, containers: context.req.containers });
 
   return data;
 };
 // #endregion
+
+export default Population;
 
 // #region Source
 const Source = () => (

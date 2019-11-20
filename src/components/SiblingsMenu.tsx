@@ -8,11 +8,8 @@ const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!
 
 const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
   const { pageAlias: currentPageAlias } = pathParts(useRouter().pathname);
-  const currentPageNode = navigationNodes.find(
-    node => node.Alias === currentPageAlias
-  );
-  const currentParentPageID =
-    (currentPageNode && currentPageNode.ParentPageID) || 0;
+  const currentPageNode = navigationNodes.find(node => node.Alias === currentPageAlias);
+  const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
   const siblings = navigationNodes
     .filter(node => {
       return node.ParentPageID === currentParentPageID;
@@ -24,10 +21,7 @@ const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
           {Disabled ? (
             <DisabledLink>{MenuTitle}</DisabledLink>
           ) : (
-            <StyledLink
-              href={`/${clientAlias}/${Alias}`}
-              className={currentPageAlias === Alias && 'active'}
-            >
+            <StyledLink href={`/${clientAlias}/${Alias}`} className={currentPageAlias === Alias && 'active'}>
               {MenuTitle}
             </StyledLink>
           )}
