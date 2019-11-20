@@ -14,6 +14,14 @@ import SiblingsMenu from '../components/SiblingsMenu';
 
 const IsLite = nodes => some(nodes, 'Disabled');
 
+const SidebarNav = styled.div`
+  grid-area: navigation;
+`;
+
+const SiteContent = styled.div`
+  grid-area: content;
+`;
+
 const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
   const { Alias: alias, clientID, LongName: prettyname, Name: name } = client;
   const logo = require(`../images/logos/${alias}.png`);
@@ -23,12 +31,7 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
         <Header siteTitle={'Find your economic profile…'} />
       ) : (
         <>
-          <SearchApp
-            alias={alias}
-            clientID={clientID}
-            prettyname={prettyname}
-            clientImage={logo}
-          />
+          <SearchApp alias={alias} clientID={clientID} prettyname={prettyname} clientImage={logo} />
           <ClientHeader
             alias={alias}
             name={name}
@@ -64,15 +67,7 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
 Layout.propTypes = {
   alias: PropTypes.any,
   navnodes: PropTypes.any,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;
-
-const SidebarNav = styled.div`
-  grid-area: navigation;
-`;
-
-const SiteContent = styled.div`
-  grid-area: content;
-`;
