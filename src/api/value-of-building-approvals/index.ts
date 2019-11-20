@@ -1,20 +1,22 @@
 import _ from 'lodash';
-import { commClient, commDataEconomy } from '../../server/dbConnection';
-import some from 'lodash/some';
+import { commClient, commDataEconomy } from '../../utils/sql';
+import fetchNavigation from '../../utils/fetchNavigation';
+import fetchClientData from '../../utils/fetchClientData';
 
-const fetchData = async filters => {
+const fetchData = async ({ containers, ...filters }) => {
   const { clientAlias } = filters;
-  const client = await commClient
-    .raw(ClientSQL({ clientAlias }))
-    .then(res => res[0]);
-  const ClientID = client.ClientID;
+
+  const client = await fetchClientData({ clientAlias, containers });
+
+  const { ClientID, Pages } = client;
+
   const WebID = 10;
-  const navigation = await commClient.raw(MainNavigationSQL({ ClientID }));
+
+  const navigation = await fetchNavigation({ containers, Pages });
+
   const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
-  const tableData = await commDataEconomy.raw(
-    BuildingApprovalsSQL({ ClientID, WebID })
-  );
+  const tableData = await commDataEconomy.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 
   return {
     client,
@@ -22,28 +24,11 @@ const fetchData = async filters => {
     navigation,
     clientProducts,
     filters,
-    sitemapGroups
+    sitemapGroups,
   };
 };
 
 export default fetchData;
-
-/* #region ClientSQL*/
-const ClientSQL = ({ clientAlias }) => `
-  SELECT
-    client.ClientID,
-    client.Name,
-    client.ShortName,
-    client.LongName,
-    client.Alias
-  FROM Client AS client
-  INNER JOIN CommClient.dbo.ClientAppDisable AS clientMeta
-    ON clientMeta.ClientID = client.ClientID
-  WHERE clientMeta.IsDisabled = 0
-    AND clientMeta.ApplicationID = 4
-    AND Alias = '${clientAlias}'
-`;
-/* #endregion */
 
 /* #region  MainNavigationSQL */
 const MainNavigationSQL = ({ ClientID }) => `

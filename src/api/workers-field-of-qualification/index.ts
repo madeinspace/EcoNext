@@ -3,15 +3,16 @@ import _ from 'lodash';
 const knex = require('knex');
 import { commClient, commDataEconomy } from '../../utils/sql';
 import fetchNavigation from '../../utils/fetchNavigation';
+import fetchClientData from '../../utils/fetchClientData';
 /* #endregion */
 
 const fetchData = async ({ containers, ...filters }) => {
   const { clientAlias, Indkey, IGBMID, Sex } = filters;
 
-  const client = await commClient.raw(ClientSQL({ clientAlias })).then(res => res[0]);
-  const ClientID = client.ClientID;
+  const client = await fetchClientData({ clientAlias, containers });
+  const { ClientID, Pages } = client;
 
-  const navigation = await fetchNavigation({ ClientID, containers });
+  const navigation = await fetchNavigation({ containers, Pages });
 
   const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
   const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(ClientID));
@@ -50,21 +51,6 @@ const fetchData = async ({ containers, ...filters }) => {
 export default fetchData;
 
 const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS) ? [] : process.env.IGNORE_CLIENTS.split(' ');
-/* #endregion */
-const ClientSQL = ({ clientAlias }) => `
-  SELECT
-    client.ClientID,
-    client.Name,
-    client.ShortName,
-    client.LongName,
-    client.Alias
-  FROM Client AS client
-  INNER JOIN CommClient.dbo.ClientAppDisable AS clientMeta
-    ON clientMeta.ClientID = client.ClientID
-  WHERE clientMeta.IsDisabled = 0
-    AND clientMeta.ApplicationID = 4
-    AND Alias = '${clientAlias}'
-`;
 /* #endregion */
 
 /* #region  allclientsSQL Query */
