@@ -31,18 +31,15 @@ import fetchData from '../../../api/value-of-building-approvals';
 import { formatMillionsCurrency } from '../../../components/Utils';
 
 // #region population page
-const Population = ({
+const ValueOfBuildingApprovalsPage = ({
   client,
   tableData,
   navigation,
   clientProducts,
   sitemapGroups
 }) => {
-  console.log('tableData: ', tableData);
   const { LongName: prettyName } = client;
-  const router = useRouter();
-  const hasForecast = clientProducts =>
-    _.some(clientProducts, product => product.ApplicationID === 3);
+  const pageName = 'Value of total building approvals';
 
   const FormattedTotalValueBuildingApprovals = () => {
     const num = _.filter(tableData, { Yr: 2019 }).pop();
@@ -52,10 +49,10 @@ const Population = ({
 
   const handleExport = async () => {
     const IDReportRequest = {
-      FileName: `Population - ${prettyName}`,
+      FileName: `${pageName} - ${prettyName}`,
       Urls: [
         {
-          Title: `Population - ${prettyName}`,
+          Title: `${pageName} - ${prettyName}`,
           url: window.location.href
         }
       ],
@@ -64,7 +61,7 @@ const Population = ({
     };
 
     try {
-      const data = await postData(
+      await postData(
         'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
         IDReportRequest
       ).then(res => {
@@ -143,20 +140,17 @@ const Population = ({
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable
-          data={tableParams}
-          name={'Local workers - field of qualification'}
-        />
+        <EntityTable data={tableParams} name={`${pageName}`} />
       </ItemWrapper>
     </Layout>
   );
 };
 
-export default Population;
+export default ValueOfBuildingApprovalsPage;
 // #endregion
 
 // #region getInitialProps
-Population.getInitialProps = async function({ query }) {
+ValueOfBuildingApprovalsPage.getInitialProps = async function({ query }) {
   const { clientAlias } = query;
 
   const data = await fetchData({ clientAlias });
