@@ -1,29 +1,6 @@
 import _ from 'lodash';
-import NextPages from './_NextPages';
-import numeral from 'numeral';
 
-export const getClassNames = (styles: any, classes: string) => {
-  if (_.isEmpty(classes)) {
-    return;
-  }
-  const classArr: any = _.split(classes, ' ');
-  let classNames: string = '';
-
-  _.forEach(classArr, (classN: string) => {
-    classNames += _.isUndefined(styles[classN])
-      ? ' ' + classN
-      : ' ' + styles[classN];
-  });
-  return classNames;
-};
-
-export const stripEndQuotes = s => {
-  let t = s.length;
-  if (s.charAt(0) == '"') s = s.substring(1, t--);
-  if (s.charAt(--t) == '"') s = s.substring(0, t);
-  return s;
-};
-
+/* #region  detectIE */
 export const detectIE = () => {
   const ua: any = window.navigator.userAgent;
 
@@ -63,18 +40,9 @@ export const detectIE = () => {
   // other browser
   return 0;
 };
+/* #endregion */
 
-export const getHost = () => {
-  const domain: any = document.location.hostname.toLowerCase();
-  const parts = domain.split('.');
-  if (parts[0] === 'www') {
-    parts.shift();
-  }
-  parts.shift();
-  const result = '.' + parts.join('.');
-  return result;
-};
-
+/* #region  query string utils */
 export const getHashParams = () => {
   const hashParams = {};
   let e = undefined;
@@ -88,10 +56,6 @@ export const getHashParams = () => {
   }
   return hashParams;
 };
-
-export const buildQueryStringWithObjectKeys = (obj: any, jointer: string) =>
-  _.map(_.keys(obj), key => key + '=' + obj[key]).join(jointer);
-
 export const getParameterByName = (
   name: string,
   url: string = window.location.href
@@ -107,24 +71,9 @@ export const getParameterByName = (
   }
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+/* #endregion */
 
-export const insertArrayAt = (array, index, arrayToInsert) => {
-  Array.prototype.splice.apply(array, [index, 0].concat(arrayToInsert));
-  return array;
-};
-
-export const deserialiseQueryString = (query: string) => {
-  return (
-    _.chain(query)
-      .replace('?', '') // width=727&height=647&layers=1,4&zoom=14&lat=-36.641495731141354&lon=146.76125049591067&mapstyle=road
-      .split('&') // ["width=727","height=647", ...]
-      // @ts-ignore
-      .map(_.partial(_.split, _, '=', 2)) // [["width","727"],["height","647"], ...]
-      .fromPairs() // {"width":"727","height":"647", ...}
-      .value()
-  );
-};
-
+/* #region  natural sorting */
 export function naturalSort(a, b) {
   const re: any = /(^([+\-]?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?(?=\D|\s|$))|^0x[\da-fA-F]+$|\d+)/g;
   const sre: any = /^\s+|\s+$/g;
@@ -190,52 +139,4 @@ export function naturalSort(a, b) {
     }
   }
 }
-
-export function redirectToAreaByWebID(webID) {
-  // redirect to small areas
-  var path = window.location.href.split('?')[0];
-  var reg = /\/[/home]+$/;
-  if (reg.test(path)) {
-    path = path.substr(0, path.lastIndexOf('/'));
-  }
-  window.location.href = `${path}about?WebID=${webID}`;
-}
-export const mergeArraysById = (a1, a2, id) =>
-  a1.map(itm => ({
-    ...a2.find(item => item[id] === itm[id] && item),
-    ...itm
-  }));
-
-export function mapByKey(list, keyGetter) {
-  const map = new Map();
-  list.forEach(item => {
-    const key = keyGetter(item);
-    const collection = map.get(key);
-    if (!collection) {
-      map.set(key, [item]);
-    } else {
-      collection.push(item);
-    }
-  });
-  var mapAsc = new Map([...map].sort());
-  return mapAsc;
-}
-
-export const pathParts = (path: string) => {
-  const REGEX = /^\/?(?<clientAlias>[^\/]+)\/?(?<pageAlias>[^\/]+)?\/?/;
-  return path.match(REGEX).groups;
-};
-
-export const IsNextPage = path => NextPages.includes(pathParts(path).pageAlias);
-
-export const formatNumber = number => numeral(number).format('0,0');
-export const formatPercent = (number, zero = '0') =>
-  number ? numeral(number).format('0,0.0') : zero;
-export const formatChangeNumber = (number, zero = '0') =>
-  number ? numeral(number).format('+0,0') : zero;
-export const formatChangePercent = (number, zero = '0') =>
-  number ? numeral(number).format('+0,0.00') : zero;
-export const formatShortDecimal = (number, zero = '0') =>
-  number ? numeral(number).format('0.0') : zero;
-export const formatMillionsCurrency = (number, zero = '0') =>
-  number ? numeral(number).format('$0.0a') : zero;
+/* #endregion */
