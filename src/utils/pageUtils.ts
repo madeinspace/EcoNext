@@ -9,4 +9,7 @@ export const pathParts = (path: string) => {
 export const IsNextPage = path => NextPages.includes(pathParts(path).pageAlias);
 
 export const IsDisabled = (navNodes, currentPageAlias) =>
-  _.filter(navNodes, node => node.Alias === currentPageAlias).pop().Disabled;
+  _.filter(
+    navNodes,
+    node => node.Alias === currentPageAlias.split('?')[0]
+  ).pop().Disabled;
