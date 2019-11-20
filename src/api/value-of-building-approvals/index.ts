@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { commClient, commDataEconomy } from '../../server/dbConnection';
+import some from 'lodash/some';
 
 const fetchData = async filters => {
   const { clientAlias } = filters;
@@ -26,16 +27,6 @@ const fetchData = async filters => {
 };
 
 export default fetchData;
-
-const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
-  ? []
-  : process.env.IGNORE_CLIENTS.split(' ');
-
-const clientFromAlias = (clientAlias, clients) =>
-  _.find(clients, { Alias: clientAlias });
-
-const getScopedEnvVar = (scope, db_env_var) =>
-  process.env[`${scope}_${db_env_var}`] || process.env[`DEFAULT_${db_env_var}`];
 
 /* #region ClientSQL*/
 const ClientSQL = ({ clientAlias }) => `
