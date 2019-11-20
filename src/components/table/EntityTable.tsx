@@ -4,27 +4,16 @@ import * as React from 'react';
 import TableRow from './TableRow';
 import { buildCells } from './Utils/buildCells';
 import { FooterRow } from './FooterRow';
-import * as TableSorter from '../../Utils';
+import * as TableSorter from '../../utils';
 import SourceAndTopicNotes from './SourceAndTopicNote';
 import $ from 'jquery';
-import {
-  ResetButton,
-  Actions,
-  EntityContainer,
-  ExportDropdown
-} from '../Actions';
+import { ResetButton, Actions, EntityContainer, ExportDropdown } from '../Actions';
 import XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import * as docx from 'docx';
 import styled from 'styled-components';
 import PubSub from 'pubsub-js';
-import {
-  IColumn,
-  IRow,
-  IHeaderRow,
-  ICell,
-  ISourceAndTopicNotesProps
-} from './Interfaces.table';
+import { IColumn, IRow, IHeaderRow, ICell, ISourceAndTopicNotesProps } from './Interfaces.table';
 // #endregion
 
 const SourceCell = styled.td`
@@ -37,14 +26,7 @@ const SourceCell = styled.td`
   }
 `;
 
-const DataRow = ({
-  onExpand,
-  formattedData,
-  crossLink,
-  cssClass,
-  colClass,
-  i
-}) => {
+const DataRow = ({ onExpand, formattedData, crossLink, cssClass, colClass, i }) => {
   const cssClassName = i % 2 === 0 ? `odd ${cssClass}` : `even ${cssClass} `;
   const hasXLink = crossLink != null || false;
 
@@ -52,18 +34,11 @@ const DataRow = ({
     cellContent: formattedData,
     columnClasses: colClass,
     hasCrossLinks: hasXLink,
-    crosslink: crossLink || ''
+    crosslink: crossLink || '',
   };
   const rowCells = buildCells(cellProps);
 
-  return (
-    <TableRow
-      {...{ onExpand }}
-      key={i}
-      cells={rowCells}
-      cssClass={cssClassName}
-    />
-  );
+  return <TableRow {...{ onExpand }} key={i} cells={rowCells} cssClass={cssClassName} />;
 };
 
 const ParentRow = ({ expandable, childRows, i, formattedData, colClass }) => {
@@ -88,15 +63,7 @@ const ParentRow = ({ expandable, childRows, i, formattedData, colClass }) => {
       {expanded &&
         childRows &&
         childRows.map((child, j) => {
-          return (
-            <DataRow
-              {...child}
-              cssClass="child"
-              colClass={colClass}
-              key={j}
-              i={j}
-            />
-          );
+          return <DataRow {...child} cssClass="child" colClass={colClass} key={j} i={j} />;
         })}
     </React.Fragment>
   );
@@ -109,14 +76,7 @@ class EntityTable extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    const {
-      headRows,
-      cols,
-      rows,
-      footRows,
-      noOfRowsOnInit,
-      source
-    } = props.data;
+    const { headRows, cols, rows, footRows, noOfRowsOnInit, source } = props.data;
 
     this.initialRows = rows;
     const renderedHeadRows = headRows.map(this.renderHeaders);
@@ -137,7 +97,7 @@ class EntityTable extends React.Component<any, any> {
       source: source,
       sortDir: '',
       resetState: renderedRows,
-      sortedColIndex: 0
+      sortedColIndex: 0,
     };
   }
 
@@ -153,7 +113,7 @@ class EntityTable extends React.Component<any, any> {
       cols: renderedColumn,
       rows: initRows,
       footRows: footerRow,
-      parentRowRefs: []
+      parentRowRefs: [],
     });
   }
 
@@ -163,7 +123,7 @@ class EntityTable extends React.Component<any, any> {
       const headerCellProps = {
         colSpan,
         className: cssClass,
-        key: i
+        key: i,
       };
 
       return <th {...headerCellProps}>{displayText}</th>;
@@ -182,11 +142,7 @@ class EntityTable extends React.Component<any, any> {
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
         className:
-          (_.has(col, 'sortable') && col.sortable ? ' ' + 'sortable' : '') +
-          ' ' +
-          col.cssClass +
-          ' ' +
-          col.dataType
+          (_.has(col, 'sortable') && col.sortable ? ' ' + 'sortable' : '') + ' ' + col.cssClass + ' ' + col.dataType,
       };
 
       // keeping the classes for the rows' cells out of the state.
@@ -220,19 +176,12 @@ class EntityTable extends React.Component<any, any> {
     );
   };
   private renderFooters(footerRow: any, val: any): any {
-    return (
-      <FooterRow
-        key={val}
-        cssClass={footerRow.cssClass}
-        cols={footerRow.cols}
-      />
-    );
+    return <FooterRow key={val} cssClass={footerRow.cssClass} cols={footerRow.cols} />;
   }
 
   private handleSort = (colIndex: number, e: any): void => {
     // figure out sort direction
-    const sortDirection: string =
-      this.state.sortDir === 'asc' || '' ? 'desc' : 'asc';
+    const sortDirection: string = this.state.sortDir === 'asc' || '' ? 'desc' : 'asc';
     // sort the rows
     const sortedRows = this.sortRows(colIndex, sortDirection);
     // clear dir class from all sortable the
@@ -243,7 +192,7 @@ class EntityTable extends React.Component<any, any> {
     this.setState({
       rows: sortedRows.map(this.renderRow),
       sortDir: sortDirection,
-      sortedColIndex: colIndex
+      sortedColIndex: colIndex,
     });
   };
 
@@ -271,7 +220,7 @@ class EntityTable extends React.Component<any, any> {
     this.setState({
       rows: _.sortBy(this.initialRows, 'id').map(this.renderRow),
       sortDir: '',
-      sortedColIndex: undefined
+      sortedColIndex: undefined,
     });
   };
 
@@ -346,8 +295,7 @@ class EntityTable extends React.Component<any, any> {
 
   private exportToExcel = (excelWorkbook?: any) => {
     const { name } = this.props;
-    const workbook =
-      excelWorkbook || XLSX.utils.table_to_book(this.tableRef.current);
+    const workbook = excelWorkbook || XLSX.utils.table_to_book(this.tableRef.current);
     XLSX.writeFile(workbook, `${name}.xlsx`);
   };
 
@@ -360,14 +308,14 @@ class EntityTable extends React.Component<any, any> {
             { id: 1, displayText: 'Excel' },
             { id: 3, displayText: 'Excel full' },
             { id: 2, displayText: 'Word' },
-            { id: 4, displayText: 'Word full' }
-          ]
+            { id: 4, displayText: 'Word full' },
+          ],
         }
       : {
           formats: [
             { id: 1, displayText: 'Excel' },
-            { id: 2, displayText: 'Word' }
-          ]
+            { id: 2, displayText: 'Word' },
+          ],
         };
   };
 
@@ -379,7 +327,7 @@ class EntityTable extends React.Component<any, any> {
         cols.fill('');
         cols[0] = col.displayText;
         return cols;
-      })
+      }),
     );
     const colsData = cols.map(col => {
       return col.displayText;
@@ -394,7 +342,7 @@ class EntityTable extends React.Component<any, any> {
         const children = current.childRows.map(row => row.formattedData);
         return [...acc, parent, ...children, []];
       },
-      [...headRowsData, colsData, []]
+      [...headRowsData, colsData, []],
     );
 
     fullData.push(...footer);
@@ -404,7 +352,7 @@ class EntityTable extends React.Component<any, any> {
     workSheet['!merges'] = [
       { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
       { s: { r: 1, c: 1 }, e: { r: 1, c: 3 } },
-      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } }
+      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },
     ];
 
     const workBook = XLSX.utils.book_new();
@@ -420,7 +368,7 @@ class EntityTable extends React.Component<any, any> {
     const SourceAndTopicNotesProps: ISourceAndTopicNotesProps = {
       source: data.source,
       anchorName: data.anchorName,
-      clientAlias: data.clientAlias
+      clientAlias: data.clientAlias,
     };
     if (rows) {
       return (
@@ -431,10 +379,7 @@ class EntityTable extends React.Component<any, any> {
         <EntityContainer>
           <Actions>
             <ResetButton onReset={this.resetSort} />
-            <ExportDropdown
-              exportOptions={this.exportOptions()}
-              handleExport={this.export}
-            />
+            <ExportDropdown exportOptions={this.exportOptions()} handleExport={this.export} />
           </Actions>
           <table ref={this.tableRef} className="entity-table">
             <thead>

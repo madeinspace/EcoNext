@@ -27,7 +27,7 @@ export const EntityContainer = styled.div`
 class HighChart extends React.Component<IChartProps, IChartState> {
   public exportScaleOutputs: any = {
     hi: 2,
-    lo: 0.881123
+    lo: 0.881123,
   };
 
   public chart;
@@ -45,8 +45,8 @@ class HighChart extends React.Component<IChartProps, IChartState> {
       lang: {
         decimalPoint: '.',
         thousandsSep: ',',
-        drillUpText: `◁ back`
-      }
+        drillUpText: `◁ back`,
+      },
     });
     exporting(Highcharts);
     offline(Highcharts);
@@ -55,10 +55,7 @@ class HighChart extends React.Component<IChartProps, IChartState> {
       drilldown(Highcharts);
     }
 
-    this.chart = Highcharts.chart(
-      chartContainerID,
-      config({ ...highchartOptions, oneToOne: true })
-    );
+    this.chart = Highcharts.chart(chartContainerID, config({ ...highchartOptions, oneToOne: true }));
   }
 
   componentWillUnmount(): void {
@@ -66,8 +63,7 @@ class HighChart extends React.Component<IChartProps, IChartState> {
   }
 
   protected handleExport = item => {
-    const useHighchartServer: boolean =
-      detectIE() > 0 && detectIE() <= 11 ? true : false;
+    const useHighchartServer: boolean = detectIE() > 0 && detectIE() <= 11 ? true : false;
     const exportRes: any = this.exportScaleOutputs[item.res];
     // pDF does not support exporting with images and needs fall back to the export server.
 
@@ -152,10 +148,7 @@ class HighChart extends React.Component<IChartProps, IChartState> {
       <EntityContainer>
         {exportOptions && exportOptions.enabled && (
           <Actions>
-            <ExportDropdown
-              exportOptions={exportOptions}
-              handleExport={this.handleExport}
-            />
+            <ExportDropdown exportOptions={exportOptions} handleExport={this.handleExport} />
           </Actions>
         )}
         <HighChartContainer id={chartContainerID} />

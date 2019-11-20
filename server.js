@@ -1,6 +1,7 @@
 const express = require('express');
 const next = require('next');
 const LRUCache = require('lru-cache');
+const Cosmos = require('./db/cosmos');
 
 require('dotenv').config();
 
@@ -12,34 +13,11 @@ const handle = app.getRequestHandler();
 
 // This is where we cache our rendered HTML pages
 const ssrCache = new LRUCache({
-  max:
-    100 *
-    1024 *
-    1024 /* cache size will be 100 MB using `return n.length` as length() function */,
+  max: 100 * 1024 * 1024 /* cache size will be 100 MB using `return n.length` as length() function */,
   length: function(n, key) {
     return n.length;
   },
-  maxAge: 1000 * 60 * 60 * 24 * 30
-});
-
-app.prepare().then(() => {
-  const server = express();
-
-  server.get('/_next/*', (req, res) => {
-    /* serving _next static content using next.js handler */
-    handle(req, res);
-  });
-
-  server.get('*', (req, res) => {
-    /* serving page */
-    return renderAndCache(req, res);
-  });
-
-  /* starting server */
-  server.listen(port, err => {
-    if (err) throw err;
-    // console.log(`> Ready on http://localhost:${port}`);
-  });
+  maxAge: 1000 * 60 * 60 * 24 * 30,
 });
 
 /*
@@ -61,10 +39,12 @@ async function renderAndCache(req, res) {
     return;
   }
 
+  const containers = await Cosmos.connect();
+
   try {
     console.log(`key ${key} not found, rendering`);
     // If not let's render the page into HTML
-    const html = await app.renderToHTML(req, res, req.path, req.query);
+    const html = await app.renderToHTML({ ...req, containers }, res, req.path, req.query);
 
     // Something is wrong with the request, let's skip the cache
     if (res.statusCode !== 200) {
@@ -83,3 +63,23 @@ async function renderAndCache(req, res) {
     app.renderError(err, req, res, req.path, req.query);
   }
 }
+
+app.prepare().then(() => {
+  const server = express();
+
+  server.get('/_next/*', (req, res) => {
+    /* serving _next static content using next.js handler */
+    handle(req, res);
+  });
+
+  server.get('*', (req, res) => {
+    /* serving page */
+    return renderAndCache(req, res);
+  });
+
+  /* starting server */
+  server.listen(port, err => {
+    if (err) throw err;
+    // console.log(`> Ready on http://localhost:${port}`);
+  });
+});

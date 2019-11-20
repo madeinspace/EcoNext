@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import { commClient, commDataEconomy } from '../../server/dbConnection';
+import { commClient, commDataEconomy } from '../../utils/sql';
+import fetchNavigation from '../../utils/fetchNavigation';
 
-const fetchData = async filters => {
-  const { clientAlias } = filters;
-  const client = await commClient
-    .raw(ClientSQL({ clientAlias }))
-    .then(res => res[0]);
+const fetchData = async ({ containers, clientAlias }) => {
+  const client = await commClient.raw(ClientSQL({ clientAlias })).then(res => res[0]);
   const ClientID = client.ClientID;
-  const navigation = await commClient.raw(MainNavigationSQL({ ClientID }));
+
+  const navigation = await fetchNavigation({ ClientID, containers });
+
   const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const tableData = await commDataEconomy.raw(PopulationDataSQL({ ClientID }));
@@ -17,22 +17,12 @@ const fetchData = async filters => {
     tableData,
     navigation,
     clientProducts,
-    filters,
-    sitemapGroups
+    filters: { clientAlias },
+    sitemapGroups,
   };
 };
 
 export default fetchData;
-
-const ignoreClients = _.isUndefined(process.env.IGNORE_CLIENTS)
-  ? []
-  : process.env.IGNORE_CLIENTS.split(' ');
-
-const clientFromAlias = (clientAlias, clients) =>
-  _.find(clients, { Alias: clientAlias });
-
-const getScopedEnvVar = (scope, db_env_var) =>
-  process.env[`${scope}_${db_env_var}`] || process.env[`DEFAULT_${db_env_var}`];
 
 /* #region ClientSQL*/
 const ClientSQL = ({ clientAlias }) => `
@@ -48,25 +38,6 @@ const ClientSQL = ({ clientAlias }) => `
   WHERE clientMeta.IsDisabled = 0
     AND clientMeta.ApplicationID = 4
     AND Alias = '${clientAlias}'
-`;
-/* #endregion */
-
-/* #region  MainNavigationSQL */
-const MainNavigationSQL = ({ ClientID }) => `
-SELECT [ClientID]
-  ,cp.[PageID]
-  ,COALESCE(cp.[Alias], p.Alias) AS Alias
-  ,p.ParentPageID
-  ,p.MenuTitle
-  ,[Disabled]
-  ,pg.Name AS GroupName
-FROM [CommClient].[dbo].[ClientPage] cp
-RIGHT JOIN [CommApp].dbo.Page p 
-  ON cp.pageId = p.pageID 
-INNER JOIN [CommApp].[dbo].[PageGroup] pg
-  ON p.PageGroupID = pg.PageGroupID
-  AND p.ApplicationID = 4
-WHERE ClientID = ${ClientID}
 `;
 /* #endregion */
 

@@ -1,5 +1,5 @@
 // #region imports
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import _ from 'lodash';
 import Layout from '../../../layouts/main';
 import {
@@ -7,13 +7,12 @@ import {
   formatNumber,
   formatChangeNumber,
   formatChangePercent
-} from '../../../Utils';
+} from '../../../components/Utils';
 import {
   TitleContainer,
   MainTitle,
   SubTitle,
   Headline,
-  PageIntro,
   ItemWrapper,
   CrossLink,
   EntityContainer,
@@ -154,18 +153,19 @@ const Population = ({
   );
 };
 
-export default Population;
 // #endregion
 
 // #region getInitialProps
-Population.getInitialProps = async function({ query }) {
-  const { clientAlias } = query;
+Population.getInitialProps = async function(context) {
+  const { clientAlias } = context.query;
 
-  const data = await fetchData({ clientAlias });
+  const data = await fetchData({ clientAlias, containers: context.req.containers });
 
   return data;
 };
 // #endregion
+
+export default Population;
 
 // #region Source
 const Source = () => (

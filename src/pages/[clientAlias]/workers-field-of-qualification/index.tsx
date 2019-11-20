@@ -5,9 +5,8 @@ import {
   formatNumber,
   formatChangeNumber,
   formatShortDecimal,
-  getPort,
   formatPercent
-} from '../../../Utils';
+} from '../../../components/Utils';
 import EntityTable from '../../../components/table/EntityTable';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React from 'react';
@@ -40,7 +39,7 @@ import InfoBox from '../../../components/InfoBox';
 import fetchData from '../../../api/workers-field-of-qualification';
 
 // #region page
-const LocalWorkerFieldsOfQualififcation = ({
+const LocalWorkerFieldsOfQualification = ({
   client,
   tableData,
   IGBM,
@@ -481,23 +480,24 @@ const LocalWorkerFieldsOfQualififcation = ({
     </Layout>
   );
 };
-
-export default LocalWorkerFieldsOfQualififcation;
 // #endregion
 
 // #region initial props
-LocalWorkerFieldsOfQualififcation.getInitialProps = async ({ query }) => {
+LocalWorkerFieldsOfQualification.getInitialProps = async context => {
   const defaultFilters = {
     Indkey: 23000,
     IGBMID: 40,
     Sex: 3
   };
-  const filters = { ...defaultFilters, ...query };
+  const filters = { ...defaultFilters, ...context.query, containers: context.req.containers };
 
   const data = await fetchData(filters);
 
   return data;
 };
+
+export default LocalWorkerFieldsOfQualification;
+
 // #endregion
 
 // #region table builders
