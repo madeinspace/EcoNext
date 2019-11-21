@@ -7,14 +7,14 @@ import fetchClientData from '../../utils/fetchClientData';
 /* #endregion */
 
 const fetchData = async ({ containers, ...filters }) => {
-  const { clientAlias, Indkey, IGBMID, Sex } = filters;
+  const { clientAlias, Indkey, IGBMID, Sex, WebID } = filters;
 
   const client = await fetchClientData({ clientAlias, containers });
-  const { ClientID, Pages, Applications } = client;
+  const { ClientID, Pages, Applications, Areas } = client;
 
   const navigation = await fetchNavigation({ containers, Pages });
 
-  const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(40));
+  const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(IGBMID));
   const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(ClientID));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
 
@@ -30,6 +30,7 @@ const fetchData = async ({ containers, ...filters }) => {
       IGBMID,
       Indkey,
       Sex,
+      WebID,
     }),
   );
 
@@ -44,6 +45,7 @@ const fetchData = async ({ containers, ...filters }) => {
     clientProducts: Applications,
     sitemapGroups,
     filters,
+    Areas,
   };
 };
 
@@ -113,15 +115,17 @@ const BenchMarkGeoQuery = ClientID =>
       GeoName AS Name
     FROM [CommClient].[dbo].[ClientToAreas_Economy]
     WHERE ClientID = ${ClientID}
+    AND Benchmark = 1
     AND NOT WebID = 10
+    ORDER BY WebID ASC
   `;
 /* #endregion */
 
 /* #region  tableDataQuery */
-const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
+const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
     ${ClientID},
-    10,
+    ${WebID},
     ${IGBMID},
     2016,
     2011,

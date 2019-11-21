@@ -29,6 +29,7 @@ const _Select = styled.select`
   height: 25px;
   border: none;
   padding-left: 5px;
+  width: 100%;
 `;
 
 const _Option = styled.option`

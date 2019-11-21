@@ -5,7 +5,9 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
     .fetchAll();
 
-  const { Alias, id, ShortName, LongName, Name, Pages, Applications } = ClientResources[0];
+  const { Alias, id, ShortName, LongName, Name, Pages, Applications, Areas } = ClientResources[0];
+
+  const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
 
   return {
     Alias,
@@ -15,6 +17,7 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     Name,
     Pages,
     Applications,
+    Areas: filteredAreas,
   };
 };
 
