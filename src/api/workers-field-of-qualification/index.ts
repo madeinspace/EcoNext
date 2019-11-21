@@ -1,9 +1,11 @@
 /* #region imports*/
 import _ from 'lodash';
-const knex = require('knex');
-import { commClient, commDataEconomy } from '../../utils/sql';
-import fetchNavigation from '../../utils/fetchNavigation';
+import { sqlConnection } from '../../utils/sql';
 import fetchClientData from '../../utils/fetchClientData';
+import fetchIndustries from '../../utils/fetchIndustries';
+import fetchNavigation from '../../utils/fetchNavigation';
+import fetchBenchmarkAreas from '../../utils/fetchBenchmarkAreas';
+import fetchSitemap from '../../utils/fetchSitemap';
 /* #endregion */
 
 const fetchData = async ({ containers, ...filters }) => {
@@ -13,10 +15,9 @@ const fetchData = async ({ containers, ...filters }) => {
   const { ClientID, Pages, Applications, Areas } = client;
 
   const navigation = await fetchNavigation({ containers, Pages });
-
-  const Industries = await commDataEconomy.raw(BenchMarkIndustriesQuery(IGBMID));
-  const IGBM = await commDataEconomy.raw(BenchMarkGeoQuery(ClientID));
-  const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
+  const Industries = await fetchIndustries(IGBMID);
+  const IGBM = await fetchBenchmarkAreas(ClientID);
+  const sitemapGroups = await fetchSitemap();
 
   const Sexes = [
     { ID: 1, Name: 'Males' },
@@ -24,7 +25,7 @@ const fetchData = async ({ containers, ...filters }) => {
     { ID: 3, Name: 'Persons' },
   ];
 
-  const tableData = await commDataEconomy.raw(
+  const tableData = await sqlConnection.raw(
     tableDataQuery({
       ClientID,
       IGBMID,
@@ -89,38 +90,6 @@ WITH RDAS AS (
 `;
 /* #endregion */
 
-/* #region  BenchMarkIndustriesQuery */
-const BenchMarkIndustriesQuery = IGBMID => `
-  SELECT
-    CAST(23000 AS INT) AS ID,
-    'All industries' AS Name
-  WHERE 23000 != ${IGBMID}
-  UNION
-  SELECT
-    CAST(I.IndustryWebKey as INT) AS ID,
-    I.IndustryWebName AS Name
-  FROM CommData_Economy.dbo.vS_IndustryCodes AS I
-  INNER JOIN CommData_Economy.dbo.vS_IndustryCodesParents AS IP
-      ON I.Industrycode = IP.IndustryCode
-  WHERE I.IndustryWebKey != ${IGBMID} AND (I.IndustryWebKey NOT IN(23020,23045))
-    AND I.IndustryWebKey = IP.IndustryWebKey
-`;
-/* #endregion */
-
-/* #region  BenchMarkGeoQuery */
-const BenchMarkGeoQuery = ClientID =>
-  `
-    SELECT
-      WebID AS ID,
-      GeoName AS Name
-    FROM [CommClient].[dbo].[ClientToAreas_Economy]
-    WHERE ClientID = ${ClientID}
-    AND Benchmark = 1
-    AND NOT WebID = 10
-    ORDER BY WebID ASC
-  `;
-/* #endregion */
-
 /* #region  tableDataQuery */
 const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
@@ -136,18 +105,4 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
     ${Indkey}
     ) order by LabelKey
   `;
-/* #endregion */
-
-/* #region  SitemapGroupsSQL */
-const SitemapGroupsSQL = () => `
-  SELECT TOP (1000) [ApplicationID]
-    ,[GroupName]
-    ,[SitemapName]
-    ,[ColNumber]
-    ,[SortOrder]
-    ,[Pages]
-  FROM [CommApp].[dbo].[SitemapInfo]
-  where SitemapName like 'footer'
-  and ApplicationID = 4
-`;
 /* #endregion */

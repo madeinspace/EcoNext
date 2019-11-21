@@ -131,9 +131,14 @@ const Population = ({ client, tableData, navigation, clientProducts, sitemapGrou
 
 // #region getInitialProps
 Population.getInitialProps = async function(context) {
+  const defaultFilters = {
+    IGBMID: 40,
+    WebID: 10,
+  };
+
   const { clientAlias } = context.query;
 
-  const data = await fetchData({ clientAlias, containers: context.req.containers });
+  const data = await fetchData({ ...defaultFilters, clientAlias, containers: context.req.containers });
 
   return data;
 };
@@ -189,19 +194,19 @@ const tableBuilder = (alias, nodes) => {
           },
           {
             cssClass: 'xeven start-year',
-            displayText: nodes[0].ClientGeoName,
+            displayText: nodes[0].Geoname,
             colSpan: 3,
             rowSpan: 0,
           },
           {
             cssClass: 'xodd end-year',
-            displayText: nodes[0].BenchmarkGeoName,
+            displayText: nodes[0].GeonameSTE,
             colSpan: 3,
             rowSpan: 0,
           },
           {
             cssClass: 'xeven start-year',
-            displayText: nodes[0].AusGeoName,
+            displayText: nodes[0].GeonameAUS,
             colSpan: 3,
             rowSpan: 0,
           },
@@ -296,42 +301,42 @@ const tableBuilder = (alias, nodes) => {
     rows: nodes.map(
       (
         {
-          ClientYear,
-          ClientNumber,
-          ClientChangeYear1Year2,
-          ClientChangeper,
-          BenchmarkNumber,
-          BenchmarkChangeYear1Year2,
-          BenchmarkChangeper,
-          AusNumber,
-          AusChangeYear1Year2,
-          AusChangeper,
+          Year,
+          Number,
+          ChangeYear1Year2,
+          Changeper,
+          NumberSTE,
+          ChangeYear1Year2STE,
+          ChangeperSTE,
+          NumberAUS,
+          ChangeYear1Year2AUS,
+          ChangeperAUS,
         },
         i: number,
       ) => ({
         data: [
-          ClientYear,
-          ClientNumber,
-          ClientChangeYear1Year2,
-          ClientChangeper,
-          BenchmarkNumber,
-          BenchmarkChangeYear1Year2,
-          BenchmarkChangeper,
-          AusNumber,
-          AusChangeYear1Year2,
-          AusChangeper,
+          Year,
+          Number,
+          ChangeYear1Year2,
+          Changeper,
+          NumberSTE,
+          ChangeYear1Year2STE,
+          ChangeperSTE,
+          NumberAUS,
+          ChangeYear1Year2AUS,
+          ChangeperAUS,
         ],
         formattedData: [
-          ClientYear,
-          formatNumber(ClientNumber),
-          formatChangeNumber(ClientChangeYear1Year2, '--'),
-          formatChangePercent(ClientChangeper, '--'),
-          formatNumber(BenchmarkNumber),
-          formatChangeNumber(BenchmarkChangeYear1Year2, '--'),
-          formatChangePercent(BenchmarkChangeper, '--'),
-          formatNumber(AusNumber),
-          formatChangeNumber(AusChangeYear1Year2, '--'),
-          formatChangePercent(AusChangeper, '--'),
+          Year,
+          formatNumber(Number),
+          formatChangeNumber(ChangeYear1Year2, '--'),
+          formatChangePercent(Changeper, '--'),
+          formatNumber(NumberSTE),
+          formatChangeNumber(ChangeYear1Year2STE, '--'),
+          formatChangePercent(ChangeperSTE, '--'),
+          formatNumber(NumberAUS),
+          formatChangeNumber(ChangeYear1Year2AUS, '--'),
+          formatChangePercent(ChangeperAUS, '--'),
         ],
         id: i,
       }),
@@ -364,24 +369,24 @@ const chartLineBuilder = nodes => {
         {
           color: '',
           yAxis: 0,
-          name: nodes[0].ClientGeoName,
-          data: _.map(nodes, 'ClientChangeper').reverse(),
+          name: nodes[0].Geoname,
+          data: _.map(nodes, 'Changeper').reverse(),
         },
         {
           color: '',
           yAxis: 0,
-          name: nodes[0].BenchmarkGeoName,
-          data: _.map(nodes, 'BenchmarkChangeper').reverse(),
+          name: nodes[0].GeonameSTE,
+          data: _.map(nodes, 'ChangeperSTE').reverse(),
         },
         {
           color: '',
           yAxis: 0,
-          name: nodes[0].AusGeoName,
-          data: _.map(nodes, 'AusChangeper').reverse(),
+          name: nodes[0].GeonameAUS,
+          data: _.map(nodes, 'ChangeperAUS').reverse(),
         },
       ],
       xAxis: {
-        categories: _.map(nodes, 'ClientYear').reverse(),
+        categories: _.map(nodes, 'Year').reverse(),
         croshair: false,
         title: {
           text: 'Year ending June',
@@ -437,19 +442,19 @@ const chartBuilder = nodes => {
         align: 'left',
       },
       subtitle: {
-        text: nodes[0].ClientGeoName,
+        text: nodes[0].Geoname,
         align: 'left',
       },
       series: [
         {
           color: '',
           yAxis: 0,
-          name: nodes[0].ClientGeoName,
-          data: _.map(nodes, 'ClientNumber').reverse(),
+          name: nodes[0].Geoname,
+          data: _.map(nodes, 'Number').reverse(),
         },
       ],
       xAxis: {
-        categories: _.map(nodes, 'ClientYear').reverse(),
+        categories: _.map(nodes, 'Year').reverse(),
         croshair: false,
         title: {
           text: 'Year ending June',

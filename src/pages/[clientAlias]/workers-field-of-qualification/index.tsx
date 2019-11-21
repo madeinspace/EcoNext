@@ -451,6 +451,7 @@ LocalWorkerFieldsOfQualificationPage.getInitialProps = async context => {
     Sex: 3,
     WebID: 10,
   };
+
   const filters = { ...defaultFilters, ...context.query, containers: context.req.containers };
 
   const data = await fetchData(filters);
