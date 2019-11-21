@@ -1,14 +1,11 @@
 import knex from 'knex';
 
 require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`
+  path: `.env.${process.env.NODE_ENV}`,
 });
 
 const getScopedEnvVar = (scope, db_env_var) => {
-  return (
-    process.env[`${scope}_${db_env_var}`] ||
-    process.env[`DEFAULT_${db_env_var}`]
-  );
+  return process.env[`${scope}_${db_env_var}`] || process.env[`DEFAULT_${db_env_var}`];
 };
 
 const client = 'mssql';
@@ -18,18 +15,13 @@ const connection = {
   password: getScopedEnvVar('CLIENT', 'DATABASE_PASS'),
   database: getScopedEnvVar('CLIENT', 'DATABASE_NAME'),
   requestTimeout: 0,
-  options: { encrypt: false }
+  options: { encrypt: false },
 };
 const acquireConnectionTimeout = 600000;
 const DBConnection = {
   client,
   connection,
-  acquireConnectionTimeout
+  acquireConnectionTimeout,
 };
 
-const CommClientDBConnection = () => DBConnection;
-
-const CommDataEconomyDBConnection = () => DBConnection;
-
-export const commDataEconomy = knex(CommDataEconomyDBConnection());
-export const commClient = knex(CommClientDBConnection());
+export const sqlConnection = knex(DBConnection);
