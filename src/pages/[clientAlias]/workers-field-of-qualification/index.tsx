@@ -97,7 +97,7 @@ const LocalWorkerFieldsOfQualificationPage = ({
 
   const handleControlPanelReset = () => {};
   const handleExport = () => {};
-  const hasProfile = () => _.some(clientProducts, product => product.ApplicationID === 1);
+  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   // #region autotext / dynamic content
 

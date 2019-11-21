@@ -6,11 +6,10 @@ import fetchClientData from '../../utils/fetchClientData';
 const fetchData = async ({ containers, clientAlias }) => {
   const client = await fetchClientData({ clientAlias, containers });
 
-  const { ClientID, Pages } = client;
+  const { ClientID, Applications, Pages } = client;
 
   const navigation = await fetchNavigation({ containers, Pages });
 
-  const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const tableData = await commDataEconomy.raw(PopulationDataSQL({ ClientID }));
 
@@ -18,33 +17,13 @@ const fetchData = async ({ containers, clientAlias }) => {
     client,
     tableData,
     navigation,
-    clientProducts,
+    clientProducts: Applications,
     filters: { clientAlias },
     sitemapGroups,
   };
 };
 
 export default fetchData;
-
-/* #region  ClientProductsSQL */
-const ClientProductsSQL = ({ ClientID }) => `
-  SELECT 
-     c.Alias AS Alias
-    ,c.name AS ClientLongName
-    ,c.ShortName AS ClientShortName
-    ,cad.ClientID
-    ,cad.ApplicationID
-    ,a.SubDomainName
-    ,a.FullName AS ProductName
-  FROM CommClient.dbo.ClientAppDisable AS cad
-  LEFT OUTER JOIN [CommApp].[dbo].[Application] AS a 
-    ON cad.ApplicationID = a.ApplicationID
-  LEFT OUTER JOIN [CommClient].[dbo].[Client] AS c
-    ON cad.ClientID = c.ClientID
-  WHERE cad.IsDisabled = 0
-    AND cad.ClientID = ${ClientID}
-`;
-/* #endregion */
 
 /* #region  SitemapGroupsSQL */
 const SitemapGroupsSQL = () => `

@@ -10,7 +10,7 @@ const fetchData = async ({ containers, ...filters }) => {
   const { clientAlias, Indkey, IGBMID, Sex } = filters;
 
   const client = await fetchClientData({ clientAlias, containers });
-  const { ClientID, Pages } = client;
+  const { ClientID, Pages, Applications } = client;
 
   const navigation = await fetchNavigation({ containers, Pages });
 
@@ -24,7 +24,6 @@ const fetchData = async ({ containers, ...filters }) => {
     { ID: 3, Name: 'Persons' },
   ];
 
-  const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const tableData = await commDataEconomy.raw(
     tableDataQuery({
       ClientID,
@@ -42,7 +41,7 @@ const fetchData = async ({ containers, ...filters }) => {
     IGBM,
     Sexes,
     navigation,
-    clientProducts,
+    clientProducts: Applications,
     sitemapGroups,
     filters,
   };
@@ -133,26 +132,6 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey }) =>
     ${Indkey}
     ) order by LabelKey
   `;
-/* #endregion */
-
-/* #region  ClientProductsSQL */
-const ClientProductsSQL = ({ ClientID }) => `
-  SELECT 
-     c.Alias AS Alias
-    ,c.name AS ClientLongName
-    ,c.ShortName AS ClientShortName
-    ,cad.ClientID
-    ,cad.ApplicationID
-    ,a.SubDomainName
-    ,a.FullName AS ProductName
-  FROM CommClient.dbo.ClientAppDisable AS cad
-  LEFT OUTER JOIN [CommApp].[dbo].[Application] AS a 
-    ON cad.ApplicationID = a.ApplicationID
-  LEFT OUTER JOIN [CommClient].[dbo].[Client] AS c
-    ON cad.ClientID = c.ClientID
-  WHERE cad.IsDisabled = 0
-    AND cad.ClientID = ${ClientID}
-`;
 /* #endregion */
 
 /* #region  SitemapGroupsSQL */

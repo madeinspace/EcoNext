@@ -5,7 +5,7 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
     .fetchAll();
 
-  const { Alias, id, ShortName, LongName, Name, Pages } = ClientResources[0];
+  const { Alias, id, ShortName, LongName, Name, Pages, Applications } = ClientResources[0];
 
   return {
     Alias,
@@ -14,6 +14,7 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     LongName,
     Name,
     Pages,
+    Applications,
   };
 };
 

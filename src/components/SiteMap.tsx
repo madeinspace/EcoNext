@@ -117,29 +117,20 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
       <Column key={i} col={i + 1}>
         {column.map((groups, i) => {
           const pageIDs = groups.Pages.split(',').map(Number);
-          const pages = navigationNodes.filter(node =>
-            pageIDs.includes(node.PageID)
-          );
+          const pages = navigationNodes.filter(node => pageIDs.includes(node.PageID));
           return (
             <ColumnGroup key={i}>
               <GroupName>{groups.GroupName}</GroupName>
               <PageList>
                 {pages.map((page, i) => {
-                  const {
-                    Alias: pageAlias,
-                    PageID,
-                    MenuTitle,
-                    Disabled
-                  } = page;
+                  const { Alias: pageAlias, PageID, MenuTitle, Disabled } = page;
                   return (
                     <React.Fragment key={PageID}>
                       {Disabled ? (
                         <DisabledLink>{MenuTitle}</DisabledLink>
                       ) : (
                         <li>
-                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>
-                            {MenuTitle}
-                          </StyledLink>
+                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>{MenuTitle}</StyledLink>
                         </li>
                       )}
                     </React.Fragment>
@@ -154,13 +145,7 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
   });
 };
 
-const SiteMap = ({
-  alias,
-  products,
-  prettyname,
-  navigationNodes,
-  colGroups
-}) => {
+const SiteMap = ({ alias, products, prettyname, navigationNodes, colGroups }) => {
   const columns = _.values(groupBy(colGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
@@ -178,15 +163,12 @@ const SiteMap = ({
       <FooterRow>
         <ProductItems>
           {products
-            .filter(p => p.ApplicationID != 4)
+            .filter(p => p.AppID != 4)
             .map((product, i) => {
               return (
-                <ProductItem key={i} className={`app-${product.ApplicationID}`}>
-                  <a
-                    key={i}
-                    href={`https://${product.SubDomainName}.id.com.au/${alias}`}
-                  >
-                    {product.ProductName}
+                <ProductItem key={i} className={`app-${product.AppID}`}>
+                  <a key={i} href={`https://${product.SubDomainName}.id.com.au/${alias}`}>
+                    {product.FullName}
                   </a>
                 </ProductItem>
               );

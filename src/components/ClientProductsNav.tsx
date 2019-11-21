@@ -1,11 +1,11 @@
-import React from "react"
-import styled from "styled-components"
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`)
+import React from 'react';
+import styled from 'styled-components';
+const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const ClientProductsNav = ({ products, alias }) => {
   const ProductsNav = styled.nav`
     height: 42px;
-  `
+  `;
   const ActiveIndicator = styled.span`
     display: none;
     position: absolute;
@@ -16,7 +16,7 @@ const ClientProductsNav = ({ products, alias }) => {
     height: 0;
     border-style: solid;
     border-width: 8px 8px 0;
-  `
+  `;
   const ProductItem = styled.a`
     position: relative;
     height: 42px;
@@ -64,7 +64,7 @@ const ClientProductsNav = ({ products, alias }) => {
         display: block;
       }
     }
-  `
+  `;
 
   return (
     <ProductsNav>
@@ -73,18 +73,16 @@ const ClientProductsNav = ({ products, alias }) => {
           <ProductItem
             key={i}
             target="_blank"
-            className={`app-${product.ApplicationID} ${
-              product.ApplicationID === 4 ? "active" : null
-            }`}
+            className={`app-${product.AppID} ${product.AppID === 4 ? 'active' : null}`}
             href={`https://${product.SubDomainName}.id.com.au/${alias}`}
           >
-            {product.ProductName}
+            {product.FullName}
             <ActiveIndicator />
           </ProductItem>
-        )
+        );
       })}
     </ProductsNav>
-  )
-}
+  );
+};
 
-export default ClientProductsNav
+export default ClientProductsNav;

@@ -8,13 +8,12 @@ const fetchData = async ({ containers, ...filters }) => {
 
   const client = await fetchClientData({ clientAlias, containers });
 
-  const { ClientID, Pages } = client;
+  const { ClientID, Pages, Applications } = client;
 
   const WebID = 10;
 
   const navigation = await fetchNavigation({ containers, Pages });
 
-  const clientProducts = await commClient.raw(ClientProductsSQL({ ClientID }));
   const sitemapGroups = await commDataEconomy.raw(SitemapGroupsSQL());
   const tableData = await commDataEconomy.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 
@@ -22,52 +21,13 @@ const fetchData = async ({ containers, ...filters }) => {
     client,
     tableData,
     navigation,
-    clientProducts,
+    clientProducts: Applications,
     filters,
     sitemapGroups,
   };
 };
 
 export default fetchData;
-
-/* #region  MainNavigationSQL */
-const MainNavigationSQL = ({ ClientID }) => `
-SELECT [ClientID]
-  ,cp.[PageID]
-  ,COALESCE(cp.[Alias], p.Alias) AS Alias
-  ,p.ParentPageID
-  ,p.MenuTitle
-  ,[Disabled]
-  ,pg.Name AS GroupName
-FROM [CommClient].[dbo].[ClientPage] cp
-RIGHT JOIN [CommApp].dbo.Page p 
-  ON cp.pageId = p.pageID 
-INNER JOIN [CommApp].[dbo].[PageGroup] pg
-  ON p.PageGroupID = pg.PageGroupID
-  AND p.ApplicationID = 4
-WHERE ClientID = ${ClientID}
-`;
-/* #endregion */
-
-/* #region  ClientProductsSQL */
-const ClientProductsSQL = ({ ClientID }) => `
-  SELECT 
-     c.Alias AS Alias
-    ,c.name AS ClientLongName
-    ,c.ShortName AS ClientShortName
-    ,cad.ClientID
-    ,cad.ApplicationID
-    ,a.SubDomainName
-    ,a.FullName AS ProductName
-  FROM CommClient.dbo.ClientAppDisable AS cad
-  LEFT OUTER JOIN [CommApp].[dbo].[Application] AS a 
-    ON cad.ApplicationID = a.ApplicationID
-  LEFT OUTER JOIN [CommClient].[dbo].[Client] AS c
-    ON cad.ClientID = c.ClientID
-  WHERE cad.IsDisabled = 0
-    AND cad.ClientID = ${ClientID}
-`;
-/* #endregion */
 
 /* #region  SitemapGroupsSQL */
 const SitemapGroupsSQL = () => `

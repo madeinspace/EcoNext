@@ -27,7 +27,7 @@ const Population = ({ client, tableData, navigation, clientProducts, sitemapGrou
   const { LongName: prettyName } = client;
   const router = useRouter();
   const { pageAlias: currentPageAlias } = pathParts(router.asPath);
-  const hasForecast = clientProducts => _.some(clientProducts, product => product.ApplicationID === 3);
+  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
   const FormattedNumber = number => <>{formatNumber(number)}</>;
   const handleExport = async () => {
