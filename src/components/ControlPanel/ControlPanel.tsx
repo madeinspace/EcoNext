@@ -1,46 +1,25 @@
 import * as React from 'react';
+import { ResetButton } from '../Actions';
 import SelectDropdown from './SelectDropdown';
 import styled from 'styled-components';
 import Sticky from '@wicked_query/react-sticky';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const _ControlPanel = styled.div`
-  display: flex;
-  justify-content: space-between;
+  align-items: end;
   background: #595959;
   color: white;
+
+  /* use flex as a fallback for older browsers */
+  display: flex;
+  display: grid;
+  grid-auto-columns: minmax(min-content, max-content);
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 30px;
   padding: 15px;
   position: relative;
   z-index: 2;
-  margin-bottom: 30px;
-`;
-
-const ButtonLink = styled.a`
-  color: ${variables.grayDark};
-  width: fit-content;
-  display: inline-flex;
-  margin-top: 23px;
-  padding: 0 0 0 5px;
-  border: none;
-  line-height: 25px;
-  height: 25px;
-  cursor: pointer;
-  background-color: #dddddd;
-`;
-const IconBase = styled.span`
-  line-height: 25px;
-  height: 25px;
-  width: 24px;
-  margin-left: 5px;
-  color: #fff;
-  background-color: ${variables.colorEconomy};
-  font-family: 'id-icons';
-  padding-left: 4px;
-`;
-const ResetIcon = styled(IconBase)`
-  &::before {
-    content: '\\E907';
-  }
 `;
 
 interface Selectable {
@@ -49,10 +28,11 @@ interface Selectable {
 }
 
 interface Dropdown {
-  items: Selectable[];
+  list: Selectable[];
   title: string;
   handleChange?: (e: any) => void;
   value: number;
+  hidden?: boolean;
 }
 
 interface IControlPanelProps {
@@ -60,39 +40,13 @@ interface IControlPanelProps {
   onReset: () => void;
 }
 
-const Button = ({ name, action, children }) => (
-  <React.Fragment>
-    <ButtonLink onClick={action}>
-      <span>{name}</span>
-      {children}
-    </ButtonLink>
-  </React.Fragment>
-);
-
-export const ResetButton = ({ onReset }) => (
-  <Button name="reset" action={onReset}>
-    <ResetIcon />
-  </Button>
-);
-
-const ControlPanel: React.SFC<IControlPanelProps> = ({
-  dropdowns,
-  onReset
-}) => {
+const ControlPanel: React.SFC<IControlPanelProps> = ({ dropdowns, onReset }) => {
   return (
     <Sticky>
       <_ControlPanel>
-        {dropdowns.map((dd: any, i) => {
-          return (
-            <SelectDropdown
-              key={i}
-              value={dd.value}
-              list={dd.items || []}
-              title={dd.title}
-              handleChange={dd.handleChange}
-            />
-          );
-        })}
+        {dropdowns.map(
+          (dropdown: Dropdown) => !dropdown.hidden && <SelectDropdown key={dropdown.value} {...dropdown} />,
+        )}
         <ResetButton onReset={onReset} />
       </_ControlPanel>
     </Sticky>

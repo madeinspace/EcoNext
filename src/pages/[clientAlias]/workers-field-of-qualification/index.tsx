@@ -46,13 +46,18 @@ const LocalWorkerFieldsOfQualificationPage = ({
   navigation,
   clientProducts,
   sitemapGroups,
+  Areas,
 }) => {
   const router = useRouter();
   const { clientAlias } = router.query;
   const currentIndustryID = filters.Indkey;
   const currentBenchmarkID = filters.IGBMID;
   const currentGenderID = filters.Sex;
+  const currentAreaID = filters.WebID;
+
   const { pageAlias: currentPageAlias } = pathParts(useRouter().asPath);
+
+  const Benchmarks = [...IGBM, ...Industries];
 
   const getNameByID = (id, arr) => {
     const result = arr.find(i => i.ID.toString() === id.toString());
@@ -60,7 +65,7 @@ const LocalWorkerFieldsOfQualificationPage = ({
   };
 
   const currentIndustyName = getNameByID(currentIndustryID, Industries);
-  const currentBenchmarkName = getNameByID(currentBenchmarkID, IGBM);
+  const currentBenchmarkName = getNameByID(currentBenchmarkID, Benchmarks);
   const currentGenderName = getNameByID(currentGenderID, Sexes);
 
   const tableParams = tableBuilder({
@@ -320,22 +325,29 @@ const LocalWorkerFieldsOfQualificationPage = ({
           onReset={handleControlPanelReset}
           dropdowns={[
             {
+              title: 'Current area:',
+              value: currentAreaID,
+              handleChange: e => setQuery('WebID', e.target.value),
+              list: Areas || [],
+              hidden: Areas.length === 1,
+            },
+            {
               title: 'Current industry:',
               value: currentIndustryID,
               handleChange: e => setQuery('Indkey', e.target.value),
-              items: Industries,
+              list: Industries.filter(({ ID }) => ID !== +currentBenchmarkID) || [],
             },
             {
               title: 'Current benchmark:',
               value: currentBenchmarkID,
               handleChange: e => setQuery('IGBMID', e.target.value),
-              items: IGBM,
+              list: Benchmarks.filter(({ ID }) => ID !== +currentIndustryID) || [],
             },
             {
               title: 'Gender:',
               value: currentGenderID,
               handleChange: e => setQuery('Sex', e.target.value),
-              items: Sexes,
+              list: Sexes || [],
             },
           ]}
         />
@@ -437,6 +449,7 @@ LocalWorkerFieldsOfQualificationPage.getInitialProps = async context => {
     Indkey: 23000,
     IGBMID: 40,
     Sex: 3,
+    WebID: 10,
   };
   const filters = { ...defaultFilters, ...context.query, containers: context.req.containers };
 
