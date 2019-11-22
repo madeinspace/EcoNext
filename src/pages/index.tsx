@@ -12,6 +12,7 @@ const LogoGrid = styled.div`
   grid-auto-rows: 1fr;
   justify-content: center;
   align-content: bottom;
+  margin-bottom: 80px;
 
   &:before {
     content: '';
@@ -46,6 +47,8 @@ const ClientLogo = styled.img`
 const CouncilName = styled.span`
   color: #999;
   font-weight: 700;
+  max-width: 80%;
+  text-align: center;
 `;
 
 const Tile = styled.div`
