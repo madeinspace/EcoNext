@@ -1,15 +1,13 @@
-import NextPages from '../components/_NextPages';
-import _ from 'lodash';
+import { NextPages } from '../pages/[clientAlias]/[handle]';
+import filter from 'lodash/filter';
+import has from 'lodash/has';
 
 export const pathParts = (path: string) => {
   const REGEX = /^\/?(?<clientAlias>[^\/]+)\/?(?<pageAlias>[^\/]+)?\/?/;
   return path.match(REGEX).groups;
 };
 
-export const IsNextPage = path => NextPages.includes(pathParts(path).pageAlias);
+export const IsNextPage = path => has(NextPages, pathParts(path).pageAlias);
 
 export const IsDisabled = (navNodes, currentPageAlias) =>
-  _.filter(
-    navNodes,
-    node => node.Alias === currentPageAlias.split('?')[0]
-  ).pop().Disabled;
+  filter(navNodes, node => node.Alias === currentPageAlias.split('?')[0]).pop().Disabled;

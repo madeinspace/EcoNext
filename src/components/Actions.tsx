@@ -296,8 +296,8 @@ const ExportButton = ({ onClick }) => (
   </Button>
 );
 
-export const ResetButton = ({ onReset }) => (
-  <Button name="reset" action={onReset}>
+export const ResetButton = ({ onClick }) => (
+  <Button name="reset" action={onClick}>
     <ResetIcon />
   </Button>
 );

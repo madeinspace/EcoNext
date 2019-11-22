@@ -1,8 +1,7 @@
 // #region imports
-import { useRouter } from 'next/router';
 import _ from 'lodash';
 import Layout from '../../../layouts/main';
-import { formatNumber, formatPercent, pathParts, formatMillionsCurrency } from '../../../utils/';
+import { formatNumber, formatPercent, formatMillionsCurrency } from '../../../utils/';
 import {
   TitleContainer,
   MainTitle,
@@ -15,9 +14,9 @@ import {
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
+import { Context } from '../../../utils/context';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #endregion
-
-import fetchData from '../../../api/value-of-building-approvals';
 
 // #region page export
 const requestPDF = async (pageName, prettyName) => {
@@ -59,87 +58,83 @@ const postData = async (url = '', data = {}) => {
 // #endregion
 
 // #region population page
-const ValueOfBuildingApprovalsPage = ({ client, tableData, navigation, clientProducts, sitemapGroups }) => {
-  const { LongName: prettyName, clientAlias } = client;
-  const pageName = 'Value of total building approvals';
-  const { pageAlias: currentPageAlias } = pathParts(useRouter().asPath);
-  const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+const ValueOfBuildingApprovalsPage = () => (
+  <Context.Consumer>
+    {({ clientData, handle, tableData, navigation, clientProducts, sitemapGroups }) => {
+      const { LongName: prettyName, clientAlias } = clientData;
+      const pageName = 'Value of total building approvals';
+      const chartData = chartBuilder(tableData);
+      const tableParams = tableBuilder(clientAlias, tableData);
 
-  const FormattedTotalValueBuildingApprovals = () => {
-    const num = _.filter(tableData, { Yr: 2019 }).pop();
-    const formatedNumber = formatMillionsCurrency(num.Total * 1000);
-    return <>{formatedNumber}</>;
-  };
+      const FormattedTotalValueBuildingApprovals = () => {
+        const num = _.filter(tableData, { Yr: 2019 }).pop();
+        const formatedNumber = formatMillionsCurrency(num.Total * 1000);
+        return <>{formatedNumber}</>;
+      };
 
-  const handleExport = () => requestPDF(pageName, prettyName);
+      const handleExport = () => requestPDF(pageName, prettyName);
 
-  return (
-    <Layout
-      client={client}
-      navnodes={navigation}
-      products={clientProducts}
-      sitemapGroup={sitemapGroups}
-      currentPageAlias={currentPageAlias}
-    >
-      <EntityContainer>
-        <TitleContainer>
-          <MainTitle>{prettyName}</MainTitle>
-          <SubTitle>Value of building approvals</SubTitle>
-        </TitleContainer>
-        <Actions>
-          <Share />
-          <ExportPage
-            onExport={e => handleExport()}
-            exportOptions={{
-              formats: [{ displayText: 'PDF' } /*, { name: "PDF" }*/],
-            }}
-          />
-        </Actions>
-      </EntityContainer>
-      <Headline>
-        The value of building approvals in the City of Monash was <FormattedTotalValueBuildingApprovals /> in the
-        2019-20 Sep FYTD financial year.
-      </Headline>
-      <PageIntroFullWidth>
-        <p>
-          This dataset shows the total assessed value of building approvals for construction in City of Monash by
-          financial year in millions of dollars. The dataset is updated monthly to include the current financial year to
-          date, and includes residential and non-residential building approvals separately. The percentage of the state
-          total is shown.
-        </p>
-        <p>
-          Building approvals for an area can be highly variable over time, particularly in the non-residential sector.
-          Construction may take several years from the date of approval. A high rate of building approvals can indicate
-          a growth area with a construction-led economy. A low rate of building approvals may indicate a settled area
-          with established infrastructure, or an area with little growth. Note that this dataset is not adjusted for
-          inflation.
-        </p>
-      </PageIntroFullWidth>
+      return (
+        <Layout
+          client={clientData}
+          navnodes={navigation}
+          products={clientProducts}
+          sitemapGroup={sitemapGroups}
+          handle={handle}
+        >
+          <EntityContainer>
+            <TitleContainer>
+              <MainTitle>{prettyName}</MainTitle>
+              <SubTitle>Value of building approvals</SubTitle>
+            </TitleContainer>
+            <Actions>
+              <Share />
+              <ExportPage
+                onExport={e => handleExport()}
+                exportOptions={{
+                  formats: [{ displayText: 'PDF' } /*, { name: "PDF" }*/],
+                }}
+              />
+            </Actions>
+          </EntityContainer>
+          <Headline>
+            The value of building approvals in the City of Monash was <FormattedTotalValueBuildingApprovals /> in the
+            2019-20 Sep FYTD financial year.
+          </Headline>
+          <PageIntroFullWidth>
+            <p>
+              This dataset shows the total assessed value of building approvals for construction in City of Monash by
+              financial year in millions of dollars. The dataset is updated monthly to include the current financial
+              year to date, and includes residential and non-residential building approvals separately. The percentage
+              of the state total is shown.
+            </p>
+            <p>
+              Building approvals for an area can be highly variable over time, particularly in the non-residential
+              sector. Construction may take several years from the date of approval. A high rate of building approvals
+              can indicate a growth area with a construction-led economy. A low rate of building approvals may indicate
+              a settled area with established infrastructure, or an area with little growth. Note that this dataset is
+              not adjusted for inflation.
+            </p>
+          </PageIntroFullWidth>
 
-      <ItemWrapper>
-        <EntityChart data={chartData} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <ControlPanel />
+          </ItemWrapper>
 
-      <ItemWrapper>
-        <EntityTable data={tableParams} name={`${pageName}`} />
-      </ItemWrapper>
-    </Layout>
-  );
-};
+          <ItemWrapper>
+            <EntityChart data={chartData} />
+          </ItemWrapper>
+
+          <ItemWrapper>
+            <EntityTable data={tableParams} name={`${pageName}`} />
+          </ItemWrapper>
+        </Layout>
+      );
+    }}
+  </Context.Consumer>
+);
 
 export default ValueOfBuildingApprovalsPage;
-// #endregion
-
-// #region getInitialProps
-ValueOfBuildingApprovalsPage.getInitialProps = async function(context) {
-  const { query } = context;
-
-  console.log('query: ', query);
-  const { clientAlias } = query;
-  const data = await fetchData({ clientAlias, containers: context.req.containers });
-  return data;
-};
 // #endregion
 
 // #region Source
