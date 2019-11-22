@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const ClientProductsNav = ({ products, alias }) => {
+  console.log('products: ', products, alias);
   const ProductsNav = styled.nav`
     height: 42px;
   `;
@@ -51,6 +52,12 @@ const ClientProductsNav = ({ products, alias }) => {
       background-color: ${variables.colorEconomy};
       ${ActiveIndicator} {
         border-color: ${variables.colorEconomy} transparent transparent;
+      }
+    }
+    &.app-1016 {
+      background-color: ${variables.colorHousing};
+      ${ActiveIndicator} {
+        border-color: ${variables.colorHousing} transparent transparent;
       }
     }
     &.active {
