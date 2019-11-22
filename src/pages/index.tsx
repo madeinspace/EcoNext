@@ -1,6 +1,6 @@
 import fetchClients from '../api/home';
 import Link from 'next/link';
-import IDIdentity from '../components/ui/IDIdentity';
+import IDidentity from '../components/ui/IDIdentity';
 import styled from 'styled-components';
 import { CenteredContainer } from '../components/grid';
 import ClientProductsNav from '../components/ClientProductsNav';
@@ -118,7 +118,7 @@ const HomePage = ({ clients }) => {
   return (
     <>
       <CenteredContainer>
-        <IDIdentity />
+        <IDidentity />
       </CenteredContainer>
       <CenteredContainer>
         <ClientProductsNav products={products} alias={''} />
