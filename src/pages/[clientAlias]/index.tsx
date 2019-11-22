@@ -1,12 +1,7 @@
 import * as _ from 'lodash';
-import Layout from '../../layouts/main';
 
 const ClientLandingPage = ({ title }) => {
-  return (
-    <>
-      <ul>{title}</ul>
-    </>
-  );
+  return <h1>{title}</h1>;
 };
 
 ClientLandingPage.getInitialProps = async context => {
