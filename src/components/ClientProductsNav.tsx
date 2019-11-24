@@ -53,6 +53,12 @@ const ClientProductsNav = ({ products, alias }) => {
         border-color: ${variables.colorEconomy} transparent transparent;
       }
     }
+    &.app-1016 {
+      background-color: ${variables.colorHousing};
+      ${ActiveIndicator} {
+        border-color: ${variables.colorHousing} transparent transparent;
+      }
+    }
     &.active {
       ${ActiveIndicator} {
         display: block;
