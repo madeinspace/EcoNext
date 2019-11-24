@@ -63,7 +63,7 @@ const ControlPanel: React.SFC<IControlPanelProps> = ({ industry, benchmark, sex 
         });
       };
 
-      const onReset = () =>
+      const handleReset = () =>
         Router.push({
           pathname: `/${clientAlias}/${handle}`,
           query: {},
@@ -106,7 +106,7 @@ const ControlPanel: React.SFC<IControlPanelProps> = ({ industry, benchmark, sex 
                 list={Sexes || []}
               />
             )}
-            <ResetButton onClick={onReset} />
+            <ResetButton onClick={handleReset} />
           </StyledControlPanel>
         </Sticky>
       );

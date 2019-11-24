@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/highcharts": "^5.0.44",
+    "@types/lodash": "^4.14.149",
     "@wicked_query/react-sticky": "^1.0.0-rc1",
     "@zeit/next-sass": "^1.0.1",
     "babel-plugin-styled-components": "^1.10.6",
