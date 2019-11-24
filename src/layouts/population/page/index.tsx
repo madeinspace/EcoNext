@@ -1,10 +1,8 @@
 // #region imports
-import { useRouter } from 'next/router';
 import _ from 'lodash';
-import Layout from '../../../layouts/main';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils/';
+import Layout from '../../main';
+import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
 import {
-  TitleContainer,
   MainTitle,
   SubTitle,
   Headline,
@@ -16,135 +14,123 @@ import {
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import PageHeader from '../../../components/PageHeader';
-// #endregion
-
-import fetchData from '../../../api/population';
-import { pathParts } from '../../../utils/';
+import { Context } from '../../../utils/context';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #endregion
 
 // #region population page
-const Population = ({ client, tableData, navigation, clientProducts, sitemapGroups }) => {
-  const { LongName: prettyName } = client;
-  const router = useRouter();
-  const { pageAlias: currentPageAlias } = pathParts(router.asPath);
-  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
+const PopulationPage = () => (
+  <Context.Consumer>
+    {({ clientData, clientAlias, handle, tableData, navigation, clientProducts, sitemapGroups }) => {
+      const { LongName: prettyName } = clientData;
+      const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
-  const FormattedNumber = number => <>{formatNumber(number)}</>;
-  const handleExport = async () => {
-    const IDReportRequest = {
-      FileName: `Population - ${prettyName}`,
-      Urls: [
-        {
-          Title: `Population - ${prettyName}`,
-          url: window.location.href,
-        },
-      ],
-      Action: 0,
-      EmailAddress: 'fabrice@id.com.au',
-    };
+      const FormattedNumber = number => <>{formatNumber(number)}</>;
+      const handleExport = async () => {
+        const IDReportRequest = {
+          FileName: `Population - ${prettyName}`,
+          Urls: [
+            {
+              Title: `Population - ${prettyName}`,
+              url: window.location.href,
+            },
+          ],
+          Action: 0,
+          EmailAddress: 'fabrice@id.com.au',
+        };
 
-    try {
-      const data = await postData(
-        'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
-        IDReportRequest,
-      ).then(res => {
-        console.log('Report Ok: ', res);
-      });
-      console.log(`Page report request: Population - ${prettyName}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        try {
+          const data = await postData(
+            'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
+            IDReportRequest,
+          ).then(res => {
+            console.log('Report Ok: ', res);
+          });
+          console.log(`Page report request: Population - ${prettyName}`);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-  const postData = async (url = '', data = {}) => {
-    const response = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.json();
-  };
+      const postData = async (url = '', data = {}) => {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.json();
+      };
 
-  const { clientAlias } = useRouter().query;
-  const chartData = chartBuilder(tableData);
-  const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+      const chartData = chartBuilder(tableData);
+      const chartLineData = chartLineBuilder(tableData);
+      const tableParams = tableBuilder(clientAlias, tableData);
 
-  return (
-    <Layout
-      client={client}
-      navnodes={navigation}
-      products={clientProducts}
-      sitemapGroup={sitemapGroups}
-      currentPageAlias={currentPageAlias}
-    >
-      <PageHeader handleExport={handleExport}>
-        <MainTitle>{prettyName}</MainTitle>
-        <SubTitle>Population</SubTitle>
-      </PageHeader>
-      <Headline>
-        The Estimated Resident Population of the {prettyName} was <FormattedNumber number={12} /> as of the 30th June
-        [latestYear].
-      </Headline>
-      <PageIntroFullWidth>
-        <p>
-          The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the
-          Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for{' '}
-          {prettyName}, the state and Australia, with percentage comparisons. A growing population can indicate a
-          growing economy, but this is not necessarily the case and depends on the residential role and function of the
-          area.
-        </p>
-      </PageIntroFullWidth>
+      return (
+        <Layout
+          client={clientData}
+          navnodes={navigation}
+          products={clientProducts}
+          sitemapGroup={sitemapGroups}
+          handle={handle}
+        >
+          <PageHeader handleExport={handleExport}>
+            <MainTitle>{prettyName}</MainTitle>
+            <SubTitle>Population</SubTitle>
+          </PageHeader>
+          <Headline>
+            The Estimated Resident Population of the {prettyName} was <FormattedNumber number={12} /> as of the 30th
+            June [latestYear].
+          </Headline>
+          <PageIntroFullWidth>
+            <p>
+              The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by
+              the Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years
+              ERP for {prettyName}, the state and Australia, with percentage comparisons. A growing population can
+              indicate a growing economy, but this is not necessarily the case and depends on the residential role and
+              function of the area.
+            </p>
+          </PageIntroFullWidth>
 
-      <ItemWrapper>
-        <EntityChart data={chartData} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <ControlPanel />
+          </ItemWrapper>
 
-      <ItemWrapper>
-        <EntityChart data={chartLineData} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <EntityChart data={chartData} />
+          </ItemWrapper>
 
-      <ItemWrapper>
-        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <EntityChart data={chartLineData} />
+          </ItemWrapper>
 
-      {hasForecast(clientProducts) && (
-        <CrossLink>
-          <ForecastProductIcon />
-          <a
-            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
-            target="_blank"
-            title="link to forecast"
-          >
-            Population forecasts
-            <span className="hidden"> (opens a new window)</span>
-          </a>
-        </CrossLink>
-      )}
-    </Layout>
-  );
-};
+          <ItemWrapper>
+            <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+          </ItemWrapper>
+
+          {hasForecast(clientProducts) && (
+            <CrossLink>
+              <ForecastProductIcon />
+              <a
+                href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
+                target="_blank"
+                title="link to forecast"
+              >
+                Population forecasts
+                <span className="hidden"> (opens a new window)</span>
+              </a>
+            </CrossLink>
+          )}
+        </Layout>
+      );
+    }}
+  </Context.Consumer>
+);
 
 // #endregion
 
-// #region getInitialProps
-Population.getInitialProps = async function(context) {
-  const defaultFilters = {
-    IGBMID: 40,
-    WebID: 10,
-  };
-
-  const { clientAlias } = context.query;
-
-  const data = await fetchData({ ...defaultFilters, clientAlias, containers: context.req.containers });
-
-  return data;
-};
-// #endregion
-
-export default Population;
+export default PopulationPage;
 
 // #region Source
 const Source = () => (

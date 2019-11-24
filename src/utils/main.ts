@@ -56,10 +56,7 @@ export const getHashParams = () => {
   }
   return hashParams;
 };
-export const getParameterByName = (
-  name: string,
-  url: string = window.location.href
-): string => {
+export const getParameterByName = (name: string, url: string = window.location.href): string => {
   name = name.replace(/[\[\]]/g, '\\$&');
   const regex: any = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
   const results = regex.exec(url);
@@ -99,14 +96,9 @@ export function naturalSort(a, b) {
   const mhre: any = x.match(hre);
   const yhre: any = y.match(hre);
   const xD: any = parseInt(mhre, 16) || (xN.length !== 1 && Date.parse(x));
-  const yD: any =
-    parseInt(yhre, 16) || (xD && y.match(dre) && Date.parse(y)) || null;
+  const yD: any = parseInt(yhre, 16) || (xD && y.match(dre) && Date.parse(y)) || null;
   const normChunk: any = (s, l) => {
-    return (
-      ((!s.match(ore) || l === 1) && parseFloat(s)) ||
-      s.replace(snre, ' ').replace(sre, '') ||
-      0
-    );
+    return ((!s.match(ore) || l === 1) && parseFloat(s)) || s.replace(snre, ' ').replace(sre, '') || 0;
   };
   let oFxNcL: any;
   let oFyNcL: any;
@@ -118,11 +110,7 @@ export function naturalSort(a, b) {
       return 1;
     }
   }
-  for (
-    let cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl);
-    cLoc < numS;
-    cLoc++
-  ) {
+  for (let cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl); cLoc < numS; cLoc++) {
     oFxNcL = normChunk(xN[cLoc] || '', xNl);
     oFyNcL = normChunk(yN[cLoc] || '', yNl);
     if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {

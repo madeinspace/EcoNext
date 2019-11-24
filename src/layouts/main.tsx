@@ -23,10 +23,10 @@ const SiteContent = styled.div`
   grid-area: content;
 `;
 
-const Layout = ({ children, client, navnodes, products, sitemapGroup, currentPageAlias }) => {
+const Layout = ({ children, client, navnodes, products, sitemapGroup, handle }) => {
   const { Alias: alias, clientID, LongName: prettyname, Name: name } = client;
   const logo = require(`../images/logos/${alias}.png`);
-  const isDisabled = IsDisabled(navnodes, currentPageAlias);
+  const isDisabled = IsDisabled(navnodes, handle);
 
   return (
     <>
