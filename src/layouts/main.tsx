@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import ClientHeader from '../components/ClientHeader';
 import { useRouter } from 'next/router';
@@ -13,6 +13,7 @@ import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
 import { IsDisabled } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
+import { Context } from '../utils/context';
 const IsLite = nodes => some(nodes, 'Disabled');
 
 const SidebarNav = styled.div`
@@ -23,10 +24,12 @@ const SiteContent = styled.div`
   grid-area: content;
 `;
 
-const Layout = ({ children, client, navnodes, products, sitemapGroup, handle }) => {
-  const { Alias: alias, clientID, LongName: prettyname, Name: name } = client;
+const Layout = ({ children }) => {
+  const { clientData, handle, navigation } = useContext(Context);
+
+  const { Alias: alias, clientID, LongName: prettyname, Name: name } = clientData;
   const logo = require(`../images/logos/${alias}.png`);
-  const isDisabled = IsDisabled(navnodes, handle);
+  const isDisabled = IsDisabled(navigation, handle);
 
   return (
     <>
@@ -35,41 +38,25 @@ const Layout = ({ children, client, navnodes, products, sitemapGroup, handle }) 
       ) : (
         <>
           <SearchApp alias={alias} clientID={clientID} prettyname={prettyname} clientImage={logo} />
-          <ClientHeader
-            alias={alias}
-            name={name}
-            prettyname={prettyname}
-            products={products}
-            clientID={clientID}
-            clientImage={logo}
-            isLite={IsLite(navnodes)}
-          />
+          <ClientHeader alias={alias} prettyname={prettyname} clientImage={logo} isLite={IsLite(navigation)} />
         </>
       )}
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={alias} navigationNodes={navnodes} />
+          <MainNavigation alias={alias} />
         </SidebarNav>
         <SiteContent id={'main-content'}>
-          <SiblingsMenu navigationNodes={navnodes} clientAlias={alias} />
-          {isDisabled ? <DisabledPageWarning client={client} /> : children}
+          <SiblingsMenu />
+          {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
         </SiteContent>
       </ContentRow>
-      <SiteMap
-        alias={alias}
-        colGroups={sitemapGroup}
-        prettyname={prettyname}
-        products={products}
-        navigationNodes={navnodes}
-      />
+      <SiteMap alias={alias} prettyname={prettyname} />
       <SharedFooter />
     </>
   );
 };
 
 Layout.propTypes = {
-  alias: PropTypes.any,
-  navnodes: PropTypes.any,
   children: PropTypes.node.isRequired,
 };
 

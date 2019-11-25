@@ -32,19 +32,19 @@ const Page = props => {
   );
 };
 
-Page.getInitialProps = async function(context) {
+Page.getInitialProps = async function({ query, req }) {
   const filters = {
     ...defaultFilters,
-    ...context.query,
+    ...query,
   };
 
-  const { clientAlias, handle } = context.query;
+  const { clientAlias, handle } = query;
 
   const { fetchData } = await import(`../../../layouts/${handle}`);
 
   const clientData: any = await fetchClientData({
     clientAlias,
-    containers: context.req.containers,
+    containers: req.containers,
   });
 
   const { ClientID, clientAreas, clientProducts, clientPages } = clientData;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from '../components/Link';
 import styled from 'styled-components';
 import { pathParts } from '../utils/';
@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
+import { Context } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
@@ -49,11 +50,13 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
   ));
 };
 
-const MainNavigation = ({ alias, navigationNodes }) => {
+const MainNavigation = ({ alias }) => {
+  const { navigation } = useContext(Context);
+
   return (
     <MainNav>
       <Menu>
-        {buildMenu(alias, navigationNodes)}
+        {buildMenu(alias, navigation)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>
