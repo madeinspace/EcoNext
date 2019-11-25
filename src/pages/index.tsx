@@ -121,7 +121,7 @@ const HomePage = ({ clients }) => {
         <IDidentity />
       </CenteredContainer>
       <CenteredContainer>
-        <ClientProductsNav products={products} alias={''} />
+        <ClientProductsNav alias={''} />
       </CenteredContainer>
       <IntroWrapper>
         <CenteredContainer>

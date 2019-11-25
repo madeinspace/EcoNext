@@ -3,7 +3,7 @@ import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent, pa
 
 import EntityTable from '../../../components/table/EntityTable';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import React from 'react';
+import React, { useContext } from 'react';
 import Layout from '../../../layouts/main';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
@@ -26,23 +26,192 @@ import { Context } from '../../../utils/context';
 
 // #endregion
 
+// #region autotext / dynamic content
+
+const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
+
+const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
+
+const Top = n => quals =>
+  _(quals)
+    .takeRight(n)
+    .reverse()
+    .value();
+
+const TopThree = Top(3);
+const TopFour = Top(4);
+
+const HighestQualification = () => {
+  const { tableData } = useContext(Context);
+
+  const topquals = TopLevelQualifications(tableData);
+  const highestQuals = HighestQualifications(topquals, 'NoYear1');
+  const biggest: any = highestQuals.pop();
+
+  return (biggest || {}).LabelName;
+};
+
+const TopThreeFields = ({ industryName }) => {
+  const { tableData } = useContext(Context);
+
+  const topquals = TopLevelQualifications(tableData);
+  const highestQuals = HighestQualifications(topquals, 'NoYear1');
+  const topThree = TopThree(highestQuals);
+
+  const totalPeople = _.sumBy(topThree, 'NoYear1');
+  const totalPercent = _.sumBy(topThree, 'PerYear1');
+
+  return (
+    <>
+      <ul>
+        {topThree.map((qual: any, i) => (
+          <li key={i}>
+            {qual.LabelName} ({formatNumber(qual.NoYear1)} or {formatPercent(qual.PerYear1)}%)
+          </li>
+        ))}
+      </ul>
+      <p>
+        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or 6
+        {formatPercent(totalPercent)}% of {industryName}.
+      </p>
+    </>
+  );
+};
+
+const ComparisonBenchmark = ({ benchmarkName }) => {
+  const {
+    clientData,
+    filters: { IGBMID },
+    tableData,
+  } = useContext(Context);
+
+  let currentBenchmarkName: any = benchmarkName;
+
+  const industryBenchmark = IGBMID > 1000;
+
+  if (industryBenchmark) {
+    currentBenchmarkName = `the ${benchmarkName} workforce in ${clientData.LongName}`;
+  }
+
+  const topquals = TopLevelQualifications(tableData);
+  const highestQuals = HighestQualifications(topquals, 'BMYear1');
+  const topThree: any = TopThree(highestQuals);
+
+  if (!topThree.length) return null;
+
+  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)} in ${LabelName}`);
+
+  const [lastItem, ...comparisons] = formatComparisons.reverse();
+
+  const and = comparisons.length > 0 ? 'and' : null;
+
+  return (
+    <p>
+      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
+    </p>
+  );
+};
+
+const MajorDifferencesHeading = ({ benchmarkName, industryName }) => {
+  const {
+    clientData,
+    filters: { IGBMID, Indkey },
+  } = useContext(Context);
+
+  let industryText = industryName;
+  if (Indkey == 23000) {
+    //All Industries === 23000
+    industryText = 'total';
+  }
+  industryText = `the ${industryText} workforce`;
+
+  let benchmarkText = benchmarkName;
+  const industryBenchmark = IGBMID > 1000;
+  if (industryBenchmark) {
+    if (IGBMID == 23000) {
+      benchmarkText = 'total';
+    }
+    benchmarkText = `the ${benchmarkText} workforce`;
+  }
+
+  return (
+    <Highlight>
+      The major differences between the fields of qualifications of {industryText} in {clientData.LongName} and{' '}
+      {benchmarkText} were:
+    </Highlight>
+  );
+};
+
+const MajorDifferences = ({ benchmarkName, industryName }) => {
+  const { tableData } = useContext(Context);
+
+  const topquals = TopLevelQualifications(tableData);
+  const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
+  const majorDifferences = _.sortBy(qualsWithData, qual => {
+    const compare = [qual.PerYear1, qual.BMYear1];
+    return _.max(compare) - _.min(compare);
+  });
+  const topFour = TopFour(majorDifferences);
+
+  return (
+    <>
+      <MajorDifferencesHeading benchmarkName={benchmarkName} industryName={industryName} />
+      <ul>
+        {topFour.map((qual: any, i) => (
+          <li key={i}>
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local workers qualified in
+            the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+const EmergingGroupsHeading = ({ industryName }) => {
+  const {
+    clientData,
+    filters: { Indkey },
+  } = useContext(Context);
+
+  let industryText = industryName;
+  if (Indkey == 23000) {
+    //All Industries === 23000
+    industryText = 'total';
+  }
+  industryText = `the ${industryText} workforce`;
+
+  return (
+    <Highlight>
+      The largest changes in fields of qualifications of {industryText} in {clientData.LongName} between 2011 and 2016
+      were:
+    </Highlight>
+  );
+};
+
+const EmergingGroups = () => {
+  const { tableData } = useContext(Context);
+
+  const topquals = TopLevelQualifications(tableData);
+  const highestQuals = HighestQualifications(topquals, 'Change12');
+  const topFour = TopFour(highestQuals);
+
+  return (
+    <ul>
+      {topFour.map((qual: any, i) => (
+        <li key={i}>
+          {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => (
   <Context.Consumer>
-    {({
-      clientAlias,
-      clientData,
-      tableData,
-      BenchmarkAreas,
-      Industries,
-      Sexes,
-      filters,
-      navigation,
-      clientProducts,
-      sitemapGroups,
-      handle,
-    }) => {
-      const { Indkey, IGBMID, Sex, WebID } = filters;
+    {({ clientAlias, clientData, tableData, BenchmarkAreas, Industries, Sexes, filters, clientProducts }) => {
+      const { Indkey, IGBMID, Sex } = filters;
 
       const Benchmarks = [...BenchmarkAreas, ...Industries];
 
@@ -57,7 +226,7 @@ const LocalWorkerFieldsOfQualificationPage = () => (
 
       const tableParams = tableBuilder({
         prettyName: clientData.ShortName,
-        indName: currentIndustryName,
+        industryName: currentIndustryName,
         bmName: currentBenchmarkName,
         genderName: currentGenderName,
         TabularData: tableData,
@@ -65,7 +234,7 @@ const LocalWorkerFieldsOfQualificationPage = () => (
 
       const chartData = chartBuilder({
         prettyName: clientData.ShortName,
-        indName: currentIndustryName,
+        industryName: currentIndustryName,
         bmName: currentBenchmarkName,
         genderName: currentGenderName,
         TabularData: tableData,
@@ -73,7 +242,7 @@ const LocalWorkerFieldsOfQualificationPage = () => (
 
       const chartChangeData = chartBuilderChange({
         prettyName: clientData.ShortName,
-        indName: currentIndustryName,
+        industryName: currentIndustryName,
         bmName: currentBenchmarkName,
         genderName: currentGenderName,
         TabularData: tableData,
@@ -82,175 +251,10 @@ const LocalWorkerFieldsOfQualificationPage = () => (
       const handleExport = () => {};
       const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
-      // #region autotext / dynamic content
-
-      const TopLevelQualifications = data => {
-        return data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
-      };
-
-      const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
-
-      const Top = n => quals =>
-        _(quals)
-          .takeRight(n)
-          .reverse()
-          .value();
-
-      const TopThree = Top(3);
-      const TopFour = Top(4);
-
-      const HighestQualification = () => {
-        const topquals = TopLevelQualifications(tableData);
-        const highestQuals = HighestQualifications(topquals, 'NoYear1');
-        const biggest: any = highestQuals.pop();
-
-        return (biggest || {}).LabelName;
-      };
-
-      const TopThreeFields = () => {
-        const topquals = TopLevelQualifications(tableData);
-        const highestQuals = HighestQualifications(topquals, 'NoYear1');
-        const topThree = TopThree(highestQuals);
-
-        const totalPeople = _.sumBy(topThree, 'NoYear1');
-        const totalPercent = _.sumBy(topThree, 'PerYear1');
-
-        return (
-          <>
-            <ul>
-              {topThree.map((qual: any, i) => (
-                <li key={i}>
-                  {qual.LabelName} ({formatNumber(qual.NoYear1)} or {formatPercent(qual.PerYear1)}%)
-                </li>
-              ))}
-            </ul>
-            <p>
-              In combination these three fields accounted for {formatNumber(totalPeople)} people in total or 6
-              {formatPercent(totalPercent)}% of {currentIndustryName}.
-            </p>
-          </>
-        );
-      };
-
-      const ComparisonBenchmark = () => {
-        let CurrentBenchmarkName: any = currentBenchmarkName;
-
-        const industryBenchmark = IGBMID > 1000;
-        if (industryBenchmark) {
-          CurrentBenchmarkName = `the ${currentBenchmarkName} workforce in ${clientData.LongName}`;
-        }
-
-        const topquals = TopLevelQualifications(tableData);
-        const highestQuals = HighestQualifications(topquals, 'BMYear1');
-        const topThree: any = TopThree(highestQuals);
-
-        if (!topThree.length) return null;
-
-        const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)} in ${LabelName}`);
-
-        const [lastItem, ...comparisons] = formatComparisons.reverse();
-
-        const and = comparisons.length > 0 ? 'and' : null;
-
-        return (
-          <p>
-            In comparison, {CurrentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
-          </p>
-        );
-      };
-
-      const MajorDifferencesHeading = () => {
-        let industryText = currentIndustryName;
-        if (Indkey == 23000) {
-          //All Industries === 23000
-          industryText = 'total';
-        }
-        industryText = `the ${industryText} workforce`;
-
-        let benchmarkText = currentBenchmarkName;
-        const industryBenchmark = IGBMID > 1000;
-        if (industryBenchmark) {
-          if (IGBMID == 23000) {
-            benchmarkText = 'total';
-          }
-          benchmarkText = `the ${benchmarkText} workforce`;
-        }
-
-        return (
-          <Highlight>
-            The major differences between the fields of qualifications of {industryText} in {clientData.LongName} and{' '}
-            {benchmarkText} were:
-          </Highlight>
-        );
-      };
-
-      const MajorDifferences = () => {
-        const topquals = TopLevelQualifications(tableData);
-        const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
-        const majorDifferences = _.sortBy(qualsWithData, qual => {
-          const compare = [qual.PerYear1, qual.BMYear1];
-          return _.max(compare) - _.min(compare);
-        });
-        const topFour = TopFour(majorDifferences);
-
-        return (
-          <>
-            <MajorDifferencesHeading />
-            <ul>
-              {topFour.map((qual: any, i) => (
-                <li key={i}>
-                  A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local workers qualified
-                  in the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
-                  {formatPercent(qual.BMYear1)}%)
-                </li>
-              ))}
-            </ul>
-          </>
-        );
-      };
-
-      const EmergingGroupsHeading = () => {
-        let industryText = currentIndustryName;
-        if (Indkey == 23000) {
-          //All Industries === 23000
-          industryText = 'total';
-        }
-        industryText = `the ${industryText} workforce`;
-
-        return (
-          <Highlight>
-            The largest changes in fields of qualifications of {industryText} in {clientData.LongName} between 2011 and
-            2016 were:
-          </Highlight>
-        );
-      };
-
-      const EmergingGroups = () => {
-        const topquals = TopLevelQualifications(tableData);
-        const highestQuals = HighestQualifications(topquals, 'Change12');
-        const topFour = TopFour(highestQuals);
-
-        return (
-          <ul>
-            {topFour.map((qual: any, i) => (
-              <li key={i}>
-                {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
-              </li>
-            ))}
-          </ul>
-        );
-      };
-
       // #endregion
 
       return (
-        <Layout
-          client={clientData}
-          navnodes={navigation}
-          products={clientProducts}
-          sitemapGroup={sitemapGroups}
-          handle={handle}
-        >
+        <Layout>
           <PageHeader handleExport={handleExport}>
             <MainTitle>{clientData.LongName}</MainTitle>
             <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
@@ -361,13 +365,13 @@ const LocalWorkerFieldsOfQualificationPage = () => (
               Analysis of the fields of qualifications of the {currentIndustryName} shows that the three largest fields
               of qualification were:
             </p>
-            <TopThreeFields />
-            <ComparisonBenchmark />
-            <MajorDifferences />
+            <TopThreeFields industryName={currentIndustryName} />
+            <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
+            <MajorDifferences benchmarkName={currentBenchmarkName} industryName={currentIndustryName} />
           </AnalysisContainer>
           <AnalysisContainer>
             <h3>Emerging groups</h3>
-            <EmergingGroupsHeading />
+            <EmergingGroupsHeading industryName={currentIndustryName} />
             <EmergingGroups />
           </AnalysisContainer>
           {
@@ -424,7 +428,7 @@ const Source = () => (
 
 const tableBuilder = ({
   prettyName: clientName,
-  indName: industry,
+  industryName: industry,
   bmName: benchmark,
   genderName: gender,
   TabularData: data,
@@ -638,7 +642,7 @@ const tableBuilder = ({
 // #region chart builders
 const chartBuilder = ({
   prettyName: clientName,
-  indName: currentIndustry,
+  industryName: currentIndustry,
   bmName: currentBenchmark,
   genderName: gender,
   TabularData: data,
@@ -763,7 +767,7 @@ const chartBuilder = ({
 // #region chart builder change
 const chartBuilderChange = ({
   prettyName: clientName,
-  indName: currentIndustry,
+  industryName: currentIndustry,
   bmName: currentBenchmark,
   genderName: gender,
   TabularData: data,

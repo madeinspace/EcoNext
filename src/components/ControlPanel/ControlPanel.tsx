@@ -30,14 +30,6 @@ interface Selectable {
   Name: string;
 }
 
-interface Dropdown {
-  list: Selectable[];
-  title: string;
-  handleChange?: (e: any) => void;
-  value: number;
-  hidden?: boolean;
-}
-
 interface IControlPanelProps {
   industry?: boolean;
   benchmark?: boolean;

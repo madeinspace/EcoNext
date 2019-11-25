@@ -13,5 +13,5 @@ const fetchData = async filters => {
 export { fetchData, Page };
 
 const PopulationDataSQL = ({ ClientID, WebID, IGBMID }) => `
-  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID},${+IGBMID})
+  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID},${+IGBMID}) ORDER BY Year DESC
 `;

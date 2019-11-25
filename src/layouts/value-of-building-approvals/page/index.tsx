@@ -60,7 +60,7 @@ const postData = async (url = '', data = {}) => {
 // #region population page
 const ValueOfBuildingApprovalsPage = () => (
   <Context.Consumer>
-    {({ clientData, handle, tableData, navigation, clientProducts, sitemapGroups }) => {
+    {({ clientData, tableData }) => {
       const { LongName: prettyName, clientAlias } = clientData;
       const pageName = 'Value of total building approvals';
       const chartData = chartBuilder(tableData);
@@ -75,13 +75,7 @@ const ValueOfBuildingApprovalsPage = () => (
       const handleExport = () => requestPDF(pageName, prettyName);
 
       return (
-        <Layout
-          client={clientData}
-          navnodes={navigation}
-          products={clientProducts}
-          sitemapGroup={sitemapGroups}
-          handle={handle}
-        >
+        <Layout>
           <EntityContainer>
             <TitleContainer>
               <MainTitle>{prettyName}</MainTitle>
