@@ -208,206 +208,202 @@ const EmergingGroups = () => {
 };
 
 // #region page
-const LocalWorkerFieldsOfQualificationPage = () => (
-  <Context.Consumer>
-    {({ clientAlias, clientData, tableData, BenchmarkAreas, Industries, Sexes, filters, clientProducts }) => {
-      const { Indkey, IGBMID, Sex } = filters;
+const LocalWorkerFieldsOfQualificationPage = () => {
+  const { clientAlias, clientData, tableData, BenchmarkAreas, Industries, Sexes, filters, clientProducts } = useContext(
+    Context,
+  );
+  const { Indkey, IGBMID, Sex } = filters;
 
-      const Benchmarks = [...BenchmarkAreas, ...Industries];
+  const Benchmarks = [...BenchmarkAreas, ...Industries];
 
-      const getNameByID = (id, arr) => {
-        const result = arr.find(i => i.ID.toString() === id.toString());
-        return (result || {})['Name'];
-      };
+  const getNameByID = (id, arr) => {
+    const result = arr.find(i => i.ID.toString() === id.toString());
+    return (result || {})['Name'];
+  };
 
-      const currentIndustryName = getNameByID(Indkey, Industries);
-      const currentBenchmarkName = getNameByID(IGBMID, Benchmarks);
-      const currentGenderName = getNameByID(Sex, Sexes);
+  const currentIndustryName = getNameByID(Indkey, Industries);
+  const currentBenchmarkName = getNameByID(IGBMID, Benchmarks);
+  const currentGenderName = getNameByID(Sex, Sexes);
 
-      const tableParams = tableBuilder({
-        prettyName: clientData.ShortName,
-        industryName: currentIndustryName,
-        bmName: currentBenchmarkName,
-        genderName: currentGenderName,
-        TabularData: tableData,
-      });
+  const tableParams = tableBuilder({
+    prettyName: clientData.ShortName,
+    industryName: currentIndustryName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
+    TabularData: tableData,
+  });
 
-      const chartData = chartBuilder({
-        prettyName: clientData.ShortName,
-        industryName: currentIndustryName,
-        bmName: currentBenchmarkName,
-        genderName: currentGenderName,
-        TabularData: tableData,
-      });
+  const chartData = chartBuilder({
+    prettyName: clientData.ShortName,
+    industryName: currentIndustryName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
+    TabularData: tableData,
+  });
 
-      const chartChangeData = chartBuilderChange({
-        prettyName: clientData.ShortName,
-        industryName: currentIndustryName,
-        bmName: currentBenchmarkName,
-        genderName: currentGenderName,
-        TabularData: tableData,
-      });
+  const chartChangeData = chartBuilderChange({
+    prettyName: clientData.ShortName,
+    industryName: currentIndustryName,
+    bmName: currentBenchmarkName,
+    genderName: currentGenderName,
+    TabularData: tableData,
+  });
 
-      const handleExport = () => {};
-      const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
+  const handleExport = () => {};
+  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
-      // #endregion
+  // #endregion
 
-      return (
-        <Layout>
-          <PageHeader handleExport={handleExport}>
-            <MainTitle>{clientData.LongName}</MainTitle>
-            <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
-          </PageHeader>
-          <Headline>
-            {HighestQualification() &&
-              `Within the ${clientData.LongName}, there are more workers in ${currentIndustryName} with
+  return (
+    <Layout>
+      <PageHeader handleExport={handleExport}>
+        <MainTitle>{clientData.LongName}</MainTitle>
+        <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
+      </PageHeader>
+      <Headline>
+        {HighestQualification() &&
+          `Within the ${clientData.LongName}, there are more workers in ${currentIndustryName} with
       ${HighestQualification()} qualifications than any other field of qualification.`}
-          </Headline>
-          <PageIntro>
-            <div>
-              <p>
-                Field of Qualification presents the primary field of study for the highest qualification the person has
-                received.&nbsp;While this is likely to have some relationship to the current occupation, this is not
-                necessarily the case.{' '}
-              </p>
-              <p>The field of study relates to a number of factors, such as:</p>
-              <ul>
-                <li>The age of the workforce;</li>
-                <li>The type of qualification required to enter an industry;</li>
-                <li>The availability of jobs related to fields of qualification in {clientData.LongName};</li>
-                <li>The types of occupations which are available in an area or industry.</li>
-              </ul>
-              <p>
-                The fields of qualification held by local workers in a particular industry are likely to show the type
-                of skills required in that industry. &nbsp;Large numbers of a particular field of qualification in an
-                industry may indicate that it is a pre-requisite for that industry. The presence of fields of
-                qualification outside the main range of qualifications used in that industry may indicate that the
-                industry values employees of a broad educational background, or that people haven't been able to find
-                employment in their chosen field.
-              </p>
-              <p>
-                Field of Qualification information should be looked at in conjunction with{' '}
-                <a href={`${clientAlias}/workers-level-of-qualifications?`}>Level of qualification </a>
-                and <a href={`${clientAlias}/workers-occupations?`}>Occupation</a> data for a clearer picture of the
-                skills available for the local workers in {clientData.LongName}.
-              </p>
-            </div>
-            <SourceBubble>
-              <div>
-                <h3>Data source</h3>
-                <p>
-                  Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) &amp; 2016 – by place of
-                  work
-                </p>
-              </div>
-            </SourceBubble>
-          </PageIntro>
-          <Note>
-            <strong>Please note</strong> – The 2016 Census used a new methodology to “impute” a work location to people
-            who didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally
-            comparable. To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was
-            experimentally imputed using the same methodology. To provide this detail, {clientData.LongName} in 2011 had
-            to be constructed from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to
-            the LGA or region boundary, it is considered close enough to allow some comparison. Users should treat this
-            time series data with caution, however, and not compare directly with 2011 data from any other source.
-          </Note>
-
-          <ItemWrapper>
-            <ControlPanel industry benchmark sex />
-          </ItemWrapper>
-
-          <InfoBox>
-            <span>
-              <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub
-              categories.
-            </span>
-          </InfoBox>
-
-          <ItemWrapper>
-            <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
-          </ItemWrapper>
-
-          {hasProfile() && (
-            <CrossLink>
-              <ProfileProductIcon />
-              <a
-                href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
-                target="_blank"
-                title="link to forecast"
-              >
-                Residents qualifications by small area
-              </a>
-            </CrossLink>
-          )}
-
-          <InfoBox>
-            <span>
-              <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown
-              to the sub categories.
-            </span>
-          </InfoBox>
-
-          <ItemWrapper>
-            <EntityChart data={chartData} />
-          </ItemWrapper>
-
-          <ItemWrapper>
-            <EntityChart data={chartChangeData} />
-          </ItemWrapper>
-
-          {
-            // #region dominant and emerging groups
-          }
-          <AnalysisContainer>
-            <h3>Dominant groups</h3>
+      </Headline>
+      <PageIntro>
+        <div>
+          <p>
+            Field of Qualification presents the primary field of study for the highest qualification the person has
+            received.&nbsp;While this is likely to have some relationship to the current occupation, this is not
+            necessarily the case.{' '}
+          </p>
+          <p>The field of study relates to a number of factors, such as:</p>
+          <ul>
+            <li>The age of the workforce;</li>
+            <li>The type of qualification required to enter an industry;</li>
+            <li>The availability of jobs related to fields of qualification in {clientData.LongName};</li>
+            <li>The types of occupations which are available in an area or industry.</li>
+          </ul>
+          <p>
+            The fields of qualification held by local workers in a particular industry are likely to show the type of
+            skills required in that industry. &nbsp;Large numbers of a particular field of qualification in an industry
+            may indicate that it is a pre-requisite for that industry. The presence of fields of qualification outside
+            the main range of qualifications used in that industry may indicate that the industry values employees of a
+            broad educational background, or that people haven't been able to find employment in their chosen field.
+          </p>
+          <p>
+            Field of Qualification information should be looked at in conjunction with{' '}
+            <a href={`${clientAlias}/workers-level-of-qualifications?`}>Level of qualification </a>
+            and <a href={`${clientAlias}/workers-occupations?`}>Occupation</a> data for a clearer picture of the skills
+            available for the local workers in {clientData.LongName}.
+          </p>
+        </div>
+        <SourceBubble>
+          <div>
+            <h3>Data source</h3>
             <p>
-              Analysis of the fields of qualifications of the {currentIndustryName} shows that the three largest fields
-              of qualification were:
+              Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) &amp; 2016 – by place of work
             </p>
-            <TopThreeFields industryName={currentIndustryName} />
-            <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
-            <MajorDifferences benchmarkName={currentBenchmarkName} industryName={currentIndustryName} />
-          </AnalysisContainer>
-          <AnalysisContainer>
-            <h3>Emerging groups</h3>
-            <EmergingGroupsHeading industryName={currentIndustryName} />
-            <EmergingGroups />
-          </AnalysisContainer>
-          {
-            // #endregion
-          }
-          {
-            // #region related pages
-          }
-          <RelatedPagesCTA>
-            <h3>To continue building your economic story go to...</h3>
-            <ul>
-              <li>
-                <a href={`${clientAlias}/monash/workers-level-of-qualifications`} title="Qualifications">
-                  Qualifications
-                </a>
-              </li>
-              <li>
-                <a href={`${clientAlias}/workers-field-of-qualification`} title="Field of qualification">
-                  Field of qualification
-                </a>
-              </li>
-              <li>
-                <a href={`${clientAlias}/workers-income`} title="Income">
-                  Income
-                </a>
-              </li>
-            </ul>
-          </RelatedPagesCTA>
-          {
-            // #endregion
-          }
-        </Layout>
-      );
-    }}
-  </Context.Consumer>
-);
+          </div>
+        </SourceBubble>
+      </PageIntro>
+      <Note>
+        <strong>Please note</strong> – The 2016 Census used a new methodology to “impute” a work location to people who
+        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
+        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
+        imputed using the same methodology. To provide this detail, {clientData.LongName} in 2011 had to be constructed
+        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
+        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
+        caution, however, and not compare directly with 2011 data from any other source.
+      </Note>
+
+      <ItemWrapper>
+        <ControlPanel industry benchmark sex />
+      </ItemWrapper>
+
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
+        </span>
+      </InfoBox>
+
+      <ItemWrapper>
+        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+      </ItemWrapper>
+
+      {hasProfile() && (
+        <CrossLink>
+          <ProfileProductIcon />
+          <a
+            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
+            target="_blank"
+            title="link to forecast"
+          >
+            Residents qualifications by small area
+          </a>
+        </CrossLink>
+      )}
+
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
+          the sub categories.
+        </span>
+      </InfoBox>
+
+      <ItemWrapper>
+        <EntityChart data={chartData} />
+      </ItemWrapper>
+
+      <ItemWrapper>
+        <EntityChart data={chartChangeData} />
+      </ItemWrapper>
+
+      {
+        // #region dominant and emerging groups
+      }
+      <AnalysisContainer>
+        <h3>Dominant groups</h3>
+        <p>
+          Analysis of the fields of qualifications of the {currentIndustryName} shows that the three largest fields of
+          qualification were:
+        </p>
+        <TopThreeFields industryName={currentIndustryName} />
+        <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
+        <MajorDifferences benchmarkName={currentBenchmarkName} industryName={currentIndustryName} />
+      </AnalysisContainer>
+      <AnalysisContainer>
+        <h3>Emerging groups</h3>
+        <EmergingGroupsHeading industryName={currentIndustryName} />
+        <EmergingGroups />
+      </AnalysisContainer>
+      {
+        // #endregion
+      }
+      {
+        // #region related pages
+      }
+      <RelatedPagesCTA>
+        <h3>To continue building your economic story go to...</h3>
+        <ul>
+          <li>
+            <a href={`${clientAlias}/monash/workers-level-of-qualifications`} title="Qualifications">
+              Qualifications
+            </a>
+          </li>
+          <li>
+            <a href={`${clientAlias}/workers-field-of-qualification`} title="Field of qualification">
+              Field of qualification
+            </a>
+          </li>
+          <li>
+            <a href={`${clientAlias}/workers-income`} title="Income">
+              Income
+            </a>
+          </li>
+        </ul>
+      </RelatedPagesCTA>
+      {
+        // #endregion
+      }
+    </Layout>
+  );
+};
 // #endregion
 
 export default LocalWorkerFieldsOfQualificationPage;
