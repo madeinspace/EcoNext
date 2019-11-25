@@ -1,33 +1,29 @@
-import React from 'react';
-import { pathParts } from '../utils/';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import Link from '../components/Link';
+import { Context } from '../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
-const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
-  const { pageAlias: currentPageAlias } = pathParts(useRouter().pathname);
-  const currentPageNode = navigationNodes.find(node => node.Alias === currentPageAlias);
+const SiblingsMenu = () => {
+  const { clientAlias, handle, navigation } = useContext(Context);
+
+  const currentPageNode = navigation.find(node => node.Alias === handle);
   const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
-  const siblings = navigationNodes
-    .filter(node => {
-      return node.ParentPageID === currentParentPageID;
-    })
-    .map((node, i) => {
-      const { Disabled, MenuTitle, Alias } = node;
-      return (
-        <React.Fragment key={i}>
-          {Disabled ? (
-            <DisabledLink>{MenuTitle}</DisabledLink>
-          ) : (
-            <StyledLink href={`/${clientAlias}/${Alias}`} className={currentPageAlias === Alias && 'active'}>
-              {MenuTitle}
-            </StyledLink>
-          )}
-        </React.Fragment>
-      );
-    });
+
+  const siblings = navigation
+    .filter(node => node.ParentPageID === currentParentPageID)
+    .map(({ Disabled, MenuTitle, Alias }) => (
+      <React.Fragment key={Alias}>
+        {Disabled ? (
+          <DisabledLink>{MenuTitle}</DisabledLink>
+        ) : (
+          <StyledLink href={`/${clientAlias}/${Alias}`} className={handle === Alias && 'active'}>
+            {MenuTitle}
+          </StyledLink>
+        )}
+      </React.Fragment>
+    ));
 
   return <SiblingsMenuContainer>{siblings}</SiblingsMenuContainer>;
 };

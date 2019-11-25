@@ -21,7 +21,7 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #region population page
 const PopulationPage = () => (
   <Context.Consumer>
-    {({ clientData, clientAlias, handle, tableData, navigation, clientProducts, sitemapGroups }) => {
+    {({ clientData, clientAlias, tableData, clientProducts }) => {
       const { LongName: prettyName } = clientData;
       const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
@@ -68,13 +68,7 @@ const PopulationPage = () => (
       const tableParams = tableBuilder(clientAlias, tableData);
 
       return (
-        <Layout
-          client={clientData}
-          navnodes={navigation}
-          products={clientProducts}
-          sitemapGroup={sitemapGroups}
-          handle={handle}
-        >
+        <Layout>
           <PageHeader handleExport={handleExport}>
             <MainTitle>{prettyName}</MainTitle>
             <SubTitle>Population</SubTitle>

@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import ClientProductsNav from './ClientProductsNav';
@@ -66,49 +64,26 @@ const HeaderWrapper = styled.div`
   grid-area: header;
 `;
 
-export const ClientHeader = ({
-  alias,
-  prettyname,
-  products,
-  isLite,
-  clientImage
-}) => {
-  return (
-    <Decoration>
-      <HeaderRow>
-        <HeaderWrapper>
-          <Header>
-            <Stack>
-              <Title>
-                <ClientName>{prettyname} </ClientName>
-                <Separator />
-                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
-              </Title>
-              <ClientProductsNav products={products} alias={alias} />
-            </Stack>
-            <ClientLogo>
-              <img src={clientImage} />
-            </ClientLogo>
-          </Header>
-        </HeaderWrapper>
-      </HeaderRow>
-    </Decoration>
-  );
-};
-
-ClientHeader.propTypes = {
-  clientID: PropTypes.number,
-  name: PropTypes.string,
-  alias: PropTypes.string,
-  longName: PropTypes.string,
-  logoUrl: PropTypes.string
-};
-
-ClientHeader.defaultProps = {
-  name: ``,
-  alias: ``,
-  longName: ``,
-  logoUrl: ``
-};
+export const ClientHeader = ({ alias, prettyname, isLite, clientImage }) => (
+  <Decoration>
+    <HeaderRow>
+      <HeaderWrapper>
+        <Header>
+          <Stack>
+            <Title>
+              <ClientName>{prettyname} </ClientName>
+              <Separator />
+              <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
+            </Title>
+            <ClientProductsNav alias={alias} />
+          </Stack>
+          <ClientLogo>
+            <img src={clientImage} />
+          </ClientLogo>
+        </Header>
+      </HeaderWrapper>
+    </HeaderRow>
+  </Decoration>
+);
 
 export default ClientHeader;

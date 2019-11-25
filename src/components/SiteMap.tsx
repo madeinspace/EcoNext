@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import groupBy from 'lodash/groupBy';
 import _ from 'lodash';
 import Link from '../components/Link';
 import { FooterRow, SiteMapGrid } from './grid';
+import { Context } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiteMapHeader = styled.h1`
@@ -111,13 +112,13 @@ const Column = styled.div`
   grid-area: ${props => `col${props.col}`};
 `;
 
-const buildSiteMap = (clientAlias, columns, navigationNodes) => {
+const buildSiteMap = (clientAlias, columns, navigation) => {
   return columns.map((column, i) => {
     return (
       <Column key={i} col={i + 1}>
         {column.map((groups, i) => {
           const pageIDs = groups.Pages.split(',').map(Number);
-          const pages = navigationNodes.filter(node => pageIDs.includes(node.PageID));
+          const pages = navigation.filter(node => pageIDs.includes(node.PageID));
           return (
             <ColumnGroup key={i}>
               <GroupName>{groups.GroupName}</GroupName>
@@ -145,8 +146,10 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
   });
 };
 
-const SiteMap = ({ alias, products, prettyname, navigationNodes, colGroups }) => {
-  const columns = _.values(groupBy(colGroups, 'ColNumber'));
+const SiteMap = ({ alias, prettyname }) => {
+  const { clientProducts, navigation, sitemapGroups } = useContext(Context);
+
+  const columns = _.values(groupBy(sitemapGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
       <FooterRow>
@@ -159,10 +162,10 @@ const SiteMap = ({ alias, products, prettyname, navigationNodes, colGroups }) =>
           <Subtitle>economic profile</Subtitle>
         </FooterContents>
       </FooterRow>
-      <SiteMapGrid>{buildSiteMap(alias, columns, navigationNodes)}</SiteMapGrid>
+      <SiteMapGrid>{buildSiteMap(alias, columns, navigation)}</SiteMapGrid>
       <FooterRow>
         <ProductItems>
-          {products
+          {clientProducts
             .filter(p => p.AppID != 4)
             .map((product, i) => {
               return (
@@ -178,4 +181,5 @@ const SiteMap = ({ alias, products, prettyname, navigationNodes, colGroups }) =>
     </SitemapWrapper>
   );
 };
+
 export default SiteMap;
