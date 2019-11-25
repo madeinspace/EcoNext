@@ -24,8 +24,7 @@ const PopulationPage = () => (
     {({ clientData, clientAlias, tableData, clientProducts }) => {
       const { LongName: prettyName } = clientData;
       const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
-
-      const FormattedNumber = number => <>{formatNumber(number)}</>;
+      const FormattedNumber = ({ number }) => <>{formatNumber(number)}</>;
       const handleExport = async () => {
         const IDReportRequest = {
           FileName: `Population - ${prettyName}`,
@@ -66,6 +65,8 @@ const PopulationPage = () => (
       const chartData = chartBuilder(tableData);
       const chartLineData = chartLineBuilder(tableData);
       const tableParams = tableBuilder(clientAlias, tableData);
+      const latestPop = tableData[0].Number;
+      const latestYear = tableData[0].Year;
 
       return (
         <Layout>
@@ -74,8 +75,8 @@ const PopulationPage = () => (
             <SubTitle>Population</SubTitle>
           </PageHeader>
           <Headline>
-            The Estimated Resident Population of the {prettyName} was <FormattedNumber number={12} /> as of the 30th
-            June [latestYear].
+            The Estimated Resident Population of the {prettyName} was <FormattedNumber number={latestPop} /> as of the
+            30th June {latestYear}.
           </Headline>
           <PageIntroFullWidth>
             <p>
