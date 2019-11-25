@@ -42,7 +42,7 @@ Page.getInitialProps = async function(context) {
 
   const { fetchData } = await import(`../../../layouts/${handle}`);
 
-  const clientData = await fetchClientData({
+  const clientData: any = await fetchClientData({
     clientAlias,
     containers: context.req.containers,
   });
