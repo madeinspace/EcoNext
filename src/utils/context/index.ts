@@ -14,3 +14,7 @@ export const Context = React.createContext({
   filters: null,
   clientAreas: null,
 });
+
+export const ClientProductsContext = React.createContext({
+  clientProducts: null,
+});

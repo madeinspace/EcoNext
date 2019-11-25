@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { CenteredContainer } from '../components/grid';
 import ClientProductsNav from '../components/ClientProductsNav';
 import SharedFooter from '../components/SharedFooter';
+import { Context, ClientProductsContext } from '../utils/context';
 
 const LogoGrid = styled.div`
   display: grid;
@@ -116,7 +117,7 @@ const HomePage = ({ clients }) => {
   ));
 
   return (
-    <>
+    <ClientProductsContext.Provider value={{ clientProducts: products }}>
       <CenteredContainer>
         <IDidentity />
       </CenteredContainer>
@@ -149,12 +150,13 @@ const HomePage = ({ clients }) => {
         <LogoGrid>{clientList}</LogoGrid>
       </CenteredContainer>
       <SharedFooter />
-    </>
+    </ClientProductsContext.Provider>
   );
 };
 
 HomePage.getInitialProps = async () => {
   const clients = await fetchClients();
+
   return { clients };
 };
 
