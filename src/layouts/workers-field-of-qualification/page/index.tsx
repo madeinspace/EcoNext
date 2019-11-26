@@ -207,17 +207,17 @@ const EmergingGroups = () => {
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
 
-  const getActiveToggle = toggleKey => {
-    const toggle = toggles.find(({ key }) => key === toggleKey);
+  const getActiveToggle = (toggleKey, defaultValue = null) => {
+    const { active } = toggles.find(({ key }) => key === toggleKey);
 
-    const {
-      active: { Label },
-    } = toggle;
+    if (!active) return defaultValue;
+
+    const { Label } = active;
 
     return Label || '';
   };
 
-  const currentAreaName = getActiveToggle('WebID');
+  const currentAreaName = getActiveToggle('WebID', clientData.LongName);
   const currentIndustryName = getActiveToggle('Indkey');
   const currentBenchmarkName = getActiveToggle('IGBMID');
   const currentGenderName = getActiveToggle('Sex');
