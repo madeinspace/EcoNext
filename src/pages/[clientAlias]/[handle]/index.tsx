@@ -12,6 +12,7 @@ import WorkersFieldOfQualification from '../../../layouts/workers-field-of-quali
 import toggleData from '../../../data/toggles';
 import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 import RelatedPagesCTA from '../../../components/RelatedPages';
+import PageHeader from '../../../components/PageHeader';
 
 export const NextPages = {
   population: Population,
@@ -25,6 +26,7 @@ const Page = props => {
   return (
     <Context.Provider value={props}>
       <MainLayout>
+        <PageHeader />
         <PageLayout />
         <RelatedPagesCTA />
       </MainLayout>
@@ -41,10 +43,13 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const { ClientID, clientAreas, clientProducts, clientPages } = clientData;
 
-  const pageDefaultFilters = (toggleData[handle] || []).reduce((acc, { ParamName, DefaultValue }) => ({
-    ...acc,
-    [ParamName]: DefaultValue,
-  }));
+  const pageDefaultFilters = (toggleData[handle] || []).reduce(
+    (acc, { ParamName, DefaultValue }) => ({
+      ...acc,
+      [ParamName]: DefaultValue,
+    }),
+    [],
+  );
 
   const filters = {
     IGBMID: 40,

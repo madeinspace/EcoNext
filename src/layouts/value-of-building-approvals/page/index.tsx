@@ -1,16 +1,7 @@
 // #region imports
 import _ from 'lodash';
 import { formatNumber, formatPercent, formatMillionsCurrency } from '../../../utils/';
-import {
-  TitleContainer,
-  MainTitle,
-  SubTitle,
-  Headline,
-  ItemWrapper,
-  EntityContainer,
-  PageIntroFullWidth,
-} from '../../../styles/MainContentStyles';
-import { Actions, Share, ExportPage } from '../../../components/Actions';
+import { Headline, ItemWrapper, PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { Context } from '../../../utils/context';
@@ -72,25 +63,8 @@ const ValueOfBuildingApprovalsPage = () => {
     return <>{formatedNumber}</>;
   };
 
-  const handleExport = () => requestPDF(pageName, prettyName);
-
   return (
     <>
-      <EntityContainer>
-        <TitleContainer>
-          <MainTitle>{prettyName}</MainTitle>
-          <SubTitle>Value of building approvals</SubTitle>
-        </TitleContainer>
-        <Actions>
-          <Share />
-          <ExportPage
-            onExport={e => handleExport()}
-            exportOptions={{
-              formats: [{ displayText: 'PDF' } /*, { name: "PDF" }*/],
-            }}
-          />
-        </Actions>
-      </EntityContainer>
       <Headline>
         The value of building approvals in the City of Monash was <FormattedTotalValueBuildingApprovals /> in the
         2019-20 Sep FYTD financial year.
