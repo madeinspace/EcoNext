@@ -1,3 +1,4 @@
+// #region imports
 import _ from 'lodash';
 import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
@@ -202,6 +203,7 @@ const EmergingGroups = () => {
     </ul>
   );
 };
+// #endregion
 
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
@@ -248,8 +250,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
 
   const handleExport = () => {};
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
-
-  // #endregion
 
   return (
     <Layout>
@@ -405,7 +405,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     </Layout>
   );
 };
-// #endregion
 
 export default LocalWorkerFieldsOfQualificationPage;
 
