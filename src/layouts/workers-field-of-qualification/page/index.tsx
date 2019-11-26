@@ -4,7 +4,6 @@ import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } f
 import EntityTable from '../../../components/table/EntityTable';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React, { useContext } from 'react';
-import Layout from '../../../layouts/main';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
   MainTitle,
@@ -15,7 +14,6 @@ import {
   Highlight,
   AnalysisContainer,
   SourceBubble,
-  RelatedPagesCTA,
   ItemWrapper,
   CrossLink,
   ProfileProductIcon,
@@ -252,7 +250,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   // #endregion
 
   return (
-    <Layout>
+    <>
       <PageHeader handleExport={handleExport}>
         <MainTitle>{currentAreaName}</MainTitle>
         <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
@@ -376,33 +374,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       {
         // #endregion
       }
-      {
-        // #region related pages
-      }
-      <RelatedPagesCTA>
-        <h3>To continue building your economic story go to...</h3>
-        <ul>
-          <li>
-            <a href={`${clientAlias}/monash/workers-level-of-qualifications`} title="Qualifications">
-              Qualifications
-            </a>
-          </li>
-          <li>
-            <a href={`${clientAlias}/workers-field-of-qualification`} title="Field of qualification">
-              Field of qualification
-            </a>
-          </li>
-          <li>
-            <a href={`${clientAlias}/workers-income`} title="Income">
-              Income
-            </a>
-          </li>
-        </ul>
-      </RelatedPagesCTA>
-      {
-        // #endregion
-      }
-    </Layout>
+    </>
   );
 };
 // #endregion

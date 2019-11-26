@@ -148,35 +148,3 @@ export const SourceBubble = styled.div`
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   }
 `;
-
-export const RelatedPagesCTA = styled.div`
-  display: grid;
-  grid-template-areas: 'text . links';
-  grid-template-columns: 65% 5% 30%;
-  padding: 20px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-  h3 {
-    color: ${variables.colorEconomyDark};
-    margin-bottom: 0;
-    &::after {
-      font-family: 'id-icons';
-      font-size: 28px;
-      line-height: 0;
-      content: '\\E603';
-      float: right;
-      margin-top: 15px;
-    }
-  }
-  ul {
-    list-style: none;
-    grid-area: links;
-    margin-bottom: 0;
-    a {
-      color: ${variables.gray};
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-`;

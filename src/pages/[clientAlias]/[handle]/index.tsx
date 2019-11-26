@@ -3,12 +3,15 @@ import { Context } from '../../../utils/context';
 import fetchClientData from '../../../utils/fetchClientData';
 import fetchSitemap from '../../../utils/fetchSitemap';
 
+import MainLayout from '../../../layouts/main';
+
 import Population from '../../../layouts/population/page';
 import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
 import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
 
 import toggleData from '../../../data/toggles';
 import fetchToggleOptions from '../../../utils/fetchToggleOptions';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 
 export const NextPages = {
   population: Population,
@@ -17,11 +20,14 @@ export const NextPages = {
 };
 
 const Page = props => {
-  const Layout = NextPages[props.handle];
+  const PageLayout = NextPages[props.handle];
 
   return (
     <Context.Provider value={props}>
-      <Layout />
+      <MainLayout>
+        <PageLayout />
+        <RelatedPagesCTA />
+      </MainLayout>
     </Context.Provider>
   );
 };
@@ -52,9 +58,11 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const { fetchData } = await import(`../../../layouts/${handle}`);
 
-  // const { AllPages } = containers;
+  const { AllPages } = containers;
 
-  // const pageData = AllPages[handle];
+  const pageData = AllPages[handle];
+
+  // console.log(JSON.stringify(AllPages['gross-regional-product']));
 
   const toggles = await fetchToggleOptions(filters, toggleData[handle]);
 
@@ -73,6 +81,7 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
     clientData,
     clientAlias,
     toggles,
+    pageData,
   };
 };
 
