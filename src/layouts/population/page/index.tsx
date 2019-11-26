@@ -1,10 +1,7 @@
 // #region imports
 import _ from 'lodash';
-import Layout from '../../main';
 import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
 import {
-  MainTitle,
-  SubTitle,
   Headline,
   ItemWrapper,
   CrossLink,
@@ -13,115 +10,76 @@ import {
 } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import PageHeader from '../../../components/PageHeader';
 import { Context } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { useContext } from 'react';
+import getActiveToggle from '../../../utils/getActiveToggle';
 // #endregion
 
 // #region population page
-const PopulationPage = () => (
-  <Context.Consumer>
-    {({ clientData, clientAlias, tableData, clientProducts }) => {
-      const { LongName: prettyName } = clientData;
-      const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
-      const FormattedNumber = ({ number }) => <>{formatNumber(number)}</>;
-      const handleExport = async () => {
-        const IDReportRequest = {
-          FileName: `Population - ${prettyName}`,
-          Urls: [
-            {
-              Title: `Population - ${prettyName}`,
-              url: window.location.href,
-            },
-          ],
-          Action: 0,
-          EmailAddress: 'fabrice@id.com.au',
-        };
+const PopulationPage = () => {
+  const { clientData, clientAlias, tableData, clientProducts, toggles } = useContext(Context);
 
-        try {
-          const data = await postData(
-            'https://idreportserviceweb.azurewebsites.net/api/IDReportService/RequestReport/',
-            IDReportRequest,
-          ).then(res => {
-            console.log('Report Ok: ', res);
-          });
-          console.log(`Page report request: Population - ${prettyName}`);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
 
-      const postData = async (url = '', data = {}) => {
-        const response = await fetch(url, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        return response.json();
-      };
+  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
-      const chartData = chartBuilder(tableData);
-      const chartLineData = chartLineBuilder(tableData);
-      const tableParams = tableBuilder(clientAlias, tableData);
-      const latestPop = tableData[0].Number;
-      const latestYear = tableData[0].Year;
+  const FormattedNumber = ({ number }) => <>{formatNumber(number)}</>;
 
-      return (
-        <Layout>
-          <PageHeader handleExport={handleExport}>
-            <MainTitle>{prettyName}</MainTitle>
-            <SubTitle>Population page</SubTitle>
-          </PageHeader>
-          <Headline>
-            The Estimated Resident Population of the {prettyName} was <FormattedNumber number={latestPop} /> as of the
-            30th June {latestYear}.
-          </Headline>
-          <PageIntroFullWidth>
-            <p>
-              The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by
-              the Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years
-              ERP for {prettyName}, the state and Australia, with percentage comparisons. A growing population can
-              indicate a growing economy, but this is not necessarily the case and depends on the residential role and
-              function of the area.
-            </p>
-          </PageIntroFullWidth>
+  const chartData = chartBuilder(tableData);
+  const chartLineData = chartLineBuilder(tableData);
+  const tableParams = tableBuilder(clientAlias, tableData);
+  const latestPop = tableData[0].Number;
+  const latestYear = tableData[0].Year;
 
-          <ItemWrapper>
-            <ControlPanel />
-          </ItemWrapper>
+  return (
+    <>
+      <Headline>
+        The Estimated Resident Population of the {currentAreaName} was <FormattedNumber number={latestPop} /> as of the
+        30th June {latestYear}.
+      </Headline>
+      <PageIntroFullWidth>
+        <p>
+          The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the
+          Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for{' '}
+          {currentAreaName}, the state and Australia, with percentage comparisons. A growing population can indicate a
+          growing economy, but this is not necessarily the case and depends on the residential role and function of the
+          area.
+        </p>
+      </PageIntroFullWidth>
 
-          <ItemWrapper>
-            <EntityChart data={chartData} />
-          </ItemWrapper>
+      <ItemWrapper>
+        <ControlPanel />
+      </ItemWrapper>
 
-          <ItemWrapper>
-            <EntityChart data={chartLineData} />
-          </ItemWrapper>
+      <ItemWrapper>
+        <EntityChart data={chartData} />
+      </ItemWrapper>
 
-          <ItemWrapper>
-            <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
-          </ItemWrapper>
+      <ItemWrapper>
+        <EntityChart data={chartLineData} />
+      </ItemWrapper>
 
-          {hasForecast(clientProducts) && (
-            <CrossLink>
-              <ForecastProductIcon />
-              <a
-                href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
-                target="_blank"
-                title="link to forecast"
-              >
-                Population forecasts
-                <span className="hidden"> (opens a new window)</span>
-              </a>
-            </CrossLink>
-          )}
-        </Layout>
-      );
-    }}
-  </Context.Consumer>
-);
+      <ItemWrapper>
+        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+      </ItemWrapper>
+
+      {hasForecast(clientProducts) && (
+        <CrossLink>
+          <ForecastProductIcon />
+          <a
+            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
+            target="_blank"
+            title="link to forecast"
+          >
+            Population forecasts
+            <span className="hidden"> (opens a new window)</span>
+          </a>
+        </CrossLink>
+      )}
+    </>
+  );
+};
 
 // #endregion
 
