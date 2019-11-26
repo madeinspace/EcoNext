@@ -25,85 +25,50 @@ const StyledControlPanel = styled.div`
   z-index: 2;
 `;
 
-interface Selectable {
-  ID: number;
-  Name: string;
-}
+const ControlPanel: React.SFC<{}> = () => {
+  const { clientAlias, handle, toggles } = React.useContext(Context);
 
-interface IControlPanelProps {
-  industry?: boolean;
-  benchmark?: boolean;
-  sex?: boolean;
-}
+  const setQuery = (key, value) => {
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    query[key] = value;
+    Router.push({
+      pathname: `/${clientAlias}/${handle}`,
+      query,
+    });
+  };
 
-const ControlPanel: React.SFC<IControlPanelProps> = ({ industry, benchmark, sex }) => (
-  // these props determine whether to show the corresponding dropdowns
-  // note that `area` will always appear if clientAreas > 1 (eg we are viewing an RDA client)
-  <Context.Consumer>
-    {({ clientAlias, handle, filters, clientAreas, Industries, BenchmarkAreas, Sexes }) => {
-      // bail early if none of the props are true
-      if (!(industry || benchmark || sex) && clientAreas.length === 1) return null;
+  const handleReset = () =>
+    Router.push({
+      pathname: `/${clientAlias}/${handle}`,
+      query: {},
+    });
 
-      const Benchmarks = [...Industries, ...BenchmarkAreas];
+  const displayToggles = toggles.reduce((acc, { list }) => {
+    return acc || (list && list.length > 1);
+  }, false);
 
-      const setQuery = (key, value) => {
-        const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-        query[key] = value;
-        Router.push({
-          pathname: `/${clientAlias}/${handle}`,
-          query,
-        });
-      };
+  if (!displayToggles) return null;
 
-      const handleReset = () =>
-        Router.push({
-          pathname: `/${clientAlias}/${handle}`,
-          query: {},
-        });
-
-      const { Indkey, IGBMID, Sex, WebID } = filters;
-
-      return (
-        <Sticky>
-          <StyledControlPanel>
-            {clientAreas.length > 1 && (
+  return (
+    <Sticky>
+      <StyledControlPanel>
+        {toggles.map(({ title, value, key, list }) => {
+          return (
+            list.length > 1 && (
               <SelectDropdown
-                title="Current area:"
-                value={WebID}
-                handleChange={e => setQuery('WebID', e.target.value)}
-                list={clientAreas || []}
+                key={key}
+                title={title}
+                value={value}
+                handleChange={e => setQuery(key, e.target.value)}
+                list={list}
               />
-            )}
-            {industry && (
-              <SelectDropdown
-                title="Current industry:"
-                value={Indkey}
-                handleChange={e => setQuery('Indkey', e.target.value)}
-                list={Industries.filter(({ ID }) => ID !== +IGBMID) || []}
-              />
-            )}
-            {benchmark && (
-              <SelectDropdown
-                title="Current benchmark:"
-                value={IGBMID}
-                handleChange={e => setQuery('IGBMID', e.target.value)}
-                list={Benchmarks.filter(({ ID }) => ID !== +Indkey) || []}
-              />
-            )}
-            {sex && (
-              <SelectDropdown
-                title="Gender:"
-                value={Sex}
-                handleChange={e => setQuery('Sex', e.target.value)}
-                list={Sexes || []}
-              />
-            )}
-            <ResetButton onClick={handleReset} />
-          </StyledControlPanel>
-        </Sticky>
-      );
-    }}
-  </Context.Consumer>
-);
+            )
+          );
+        })}
+        <ResetButton onClick={handleReset} />
+      </StyledControlPanel>
+    </Sticky>
+  );
+};
 
 export default ControlPanel;
