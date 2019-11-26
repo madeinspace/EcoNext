@@ -3,6 +3,8 @@ import { sqlConnection } from '../../utils/sql';
 const fetchToggleOptions = async (filters, toggles) => {
   const completeToggles = await Promise.all(
     toggles.map(async ({ Database, Params, StoredProcedure, ParamName, Label, DefaultValue }) => {
+      if (!StoredProcedure) return undefined;
+
       const paramList = (Params || []).reduce((acc, cur) => [...acc, filters[Object.keys(cur)[0]]], []);
 
       const connectionString = `exec ${Database}.[dbo].${StoredProcedure} ${paramList
