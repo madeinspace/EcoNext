@@ -13,13 +13,14 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { Context } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { useContext } from 'react';
+import getActiveToggle from '../../../utils/getActiveToggle';
 // #endregion
 
 // #region population page
 const PopulationPage = () => {
-  const { clientData, clientAlias, tableData, clientProducts } = useContext(Context);
+  const { clientData, clientAlias, tableData, clientProducts, toggles } = useContext(Context);
 
-  const { LongName: prettyName } = clientData;
+  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
 
   const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
@@ -34,14 +35,14 @@ const PopulationPage = () => {
   return (
     <>
       <Headline>
-        The Estimated Resident Population of the {prettyName} was <FormattedNumber number={latestPop} /> as of the 30th
-        June {latestYear}.
+        The Estimated Resident Population of the {currentAreaName} was <FormattedNumber number={latestPop} /> as of the
+        30th June {latestYear}.
       </Headline>
       <PageIntroFullWidth>
         <p>
           The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the
           Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for{' '}
-          {prettyName}, the state and Australia, with percentage comparisons. A growing population can indicate a
+          {currentAreaName}, the state and Australia, with percentage comparisons. A growing population can indicate a
           growing economy, but this is not necessarily the case and depends on the residential role and function of the
           area.
         </p>
