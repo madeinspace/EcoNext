@@ -22,8 +22,8 @@ const SelectDropdown: React.FC<any> = ({ title, list, value, handleChange }) => 
     <Title>{title}</Title>
     <Select name="select" value={value} onChange={handleChange}>
       {list.map(item => (
-        <Option key={item.ID} value={item.ID}>
-          {item.Name}
+        <Option key={item.Value} value={item.Value}>
+          {item.Label}
         </Option>
       ))}
     </Select>

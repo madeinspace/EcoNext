@@ -8,11 +8,19 @@ const connect = async () => {
   const { database } = await cosmosClient.database('CommClient').read();
 
   const { container: ClientContainer } = await database.container('Clients').read();
-  const { container: EntityContainer } = await database.container('Entities').read();
   const { container: PageContainer } = await database.container('Pages').read();
-  const { container: TableContainer } = await database.container('Tables').read();
 
-  return { ClientContainer, EntityContainer, PageContainer, TableContainer };
+  const { resources: pages } = await PageContainer.items.query(`SELECT * FROM c WHERE c.ApplicationID = 4`).fetchAll();
+
+  const AllPages = pages.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.Alias]: cur,
+    }),
+    {},
+  );
+
+  return { ClientContainer, AllPages };
 };
 
 module.exports = { connect };

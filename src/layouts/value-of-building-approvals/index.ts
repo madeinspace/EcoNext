@@ -3,7 +3,7 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 
 const fetchData = async filters => {
-  const { ClientID, WebID, IGBMID } = filters;
+  const { ClientID, WebID } = filters;
 
   const data = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 

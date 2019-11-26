@@ -2,19 +2,13 @@ import { Context } from '../../../utils/context';
 
 import fetchClientData from '../../../utils/fetchClientData';
 import fetchSitemap from '../../../utils/fetchSitemap';
-import fetchIndustries from '../../../utils/fetchIndustries';
-import fetchBenchmarkAreas from '../../../utils/fetchBenchmarkAreas';
 
 import Population from '../../../layouts/population/page';
 import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
 import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
 
-const defaultFilters = {
-  Indkey: 23000,
-  IGBMID: 40,
-  Sex: 3,
-  WebID: 10,
-};
+import toggleData from '../../../data/toggles';
+import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 
 export const NextPages = {
   population: Population,
@@ -32,40 +26,44 @@ const Page = props => {
   );
 };
 
-Page.getInitialProps = async function({ query, req }) {
-  const filters = {
-    ...defaultFilters,
-    ...query,
-  };
-
-  const { clientAlias, handle } = query;
-
-  const { fetchData } = await import(`../../../layouts/${handle}`);
-
+Page.getInitialProps = async function({ query, req: { containers } }) {
+  const { clientAlias, handle, ...providedFilters } = query;
   const clientData: any = await fetchClientData({
     clientAlias,
-    containers: req.containers,
+    containers,
   });
 
   const { ClientID, clientAreas, clientProducts, clientPages } = clientData;
 
-  const tableData = await fetchData({ ClientID, ...filters });
+  const pageDefaultFilters = (toggleData[handle] || []).reduce((acc, { ParamName, DefaultValue }) => ({
+    ...acc,
+    [ParamName]: DefaultValue,
+  }));
 
-  const Industries = await fetchIndustries(40);
-  const BenchmarkAreas = await fetchBenchmarkAreas(ClientID);
+  const filters = {
+    IGBMID: 40,
+    Indkey: 23000,
+    Sex: 3,
+    WebID: 10,
+    ...pageDefaultFilters,
+    ...providedFilters,
+    ClientID,
+  };
+
+  const { fetchData } = await import(`../../../layouts/${handle}`);
+
+  // const { AllPages } = containers;
+
+  // const pageData = AllPages[handle];
+
+  const toggles = await fetchToggleOptions(filters, toggleData[handle]);
+
+  const tableData = await fetchData(filters);
+
   const sitemapGroups = await fetchSitemap();
-
-  const Sexes = [
-    { ID: 1, Name: 'Males' },
-    { ID: 2, Name: 'Females' },
-    { ID: 3, Name: 'Persons' },
-  ];
 
   return {
     tableData,
-    Industries,
-    BenchmarkAreas,
-    Sexes,
     navigation: clientPages,
     clientProducts,
     sitemapGroups,
@@ -74,6 +72,7 @@ Page.getInitialProps = async function({ query, req }) {
     handle,
     clientData,
     clientAlias,
+    toggles,
   };
 };
 

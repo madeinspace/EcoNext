@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent, pathParts } from '../../../utils/';
+import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -78,9 +78,8 @@ const TopThreeFields = ({ industryName }) => {
   );
 };
 
-const ComparisonBenchmark = ({ benchmarkName }) => {
+const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   const {
-    clientData,
     filters: { IGBMID },
     tableData,
   } = useContext(Context);
@@ -90,7 +89,7 @@ const ComparisonBenchmark = ({ benchmarkName }) => {
   const industryBenchmark = IGBMID > 1000;
 
   if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${clientData.LongName}`;
+    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
   }
 
   const topquals = TopLevelQualifications(tableData);
@@ -112,9 +111,8 @@ const ComparisonBenchmark = ({ benchmarkName }) => {
   );
 };
 
-const MajorDifferencesHeading = ({ benchmarkName, industryName }) => {
+const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
   const {
-    clientData,
     filters: { IGBMID, Indkey },
   } = useContext(Context);
 
@@ -136,13 +134,13 @@ const MajorDifferencesHeading = ({ benchmarkName, industryName }) => {
 
   return (
     <Highlight>
-      The major differences between the fields of qualifications of {industryText} in {clientData.LongName} and{' '}
-      {benchmarkText} were:
+      The major differences between the fields of qualifications of {industryText} in {areaName} and {benchmarkText}{' '}
+      were:
     </Highlight>
   );
 };
 
-const MajorDifferences = ({ benchmarkName, industryName }) => {
+const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
   const { tableData } = useContext(Context);
 
   const topquals = TopLevelQualifications(tableData);
@@ -155,7 +153,7 @@ const MajorDifferences = ({ benchmarkName, industryName }) => {
 
   return (
     <>
-      <MajorDifferencesHeading benchmarkName={benchmarkName} industryName={industryName} />
+      <MajorDifferencesHeading areaName={areaName} benchmarkName={benchmarkName} industryName={industryName} />
       <ul>
         {topFour.map((qual: any, i) => (
           <li key={i}>
@@ -168,9 +166,8 @@ const MajorDifferences = ({ benchmarkName, industryName }) => {
   );
 };
 
-const EmergingGroupsHeading = ({ industryName }) => {
+const EmergingGroupsHeading = ({ areaName, industryName }) => {
   const {
-    clientData,
     filters: { Indkey },
   } = useContext(Context);
 
@@ -183,8 +180,7 @@ const EmergingGroupsHeading = ({ industryName }) => {
 
   return (
     <Highlight>
-      The largest changes in fields of qualifications of {industryText} in {clientData.LongName} between 2011 and 2016
-      were:
+      The largest changes in fields of qualifications of {industryText} in {areaName} between 2011 and 2016 were:
     </Highlight>
   );
 };
@@ -209,24 +205,25 @@ const EmergingGroups = () => {
 
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
-  const { clientAlias, clientData, tableData, BenchmarkAreas, Industries, Sexes, filters, clientProducts } = useContext(
-    Context,
-  );
-  const { Indkey, IGBMID, Sex } = filters;
+  const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
 
-  const Benchmarks = [...BenchmarkAreas, ...Industries];
+  const getActiveToggle = (toggleKey, defaultValue = null) => {
+    const { active } = toggles.find(({ key }) => key === toggleKey);
 
-  const getNameByID = (id, arr) => {
-    const result = arr.find(i => i.ID.toString() === id.toString());
-    return (result || {})['Name'];
+    if (!active) return defaultValue;
+
+    const { Label } = active;
+
+    return Label || '';
   };
 
-  const currentIndustryName = getNameByID(Indkey, Industries);
-  const currentBenchmarkName = getNameByID(IGBMID, Benchmarks);
-  const currentGenderName = getNameByID(Sex, Sexes);
+  const currentAreaName = getActiveToggle('WebID', clientData.LongName);
+  const currentIndustryName = getActiveToggle('Indkey');
+  const currentBenchmarkName = getActiveToggle('IGBMID');
+  const currentGenderName = getActiveToggle('Sex');
 
   const tableParams = tableBuilder({
-    prettyName: clientData.ShortName,
+    areaName: currentAreaName,
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
@@ -234,7 +231,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   });
 
   const chartData = chartBuilder({
-    prettyName: clientData.ShortName,
+    areaName: currentAreaName,
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
@@ -242,7 +239,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   });
 
   const chartChangeData = chartBuilderChange({
-    prettyName: clientData.ShortName,
+    areaName: currentAreaName,
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
@@ -257,12 +254,12 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   return (
     <Layout>
       <PageHeader handleExport={handleExport}>
-        <MainTitle>{clientData.LongName}</MainTitle>
+        <MainTitle>{currentAreaName}</MainTitle>
         <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
       </PageHeader>
       <Headline>
         {HighestQualification() &&
-          `Within the ${clientData.LongName}, there are more workers in ${currentIndustryName} with
+          `Within ${currentAreaName}, there are more workers in ${currentIndustryName} with
       ${HighestQualification()} qualifications than any other field of qualification.`}
       </Headline>
       <PageIntro>
@@ -276,7 +273,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
           <ul>
             <li>The age of the workforce;</li>
             <li>The type of qualification required to enter an industry;</li>
-            <li>The availability of jobs related to fields of qualification in {clientData.LongName};</li>
+            <li>The availability of jobs related to fields of qualification in {currentAreaName};</li>
             <li>The types of occupations which are available in an area or industry.</li>
           </ul>
           <p>
@@ -313,7 +310,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       </Note>
 
       <ItemWrapper>
-        <ControlPanel industry benchmark sex />
+        <ControlPanel />
       </ItemWrapper>
 
       <InfoBox>
@@ -364,12 +361,16 @@ const LocalWorkerFieldsOfQualificationPage = () => {
           qualification were:
         </p>
         <TopThreeFields industryName={currentIndustryName} />
-        <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
-        <MajorDifferences benchmarkName={currentBenchmarkName} industryName={currentIndustryName} />
+        <ComparisonBenchmark areaName={currentAreaName} benchmarkName={currentBenchmarkName} />
+        <MajorDifferences
+          areaName={currentAreaName}
+          benchmarkName={currentBenchmarkName}
+          industryName={currentIndustryName}
+        />
       </AnalysisContainer>
       <AnalysisContainer>
         <h3>Emerging groups</h3>
-        <EmergingGroupsHeading industryName={currentIndustryName} />
+        <EmergingGroupsHeading areaName={currentAreaName} industryName={currentIndustryName} />
         <EmergingGroups />
       </AnalysisContainer>
       {
@@ -423,7 +424,7 @@ const Source = () => (
 );
 
 const tableBuilder = ({
-  prettyName: clientName,
+  areaName,
   industryName: industry,
   bmName: benchmark,
   genderName: gender,
@@ -471,7 +472,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: '',
-            displayText: `${clientName} - ${industry}`,
+            displayText: `${areaName} - ${industry}`,
             colSpan: 1,
             rowSpan: 0,
           },
@@ -637,7 +638,7 @@ const tableBuilder = ({
 
 // #region chart builders
 const chartBuilder = ({
-  prettyName: clientName,
+  areaName,
   industryName: currentIndustry,
   bmName: currentBenchmark,
   genderName: gender,
@@ -696,7 +697,7 @@ const chartBuilder = ({
         align: 'left',
       },
       subtitle: {
-        text: `${clientName} - ${currentIndustry} - ${gender}`,
+        text: `${areaName} - ${currentIndustry} - ${gender}`,
         align: 'left',
       },
       tooltip: {
@@ -708,7 +709,7 @@ const chartBuilder = ({
       },
       series: [
         {
-          name: `${clientName}`,
+          name: `${areaName}`,
           data: perYear1Serie,
         },
         {
@@ -762,7 +763,7 @@ const chartBuilder = ({
 
 // #region chart builder change
 const chartBuilderChange = ({
-  prettyName: clientName,
+  areaName,
   industryName: currentIndustry,
   bmName: currentBenchmark,
   genderName: gender,
@@ -784,7 +785,7 @@ const chartBuilderChange = ({
         align: 'left',
       },
       subtitle: {
-        text: `${clientName} - ${currentIndustry}-${gender}`,
+        text: `${areaName} - ${currentIndustry}-${gender}`,
         align: 'left',
       },
       tooltip: {

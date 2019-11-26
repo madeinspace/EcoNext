@@ -13,6 +13,7 @@ export const Context = React.createContext({
   Sexes: null,
   filters: null,
   clientAreas: null,
+  toggles: null,
 });
 
 export const ClientProductsContext = React.createContext({

@@ -1,5 +1,5 @@
 const fetchClientData = async ({ clientAlias, containers }) => {
-  const { ClientContainer, PageContainer } = containers;
+  const { ClientContainer, AllPages } = containers;
 
   const { resources: clientData } = await ClientContainer.items
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
@@ -10,14 +10,11 @@ const fetchClientData = async ({ clientAlias, containers }) => {
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);
 
-  const { resources: pages } = await PageContainer.items.query(`SELECT * FROM c WHERE c.ApplicationID = 4`).fetchAll();
-  const allPages = pages.reduce((acc, cur) => ({ ...acc, [cur.Alias]: cur }), {});
-
   const clientPages = filteredPages.map(nav => ({
     ...nav,
-    GroupName: allPages[nav.Alias]['GroupDetails']['Name'],
-    MenuTitle: allPages[nav.Alias]['MenuTitle'],
-    ParentPageID: allPages[nav.Alias]['ParentPageID'],
+    GroupName: AllPages[nav.Alias]['GroupDetails']['Name'],
+    MenuTitle: AllPages[nav.Alias]['MenuTitle'],
+    ParentPageID: AllPages[nav.Alias]['ParentPageID'],
   }));
 
   return {
