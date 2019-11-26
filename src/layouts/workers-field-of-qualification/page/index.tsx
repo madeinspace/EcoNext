@@ -6,8 +6,6 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
-  MainTitle,
-  SubTitle,
   Headline,
   PageIntro,
   Note,
@@ -18,9 +16,9 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import PageHeader from '../../../components/PageHeader';
 import InfoBox from '../../../components/InfoBox';
 import { Context } from '../../../utils/context';
+import getActiveToggle from '../../../utils/getActiveToggle';
 
 // #endregion
 
@@ -205,20 +203,10 @@ const EmergingGroups = () => {
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
 
-  const getActiveToggle = (toggleKey, defaultValue = null) => {
-    const { active } = toggles.find(({ key }) => key === toggleKey);
-
-    if (!active) return defaultValue;
-
-    const { Label } = active;
-
-    return Label || '';
-  };
-
-  const currentAreaName = getActiveToggle('WebID', clientData.LongName);
-  const currentIndustryName = getActiveToggle('Indkey');
-  const currentBenchmarkName = getActiveToggle('IGBMID');
-  const currentGenderName = getActiveToggle('Sex');
+  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
+  const currentIndustryName = getActiveToggle(toggles, 'Indkey');
+  const currentBenchmarkName = getActiveToggle(toggles, 'IGBMID');
+  const currentGenderName = getActiveToggle(toggles, 'Sex');
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
@@ -251,10 +239,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
 
   return (
     <>
-      <PageHeader handleExport={handleExport}>
-        <MainTitle>{currentAreaName}</MainTitle>
-        <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
-      </PageHeader>
       <Headline>
         {HighestQualification() &&
           `Within ${currentAreaName}, there are more workers in ${currentIndustryName} with
