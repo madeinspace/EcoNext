@@ -109,7 +109,7 @@ const products = [
 const HomePage = ({ clients }) => {
   const clientList = clients.map(client => (
     <Tile key={client.ClientID}>
-      <Link href={`/${client.Alias}`}>
+      <Link href={`/${client.Alias}`} prefetch={false}>
         <ClientLogo src={require(`../images/logos/${client.Alias}.png`)} />
       </Link>
       <CouncilName>{client.Name}</CouncilName>
