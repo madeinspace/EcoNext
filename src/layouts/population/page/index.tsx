@@ -72,7 +72,7 @@ const PopulationPage = () => (
         <Layout>
           <PageHeader handleExport={handleExport}>
             <MainTitle>{prettyName}</MainTitle>
-            <SubTitle>Population</SubTitle>
+            <SubTitle>Population page</SubTitle>
           </PageHeader>
           <Headline>
             The Estimated Resident Population of the {prettyName} was <FormattedNumber number={latestPop} /> as of the
