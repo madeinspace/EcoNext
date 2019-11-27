@@ -104,13 +104,9 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const pageData = AllPages[handle];
 
-  // console.log(JSON.stringify(AllPages['gross-regional-product']));
-
   const toggles = await fetchToggleOptions(filters, toggleData[handle] || []);
 
   const tableData = await fetchData({ filters });
-
-  console.log(tableData[0]);
 
   const data = {
     currentAreaName: getActiveToggle(toggles, 'WebID', clientData.LongName),
