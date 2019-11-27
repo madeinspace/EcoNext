@@ -4,6 +4,7 @@ import { Actions, Share, ExportPage } from '../Actions';
 import { TitleContainer, EntityContainer, MainTitle, SubTitle } from '../../styles/MainContentStyles';
 import getActiveToggle from '../../utils/getActiveToggle';
 import { Context } from '../../utils/context';
+import _ from 'lodash';
 
 const postData = async (url = '', data = {}) => {
   const response = await fetch(url, {
@@ -47,7 +48,9 @@ const PageHeader = () => {
 
   const { SubTitle: pageSubTitle } = pageData;
 
-  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
+  const currentAreaName = _.isEmpty(toggles)
+    ? clientData.LongName
+    : getActiveToggle(toggles, 'WebID', clientData.LongName);
 
   return (
     <EntityContainer>
