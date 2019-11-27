@@ -2,10 +2,10 @@ import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
 
-const fetchData = async filters => {
-  const data = await sqlConnection.raw(tableDataQuery(filters));
+const fetchData = async ({ filters }) => {
+  const tableData = await sqlConnection.raw(tableDataQuery(filters));
 
-  return data;
+  return tableData;
 };
 
 export { fetchData, Page };
@@ -23,6 +23,6 @@ const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
     1,
     null,
     ${Indkey}
-    ) order by LabelKey
+    ) order by LabelKey ASC
   `;
 /* #endregion */

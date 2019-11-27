@@ -2,14 +2,10 @@ import _ from 'lodash';
 import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React, { useContext } from 'react';
 import Layout from '../../../layouts/main';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
-  MainTitle,
-  SubTitle,
-  Headline,
   PageIntro,
   Note,
   Highlight,
@@ -246,22 +242,12 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     TabularData: tableData,
   });
 
-  const handleExport = () => {};
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   // #endregion
 
   return (
-    <Layout>
-      <PageHeader handleExport={handleExport}>
-        <MainTitle>{currentAreaName}</MainTitle>
-        <SubTitle>Local workers - Field of qualification - {currentIndustryName}</SubTitle>
-      </PageHeader>
-      <Headline>
-        {HighestQualification() &&
-          `Within ${currentAreaName}, there are more workers in ${currentIndustryName} with
-      ${HighestQualification()} qualifications than any other field of qualification.`}
-      </Headline>
+    <>
       <PageIntro>
         <div>
           <p>
@@ -308,10 +294,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
         caution, however, and not compare directly with 2011 data from any other source.
       </Note>
-
-      <ItemWrapper>
-        <ControlPanel />
-      </ItemWrapper>
 
       <InfoBox>
         <span>
@@ -402,7 +384,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       {
         // #endregion
       }
-    </Layout>
+    </>
   );
 };
 // #endregion
