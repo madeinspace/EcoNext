@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
+export const SidebarNav = styled.div`
+  grid-area: navigation;
+`;
+
+export const SiteContent = styled.div`
+  grid-area: content;
+`;
+
 export const TitleContainer = styled.div`
   color: #5f6062;
 `;
