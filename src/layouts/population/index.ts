@@ -2,12 +2,12 @@ import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
 
-const fetchData = async filters => {
+const fetchData = async ({ filters }) => {
   const { ClientID, WebID, IGBMID } = filters;
 
-  const data = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
+  const tableData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
 
-  return data;
+  return tableData;
 };
 
 export { fetchData, Page };

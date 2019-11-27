@@ -3,11 +3,9 @@ import _ from 'lodash';
 import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
-  Headline,
   PageIntro,
   Note,
   Highlight,
@@ -20,6 +18,7 @@ import {
 import InfoBox from '../../../components/InfoBox';
 import { Context } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 
 // #endregion
 
@@ -234,16 +233,10 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     TabularData: tableData,
   });
 
-  const handleExport = () => {};
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
     <>
-      <Headline>
-        {HighestQualification() &&
-          `Within ${currentAreaName}, there are more workers in ${currentIndustryName} with
-      ${HighestQualification()} qualifications than any other field of qualification.`}
-      </Headline>
       <PageIntro>
         <div>
           <p>
@@ -290,10 +283,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
         caution, however, and not compare directly with 2011 data from any other source.
       </Note>
-
-      <ItemWrapper>
-        <ControlPanel />
-      </ItemWrapper>
 
       <InfoBox>
         <span>
@@ -355,6 +344,13 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         <EmergingGroupsHeading areaName={currentAreaName} industryName={currentIndustryName} />
         <EmergingGroups />
       </AnalysisContainer>
+      {
+        // #endregion
+      }
+      {
+        // #region related pages
+      }
+      <RelatedPagesCTA />
       {
         // #endregion
       }

@@ -1,9 +1,11 @@
 const getActiveToggle = (toggles, toggleKey, defaultValue = null) => {
-  const { active } = toggles.find(({ key }) => key === toggleKey);
+  const toggle = toggles.find(({ key }) => key === toggleKey);
 
-  if (!active) return defaultValue;
+  if (!toggle) return defaultValue;
 
-  const { Label } = active;
+  const {
+    active: { Label },
+  } = toggle;
 
   return Label || '';
 };

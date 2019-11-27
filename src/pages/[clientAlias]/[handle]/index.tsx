@@ -5,12 +5,11 @@ import { Context } from '../../../utils/context';
 // #region imports api
 import fetchClientData from '../../../utils/fetchClientData';
 import fetchSitemap from '../../../utils/fetchSitemap';
-import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 // #endregion
 
 import MainLayout from '../../../layouts/main';
 
-// #region import pages
+import GrossProduct from '../../../layouts/gross-product/page';
 import Population from '../../../layouts/population/page';
 import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
 import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
@@ -19,12 +18,19 @@ import Indicator from '../../../layouts/indicator/page';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 // #endregion
 
+import contentData from '../../../data/content';
 import toggleData from '../../../data/toggles';
+import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import PageHeader from '../../../components/PageHeader';
-// #endregion
+import Headline from '../../../components/Headline';
+import Description from '../../../components/Description';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import filterEntities from '../../../utils/filterEntities';
+import getActiveToggle from '../../../utils/getActiveToggle';
 
 export const NextPages = {
+  'gross-product': GrossProduct,
   indicator: Indicator,
   population: Population,
   'value-of-building-approvals': ValueOfBuildingApprovals,
@@ -48,6 +54,9 @@ const PageTemplate = () => {
   return (
     <MainLayout>
       <PageHeader />
+      <Headline />
+      <Description />
+      <ControlPanel />
       <MainContent />
       <RelatedPagesCTA />
     </MainLayout>
@@ -95,11 +104,17 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const pageData = AllPages[handle];
 
-  // console.log(JSON.stringify(AllPages['gross-regional-product']));
-
   const toggles = await fetchToggleOptions(filters, toggleData[handle] || []);
 
-  const tableData = await fetchData(filters);
+  const tableData = await fetchData({ filters });
+
+  const data = {
+    currentAreaName: getActiveToggle(toggles, 'WebID', clientData.LongName),
+    currentGenderName: getActiveToggle(toggles, 'Sex'),
+    currentIndustryName: getActiveToggle(toggles, 'Indkey'),
+  };
+
+  const entities = await filterEntities(filters, contentData[handle], { tableData, data });
 
   const sitemapGroups = await fetchSitemap();
 
@@ -115,6 +130,7 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
     clientAlias,
     toggles,
     pageData,
+    entities,
   };
 };
 

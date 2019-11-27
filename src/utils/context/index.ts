@@ -8,13 +8,12 @@ export const Context = React.createContext({
   navigation: null,
   clientProducts: null,
   sitemapGroups: null,
-  BenchmarkAreas: null,
-  Industries: null,
-  Sexes: null,
   filters: null,
   clientAreas: null,
   toggles: null,
   pageData: null,
+  entities: null,
+  templateArgs: null,
 });
 
 export const ClientProductsContext = React.createContext({
