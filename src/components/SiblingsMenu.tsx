@@ -18,7 +18,7 @@ const SiblingsMenu = () => {
         {Disabled ? (
           <DisabledLink>{MenuTitle}</DisabledLink>
         ) : (
-          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch={false} className={handle === Alias && 'active'}>
+          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
             {MenuTitle}
           </StyledLink>
         )}

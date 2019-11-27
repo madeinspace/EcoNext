@@ -7,7 +7,12 @@ export const pathParts = (path: string) => {
   return path.match(REGEX).groups;
 };
 
-export const IsNextPage = path => has(NextPages, pathParts(path).pageAlias);
+export const IsNextPage = path => {
+  return has(NextPages, pathParts(path.split('?')[0]).pageAlias);
+};
 
-export const IsDisabled = (navNodes, currentPageAlias) =>
-  filter(navNodes, node => node.Alias === currentPageAlias.split('?')[0]).pop().Disabled;
+const amI = param => (navNodes, currentPageAlias) =>
+  filter(navNodes, node => node.Alias === currentPageAlias.split('?')[0]).pop()[param];
+
+export const IsDisabled = amI('Disabled');
+export const IsSecure = amI('Secure');

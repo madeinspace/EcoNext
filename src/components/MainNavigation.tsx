@@ -16,7 +16,7 @@ const buildMenuGroups = navNodes => groupBy(navNodes, 'GroupName');
 
 const validateGroupName = groupname => groupname !== '' && groupname !== 'Undefined';
 
-const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
+const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
   const groupedNavigation = groupBy(navigationNodes, 'ParentPageID');
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);

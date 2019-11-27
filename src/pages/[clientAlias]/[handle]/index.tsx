@@ -1,7 +1,11 @@
+// #region imports
+import { useContext } from 'react';
 import { Context } from '../../../utils/context';
 
+// #region imports api
 import fetchClientData from '../../../utils/fetchClientData';
 import fetchSitemap from '../../../utils/fetchSitemap';
+// #endregion
 
 import MainLayout from '../../../layouts/main';
 
@@ -9,6 +13,10 @@ import GrossProduct from '../../../layouts/gross-product/page';
 import Population from '../../../layouts/population/page';
 import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
 import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
+import EconomicImpactAssesment from '../../../layouts/economic-impact-assesment/page';
+import Indicator from '../../../layouts/indicator/page';
+import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
+// #endregion
 
 import contentData from '../../../data/content';
 import toggleData from '../../../data/toggles';
@@ -23,24 +31,42 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 export const NextPages = {
   'gross-product': GrossProduct,
+  indicator: Indicator,
   population: Population,
   'value-of-building-approvals': ValueOfBuildingApprovals,
   'workers-field-of-qualification': WorkersFieldOfQualification,
+  'economic-impact-assesment': EconomicImpactAssesment,
+};
+
+const PageTemplate = () => {
+  const { pageData, handle } = useContext(Context);
+  const { ParentPageID } = pageData;
+  const MainContent = NextPages[handle];
+
+  if (!ParentPageID) {
+    return (
+      <ParentLandingPageLayout>
+        <MainContent />
+      </ParentLandingPageLayout>
+    );
+  }
+
+  return (
+    <MainLayout>
+      <PageHeader />
+      <Headline />
+      <Description />
+      <ControlPanel />
+      <MainContent />
+      <RelatedPagesCTA />
+    </MainLayout>
+  );
 };
 
 const Page = props => {
-  const MainContent = NextPages[props.handle];
-
   return (
     <Context.Provider value={props}>
-      <MainLayout>
-        <PageHeader />
-        <Headline />
-        <Description />
-        <ControlPanel />
-        <MainContent />
-        <RelatedPagesCTA />
-      </MainLayout>
+      <PageTemplate />
     </Context.Provider>
   );
 };
@@ -54,10 +80,13 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const { ClientID, clientAreas, clientProducts, clientPages } = clientData;
 
-  const pageDefaultFilters = (toggleData[handle] || []).reduce((acc, { ParamName, DefaultValue }) => ({
-    ...acc,
-    [ParamName]: DefaultValue,
-  }));
+  const pageDefaultFilters = (toggleData[handle] || []).reduce(
+    (acc, { ParamName, DefaultValue }) => ({
+      ...acc,
+      [ParamName]: DefaultValue,
+    }),
+    [],
+  );
 
   const filters = {
     IGBMID: 40,
@@ -71,9 +100,13 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const { fetchData } = await import(`../../../layouts/${handle}`);
 
-  // const { AllPages } = containers;
+  const { AllPages } = containers;
 
-  const toggles = await fetchToggleOptions(filters, toggleData[handle]);
+  const pageData = AllPages[handle];
+
+  // console.log(JSON.stringify(AllPages['gross-regional-product']));
+
+  const toggles = await fetchToggleOptions(filters, toggleData[handle] || []);
 
   const tableData = await fetchData({ filters });
 

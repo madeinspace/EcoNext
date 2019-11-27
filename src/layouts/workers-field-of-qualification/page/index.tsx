@@ -1,9 +1,9 @@
+// #region imports
 import _ from 'lodash';
 import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
-import Layout from '../../../layouts/main';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
   PageIntro,
@@ -11,14 +11,14 @@ import {
   Highlight,
   AnalysisContainer,
   SourceBubble,
-  RelatedPagesCTA,
   ItemWrapper,
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import PageHeader from '../../../components/PageHeader';
 import InfoBox from '../../../components/InfoBox';
 import { Context } from '../../../utils/context';
+import getActiveToggle from '../../../utils/getActiveToggle';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 
 // #endregion
 
@@ -198,25 +198,16 @@ const EmergingGroups = () => {
     </ul>
   );
 };
+// #endregion
 
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
 
-  const getActiveToggle = (toggleKey, defaultValue = null) => {
-    const { active } = toggles.find(({ key }) => key === toggleKey);
-
-    if (!active) return defaultValue;
-
-    const { Label } = active;
-
-    return Label || '';
-  };
-
-  const currentAreaName = getActiveToggle('WebID', clientData.LongName);
-  const currentIndustryName = getActiveToggle('Indkey');
-  const currentBenchmarkName = getActiveToggle('IGBMID');
-  const currentGenderName = getActiveToggle('Sex');
+  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
+  const currentIndustryName = getActiveToggle(toggles, 'Indkey');
+  const currentBenchmarkName = getActiveToggle(toggles, 'IGBMID');
+  const currentGenderName = getActiveToggle(toggles, 'Sex');
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
@@ -243,8 +234,6 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   });
 
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
-
-  // #endregion
 
   return (
     <>
@@ -361,33 +350,13 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       {
         // #region related pages
       }
-      <RelatedPagesCTA>
-        <h3>To continue building your economic story go to...</h3>
-        <ul>
-          <li>
-            <a href={`${clientAlias}/monash/workers-level-of-qualifications`} title="Qualifications">
-              Qualifications
-            </a>
-          </li>
-          <li>
-            <a href={`${clientAlias}/workers-field-of-qualification`} title="Field of qualification">
-              Field of qualification
-            </a>
-          </li>
-          <li>
-            <a href={`${clientAlias}/workers-income`} title="Income">
-              Income
-            </a>
-          </li>
-        </ul>
-      </RelatedPagesCTA>
+      <RelatedPagesCTA />
       {
         // #endregion
       }
     </>
   );
 };
-// #endregion
 
 export default LocalWorkerFieldsOfQualificationPage;
 

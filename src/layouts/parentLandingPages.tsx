@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import ClientHeader from '../components/ClientHeader';
 import SearchApp from '../components/search/_Search';
 import MainNavigation from '../components/MainNavigation';
+import styled from 'styled-components';
 import { ContentRow } from '../components/grid';
 import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
@@ -11,12 +11,20 @@ import SiblingsMenu from '../components/SiblingsMenu';
 import { IsDisabled, IsSecure } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
 import { Context } from '../utils/context';
-import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import { Secured, Unsecured } from '../styles/ui';
 const IsLite = nodes => some(nodes, 'Disabled');
 
-const Layout = ({ children }) => {
+const SidebarNav = styled.div`
+  grid-area: navigation;
+`;
+
+const SiteContent = styled.div`
+  grid-area: content;
+`;
+
+const ParentLandingPageLayout = ({ children = null }) => {
   const { clientData, handle, navigation } = useContext(Context);
+
   const { Alias: alias, clientID, LongName: prettyname, Name: name } = clientData;
   const logo = require(`../images/logos/${alias}.png`);
   const isDisabled = IsDisabled(navigation, handle);
@@ -31,6 +39,7 @@ const Layout = ({ children }) => {
           <MainNavigation alias={alias} />
         </SidebarNav>
         <SiteContent id={'main-content'}>
+          Select a topic
           <SiblingsMenu />
           {isSecure ? <Secured /> : <Unsecured />}
           {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
@@ -42,8 +51,4 @@ const Layout = ({ children }) => {
   );
 };
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default Layout;
+export default ParentLandingPageLayout;
