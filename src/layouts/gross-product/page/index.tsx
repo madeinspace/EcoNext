@@ -10,21 +10,21 @@ import {
 } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import { Context } from '../../../utils/context';
+import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { useContext } from 'react';
 import getActiveToggle from '../../../utils/getActiveToggle';
 // #endregion
 
-// #region population page
-const PopulationPage = () => {
-  const { clientData, clientAlias, tableData, toggles } = useContext(Context);
+const GrossProductPage = () => {
+  const { ClientAlias, LongName } = useContext(ClientContext);
+  const { tableData, toggles } = useContext(PageContext);
 
-  // const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
+  // const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
 
   // const chartData = chartBuilder(tableData);
   // const chartLineData = chartLineBuilder(tableData);
-  // const tableParams = tableBuilder(clientAlias, tableData);
+  // const tableParams = tableBuilder(ClientAlias, tableData);
 
   // const latestPop = tableData[0].Number;
   // const latestYear = tableData[0].Year;
@@ -46,9 +46,7 @@ const PopulationPage = () => {
   );
 };
 
-// #endregion
-
-export default PopulationPage;
+export default GrossProductPage;
 
 // #region Source
 const Source = () => (
@@ -64,14 +62,14 @@ const Source = () => (
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (clientAlias, nodes) => {
+const tableBuilder = (ClientAlias, nodes) => {
   return {
     cssClass: '',
     allowExport: false,
     allowSort: true,
     allowSortReset: true,
     groupOn: '',
-    clientAlias,
+    ClientAlias,
     source: <Source />,
     anchorName: 'service-age-groups',
     headRows: [

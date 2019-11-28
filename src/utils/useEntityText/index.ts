@@ -1,8 +1,8 @@
-import { Context } from '../context';
+import { PageContext } from '../context';
 import { useContext } from 'react';
 
 const useEntityText = key => {
-  const { entities } = useContext(Context);
+  const { entities } = useContext(PageContext);
 
   if (!entities) return null;
 

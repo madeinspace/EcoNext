@@ -5,7 +5,7 @@ const ClientLandingPage = ({ title }) => {
 };
 
 ClientLandingPage.getInitialProps = async context => {
-  const title = `Landing page for ${context.query.clientAlias}`;
+  const title = `Landing page for ${context.query.ClientAlias}`;
   return { title };
 };
 

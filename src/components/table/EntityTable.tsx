@@ -368,7 +368,7 @@ class EntityTable extends React.Component<any, any> {
     const SourceAndTopicNotesProps: ISourceAndTopicNotesProps = {
       source: data.source,
       anchorName: data.anchorName,
-      clientAlias: data.clientAlias,
+      ClientAlias: data.ClientAlias,
     };
     if (rows) {
       return (

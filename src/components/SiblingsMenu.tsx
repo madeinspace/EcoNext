@@ -1,24 +1,25 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Link from '../components/Link';
-import { Context } from '../utils/context';
+import { ClientContext, PageContext } from '../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiblingsMenu = () => {
-  const { clientAlias, handle, navigation } = useContext(Context);
+  const { ClientAlias, clientPages } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
 
-  const currentPageNode = navigation.find(node => node.Alias === handle);
+  const currentPageNode = clientPages.find(node => node.Alias === handle);
   const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
 
-  const siblings = navigation
+  const siblings = clientPages
     .filter(node => node.ParentPageID === currentParentPageID)
     .map(({ Disabled, MenuTitle, Alias }) => (
       <React.Fragment key={Alias}>
         {Disabled ? (
           <DisabledLink>{MenuTitle}</DisabledLink>
         ) : (
-          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
+          <StyledLink href={`/${ClientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
             {MenuTitle}
           </StyledLink>
         )}

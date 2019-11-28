@@ -10,8 +10,8 @@ import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
 import { IsDisabled, IsSecure } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
-import { Context } from '../utils/context';
 import { Secured, Unsecured } from '../styles/ui';
+import { ClientContext, PageContext } from '../utils/context';
 const IsLite = nodes => some(nodes, 'Disabled');
 
 const SidebarNav = styled.div`
@@ -23,29 +23,29 @@ const SiteContent = styled.div`
 `;
 
 const ParentLandingPageLayout = ({ children = null }) => {
-  const { clientData, handle, navigation } = useContext(Context);
+  const { ClientAlias, clientID, clientPages, LongName } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
 
-  const { Alias: alias, clientID, LongName: prettyname, Name: name } = clientData;
-  const logo = require(`../images/logos/${alias}.png`);
-  const isDisabled = IsDisabled(navigation, handle);
-  const isSecure = IsSecure(navigation, handle);
+  const logo = require(`../images/logos/${ClientAlias}.png`);
+  const isDisabled = IsDisabled(clientPages, handle);
+  const isSecure = IsSecure(clientPages, handle);
 
   return (
     <>
-      <SearchApp alias={alias} clientID={clientID} prettyname={prettyname} clientImage={logo} />
-      <ClientHeader alias={alias} prettyname={prettyname} clientImage={logo} isLite={IsLite(navigation)} />
+      <SearchApp alias={ClientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
+      <ClientHeader alias={ClientAlias} prettyname={LongName} clientImage={logo} isLite={IsLite(clientPages)} />
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={alias} />
+          <MainNavigation alias={ClientAlias} />
         </SidebarNav>
         <SiteContent id={'main-content'}>
           Select a topic
           <SiblingsMenu />
           {isSecure ? <Secured /> : <Unsecured />}
-          {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
+          {isDisabled ? <DisabledPageWarning /> : children}
         </SiteContent>
       </ContentRow>
-      <SiteMap alias={alias} prettyname={prettyname} />
+      <SiteMap alias={ClientAlias} prettyname={LongName} />
       <SharedFooter />
     </>
   );

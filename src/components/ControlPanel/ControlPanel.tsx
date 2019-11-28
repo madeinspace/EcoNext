@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Sticky from '@wicked_query/react-sticky';
 import Router from 'next/router';
 import qs from 'qs';
-import { Context } from '../../utils/context';
+import { PageContext, ClientContext } from '../../utils/context';
 
 const StyledControlPanel = styled.div`
   align-items: end;
@@ -26,20 +26,21 @@ const StyledControlPanel = styled.div`
 `;
 
 const ControlPanel: React.SFC<{}> = () => {
-  const { clientAlias, handle, toggles } = React.useContext(Context);
+  const { ClientAlias } = React.useContext(ClientContext);
+  const { handle, toggles } = React.useContext(PageContext);
 
   const setQuery = (key, value) => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     query[key] = value;
     Router.push({
-      pathname: `/${clientAlias}/${handle}`,
+      pathname: `/${ClientAlias}/${handle}`,
       query,
     });
   };
 
   const handleReset = () =>
     Router.push({
-      pathname: `/${clientAlias}/${handle}`,
+      pathname: `/${ClientAlias}/${handle}`,
       query: {},
     });
 

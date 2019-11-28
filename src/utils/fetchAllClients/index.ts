@@ -33,7 +33,7 @@ WITH RDAS AS (
     ON client.ClientID = RDAS.ClientID
   WHERE clientMeta.IsDisabled = 0
     AND clientMeta.ApplicationID = 4
-  ${ignoreClients.map(clientAlias => `  AND NOT client.Alias = '${clientAlias}'`).join('\n')}
+  ${ignoreClients.map(ClientAlias => `  AND NOT client.Alias = '${ClientAlias}'`).join('\n')}
 `;
 /* #endregion */
 
