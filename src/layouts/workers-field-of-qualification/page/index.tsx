@@ -16,9 +16,9 @@ import {
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
 import InfoBox from '../../../components/InfoBox';
-import { Context } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
+import { ClientContext, PageContext } from '../../../utils/context';
 
 // #endregion
 
@@ -37,18 +37,8 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const HighestQualification = () => {
-  const { tableData } = useContext(Context);
-
-  const topquals = TopLevelQualifications(tableData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const biggest: any = highestQuals.pop();
-
-  return (biggest || {}).LabelName;
-};
-
 const TopThreeFields = ({ industryName }) => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -78,7 +68,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   const {
     filters: { IGBMID },
     tableData,
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let currentBenchmarkName: any = benchmarkName;
 
@@ -110,7 +100,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
 const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
   const {
     filters: { IGBMID, Indkey },
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let industryText = industryName;
   if (Indkey == 23000) {
@@ -137,7 +127,7 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
 };
 
 const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -165,7 +155,7 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
 const EmergingGroupsHeading = ({ areaName, industryName }) => {
   const {
     filters: { Indkey },
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let industryText = industryName;
   if (Indkey == 23000) {
@@ -182,7 +172,7 @@ const EmergingGroupsHeading = ({ areaName, industryName }) => {
 };
 
 const EmergingGroups = () => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
@@ -202,7 +192,8 @@ const EmergingGroups = () => {
 
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
-  const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
+  const { clientData, clientAlias, clientProducts } = useContext(ClientContext);
+  const { tableData, toggles } = useContext(PageContext);
 
   const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
   const currentIndustryName = getActiveToggle(toggles, 'Indkey');

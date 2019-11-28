@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { Actions, Share, ExportPage } from '../Actions';
 import { TitleContainer, EntityContainer, MainTitle, SubTitle } from '../../styles/MainContentStyles';
 import getActiveToggle from '../../utils/getActiveToggle';
-import { Context } from '../../utils/context';
 import _ from 'lodash';
+import { ClientContext, PageContext } from '../../utils/context';
 
 const postData = async (url = '', data = {}) => {
   const response = await fetch(url, {
@@ -44,13 +44,12 @@ const handleExport = async currentAreaName => {
 };
 
 const PageHeader = () => {
-  const { clientData, toggles, pageData } = useContext(Context);
+  const { clientData } = useContext(ClientContext);
+  const { pageData, toggles } = useContext(PageContext);
 
   const { SubTitle: pageSubTitle } = pageData;
 
-  const currentAreaName = _.isEmpty(toggles)
-    ? clientData.LongName
-    : getActiveToggle(toggles, 'WebID', clientData.LongName);
+  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
 
   return (
     <EntityContainer>

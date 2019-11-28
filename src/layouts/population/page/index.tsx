@@ -10,15 +10,16 @@ import {
 } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import { Context } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { useContext } from 'react';
 import getActiveToggle from '../../../utils/getActiveToggle';
+import { PageContext, ClientContext } from '../../../utils/context';
 // #endregion
 
 // #region population page
 const PopulationPage = () => {
-  const { clientData, clientAlias, tableData, clientProducts, toggles } = useContext(Context);
+  const { clientData, clientAlias, clientProducts } = useContext(ClientContext);
+  const { tableData, toggles } = useContext(PageContext);
 
   const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
 

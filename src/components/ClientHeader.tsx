@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ClientProductsNav from './ClientProductsNav';
 import { HeaderRow } from './grid';
-import { ClientProductsContext, Context } from '../utils/context';
 
 const ClientLogo = styled.div`
   align-self: flex-end;
@@ -65,31 +64,26 @@ const HeaderWrapper = styled.div`
   grid-area: header;
 `;
 
-export const ClientHeader = ({ alias, prettyname, isLite, clientImage }) => {
-  const { clientProducts } = useContext(Context);
-  return (
-    <Decoration>
-      <HeaderRow>
-        <HeaderWrapper>
-          <Header>
-            <Stack>
-              <Title>
-                <ClientName>{prettyname} </ClientName>
-                <Separator />
-                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
-              </Title>
-              <ClientProductsContext.Provider value={{ clientProducts }}>
-                <ClientProductsNav alias={alias} />
-              </ClientProductsContext.Provider>
-            </Stack>
-            <ClientLogo>
-              <img src={clientImage} />
-            </ClientLogo>
-          </Header>
-        </HeaderWrapper>
-      </HeaderRow>
-    </Decoration>
-  );
-};
+export const ClientHeader = ({ alias, prettyname, isLite, clientImage }) => (
+  <Decoration>
+    <HeaderRow>
+      <HeaderWrapper>
+        <Header>
+          <Stack>
+            <Title>
+              <ClientName>{prettyname} </ClientName>
+              <Separator />
+              <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
+            </Title>
+            <ClientProductsNav alias={alias} />
+          </Stack>
+          <ClientLogo>
+            <img src={clientImage} />
+          </ClientLogo>
+        </Header>
+      </HeaderWrapper>
+    </HeaderRow>
+  </Decoration>
+);
 
 export default ClientHeader;

@@ -4,15 +4,15 @@ import { formatNumber, formatPercent } from '../../../utils/';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
-import { Context } from '../../../utils/context';
 import { useContext } from 'react';
+import { ClientContext, PageContext } from '../../../utils/context';
 // #endregion
 
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
-  const { clientData, tableData } = useContext(Context);
+  const { clientAlias } = useContext(ClientContext);
+  const { tableData } = useContext(PageContext);
 
-  const { clientAlias } = clientData;
   const pageName = 'Value of total building approvals';
   const chartData = chartBuilder(tableData);
   const tableParams = tableBuilder(clientAlias, tableData);

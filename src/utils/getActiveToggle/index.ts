@@ -1,5 +1,5 @@
 const getActiveToggle = (toggles, toggleKey, defaultValue = null) => {
-  const toggle = toggles.find(({ key }) => key === toggleKey);
+  const toggle = (toggles || []).find(({ key }) => key === toggleKey);
 
   if (!toggle) return defaultValue;
 

@@ -1,6 +1,5 @@
 // #region imports
 import { useContext } from 'react';
-import { Context } from '../../../utils/context';
 
 // #region imports api
 import fetchClientData from '../../../utils/fetchClientData';
@@ -9,7 +8,6 @@ import fetchSitemap from '../../../utils/fetchSitemap';
 
 import MainLayout from '../../../layouts/main';
 
-import GrossProduct from '../../../layouts/gross-product/page';
 import Population from '../../../layouts/population/page';
 import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
 import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
@@ -29,8 +27,9 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
+import { PageContext, ClientContext } from '../../../utils/context';
+
 export const NextPages = {
-  'gross-product': GrossProduct,
   indicator: Indicator,
   population: Population,
   'value-of-building-approvals': ValueOfBuildingApprovals,
@@ -38,40 +37,43 @@ export const NextPages = {
   'economic-impact-assesment': EconomicImpactAssesment,
 };
 
-const PageTemplate = () => {
-  const { pageData, handle } = useContext(Context);
+const PageTemplate = ({ clientData }) => {
+  const { pageData, handle } = useContext(PageContext);
+
   const { ParentPageID } = pageData;
   const MainContent = NextPages[handle];
 
   if (!ParentPageID) {
     return (
-      <ParentLandingPageLayout>
-        <MainContent />
-      </ParentLandingPageLayout>
+      <ClientContext.Provider value={clientData}>
+        <ParentLandingPageLayout>
+          <MainContent />
+        </ParentLandingPageLayout>
+      </ClientContext.Provider>
     );
   }
 
   return (
-    <MainLayout>
-      <PageHeader />
-      <Headline />
-      <Description />
-      <ControlPanel />
-      <MainContent />
-      <RelatedPagesCTA />
-    </MainLayout>
+    <ClientContext.Provider value={clientData}>
+      <MainLayout>
+        <PageHeader />
+        <Headline />
+        <Description />
+        <ControlPanel />
+        <MainContent />
+        <RelatedPagesCTA />
+      </MainLayout>
+    </ClientContext.Provider>
   );
 };
 
-const Page = props => {
-  return (
-    <Context.Provider value={props}>
-      <PageTemplate />
-    </Context.Provider>
-  );
-};
+const PageComponent = ({ client, page }) => (
+  <PageContext.Provider value={page}>
+    <PageTemplate clientData={client} />
+  </PageContext.Provider>
+);
 
-Page.getInitialProps = async function({ query, req: { containers } }) {
+PageComponent.getInitialProps = async function({ query, req: { containers } }) {
   const { clientAlias, handle, ...providedFilters } = query;
   const clientData: any = await fetchClientData({
     clientAlias,
@@ -118,20 +120,28 @@ Page.getInitialProps = async function({ query, req: { containers } }) {
 
   const sitemapGroups = await fetchSitemap();
 
-  return {
-    tableData,
-    navigation: clientPages,
+  const client = {
+    clientAlias,
+    clientAreas,
+    clientData,
+    clientPages,
     clientProducts,
     sitemapGroups,
-    filters,
-    clientAreas,
+  };
+
+  const page = {
     handle,
-    clientData,
-    clientAlias,
+    tableData,
+    filters,
     toggles,
     pageData,
     entities,
   };
+
+  return {
+    client,
+    page,
+  };
 };
 
-export default Page;
+export default PageComponent;

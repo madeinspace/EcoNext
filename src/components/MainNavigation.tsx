@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
-import { Context } from '../utils/context';
+import { ClientContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
@@ -51,12 +51,12 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
 };
 
 const MainNavigation = ({ alias }) => {
-  const { navigation } = useContext(Context);
+  const { clientPages } = useContext(ClientContext);
 
   return (
     <MainNav>
       <Menu>
-        {buildMenu(alias, navigation)}
+        {buildMenu(alias, clientPages)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>

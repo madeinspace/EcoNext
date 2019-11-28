@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { IsNextPage } from '../utils/';
-import { Context } from '../utils/context';
+import { PageContext } from '../utils/context';
 
 const MonolithOrNextLink = ({ href, ...props }) => {
   const {
     filters: { WebID },
-  } = useContext(Context);
+  } = useContext(PageContext);
+
   const queryString = WebID === 10 ? '' : `?WebID=${WebID}`;
+
   return IsNextPage(href) ? (
     <Link href={`${href}${queryString}`} prefetch={false}>
       <a {...props} />
