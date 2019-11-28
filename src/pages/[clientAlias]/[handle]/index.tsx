@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import fetchClientData from '../../../utils/fetchClientData';
 // #endregion
 
-import PageMappings from '../../../layouts';
+import fetchLayout, { PageMappings } from '../../../layouts';
 import MainLayout from '../../../layouts/main';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 
@@ -27,7 +27,7 @@ const PageTemplate = () => {
 
   const { ParentPageID } = pageData;
 
-  const MainContent = PageMappings()[handle];
+  const MainContent = PageMappings[handle];
 
   if (!ParentPageID) {
     return (
@@ -92,7 +92,9 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     currentIndustryName: getActiveToggle(toggles, 'Indkey'),
   };
 
-  const { fetchData } = await import(`../../../layouts/${handle}`);
+  const layoutData = await fetchLayout(handle);
+
+  const { fetchData } = layoutData;
 
   const tableData = await fetchData({ filters });
 

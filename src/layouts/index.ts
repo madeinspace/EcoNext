@@ -5,11 +5,18 @@ import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
 
-const productionPages = {
-  population: Population,
-};
+const productionPages = ['population'];
 
-const devPages = {
+const devPages = [
+  'gross-product',
+  'indicator',
+  'population',
+  'value-of-building-approvals',
+  'workers-field-of-qualification',
+  'economic-impact-assesment',
+];
+
+export const PageMappings = {
   'gross-product': GrossProduct,
   indicator: Indicator,
   population: Population,
@@ -18,10 +25,24 @@ const devPages = {
   'economic-impact-assesment': EconomicImpactAssesment,
 };
 
-export default () => {
-  if (process.env.NODE_ENV === 'production') {
-    return productionPages;
+const fetchPageData = async handle => {
+  const pageData = await import(`./${handle}`);
+
+  return pageData;
+};
+
+export const isNextPage = handle => {
+  const availablePages = process.env.NODE_ENV === 'production' ? productionPages : devPages;
+
+  return availablePages.indexOf(handle) >= 0;
+};
+
+export default async handle => {
+  if (!isNextPage(handle)) {
+    return null;
   }
 
-  return devPages;
+  const pageData = await fetchPageData(handle);
+
+  return pageData;
 };
