@@ -3,7 +3,8 @@ const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
 require('dotenv').config();
-
+const isProd = process.env.NODE_ENV === 'production';
+const assetPrefix = process.env.ASSET_PREFIX;
 module.exports = withCSS(
   withSass(
     withImages({
@@ -11,7 +12,7 @@ module.exports = withCSS(
       webpack(config, { isServer }) {
         if (!isServer) {
           config.node = {
-            fs: 'empty'
+            fs: 'empty',
           };
         }
 
@@ -20,9 +21,9 @@ module.exports = withCSS(
           use: {
             loader: 'url-loader',
             options: {
-              limit: 100000
-            }
-          }
+              limit: 100000,
+            },
+          },
         });
 
         const env = Object.keys(process.env).reduce((acc, curr) => {
@@ -30,9 +31,9 @@ module.exports = withCSS(
           return acc;
         }, {});
         config.plugins.push(new webpack.DefinePlugin(env));
-
+        assetPrefix: isProd ? assetPrefix : '';
         return config;
-      }
-    })
-  )
+      },
+    }),
+  ),
 );
