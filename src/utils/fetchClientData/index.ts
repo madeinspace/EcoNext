@@ -1,11 +1,13 @@
-const fetchClientData = async ({ clientAlias, containers }) => {
+import fetchSitemap from '../fetchSitemap';
+
+const queryClientDB = async ({ ClientAlias, containers }) => {
   const { ClientContainer, AllPages } = containers;
 
   const { resources: clientData } = await ClientContainer.items
-    .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
+    .query(`SELECT * FROM c WHERE c.Alias = "${ClientAlias}"`)
     .fetchAll();
 
-  const { Alias, id, ShortName, LongName, Name, Pages, Applications, Areas } = clientData[0];
+  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages } = clientData[0];
 
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);
@@ -18,7 +20,7 @@ const fetchClientData = async ({ clientAlias, containers }) => {
   }));
 
   return {
-    Alias,
+    ClientAlias: Alias,
     ClientID: id,
     ShortName,
     LongName,
@@ -26,6 +28,23 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     clientPages,
     clientProducts: Applications,
     clientAreas: filteredAreas,
+  };
+};
+
+const fetchClientData = async ({ ClientAlias, containers }) => {
+  const clientData: any = await queryClientDB({
+    ClientAlias,
+    containers,
+  });
+
+  const { ClientID } = clientData;
+
+  const sitemapGroups = await fetchSitemap();
+
+  return {
+    ID: ClientID,
+    sitemapGroups,
+    ...clientData,
   };
 };
 

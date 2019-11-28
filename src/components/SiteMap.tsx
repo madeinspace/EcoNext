@@ -113,7 +113,7 @@ const Column = styled.div`
   grid-area: ${props => `col${props.col}`};
 `;
 
-const buildSiteMap = (clientAlias, columns, navigation) => {
+const buildSiteMap = (ClientAlias, columns, navigation) => {
   return columns.map((column, i) => {
     return (
       <Column key={i} col={i + 1}>
@@ -125,14 +125,14 @@ const buildSiteMap = (clientAlias, columns, navigation) => {
               <GroupName>{groups.GroupName}</GroupName>
               <PageList>
                 {pages.map((page, i) => {
-                  const { Alias: pageAlias, PageID, MenuTitle, Disabled } = page;
+                  const { Alias, PageID, MenuTitle, Disabled } = page;
                   return (
                     <React.Fragment key={PageID}>
                       {Disabled ? (
                         <DisabledLink>{MenuTitle}</DisabledLink>
                       ) : (
                         <li>
-                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>{MenuTitle}</StyledLink>
+                          <StyledLink href={`/${ClientAlias}/${Alias}/`}>{MenuTitle}</StyledLink>
                         </li>
                       )}
                     </React.Fragment>

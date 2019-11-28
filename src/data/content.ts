@@ -17,9 +17,9 @@ export default {
     {
       Title: 'Headline',
       renderString: ({ data, tableData }): string =>
-        `<p>The Estimated Resident Population of ${data.currentAreaName} was ${formatNumber(
+        `The Estimated Resident Population of ${data.currentAreaName} was ${formatNumber(
           tableData[0].Number,
-        )} as of the 30th June ${tableData[0].Year}.</p>`,
+        )} as of the 30th June ${tableData[0].Year}.`,
     },
     {
       Title: 'Description',

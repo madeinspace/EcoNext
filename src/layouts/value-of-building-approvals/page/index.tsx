@@ -10,12 +10,12 @@ import { ClientContext, PageContext } from '../../../utils/context';
 
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
-  const { clientAlias } = useContext(ClientContext);
+  const { ClientAlias } = useContext(ClientContext);
   const { tableData } = useContext(PageContext);
 
   const pageName = 'Value of total building approvals';
   const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  const tableParams = tableBuilder(ClientAlias, tableData);
 
   return (
     <>
@@ -54,7 +54,7 @@ const tableBuilder = (alias, nodes) => {
     allowSort: true,
     allowSortReset: true,
     groupOn: '',
-    clientAlias: alias,
+    ClientAlias: alias,
     source: <Source />,
     anchorName: 'service-age-groups',
     headRows: [

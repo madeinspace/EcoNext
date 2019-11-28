@@ -6,7 +6,7 @@ import { ClientContext, PageContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiblingsMenu = () => {
-  const { clientAlias, clientPages } = useContext(ClientContext);
+  const { ClientAlias, clientPages } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
 
   const currentPageNode = clientPages.find(node => node.Alias === handle);
@@ -19,7 +19,7 @@ const SiblingsMenu = () => {
         {Disabled ? (
           <DisabledLink>{MenuTitle}</DisabledLink>
         ) : (
-          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
+          <StyledLink href={`/${ClientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
             {MenuTitle}
           </StyledLink>
         )}

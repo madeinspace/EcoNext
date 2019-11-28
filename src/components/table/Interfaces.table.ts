@@ -44,7 +44,7 @@ export interface ITableState {
 export interface ISourceAndTopicNotesProps {
   source: string;
   anchorName: any;
-  clientAlias: string;
+  ClientAlias: string;
 }
 
 export interface ISmallNoteProps {

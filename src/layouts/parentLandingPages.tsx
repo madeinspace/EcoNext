@@ -23,30 +23,29 @@ const SiteContent = styled.div`
 `;
 
 const ParentLandingPageLayout = ({ children = null }) => {
-  const { clientData, clientPages } = useContext(ClientContext);
+  const { ClientAlias, clientID, clientPages, LongName } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
 
-  const { Alias: alias, clientID, LongName: prettyname, Name: name } = clientData;
-  const logo = require(`../images/logos/${alias}.png`);
+  const logo = require(`../images/logos/${ClientAlias}.png`);
   const isDisabled = IsDisabled(clientPages, handle);
   const isSecure = IsSecure(clientPages, handle);
 
   return (
     <>
-      <SearchApp alias={alias} clientID={clientID} prettyname={prettyname} clientImage={logo} />
-      <ClientHeader alias={alias} prettyname={prettyname} clientImage={logo} isLite={IsLite(clientPages)} />
+      <SearchApp alias={ClientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
+      <ClientHeader alias={ClientAlias} prettyname={LongName} clientImage={logo} isLite={IsLite(clientPages)} />
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={alias} />
+          <MainNavigation alias={ClientAlias} />
         </SidebarNav>
         <SiteContent id={'main-content'}>
           Select a topic
           <SiblingsMenu />
           {isSecure ? <Secured /> : <Unsecured />}
-          {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
+          {isDisabled ? <DisabledPageWarning /> : children}
         </SiteContent>
       </ContentRow>
-      <SiteMap alias={alias} prettyname={prettyname} />
+      <SiteMap alias={ClientAlias} prettyname={LongName} />
       <SharedFooter />
     </>
   );

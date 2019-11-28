@@ -16,10 +16,14 @@ const buildMenuGroups = navNodes => groupBy(navNodes, 'GroupName');
 
 const validateGroupName = groupname => groupname !== '' && groupname !== 'Undefined';
 
-const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
+const buildMenu = (ClientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
   const groupedNavigation = groupBy(navigationNodes, 'ParentPageID');
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);
+
+  const location = useRouter().pathname;
+  const { pageAlias: currentPageAlias } = pathParts(location);
+  const isCurrent = buildIsCurrent(currentPageAlias);
 
   return _.map(menuGroups, (group, groupName) => (
     <React.Fragment key={groupName}>
@@ -27,10 +31,9 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
       {group.map((topNode, i) => {
         const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID } = topNode;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
-        const location = useRouter().pathname;
-        const { pageAlias: currentPageAlias } = pathParts(location);
-        const isCurrent = buildIsCurrent(currentPageAlias);
+
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
+
         const isActive = childIsCurrent || pageAlias === currentPageAlias;
 
         return (
@@ -38,11 +41,11 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
             {Disabled ? (
               <DisabledLink>{MenuTitle}</DisabledLink>
             ) : (
-              <StyledLink className={isActive && 'active'} href={`/${clientAlias}/${pageAlias}`}>
+              <StyledLink className={isActive && 'active'} href={`/${ClientAlias}/${pageAlias}`}>
                 {MenuTitle}
               </StyledLink>
             )}
-            {isParent && <SubMenu>{buildMenu(clientAlias, navigationNodes, PageID)}</SubMenu>}
+            {isParent && <SubMenu>{buildMenu(ClientAlias, navigationNodes, PageID)}</SubMenu>}
           </MenuItem>
         );
       })}

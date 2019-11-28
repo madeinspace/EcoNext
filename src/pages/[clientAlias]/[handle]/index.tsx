@@ -3,18 +3,11 @@ import { useContext } from 'react';
 
 // #region imports api
 import fetchClientData from '../../../utils/fetchClientData';
-import fetchSitemap from '../../../utils/fetchSitemap';
 // #endregion
 
+import PageMappings from '../../../layouts';
 import MainLayout from '../../../layouts/main';
-
-import Population from '../../../layouts/population/page';
-import ValueOfBuildingApprovals from '../../../layouts/value-of-building-approvals/page';
-import WorkersFieldOfQualification from '../../../layouts/workers-field-of-qualification/page';
-import EconomicImpactAssesment from '../../../layouts/economic-impact-assesment/page';
-import Indicator from '../../../layouts/indicator/page';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
-// #endregion
 
 import contentData from '../../../data/content';
 import toggleData from '../../../data/toggles';
@@ -29,58 +22,49 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 import { PageContext, ClientContext } from '../../../utils/context';
 
-export const NextPages = {
-  indicator: Indicator,
-  population: Population,
-  'value-of-building-approvals': ValueOfBuildingApprovals,
-  'workers-field-of-qualification': WorkersFieldOfQualification,
-  'economic-impact-assesment': EconomicImpactAssesment,
-};
-
-const PageTemplate = ({ clientData }) => {
+const PageTemplate = () => {
   const { pageData, handle } = useContext(PageContext);
 
   const { ParentPageID } = pageData;
-  const MainContent = NextPages[handle];
+
+  const MainContent = PageMappings()[handle];
 
   if (!ParentPageID) {
     return (
-      <ClientContext.Provider value={clientData}>
-        <ParentLandingPageLayout>
-          <MainContent />
-        </ParentLandingPageLayout>
-      </ClientContext.Provider>
+      <ParentLandingPageLayout>
+        <MainContent />
+      </ParentLandingPageLayout>
     );
   }
 
   return (
-    <ClientContext.Provider value={clientData}>
-      <MainLayout>
-        <PageHeader />
-        <Headline />
-        <Description />
-        <ControlPanel />
-        <MainContent />
-        <RelatedPagesCTA />
-      </MainLayout>
-    </ClientContext.Provider>
+    <MainLayout>
+      <PageHeader />
+      <Headline />
+      <Description />
+      <ControlPanel />
+      <MainContent />
+      <RelatedPagesCTA />
+    </MainLayout>
   );
 };
 
 const PageComponent = ({ client, page }) => (
   <PageContext.Provider value={page}>
-    <PageTemplate clientData={client} />
+    <ClientContext.Provider value={client}>
+      <PageTemplate />
+    </ClientContext.Provider>
   </PageContext.Provider>
 );
 
 PageComponent.getInitialProps = async function({ query, req: { containers } }) {
-  const { clientAlias, handle, ...providedFilters } = query;
-  const clientData: any = await fetchClientData({
-    clientAlias,
-    containers,
-  });
+  const { clientAlias: ClientAlias, handle, ...providedFilters } = query;
 
-  const { ClientID, clientAreas, clientProducts, clientPages } = clientData;
+  const client = await fetchClientData({ ClientAlias, containers });
+
+  const { AllPages } = containers;
+
+  const pageData = AllPages[handle];
 
   const pageDefaultFilters = (toggleData[handle] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
@@ -97,37 +81,22 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     WebID: 10,
     ...pageDefaultFilters,
     ...providedFilters,
-    ClientID,
+    ClientID: client.ID,
   };
-
-  const { fetchData } = await import(`../../../layouts/${handle}`);
-
-  const { AllPages } = containers;
-
-  const pageData = AllPages[handle];
 
   const toggles = await fetchToggleOptions(filters, toggleData[handle] || []);
 
-  const tableData = await fetchData({ filters });
-
   const data = {
-    currentAreaName: getActiveToggle(toggles, 'WebID', clientData.LongName),
+    currentAreaName: getActiveToggle(toggles, 'WebID', client.LongName),
     currentGenderName: getActiveToggle(toggles, 'Sex'),
     currentIndustryName: getActiveToggle(toggles, 'Indkey'),
   };
 
+  const { fetchData } = await import(`../../../layouts/${handle}`);
+
+  const tableData = await fetchData({ filters });
+
   const entities = await filterEntities(filters, contentData[handle], { tableData, data });
-
-  const sitemapGroups = await fetchSitemap();
-
-  const client = {
-    clientAlias,
-    clientAreas,
-    clientData,
-    clientPages,
-    clientProducts,
-    sitemapGroups,
-  };
 
   const page = {
     handle,

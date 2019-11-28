@@ -26,21 +26,21 @@ const StyledControlPanel = styled.div`
 `;
 
 const ControlPanel: React.SFC<{}> = () => {
-  const { clientAlias } = React.useContext(ClientContext);
+  const { ClientAlias } = React.useContext(ClientContext);
   const { handle, toggles } = React.useContext(PageContext);
 
   const setQuery = (key, value) => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     query[key] = value;
     Router.push({
-      pathname: `/${clientAlias}/${handle}`,
+      pathname: `/${ClientAlias}/${handle}`,
       query,
     });
   };
 
   const handleReset = () =>
     Router.push({
-      pathname: `/${clientAlias}/${handle}`,
+      pathname: `/${ClientAlias}/${handle}`,
       query: {},
     });
 

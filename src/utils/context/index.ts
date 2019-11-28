@@ -1,12 +1,14 @@
 import React from 'react';
 
 type ClientProps = {
-  clientAlias?: string;
+  clientID?: number;
+  ClientAlias?: string;
   clientAreas?: Array<any>;
-  clientData?: any;
   clientPages?: Array<any>;
   clientProducts?: Array<any>;
   sitemapGroups?: Array<any>;
+  LongName?: string;
+  Name?: string;
 };
 
 type PageProps = {

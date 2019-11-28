@@ -39,7 +39,7 @@ const StyledCTA = styled.div`
 `;
 
 const RelatedPagesCTA = () => {
-  const { clientAlias } = useContext(ClientContext);
+  const { ClientAlias } = useContext(ClientContext);
   const { pageData } = useContext(PageContext);
 
   const { RelatedPages } = pageData;
@@ -52,7 +52,7 @@ const RelatedPagesCTA = () => {
       <ul>
         {RelatedPages.map(({ Alias, MenuTitle }) => (
           <li key={Alias}>
-            <Link href={`${clientAlias}/${Alias}`}>
+            <Link href={`${ClientAlias}/${Alias}`}>
               <a>{MenuTitle}</a>
             </Link>
           </li>

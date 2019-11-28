@@ -1,4 +1,4 @@
-import { NextPages } from '../pages/[clientAlias]/[handle]';
+import PageMappings from '../layouts';
 import filter from 'lodash/filter';
 import has from 'lodash/has';
 
@@ -8,7 +8,7 @@ export const pathParts = (path: string) => {
 };
 
 export const IsNextPage = path => {
-  return has(NextPages, pathParts(path.split('?')[0]).pageAlias);
+  return has(PageMappings(), pathParts(path.split('?')[0]).pageAlias);
 };
 
 const amI = param => (navNodes, currentPageAlias) =>
