@@ -5,6 +5,15 @@ import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
 
+export const PageMappings = {
+  'gross-product': GrossProduct,
+  indicator: Indicator,
+  population: Population,
+  'value-of-building-approvals': ValueOfBuildingApprovals,
+  'workers-field-of-qualification': WorkersFieldOfQualification,
+  'economic-impact-assesment': EconomicImpactAssesment,
+};
+
 const productionPages = ['population'];
 
 const devPages = [
@@ -15,15 +24,6 @@ const devPages = [
   'workers-field-of-qualification',
   'economic-impact-assesment',
 ];
-
-export const PageMappings = {
-  'gross-product': GrossProduct,
-  indicator: Indicator,
-  population: Population,
-  'value-of-building-approvals': ValueOfBuildingApprovals,
-  'workers-field-of-qualification': WorkersFieldOfQualification,
-  'economic-impact-assesment': EconomicImpactAssesment,
-};
 
 const fetchPageData = async handle => {
   const pageData = await import(`./${handle}`);
