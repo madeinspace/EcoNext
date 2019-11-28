@@ -1,21 +1,19 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import Link from '../components/Link';
+import Link from './Link';
 import { Context } from '../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
-const SiblingsMenu = () => {
+const ChildrenMenu = () => {
   const { clientAlias, handle, navigation } = useContext(Context);
-
   const currentPageNode = navigation.find(node => node.Alias === handle);
-  const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
+  const currentParentPageID = (currentPageNode && currentPageNode.PageID) || 0;
 
-  const siblings = navigation
+  const children = navigation
     .filter(node => node.ParentPageID === currentParentPageID)
-
     .map(({ Disabled, MenuTitle, Alias }) => (
-      <React.Fragment key={Alias}>
+      <li key={Alias}>
         {Disabled ? (
           <DisabledLink>{MenuTitle}</DisabledLink>
         ) : (
@@ -23,21 +21,29 @@ const SiblingsMenu = () => {
             {MenuTitle}
           </StyledLink>
         )}
-      </React.Fragment>
+      </li>
     ));
 
-  return <SiblingsMenuContainer>{siblings}</SiblingsMenuContainer>;
+  return (
+    <ChildrenMenuContainer>
+      <Heading>Select a topic</Heading>
+      <ul>{children}</ul>
+    </ChildrenMenuContainer>
+  );
 };
 
-export default SiblingsMenu;
+export default ChildrenMenu;
 
-const SiblingsMenuContainer = styled.div`
+const Heading = styled.h2`
+  width: 100%;
+`;
+
+const ChildrenMenuContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid ${variables.grayLighter};
 `;
 
 const StyledLink = styled(Link)`

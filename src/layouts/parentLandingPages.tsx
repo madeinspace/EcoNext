@@ -12,19 +12,12 @@ import { IsDisabled, IsSecure } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
 import { Context } from '../utils/context';
 import { Secured, Unsecured } from '../styles/ui';
+import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
+import ChildrenMenu from '../components/ChildrenMenu';
 const IsLite = nodes => some(nodes, 'Disabled');
-
-const SidebarNav = styled.div`
-  grid-area: navigation;
-`;
-
-const SiteContent = styled.div`
-  grid-area: content;
-`;
 
 const ParentLandingPageLayout = ({ children = null }) => {
   const { clientData, handle, navigation } = useContext(Context);
-
   const { Alias: alias, clientID, LongName: prettyname, Name: name } = clientData;
   const logo = require(`../images/logos/${alias}.png`);
   const isDisabled = IsDisabled(navigation, handle);
@@ -39,9 +32,8 @@ const ParentLandingPageLayout = ({ children = null }) => {
           <MainNavigation alias={alias} />
         </SidebarNav>
         <SiteContent id={'main-content'}>
-          Select a topic
-          <SiblingsMenu />
-          {isSecure ? <Secured /> : <Unsecured />}
+          <ChildrenMenu />
+          {/* {isSecure ? <Secured /> : <Unsecured />} */}
           {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
         </SiteContent>
       </ContentRow>

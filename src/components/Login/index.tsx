@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
+import { login } from '../../utils/auth';
 
 const LoginForm = styled.form``;
-import { login } from '../../utils/auth';
+const Error = styled.div``;
+const Password = styled.input``;
+const Username = styled.input``;
+const LoginButton = styled.button``;
 
 const Login = () => {
   const [userData, setUserData] = useState({ username: '', password: '', error: '' });
@@ -38,17 +42,16 @@ const Login = () => {
   return (
     <LoginForm onSubmit={handleLogin}>
       <label htmlFor="username">username</label>
-
-      <input
+      <Username
         type="text"
         id="username"
         name="username"
         value={userData.username}
         onChange={event => setUserData(Object.assign({}, userData, { username: event.target.value }))}
       />
-      <label htmlFor="password">password</label>
 
-      <input
+      <label htmlFor="password">password</label>
+      <Password
         type="password"
         id="password"
         name="password"
@@ -56,9 +59,13 @@ const Login = () => {
         onChange={event => setUserData(Object.assign({}, userData, { password: event.target.value }))}
       />
 
-      <button type="submit">Login</button>
+      <LoginButton type="submit">Login</LoginButton>
 
-      {userData.error && <p className="error">Error: {userData.error}</p>}
+      {userData.error && (
+        <Error>
+          <p>Error: {userData.error}</p>
+        </Error>
+      )}
     </LoginForm>
   );
 };

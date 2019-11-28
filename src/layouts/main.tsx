@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
         </SidebarNav>
         <SiteContent id={'main-content'}>
           <SiblingsMenu />
-          {isSecure ? <Secured /> : <Unsecured />}
+          {/* {isSecure ? <Secured /> : <Unsecured />} */}
           {isDisabled ? <DisabledPageWarning client={clientData} /> : children}
         </SiteContent>
       </ContentRow>
