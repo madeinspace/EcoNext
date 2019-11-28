@@ -4,7 +4,7 @@ const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
 require('dotenv').config();
 const isProd = process.env.NODE_ENV === 'production';
-const assetPrefix = process.env.ASSET_PREFIX;
+const assetPrefix = process.env.ASSET_PREFIX || 'https://econext.azurewebsites.net';
 module.exports = withCSS(
   withSass(
     withImages({
