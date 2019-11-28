@@ -9,6 +9,7 @@ module.exports = withCSS(
   withSass(
     withImages({
       cssModules: false,
+      assetPrefix: isProd ? assetPrefix : '',
       webpack(config, { isServer }) {
         if (!isServer) {
           config.node = {
@@ -31,7 +32,6 @@ module.exports = withCSS(
           return acc;
         }, {});
         config.plugins.push(new webpack.DefinePlugin(env));
-        assetPrefix: isProd ? assetPrefix : '';
         return config;
       },
     }),
