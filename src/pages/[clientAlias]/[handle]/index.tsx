@@ -25,6 +25,10 @@ import { PageContext, ClientContext } from '../../../utils/context';
 const PageTemplate = () => {
   const { pageData, handle } = useContext(PageContext);
 
+  if (!pageData) {
+    return <MainLayout>404</MainLayout>;
+  }
+
   const { ParentPageID } = pageData;
 
   const MainContent = PageMappings[handle];
@@ -93,6 +97,11 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
   };
 
   const layoutData = await fetchLayout(handle);
+
+  if (!layoutData) {
+    // 404
+    return { client, page: { pageData: null, filters, handle } };
+  }
 
   const { fetchData } = layoutData;
 
