@@ -8,7 +8,7 @@ import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
 import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
-import { IsDisabled, IsSecure } from '../utils/';
+import { IsDisabled } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import { Secured, Unsecured } from '../styles/ui';
@@ -17,11 +17,11 @@ const IsLite = nodes => some(nodes, 'Disabled');
 
 const Layout = ({ children }) => {
   const { ClientAlias, clientID, clientPages, LongName } = useContext(ClientContext);
-  const { handle } = useContext(PageContext);
+  const { handle, pageData } = useContext(PageContext);
 
   const logo = require(`../images/logos/${ClientAlias}.png`);
   const isDisabled = IsDisabled(clientPages, handle);
-  const isSecure = IsSecure(clientPages, handle);
+  const isSecure = pageData.IsSecure;
 
   return (
     <>
