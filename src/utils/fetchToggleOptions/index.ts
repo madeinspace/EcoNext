@@ -1,8 +1,24 @@
 import { sqlConnection } from '../../utils/sql';
 
-const fetchToggleOptions = async (filters, toggles) => {
+export const globalToggles = [
+  {
+    Database: 'CommApp',
+    DefaultValue: '40',
+    Label: 'Current benchmark:',
+    Params: [
+      {
+        ClientID: '9',
+      },
+    ],
+    StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+    ParamName: 'BMID',
+    Hidden: true,
+  },
+];
+
+const fetchToggleOptions = async (filters, filterToggles) => {
   const completeToggles = await Promise.all(
-    toggles.map(async ({ Database, Params, StoredProcedure, ParamName, Label, DefaultValue }) => {
+    filterToggles.map(async ({ Database, Params, StoredProcedure, ParamName, Label, DefaultValue, Hidden }) => {
       if (!StoredProcedure) return {};
 
       const paramList = (Params || []).reduce((acc, cur) => [...acc, filters[Object.keys(cur)[0]]], []);
@@ -20,6 +36,7 @@ const fetchToggleOptions = async (filters, toggles) => {
       return {
         active: list.find(({ Value }) => Value === value),
         key: ParamName,
+        hidden: Hidden,
         list,
         title: Label,
         value,

@@ -1,7 +1,7 @@
 //  this file is not imported anywhere
 
 // when building out a new page, duplicate `template-page` as a starting point and then copy the corresponding
-// item from this object into the `pageContent.toggles` object
+// item from this object into the `pageContent.filterToggles` object
 
 export default {
   'local-jobs': [

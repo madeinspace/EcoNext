@@ -15,7 +15,7 @@ export interface IChartProps {
   source?: any;
   dataSource?: any;
   sets?: any[];
-  toggles?: any[];
+  filterToggles?: any[];
   siblingsInfo?: any;
 }
 
@@ -67,7 +67,7 @@ export interface IToggle {
 }
 
 export interface ITogglesProps {
-  toggles: any[];
+  filterToggles: any[];
   currentToggle: IToggle;
   handleToggleClick: (toggle: IToggle) => void;
 }
