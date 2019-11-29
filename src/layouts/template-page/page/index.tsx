@@ -10,12 +10,12 @@ import { PageContext, ClientContext } from '../../../utils/context';
 
 // #region population page
 const TemplatePage = () => {
-  const { ClientAlias } = useContext(ClientContext);
+  const { clientAlias } = useContext(ClientContext);
   const { tableData } = useContext(PageContext);
 
   const chartData = chartBuilder(tableData);
   const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(ClientAlias, tableData);
+  const tableParams = tableBuilder(clientAlias, tableData);
 
   return (
     <>

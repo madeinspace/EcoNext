@@ -4,6 +4,7 @@ import Indicator from './indicator/page';
 import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
+import NumberOfBusinessesByIndustry from './number-of-businesses-by-industry/page';
 
 export const PageMappings = {
   'gross-product': GrossProduct,
@@ -12,6 +13,7 @@ export const PageMappings = {
   'value-of-building-approvals': ValueOfBuildingApprovals,
   'workers-field-of-qualification': WorkersFieldOfQualification,
   'economic-impact-assesment': EconomicImpactAssesment,
+  'number-of-businesses-by-industry': NumberOfBusinessesByIndustry,
 };
 
 const productionPages = ['population'];
@@ -23,6 +25,7 @@ const devPages = [
   'value-of-building-approvals',
   'workers-field-of-qualification',
   'economic-impact-assesment',
+  'number-of-businesses-by-industry',
 ];
 
 const fetchPageData = async handle => {

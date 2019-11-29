@@ -286,14 +286,6 @@ export default {
       Value: '2',
     },
   ],
-  'number-of-businesses-by-industry': [
-    {
-      Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `The [Econ_BusinessRegister].[Top1Label] industry had the largest number of [BTypeAlt] in ${data.currentAreaName}, comprising [Econ_BusinessRegister].[Top1Per].{0:0.0}% of all  [BTypeAlt], compared to [Econ_BusinessRegister].[Top1PerBM].{0:0.0}% in [BM].`,
-    },
-  ],
-
   'industry-sector-analysis-series': [
     {
       Title: 'Headline',

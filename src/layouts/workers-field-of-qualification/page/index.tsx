@@ -19,6 +19,7 @@ import InfoBox from '../../../components/InfoBox';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 
 // #endregion
 
@@ -281,6 +282,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         </span>
       </InfoBox>
 
+      <ControlPanel />
       <ItemWrapper>
         <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
       </ItemWrapper>

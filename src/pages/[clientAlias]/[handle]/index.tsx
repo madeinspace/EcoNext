@@ -44,7 +44,7 @@ const PageTemplate = () => {
       <PageHeader />
       <Headline />
       <Description />
-      <ControlPanel />
+
       <MainContent />
       <RelatedPagesCTA />
     </MainLayout>

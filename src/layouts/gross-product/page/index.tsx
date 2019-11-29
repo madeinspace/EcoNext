@@ -31,6 +31,7 @@ const GrossProductPage = () => {
 
   return (
     <>
+      <ControlPanel />
       {/* <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
