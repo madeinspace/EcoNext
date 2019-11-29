@@ -6,6 +6,7 @@ import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #endregion
 
 // #region population page
@@ -21,6 +22,9 @@ const PopulationPage = () => {
 
   return (
     <>
+      <ItemWrapper>
+        <ControlPanel />
+      </ItemWrapper>
       <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
