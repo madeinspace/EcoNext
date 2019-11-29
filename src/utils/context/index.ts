@@ -16,7 +16,7 @@ type PageProps = {
   handle?: string;
   filters?: any;
   tableData?: Array<any>;
-  toggles?: Array<any>;
+  filterToggles?: Array<any>;
   pageData?: any;
 };
 

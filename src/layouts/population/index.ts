@@ -26,7 +26,7 @@ const pageContent = {
         `<p>The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for ${data.currentAreaName}, the state and Australia, with percentage comparisons. A growing population can indicate a growing economy, but this is not necessarily the case and depends on the residential role and function of the area.</p>`,
     },
   ],
-  toggles: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '10',

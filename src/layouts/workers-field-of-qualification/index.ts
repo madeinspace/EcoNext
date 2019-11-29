@@ -30,7 +30,7 @@ const pageContent = {
         } qualifications than any other field of qualification.`,
     },
   ],
-  toggles: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '10',

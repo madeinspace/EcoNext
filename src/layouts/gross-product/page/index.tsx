@@ -18,16 +18,13 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 const GrossProductPage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { tableData, toggles } = useContext(PageContext);
+  const { tableData, filterToggles } = useContext(PageContext);
 
   // const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
 
   // const chartData = chartBuilder(tableData);
   // const chartLineData = chartLineBuilder(tableData);
   // const tableParams = tableBuilder(clientAlias, tableData);
-
-  // const latestPop = tableData[0].Number;
-  // const latestYear = tableData[0].Year;
 
   return (
     <>
@@ -41,7 +38,7 @@ const GrossProductPage = () => {
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+        <EntityTable data={tableParams} />
       </ItemWrapper> */}
     </>
   );

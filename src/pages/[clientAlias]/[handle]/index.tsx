@@ -9,7 +9,7 @@ import fetchLayout, { PageMappings } from '../../../layouts';
 import MainLayout from '../../../layouts/main';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 
-import fetchToggleOptions from '../../../utils/fetchToggleOptions';
+import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import PageHeader from '../../../components/PageHeader';
 import Headline from '../../../components/Headline';
@@ -77,7 +77,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
 
   const pageData = AllPages[handle];
 
-  const pageDefaultFilters = (pageContent['toggles'] || []).reduce(
+  const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
       [ParamName]: DefaultValue,
@@ -95,12 +95,12 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     ClientID: client.ID,
   };
 
-  const toggles = await fetchToggleOptions(filters, pageContent['toggles'] || []);
+  const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
 
   const data = {
-    currentAreaName: getActiveToggle(toggles, 'WebID', client.LongName),
-    currentGenderName: getActiveToggle(toggles, 'Sex'),
-    currentIndustryName: getActiveToggle(toggles, 'Indkey'),
+    currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
+    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   };
 
   const tableData = await fetchData({ filters });
@@ -111,7 +111,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     handle,
     tableData,
     filters,
-    toggles,
+    filterToggles,
     pageData,
     entities,
   };
