@@ -10,7 +10,7 @@ const fetchData = async filters => {
 
 const pageContent = {
   entities: [],
-  toggle: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '10',

@@ -16,7 +16,7 @@ const pageContent = {
         `The ${tableData[0].LabelName} industry had the largest number of [BTypeAlt] in ${data.currentAreaName}, comprising ${tableData[0].PerYear1}% of all  [BTypeAlt], compared to [Econ_BusinessRegister].[Top1PerBM].{0:0.0}% in [BM].`,
     },
   ], // copy this from the relevant key in 'data/content.ts'
-  toggles: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '600',

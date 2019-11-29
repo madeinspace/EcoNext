@@ -12,8 +12,8 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { tableData, toggles } = useContext(PageContext);
-  console.log('toggles: ', toggles);
+  const { tableData, filterToggles } = useContext(PageContext);
+  console.log('toggles: ', filterToggles);
 
   const chartData = chartBuilder(tableData);
   const chartLineData = chartLineBuilder(tableData);

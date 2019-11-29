@@ -16,7 +16,7 @@ const pageContent = {
         `In [Parameter].[sStartYearLabel], ${data.currentAreaName} contributed [Econ_IndustryAnalysis].[EmploymentPer].{0:0.0}% of [BM]’s [IndkeyNieirAlt1] employment and [Econ_IndustryAnalysis].[ValueAddedPer].{0:0.0}% of its value added.`,
     },
   ],
-  toggles: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '10',
