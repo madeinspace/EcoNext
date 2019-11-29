@@ -14,17 +14,20 @@ import RelatedPagesCTA from '../../../components/RelatedPages';
 import PageHeader from '../../../components/PageHeader';
 import Headline from '../../../components/Headline';
 import Description from '../../../components/Description';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
 import { PageContext, ClientContext } from '../../../utils/context';
 
+const ErrorPage = ({ status }) => {
+  return <div>Oh no, this is a {status} page</div>;
+};
+
 const PageTemplate = () => {
   const { pageData, handle } = useContext(PageContext);
 
   if (!pageData) {
-    return <MainLayout>404</MainLayout>;
+    return <MainLayout Template={() => <ErrorPage status={404} />}>404</MainLayout>;
   }
 
   const { ParentPageID } = pageData;
@@ -66,9 +69,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
 
   const layoutData = await fetchLayout(handle);
 
-  console.log(layoutData);
-
-  if (!layoutData) {
+  if (!layoutData || !client) {
     // 404
     return { client, page: { pageData: null, filters: [], handle } };
   }

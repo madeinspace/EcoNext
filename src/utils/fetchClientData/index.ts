@@ -21,6 +21,10 @@ const queryClientDB = async ({ clientAlias, containers }) => {
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
     .fetchAll();
 
+  if (clientData.length === 0) {
+    return null;
+  }
+
   const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages } = clientData[0];
 
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
@@ -53,6 +57,8 @@ const fetchClientData = async ({ clientAlias, containers }) => {
     clientAlias,
     containers,
   });
+
+  if (clientData === null) return null;
 
   const { ClientID } = clientData;
 
