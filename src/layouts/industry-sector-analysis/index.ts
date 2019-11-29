@@ -60,6 +60,7 @@ const pageContent = {
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
       ParamName: 'sStartYear',
+      Hidden: true,
     },
     {
       Database: 'CommApp',
