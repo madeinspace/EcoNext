@@ -1,27 +1,37 @@
 // #region imports
 import _ from 'lodash';
 import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
-import { ItemWrapper, CrossLink, ForecastProductIcon } from '../../../styles/MainContentStyles';
+import {
+  Headline,
+  ItemWrapper,
+  CrossLink,
+  PageIntroFullWidth,
+  ForecastProductIcon,
+} from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
+import { ClientContext, PageContext } from '../../../utils/context';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { useContext } from 'react';
-import { PageContext, ClientContext } from '../../../utils/context';
+import getActiveToggle from '../../../utils/getActiveToggle';
 // #endregion
 
-// #region population page
-const PopulationPage = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
-  const { tableData } = useContext(PageContext);
+const GrossProductPage = () => {
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const { tableData, toggles } = useContext(PageContext);
 
-  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
+  // const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
 
-  const chartData = chartBuilder(tableData);
-  const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  // const chartData = chartBuilder(tableData);
+  // const chartLineData = chartLineBuilder(tableData);
+  // const tableParams = tableBuilder(clientAlias, tableData);
+
+  // const latestPop = tableData[0].Number;
+  // const latestYear = tableData[0].Year;
 
   return (
     <>
-      <ItemWrapper>
+      {/* <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
 
@@ -31,28 +41,12 @@ const PopulationPage = () => {
 
       <ItemWrapper>
         <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
-      </ItemWrapper>
-
-      {hasForecast(clientProducts) && (
-        <CrossLink>
-          <ForecastProductIcon />
-          <a
-            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
-            target="_blank"
-            title="link to forecast"
-          >
-            Population forecasts
-            <span className="hidden"> (opens a new window)</span>
-          </a>
-        </CrossLink>
-      )}
+      </ItemWrapper> */}
     </>
   );
 };
 
-// #endregion
-
-export default PopulationPage;
+export default GrossProductPage;
 
 // #region Source
 const Source = () => (
@@ -68,14 +62,14 @@ const Source = () => (
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (alias, nodes) => {
+const tableBuilder = (clientAlias, nodes) => {
   return {
     cssClass: '',
     allowExport: false,
     allowSort: true,
     allowSortReset: true,
     groupOn: '',
-    clientAlias: alias,
+    clientAlias,
     source: <Source />,
     anchorName: 'service-age-groups',
     headRows: [

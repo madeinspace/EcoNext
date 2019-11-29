@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Context, ClientProductsContext } from '../utils/context';
+import { ClientContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const ProductsNav = styled.nav`
@@ -73,7 +73,7 @@ const ProductItem = styled.a`
 `;
 
 const ClientProductsNav = ({ alias }) => {
-  const { clientProducts } = useContext(ClientProductsContext);
+  const { clientProducts } = useContext(ClientContext);
 
   return (
     <ProductsNav>

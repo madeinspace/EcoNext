@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 import { useContext } from 'react';
-import { Context } from '../../utils/context';
 import Link from 'next/link';
+import { ClientContext, PageContext } from '../../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
@@ -39,7 +39,8 @@ const StyledCTA = styled.div`
 `;
 
 const RelatedPagesCTA = () => {
-  const { clientAlias, pageData } = useContext(Context);
+  const { clientAlias } = useContext(ClientContext);
+  const { pageData } = useContext(PageContext);
 
   const { RelatedPages } = pageData;
 

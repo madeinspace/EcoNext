@@ -3,11 +3,9 @@ import _ from 'lodash';
 import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
-  Headline,
   PageIntro,
   Note,
   Highlight,
@@ -18,8 +16,9 @@ import {
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
 import InfoBox from '../../../components/InfoBox';
-import { Context } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
+import RelatedPagesCTA from '../../../components/RelatedPages';
+import { ClientContext, PageContext } from '../../../utils/context';
 
 // #endregion
 
@@ -38,18 +37,8 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const HighestQualification = () => {
-  const { tableData } = useContext(Context);
-
-  const topquals = TopLevelQualifications(tableData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const biggest: any = highestQuals.pop();
-
-  return (biggest || {}).LabelName;
-};
-
 const TopThreeFields = ({ industryName }) => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -79,7 +68,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   const {
     filters: { IGBMID },
     tableData,
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let currentBenchmarkName: any = benchmarkName;
 
@@ -111,7 +100,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
 const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
   const {
     filters: { IGBMID, Indkey },
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let industryText = industryName;
   if (Indkey == 23000) {
@@ -138,7 +127,7 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
 };
 
 const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -166,7 +155,7 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
 const EmergingGroupsHeading = ({ areaName, industryName }) => {
   const {
     filters: { Indkey },
-  } = useContext(Context);
+  } = useContext(PageContext);
 
   let industryText = industryName;
   if (Indkey == 23000) {
@@ -183,7 +172,7 @@ const EmergingGroupsHeading = ({ areaName, industryName }) => {
 };
 
 const EmergingGroups = () => {
-  const { tableData } = useContext(Context);
+  const { tableData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(tableData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
@@ -203,9 +192,10 @@ const EmergingGroups = () => {
 
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
-  const { clientAlias, clientData, tableData, clientProducts, toggles } = useContext(Context);
+  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const { tableData, toggles } = useContext(PageContext);
 
-  const currentAreaName = getActiveToggle(toggles, 'WebID', clientData.LongName);
+  const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
   const currentIndustryName = getActiveToggle(toggles, 'Indkey');
   const currentBenchmarkName = getActiveToggle(toggles, 'IGBMID');
   const currentGenderName = getActiveToggle(toggles, 'Sex');
@@ -234,16 +224,10 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     TabularData: tableData,
   });
 
-  const handleExport = () => {};
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
     <>
-      <Headline>
-        {HighestQualification() &&
-          `Within ${currentAreaName}, there are more workers in ${currentIndustryName} with
-      ${HighestQualification()} qualifications than any other field of qualification.`}
-      </Headline>
       <PageIntro>
         <div>
           <p>
@@ -269,7 +253,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
             Field of Qualification information should be looked at in conjunction with{' '}
             <a href={`${clientAlias}/workers-level-of-qualifications?`}>Level of qualification </a>
             and <a href={`${clientAlias}/workers-occupations?`}>Occupation</a> data for a clearer picture of the skills
-            available for the local workers in {clientData.LongName}.
+            available for the local workers in {LongName}.
           </p>
         </div>
         <SourceBubble>
@@ -285,15 +269,11 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         <strong>Please note</strong> – The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {clientData.LongName} in 2011 had to be constructed
-        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
-        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
-        caution, however, and not compare directly with 2011 data from any other source.
+        imputed using the same methodology. To provide this detail, {LongName} in 2011 had to be constructed from a best
+        fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it is
+        considered close enough to allow some comparison. Users should treat this time series data with caution,
+        however, and not compare directly with 2011 data from any other source.
       </Note>
-
-      <ItemWrapper>
-        <ControlPanel />
-      </ItemWrapper>
 
       <InfoBox>
         <span>
@@ -355,6 +335,13 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         <EmergingGroupsHeading areaName={currentAreaName} industryName={currentIndustryName} />
         <EmergingGroups />
       </AnalysisContainer>
+      {
+        // #endregion
+      }
+      {
+        // #region related pages
+      }
+      <RelatedPagesCTA />
       {
         // #endregion
       }

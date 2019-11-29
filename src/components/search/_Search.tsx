@@ -12,7 +12,7 @@ import { HeaderRow } from '../grid';
 
 interface ISearchConfig {
   getAPiUrl: string;
-  getClientAlias: string;
+  getclientAlias: string;
   getClientLogoUrl: string;
   getClientLongName: string;
   getHubspotAPiUrl: string;
@@ -132,7 +132,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
     const kuky = cookies.get(this.hsCookie) || false;
     this.searchConfig = {
       getAPiUrl: 'https://micro.id.com.au/api/search',
-      getClientAlias: alias,
+      getclientAlias: alias,
       getClientLongName: longName,
       getTrackingID: 'UA-27808229-2',
     };
@@ -170,11 +170,11 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
   // great switch statement alternative btw
   private getSearchEndPoint = searchOption => {
     const searchOptionsApis = {
-      place: this.searchConfig.getAPiUrl + '/place/' + this.searchConfig.getClientAlias + '/',
+      place: this.searchConfig.getAPiUrl + '/place/' + this.searchConfig.getclientAlias + '/',
       topic:
         this.searchConfig.getAPiUrl +
         '/topic/' +
-        this.searchConfig.getClientAlias +
+        this.searchConfig.getclientAlias +
         '/' +
         this.searchConfig.getWebId +
         '/',

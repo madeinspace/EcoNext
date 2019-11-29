@@ -4,7 +4,8 @@ import groupBy from 'lodash/groupBy';
 import _ from 'lodash';
 import Link from '../components/Link';
 import { FooterRow, SiteMapGrid } from './grid';
-import { Context } from '../utils/context';
+import { ClientContext } from '../utils/context';
+
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiteMapHeader = styled.h1`
@@ -124,14 +125,14 @@ const buildSiteMap = (clientAlias, columns, navigation) => {
               <GroupName>{groups.GroupName}</GroupName>
               <PageList>
                 {pages.map((page, i) => {
-                  const { Alias: pageAlias, PageID, MenuTitle, Disabled } = page;
+                  const { Alias, PageID, MenuTitle, Disabled } = page;
                   return (
                     <React.Fragment key={PageID}>
                       {Disabled ? (
                         <DisabledLink>{MenuTitle}</DisabledLink>
                       ) : (
                         <li>
-                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>{MenuTitle}</StyledLink>
+                          <StyledLink href={`/${clientAlias}/${Alias}/`}>{MenuTitle}</StyledLink>
                         </li>
                       )}
                     </React.Fragment>
@@ -147,7 +148,7 @@ const buildSiteMap = (clientAlias, columns, navigation) => {
 };
 
 const SiteMap = ({ alias, prettyname }) => {
-  const { clientProducts, navigation, sitemapGroups } = useContext(Context);
+  const { clientProducts, clientPages, sitemapGroups } = useContext(ClientContext);
 
   const columns = _.values(groupBy(sitemapGroups, 'ColNumber'));
   return (
@@ -162,7 +163,7 @@ const SiteMap = ({ alias, prettyname }) => {
           <Subtitle>economic profile</Subtitle>
         </FooterContents>
       </FooterRow>
-      <SiteMapGrid>{buildSiteMap(alias, columns, navigation)}</SiteMapGrid>
+      <SiteMapGrid>{buildSiteMap(alias, columns, clientPages)}</SiteMapGrid>
       <FooterRow>
         <ProductItems>
           {clientProducts

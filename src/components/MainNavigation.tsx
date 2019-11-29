@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
-import { Context } from '../utils/context';
+import { ClientContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
@@ -21,16 +21,19 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);
 
+  const location = useRouter().pathname;
+  const { pageAlias: currentPageAlias } = pathParts(location);
+  const isCurrent = buildIsCurrent(currentPageAlias);
+
   return _.map(menuGroups, (group, groupName) => (
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
         const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID } = topNode;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
-        const location = useRouter().pathname;
-        const { pageAlias: currentPageAlias } = pathParts(location);
-        const isCurrent = buildIsCurrent(currentPageAlias);
+
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
+
         const isActive = childIsCurrent || pageAlias === currentPageAlias;
 
         return (
@@ -51,12 +54,12 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
 };
 
 const MainNavigation = ({ alias }) => {
-  const { navigation } = useContext(Context);
+  const { clientPages } = useContext(ClientContext);
 
   return (
     <MainNav>
       <Menu>
-        {buildMenu(alias, navigation)}
+        {buildMenu(alias, clientPages)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>
