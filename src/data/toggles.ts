@@ -624,60 +624,6 @@ export default {
       ParamName: 'Measure',
     },
   ],
-  'industry-sector-analysis': [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
-      ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '9',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
-      ParamName: 'BMID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '22000',
-      Label: 'Industry:',
-      Params: [
-        {
-          a: '1',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_IndustryNieir86',
-      ParamName: 'IndkeyNieir',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '2018',
-      Label: 'Year:',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
-      ParamName: 'sStartYear',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '2013',
-      Label: 'Comparison year:',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
-      ParamName: 'sEndYear',
-    },
-  ],
   'employment-locations': [
     {
       Database: 'CommApp',
