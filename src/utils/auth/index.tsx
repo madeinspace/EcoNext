@@ -53,9 +53,9 @@ export const withAuthSync = (WrappedComponent: any) => {
   };
 
   Wrapper.getInitialProps = async ctx => {
-    const token = auth(ctx);
-
     const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
+
+    const token = auth(ctx);
 
     return { ...componentProps, token };
   };
