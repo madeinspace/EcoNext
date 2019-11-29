@@ -9,8 +9,6 @@ import fetchLayout, { PageMappings } from '../../../layouts';
 import MainLayout from '../../../layouts/main';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 
-import contentData from '../../../data/content';
-import toggleData from '../../../data/toggles';
 import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import PageHeader from '../../../components/PageHeader';
@@ -66,11 +64,20 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
 
   const client = await fetchClientData({ ClientAlias, containers });
 
+  const layoutData = await fetchLayout(handle);
+
+  if (!layoutData) {
+    // 404
+    return { client, page: { pageData: null, filters: [], handle } };
+  }
+
+  const { fetchData, pageContent } = layoutData;
+
   const { AllPages } = containers;
 
   const pageData = AllPages[handle];
 
-  const pageDefaultFilters = (toggleData[handle] || []).reduce(
+  const pageDefaultFilters = (pageContent['toggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
       [ParamName]: DefaultValue,
@@ -88,7 +95,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     ClientID: client.ID,
   };
 
-  const toggles = await fetchToggleOptions(filters, toggleData[handle] || []);
+  const toggles = await fetchToggleOptions(filters, pageContent['toggles'] || []);
 
   const data = {
     currentAreaName: getActiveToggle(toggles, 'WebID', client.LongName),
@@ -96,18 +103,9 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     currentIndustryName: getActiveToggle(toggles, 'Indkey'),
   };
 
-  const layoutData = await fetchLayout(handle);
-
-  if (!layoutData) {
-    // 404
-    return { client, page: { pageData: null, filters, handle } };
-  }
-
-  const { fetchData } = layoutData;
-
   const tableData = await fetchData({ filters });
 
-  const entities = await filterEntities(filters, contentData[handle], { tableData, data });
+  const entities = await filterEntities(filters, pageContent['entities'], { tableData, data });
 
   const page = {
     handle,
