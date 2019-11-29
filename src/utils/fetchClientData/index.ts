@@ -1,4 +1,18 @@
+import { sqlConnection } from '../../utils/sql';
 import fetchSitemap from '../fetchSitemap';
+
+const DATABASE = 'CommApp';
+const LITE_CLIENT = 178;
+
+const checkIfLite = async clientID => {
+  const connectionString = `exec ${DATABASE}.[dbo].[sp_Condition_IsLiteClient] ${clientID}`;
+
+  const data = await sqlConnection.raw(connectionString);
+
+  const { Result } = data[0];
+
+  return +Result === LITE_CLIENT;
+};
 
 const queryClientDB = async ({ clientAlias, containers }) => {
   const { ClientContainer, AllPages } = containers;
@@ -19,12 +33,15 @@ const queryClientDB = async ({ clientAlias, containers }) => {
     ParentPageID: AllPages[nav.Alias]['ParentPageID'],
   }));
 
+  const isLite = await checkIfLite(id);
+
   return {
     clientAlias: Alias,
     ClientID: id,
     ShortName,
     LongName,
     Name,
+    isLite,
     clientPages,
     clientProducts: Applications,
     clientAreas: filteredAreas,

@@ -5,9 +5,14 @@ export const pathParts = (path: string) => {
   return path.match(REGEX).groups;
 };
 
-const amI = param => (navNodes, currentPageAlias) =>
-  filter(navNodes, node => node.Alias === currentPageAlias.split('?')[0]).pop()[param];
+const amI = (param, defaultValue) => (navNodes, currentPageAlias) => {
+  const matches = filter(navNodes, node => node.Alias === currentPageAlias.split('?')[0]);
 
-export const IsDisabled = amI('Disabled');
-export const IsSecure = amI('Secure');
-export const IsParent = amI('ParentPageID');
+  if (matches.length === 0) return defaultValue;
+
+  return matches.pop()[param];
+};
+
+export const IsDisabled = amI('Disabled', false);
+export const IsSecure = amI('Secure', false);
+export const IsParent = amI('ParentPageID', true);
