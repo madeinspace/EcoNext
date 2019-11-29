@@ -8,4 +8,9 @@ const fetchData = async filters => {
   return data;
 };
 
-export { fetchData, Page };
+const pageContent = {
+  entities: [],
+  toggles: [],
+};
+
+export { fetchData, Page, pageContent };

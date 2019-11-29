@@ -1,44 +1,9 @@
+//  this file is not imported anywhere
+
+// when building out a new page, duplicate `template-page` as a starting point and then copy the corresponding
+// item from this object into the `pageContent.toggles` object
+
 export default {
-  population: [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
-      ParamName: 'WebID',
-    },
-  ],
-  'gross-product': [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
-      ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '9',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
-      ParamName: 'BMID',
-    },
-  ],
   'local-jobs': [
     {
       Database: 'CommApp',
@@ -118,20 +83,6 @@ export default {
         },
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area_Hometrack',
-      ParamName: 'WebID',
-    },
-  ],
-  'value-of-building-approvals': [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
     },
   ],
@@ -2126,61 +2077,6 @@ export default {
       ParamName: 'Sex',
     },
   ],
-  'workers-field-of-qualification': [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
-      ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '23000',
-      Label: 'Current industry:',
-      Params: [
-        {
-          IGBMID: '0',
-        },
-        {
-          a: '0',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Industry',
-      ParamName: 'Indkey',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '0',
-        },
-        {
-          Indkey: '0',
-        },
-        {
-          a: '0',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_BM_Area_Ind',
-      ParamName: 'IGBMID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '3',
-      Label: 'Gender:',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Gender',
-      ParamName: 'Sex',
-    },
-  ],
   'workers-travel-to-work': [
     {
       Database: 'CommApp',
@@ -2366,56 +2262,6 @@ export default {
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
       ParamName: 'sEndYear',
-    },
-  ],
-  'economic-impact-assesment': [
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_IAM',
-      ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '23600',
-      Label: 'Select industry',
-      Params: [
-        {
-          a: '1',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_IndustryNieir96',
-      ParamName: 'IndkeyNieir49',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '1',
-      Label: 'Impact measure:',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_ImpactType',
-      ParamName: 'ImpactType',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Value:',
-      Params: null,
-      StoredProcedure: '',
-      ParamName: 'Quantity',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '',
-      Label: 'Scenario/Organisation (optional):',
-      Params: null,
-      StoredProcedure: '',
-      ParamName: 'Company',
     },
   ],
   'event-impact-assesment': [
