@@ -10,7 +10,7 @@ const fetchData = async filters => {
 
 const pageContent = {
   entities: [],
-  toggles: [],
+  filterToggles: [],
 };
 
 export { fetchData, Page, pageContent };

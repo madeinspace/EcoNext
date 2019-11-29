@@ -27,7 +27,7 @@ const StyledControlPanel = styled.div`
 
 const ControlPanel: React.SFC<{}> = () => {
   const { clientAlias } = React.useContext(ClientContext);
-  const { handle, toggles } = React.useContext(PageContext);
+  const { handle, filterToggles } = React.useContext(PageContext);
 
   const setQuery = (key, value) => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -44,8 +44,8 @@ const ControlPanel: React.SFC<{}> = () => {
       query: {},
     });
 
-  const displayToggles = toggles.reduce((acc, { list }) => {
-    return acc || (list && list.length > 1);
+  const displayToggles = filterToggles.reduce((acc, { list, hidden }) => {
+    return acc || (list && list.length > 1 && !hidden);
   }, false);
 
   if (!displayToggles) return null;
@@ -53,9 +53,15 @@ const ControlPanel: React.SFC<{}> = () => {
   return (
     <Sticky>
       <StyledControlPanel>
-        {toggles.map(({ title, value, key, list }) => {
-          return (
-            list.length > 1 && (
+        {filterToggles.map(({ title, value, key, list, hidden }) => {
+          if (list.length === 1 || hidden) {
+            // this toggle only has one item, so we don't need to display a dropdown
+            return null;
+          }
+
+          if (list.length > 1) {
+            // this toggle has items, and is therefore a dropdown list
+            return (
               <SelectDropdown
                 key={key}
                 title={title}
@@ -63,8 +69,14 @@ const ControlPanel: React.SFC<{}> = () => {
                 handleChange={e => setQuery(key, e.target.value)}
                 list={list}
               />
-            )
-          );
+            );
+          }
+
+          // if we've got this far, the toggle exists but has no 'list' items
+          // this might mean it's an input field
+          // this approach might need to change in future if we find more complex toggles
+
+          return <input key={key} onBlur={e => setQuery(key, e.target.value)} value={value} />;
         })}
         <ResetButton onClick={handleReset} />
       </StyledControlPanel>

@@ -45,11 +45,11 @@ const handleExport = async currentAreaName => {
 
 const PageHeader = () => {
   const { LongName } = useContext(ClientContext);
-  const { pageData, toggles } = useContext(PageContext);
+  const { pageData, filterToggles } = useContext(PageContext);
 
   const { SubTitle: pageSubTitle } = pageData;
 
-  const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
 
   return (
     <EntityContainer>

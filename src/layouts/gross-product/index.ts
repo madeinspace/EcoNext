@@ -64,7 +64,7 @@ const pageContent = {
       Value: '178',
     },
   ],
-  toggles: [
+  filterToggles: [
     {
       Database: 'CommApp',
       DefaultValue: '10',

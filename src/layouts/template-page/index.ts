@@ -11,7 +11,7 @@ const fetchData = async ({ filters }) => {
 
 const pageContent = {
   entities: [], // copy this from the relevant key in 'data/content.ts'
-  toggles: [], // copy this from the relevant key in 'data/toggles.ts'
+  filterToggles: [], // copy this from the relevant key in 'data/filterToggles.ts'
 };
 
 export { fetchData, Page, pageContent };
@@ -19,4 +19,4 @@ export { fetchData, Page, pageContent };
 // uncomment the below function with the correct SQL
 
 // const tableDataQuery = filters =>
-// `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]() order by LabelKey ASC`;
+// `select * from CommData_Economy.[dbo].[${TableName}]() order by ${OrderBy}`;

@@ -194,12 +194,12 @@ const EmergingGroups = () => {
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { tableData, toggles } = useContext(PageContext);
+  const { tableData, filterToggles } = useContext(PageContext);
 
-  const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(toggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(toggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(toggles, 'Sex');
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
+  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
+  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
+  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
