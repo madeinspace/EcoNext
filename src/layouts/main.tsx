@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import ClientHeader from '../components/ClientHeader';
 import SearchApp from '../components/search/_Search';
 import MainNavigation from '../components/MainNavigation';
 import { ContentRow } from '../components/grid';
 import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
-import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
 import { IsDisabled } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
@@ -14,7 +12,11 @@ import LockIcon from '../components/LockIcon';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import { ClientContext, PageContext } from '../utils/context';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, Template = null }) => {
+  if (Template) {
+    return <Template />;
+  }
+
   const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
 
@@ -39,10 +41,6 @@ const Layout = ({ children }) => {
       <SharedFooter />
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Layout;
