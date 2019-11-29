@@ -14,10 +14,9 @@ import { Secured, Unsecured } from '../styles/ui';
 import { ClientContext, PageContext } from '../utils/context';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import ChildrenMenu from '../components/ChildrenMenu';
-const IsLite = nodes => some(nodes, 'Disabled');
 
 const ParentLandingPageLayout = ({ children = null }) => {
-  const { clientAlias, clientID, clientPages, LongName } = useContext(ClientContext);
+  const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
   const { handle, pageData } = useContext(PageContext);
 
   const logo = require(`../images/logos/${clientAlias}.png`);
@@ -27,7 +26,7 @@ const ParentLandingPageLayout = ({ children = null }) => {
   return (
     <>
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
-      <ClientHeader alias={clientAlias} prettyname={LongName} clientImage={logo} isLite={IsLite(clientPages)} />
+      <ClientHeader alias={clientAlias} prettyname={LongName} clientImage={logo} isLite={isLite} />
       <ContentRow>
         <SidebarNav>
           <MainNavigation alias={clientAlias} />

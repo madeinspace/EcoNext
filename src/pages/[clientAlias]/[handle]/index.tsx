@@ -66,6 +66,8 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
 
   const layoutData = await fetchLayout(handle);
 
+  console.log(layoutData);
+
   if (!layoutData) {
     // 404
     return { client, page: { pageData: null, filters: [], handle } };

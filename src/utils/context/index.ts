@@ -6,9 +6,10 @@ type ClientProps = {
   clientAreas?: Array<any>;
   clientPages?: Array<any>;
   clientProducts?: Array<any>;
-  sitemapGroups?: Array<any>;
+  isLite?: boolean;
   LongName?: string;
   Name?: string;
+  sitemapGroups?: Array<any>;
 };
 
 type PageProps = {
