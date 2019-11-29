@@ -52,9 +52,7 @@ _Now, we'll need to fetch the data for this page._
 
 Once we've done these steps, we should be able to uncomment the lines so that data is being fetched using this SQL call.
 
-TODO:
-
-We need a way to determine when a 'lite' SQL call should be used. This should be as easy as passing an `isLite` variable through to `fetchData`,
+TODO: We need a way to determine when a 'lite' SQL call should be used. This should be as easy as passing an `isLite` variable through to `fetchData`,
 which calls either a full or a lite SQL query. **Hopefully** the shape of the data remains the same -- if not, we may need to render different
 tables for lite clients, etc.
 

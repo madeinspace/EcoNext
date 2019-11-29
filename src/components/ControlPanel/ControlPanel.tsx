@@ -62,13 +62,15 @@ const ControlPanel: React.SFC<{}> = () => {
           if (list.length > 1) {
             // this toggle has items, and is therefore a dropdown list
             return (
-              <SelectDropdown
-                key={key}
-                title={title}
-                value={value}
-                handleChange={e => setQuery(key, e.target.value)}
-                list={list}
-              />
+              !hidden && (
+                <SelectDropdown
+                  key={key}
+                  title={title}
+                  value={value}
+                  handleChange={e => setQuery(key, e.target.value)}
+                  list={list}
+                />
+              )
             );
           }
 

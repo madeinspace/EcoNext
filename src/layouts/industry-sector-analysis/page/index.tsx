@@ -13,8 +13,6 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const { tableData, filterToggles } = useContext(PageContext);
-  console.log('toggles: ', filterToggles);
-
   const chartData = chartBuilder(tableData);
   const chartLineData = chartLineBuilder(tableData);
   const tableParams = tableBuilder(clientAlias, tableData);

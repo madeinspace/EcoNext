@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
-import { ClientContext } from '../utils/context';
+import { ClientContext, PageContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
@@ -16,14 +16,11 @@ const buildMenuGroups = navNodes => groupBy(navNodes, 'GroupName');
 
 const validateGroupName = groupname => groupname !== '' && groupname !== 'Undefined';
 
-const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
+const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
   const groupedNavigation = groupBy(navigationNodes, 'ParentPageID');
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);
-
-  const location = useRouter().pathname;
-  const { pageAlias: currentPageAlias } = pathParts(location);
-  const isCurrent = buildIsCurrent(currentPageAlias);
+  const isCurrent = buildIsCurrent(handle);
 
   return _.map(menuGroups, (group, groupName) => (
     <React.Fragment key={groupName}>
@@ -34,7 +31,7 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
 
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
 
-        const isActive = childIsCurrent || pageAlias === currentPageAlias;
+        const isActive = childIsCurrent || pageAlias === handle;
 
         return (
           <MenuItem key={i} className={isParent && 'parent'}>
@@ -45,7 +42,7 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
                 {MenuTitle}
               </StyledLink>
             )}
-            {isParent && <SubMenu>{buildMenu(clientAlias, navigationNodes, PageID)}</SubMenu>}
+            {isParent && <SubMenu>{buildMenu(handle, clientAlias, navigationNodes, PageID)}</SubMenu>}
           </MenuItem>
         );
       })}
@@ -55,11 +52,13 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) =
 
 const MainNavigation = ({ alias }) => {
   const { clientPages } = useContext(ClientContext);
+  const data = useContext(PageContext);
+  const { handle } = data;
 
   return (
     <MainNav>
       <Menu>
-        {buildMenu(alias, clientPages)}
+        {buildMenu(handle, alias, clientPages)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>
