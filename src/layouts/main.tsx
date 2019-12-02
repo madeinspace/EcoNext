@@ -29,15 +29,15 @@ const Layout = ({ children, Template = null }) => {
       <ClientHeader />
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={clientAlias} />
+          <MainNavigation />
         </SidebarNav>
         <SiteContent id={'main-content'}>
           <SiblingsMenu />
-          <LockIcon />
+          {/* <LockIcon /> */}
           {isDisabled ? <DisabledPageWarning /> : children}
         </SiteContent>
       </ContentRow>
-      <SiteMap alias={clientAlias} prettyname={LongName} />
+      <SiteMap />
       <SharedFooter />
     </>
   );

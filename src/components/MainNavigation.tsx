@@ -50,15 +50,15 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
   ));
 };
 
-const MainNavigation = ({ alias }) => {
-  const { clientPages } = useContext(ClientContext);
+const MainNavigation = () => {
+  const { clientPages, clientAlias } = useContext(ClientContext);
   const data = useContext(PageContext);
   const { handle } = data;
 
   return (
     <MainNav>
       <Menu>
-        {buildMenu(handle, alias, clientPages)}
+        {buildMenu(handle, clientAlias, clientPages)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>

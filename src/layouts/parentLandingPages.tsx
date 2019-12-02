@@ -25,15 +25,15 @@ const ParentLandingPageLayout = ({ children = null }) => {
       <ClientHeader />
       <ContentRow>
         <SidebarNav>
-          <MainNavigation alias={clientAlias} />
+          <MainNavigation />
         </SidebarNav>
         <SiteContent id={'main-content'}>
-          <ChildrenMenu />
-          <LockIcon />
+          {/* <LockIcon /> */}
           {isDisabled ? <DisabledPageWarning /> : children}
+          <ChildrenMenu />
         </SiteContent>
       </ContentRow>
-      <SiteMap alias={clientAlias} prettyname={LongName} />
+      <SiteMap />
       <SharedFooter />
     </>
   );

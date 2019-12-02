@@ -147,15 +147,15 @@ const buildSiteMap = (clientAlias, columns, navigation) => {
   });
 };
 
-const SiteMap = ({ alias, prettyname }) => {
-  const { clientProducts, clientPages, sitemapGroups } = useContext(ClientContext);
+const SiteMap = () => {
+  const { clientProducts, clientPages, sitemapGroups, LongName, clientAlias } = useContext(ClientContext);
 
   const columns = _.values(groupBy(sitemapGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
       <FooterRow>
         <FooterContents>
-          <SiteMapHeader>{prettyname}</SiteMapHeader>
+          <SiteMapHeader>{LongName}</SiteMapHeader>
         </FooterContents>
       </FooterRow>
       <FooterRow>
@@ -163,7 +163,7 @@ const SiteMap = ({ alias, prettyname }) => {
           <Subtitle>economic profile</Subtitle>
         </FooterContents>
       </FooterRow>
-      <SiteMapGrid>{buildSiteMap(alias, columns, clientPages)}</SiteMapGrid>
+      <SiteMapGrid>{buildSiteMap(clientAlias, columns, clientPages)}</SiteMapGrid>
       <FooterRow>
         <ProductItems>
           {clientProducts
@@ -171,7 +171,7 @@ const SiteMap = ({ alias, prettyname }) => {
             .map((product, i) => {
               return (
                 <ProductItem key={i} className={`app-${product.AppID}`}>
-                  <a key={i} href={`https://${product.SubDomainName}.id.com.au/${alias}`}>
+                  <a key={i} href={`https://${product.SubDomainName}.id.com.au/${clientAlias}`}>
                     {product.FullName}
                   </a>
                 </ProductItem>
