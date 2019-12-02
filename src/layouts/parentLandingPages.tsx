@@ -22,7 +22,7 @@ const ParentLandingPageLayout = ({ children = null }) => {
   return (
     <>
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
-      <ClientHeader alias={clientAlias} prettyname={LongName} clientImage={logo} isLite={isLite} />
+      <ClientHeader />
       <ContentRow>
         <SidebarNav>
           <MainNavigation alias={clientAlias} />
