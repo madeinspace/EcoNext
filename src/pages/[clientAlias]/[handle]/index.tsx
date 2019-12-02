@@ -37,6 +37,7 @@ const PageTemplate = () => {
   if (!ParentPageID) {
     return (
       <ParentLandingPageLayout>
+        <PageHeader />
         <MainContent />
       </ParentLandingPageLayout>
     );
@@ -47,7 +48,6 @@ const PageTemplate = () => {
       <PageHeader />
       <Headline />
       <Description />
-
       <MainContent />
       <RelatedPagesCTA />
     </MainLayout>
