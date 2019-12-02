@@ -107,14 +107,17 @@ const products = [
 ];
 
 const HomePage = ({ clients }) => {
-  const clientList = clients.map(client => (
-    <Tile key={client.ClientID}>
-      <Link href={`/${client.clientAlias}`} prefetch={false}>
-        <ClientLogo src={require(`../images/logos/${client.clientAlias}.png`)} />
-      </Link>
-      <CouncilName>{client.Name}</CouncilName>
-    </Tile>
-  ));
+  const clientList = clients.map(client => {
+    const imgSrc = require(`../images/logos/${client.Alias}.png`);
+    return (
+      <Tile key={client.ClientID}>
+        <Link href={`/${client.Alias}`} prefetch={false}>
+          <ClientLogo src={imgSrc} />
+        </Link>
+        <CouncilName>{client.Name}</CouncilName>
+      </Tile>
+    );
+  });
 
   return (
     <ClientContext.Provider value={{ clientProducts: products }}>
