@@ -24,10 +24,12 @@ const ssrCache = new LRUCache({
  * NB: make sure to modify this to take into account anything that should trigger
  * an immediate page change (e.g a locale stored in req.session)
  */
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getCacheKey(req) {
   return `${req.path}${JSON.stringify(req.query)}`;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function renderAndCache(req, res) {
   const key = getCacheKey(req);
 
@@ -39,6 +41,7 @@ async function renderAndCache(req, res) {
     return;
   }
 
+  // let's get the containers from cosmosDB and pass that along to the getInitialProps method on pages
   const containers = await Cosmos.connect();
 
   try {

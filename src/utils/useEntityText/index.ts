@@ -1,6 +1,7 @@
 import { PageContext } from '../context';
 import { useContext } from 'react';
 
+// Custom hook
 const useEntityText = key => {
   const { entities } = useContext(PageContext);
 
