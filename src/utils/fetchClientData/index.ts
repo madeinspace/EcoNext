@@ -38,6 +38,7 @@ const queryClientDB = async ({ clientAlias, containers }) => {
   }));
 
   const isLite = await checkIfLite(id);
+  const logoUrl = require(`../../images/logos/${clientAlias}.png`);
 
   return {
     clientAlias: Alias,
@@ -49,6 +50,7 @@ const queryClientDB = async ({ clientAlias, containers }) => {
     clientPages,
     clientProducts: Applications,
     clientAreas: filteredAreas,
+    clientLogo: logoUrl,
   };
 };
 

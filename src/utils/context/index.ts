@@ -6,6 +6,7 @@ type ClientProps = {
   clientAreas?: Array<any>;
   clientPages?: Array<any>;
   clientProducts?: Array<any>;
+  clientLogo?: string;
   isLite?: boolean;
   LongName?: string;
   Name?: string;
