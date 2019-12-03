@@ -90,7 +90,6 @@ export const PageIntroFullWidth = styled.div`
 
 export const ItemWrapper = styled.div`
   margin: 20px 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 export const ProductIcon = styled.span`

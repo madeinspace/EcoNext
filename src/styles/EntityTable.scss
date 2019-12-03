@@ -234,6 +234,10 @@ $even-row-color: $odd-color;
 }
 
 .entity-table {
+  &.entity {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
   width: 100%;
 
   th,
@@ -479,10 +483,7 @@ $even-row-color: $odd-color;
               background-color: silver;
               &.latest {
                 @include theme {
-                  background-color: desaturate(
-                    lighten(nth($product_colours, $index), 20),
-                    20%
-                  );
+                  background-color: desaturate(lighten(nth($product_colours, $index), 20), 20%);
                 }
               }
             }
@@ -499,10 +500,7 @@ $even-row-color: $odd-color;
               background-color: silver;
               &.latest {
                 @include theme {
-                  background-color: desaturate(
-                    lighten(nth($product_colours, $index), 20),
-                    20%
-                  );
+                  background-color: desaturate(lighten(nth($product_colours, $index), 20), 20%);
                 }
               }
             }
@@ -564,20 +562,14 @@ $even-row-color: $odd-color;
 
               &.latest {
                 @include theme {
-                  background-color: desaturate(
-                    darken(nth($product_colours, $index), 5),
-                    30%
-                  );
+                  background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
                 }
               }
             }
 
             &.latest {
               @include theme {
-                background-color: desaturate(
-                  darken(nth($product_colours, $index), 5),
-                  30%
-                );
+                background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
               }
             }
           }
@@ -592,20 +584,14 @@ $even-row-color: $odd-color;
 
             &.latest {
               @include theme {
-                background-color: desaturate(
-                  darken(nth($product_colours, $index), 5),
-                  30%
-                );
+                background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
               }
             }
           }
 
           &.latest {
             @include theme {
-              background-color: desaturate(
-                darken(nth($product_colours, $index), 5),
-                30%
-              );
+              background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
             }
           }
         }
@@ -693,10 +679,7 @@ $even-row-color: $odd-color;
 
         &.latest {
           @include theme {
-            background-color: rgba(
-              lighten(nth($product_colours, $index), 25),
-              0.8
-            );
+            background-color: rgba(lighten(nth($product_colours, $index), 25), 0.8);
           }
         }
 

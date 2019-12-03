@@ -381,7 +381,7 @@ class EntityTable extends React.Component<any, any> {
             <ResetButton onClick={this.resetSort} />
             <ExportDropdown exportOptions={this.exportOptions()} handleExport={this.export} />
           </Actions>
-          <table ref={this.tableRef} className="entity-table">
+          <table ref={this.tableRef} className="entity entity-table">
             <thead>
               {headRows}
               {cols}
