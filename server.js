@@ -71,7 +71,7 @@ async function renderAndCache(req, res) {
 
 app.prepare().then(() => {
   const server = express();
-  server.use(favicon(path.join(__dirname, 'src/images', 'favicon.ico')));
+  server.use(favicon(path.join(__dirname, 'src/static', 'favicon.ico')));
   server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
     handle(req, res);
