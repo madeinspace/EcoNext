@@ -29,11 +29,11 @@ const Layout = ({ children, Template = null }) => {
       <SEO />
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
       <ClientHeader />
-      <ContentRow>
-        <SidebarNav>
+      <ContentRow id="content-wrapper">
+        <SidebarNav id="main-nav">
           <MainNavigation />
         </SidebarNav>
-        <SiteContent id={'main-content'}>
+        <SiteContent id="main-content">
           <SiblingsMenu />
           {/* <LockIcon /> */}
           {isDisabled ? <DisabledPageWarning /> : children}

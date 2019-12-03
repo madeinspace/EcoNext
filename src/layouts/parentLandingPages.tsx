@@ -25,11 +25,11 @@ const ParentLandingPageLayout = ({ children = null }) => {
       <SEO />
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
       <ClientHeader />
-      <ContentRow>
-        <SidebarNav>
+      <ContentRow id="content-wrapper">
+        <SidebarNav id="main-nav">
           <MainNavigation />
         </SidebarNav>
-        <SiteContent id={'main-content'}>
+        <SiteContent id="main-content">
           {/* <LockIcon /> */}
           {isDisabled ? <DisabledPageWarning /> : children}
           <ChildrenMenu />

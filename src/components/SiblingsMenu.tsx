@@ -27,7 +27,7 @@ const SiblingsMenu = () => {
       </React.Fragment>
     ));
 
-  return <SiblingsMenuContainer>{siblings}</SiblingsMenuContainer>;
+  return <SiblingsMenuContainer id="siblings-nav">{siblings}</SiblingsMenuContainer>;
 };
 
 export default SiblingsMenu;
