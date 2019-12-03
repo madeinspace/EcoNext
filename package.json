@@ -8,7 +8,6 @@
     "build": "next build",
     "export": "next build && next export",
     "start": "node server.js",
-    "postinstall": "next build"
   },
   "author": "",
   "license": "ISC",
