@@ -81,7 +81,7 @@ export const ClientHeader = () => {
               <ClientProductsNav alias={clientAlias} />
             </Stack>
             <ClientLogo>
-              <img src={clientLogo} />
+              <img src={clientLogo} alt={`${clientAlias} logo`} />
             </ClientLogo>
           </Header>
         </HeaderWrapper>
