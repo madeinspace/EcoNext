@@ -51,6 +51,7 @@
     "sass-extract-loader": "^1.1.0",
     "sass-loader": "^8.0.0",
     "sass-resources-loader": "^2.0.1",
+    "serve-favicon": "^2.5.0",
     "styled-components": "^4.4.0",
     "url-loader": "^2.2.0",
     "xlsx": "^0.15.1"
