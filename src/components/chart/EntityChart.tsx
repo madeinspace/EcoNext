@@ -4,9 +4,7 @@ import { ChartFooter } from './ChartFooter';
 import styled from 'styled-components';
 // import { RenderContext } from "../../../lib/word-renderer/word-render"
 
-const ChartWrapper = styled.div`
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-`;
+const ChartWrapper = styled.div``;
 
 const EntityChart: React.SFC<any> = props => {
   const {
@@ -16,7 +14,7 @@ const EntityChart: React.SFC<any> = props => {
   const Chart = ChartFactory.getChart(chartTemplate, data);
 
   return (
-    <ChartWrapper className="entity">
+    <ChartWrapper className="e-shad">
       {Chart}
       <ChartFooter dataSource={dataSource} />
     </ChartWrapper>
