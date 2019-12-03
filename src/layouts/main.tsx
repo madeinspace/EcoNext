@@ -11,6 +11,8 @@ import DisabledPageWarning from '../components/DisabledPageWarning';
 import LockIcon from '../components/LockIcon';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import { ClientContext, PageContext } from '../utils/context';
+import Head from 'next/head';
+import SEO from '../utils/SEO';
 
 const Layout = ({ children, Template = null }) => {
   if (Template) {
@@ -19,12 +21,12 @@ const Layout = ({ children, Template = null }) => {
 
   const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
-
   const logo = require(`../images/logos/${clientAlias}.png`);
   const isDisabled = IsDisabled(clientPages, handle);
 
   return (
     <>
+      <SEO />
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
       <ClientHeader />
       <ContentRow>

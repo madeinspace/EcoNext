@@ -11,6 +11,7 @@ import { ClientContext, PageContext } from '../utils/context';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import ChildrenMenu from '../components/ChildrenMenu';
 import LockIcon from '../components/LockIcon';
+import SEO from '../utils/SEO';
 
 const ParentLandingPageLayout = ({ children = null }) => {
   const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
@@ -21,6 +22,7 @@ const ParentLandingPageLayout = ({ children = null }) => {
 
   return (
     <>
+      <SEO />
       <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
       <ClientHeader />
       <ContentRow>
