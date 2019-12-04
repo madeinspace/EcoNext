@@ -1,9 +1,7 @@
 import * as _ from 'lodash';
 import Router from 'next/router';
 
-const ClientLandingPage = ({ title }) => {
-  return <h1>{title}</h1>;
-};
+const ClientLandingPage = () => <></>;
 
 ClientLandingPage.getInitialProps = async context => {
   const {

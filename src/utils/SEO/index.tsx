@@ -9,7 +9,6 @@ export default () => {
     entities,
     pageData: { MetaTitle },
   } = useContext(PageContext);
-  console.log('MetaTitle: ', MetaTitle);
   const MetaDescription = entities ? entities[0].Text || '' : '';
   const { clientAlias } = useContext(ClientContext);
   const title = buildPageTitle(MetaTitle, clientAlias);
