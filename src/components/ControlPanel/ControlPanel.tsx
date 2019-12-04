@@ -1,100 +1,87 @@
 import * as React from 'react';
+import { ResetButton } from '../Actions';
 import SelectDropdown from './SelectDropdown';
 import styled from 'styled-components';
 import Sticky from '@wicked_query/react-sticky';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
+import Router from 'next/router';
+import qs from 'qs';
+import { PageContext, ClientContext } from '../../utils/context';
 
-const _ControlPanel = styled.div`
-  display: flex;
-  justify-content: space-between;
+const StyledControlPanel = styled.div`
+  align-items: end;
   background: #595959;
   color: white;
+
+  /* use flex as a fallback for older browsers */
+  display: flex;
+  display: grid;
+  grid-auto-columns: minmax(min-content, max-content);
+  grid-auto-flow: column;
+  grid-gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 30px;
   padding: 15px;
   position: relative;
   z-index: 2;
-  margin-bottom: 30px;
 `;
 
-const ButtonLink = styled.a`
-  color: ${variables.grayDark};
-  width: fit-content;
-  display: inline-flex;
-  margin-top: 23px;
-  padding: 0 0 0 5px;
-  border: none;
-  line-height: 25px;
-  height: 25px;
-  cursor: pointer;
-  background-color: #dddddd;
-`;
-const IconBase = styled.span`
-  line-height: 25px;
-  height: 25px;
-  width: 24px;
-  margin-left: 5px;
-  color: #fff;
-  background-color: ${variables.colorEconomy};
-  font-family: 'id-icons';
-  padding-left: 4px;
-`;
-const ResetIcon = styled(IconBase)`
-  &::before {
-    content: '\\E907';
-  }
-`;
+const ControlPanel: React.SFC<{}> = () => {
+  const { clientAlias } = React.useContext(ClientContext);
+  const { handle, filterToggles } = React.useContext(PageContext);
 
-interface Selectable {
-  ID: number;
-  Name: string;
-}
+  const setQuery = (key, value) => {
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    query[key] = value;
+    Router.push({
+      pathname: `/${clientAlias}/${handle}`,
+      query,
+    });
+  };
 
-interface Dropdown {
-  items: Selectable[];
-  title: string;
-  handleChange?: (e: any) => void;
-  value: number;
-}
+  const handleReset = () =>
+    Router.push({
+      pathname: `/${clientAlias}/${handle}`,
+      query: {},
+    });
 
-interface IControlPanelProps {
-  dropdowns: Dropdown[];
-  onReset: () => void;
-}
+  const displayToggles = filterToggles.reduce((acc, { list, hidden }) => {
+    return acc || (list && list.length > 1 && !hidden);
+  }, false);
 
-const Button = ({ name, action, children }) => (
-  <React.Fragment>
-    <ButtonLink onClick={action}>
-      <span>{name}</span>
-      {children}
-    </ButtonLink>
-  </React.Fragment>
-);
+  if (!displayToggles) return null;
 
-export const ResetButton = ({ onReset }) => (
-  <Button name="reset" action={onReset}>
-    <ResetIcon />
-  </Button>
-);
-
-const ControlPanel: React.SFC<IControlPanelProps> = ({
-  dropdowns,
-  onReset
-}) => {
   return (
     <Sticky>
-      <_ControlPanel>
-        {dropdowns.map((dd: any, i) => {
-          return (
-            <SelectDropdown
-              key={i}
-              value={dd.value}
-              list={dd.items || []}
-              title={dd.title}
-              handleChange={dd.handleChange}
-            />
-          );
+      <StyledControlPanel>
+        {filterToggles.map(({ title, value, key, list, hidden }) => {
+          if (list.length === 1 || hidden) {
+            // this toggle only has one item, so we don't need to display a dropdown
+            return null;
+          }
+
+          if (list.length > 1) {
+            // this toggle has items, and is therefore a dropdown list
+            return (
+              !hidden && (
+                <SelectDropdown
+                  key={key}
+                  title={title}
+                  value={value}
+                  handleChange={e => setQuery(key, e.target.value)}
+                  list={list}
+                />
+              )
+            );
+          }
+
+          // if we've got this far, the toggle exists but has no 'list' items
+          // this might mean it's an input field
+          // this approach might need to change in future if we find more complex toggles
+
+          return <input key={key} onBlur={e => setQuery(key, e.target.value)} value={value} />;
         })}
-        <ResetButton onReset={onReset} />
-      </_ControlPanel>
+        <ResetButton onClick={handleReset} />
+      </StyledControlPanel>
     </Sticky>
   );
 };

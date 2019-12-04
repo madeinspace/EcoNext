@@ -1,14 +1,13 @@
-﻿import * as React from "react"
-const styles = require("./search.module.scss")
+﻿import * as React from 'react';
 
 interface NoSearchResultItemProps {
-  clientLongName: string
+  clientLongName: string;
 }
 
 const NoSearchResultItem: React.FunctionComponent<
   NoSearchResultItemProps
 > = props => {
-  const { clientLongName } = props
+  const { clientLongName } = props;
   return (
     <div>
       <p>Sorry, there are no results for your search</p>
@@ -18,7 +17,7 @@ const NoSearchResultItem: React.FunctionComponent<
         <li>Searching for another place.</li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default NoSearchResultItem
+export default NoSearchResultItem;

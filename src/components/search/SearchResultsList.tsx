@@ -2,7 +2,6 @@ import * as React from 'react';
 import SearchResultPlace from './SearchResultPlace';
 import SearchResultTopic from './SearchResultTopic';
 import NoSearchResultItem from './NoSearchResultItem';
-const styles = require('./search.module.scss');
 
 export interface ISearchResultsListProps {
   results: any;
@@ -59,8 +58,8 @@ export function SearchResultsList(props: ISearchResultsListProps) {
           />
         );
         return !hasRegistered ? (
-          <div key={j} className={styles.locked} onClick={handleResultClick}>
-            <span className={'icon-locked ' + styles.lockIcon} /> {item}
+          <div key={j} className={'locked'} onClick={handleResultClick}>
+            <span className={'icon-locked ' + 'lockIcon'} /> {item}
           </div>
         ) : (
           item
@@ -69,22 +68,20 @@ export function SearchResultsList(props: ISearchResultsListProps) {
 
     ResultsList = (
       <div>
-        <div className={styles.placesInArea}>
-          <h3 className={styles.placeInsideTitle}>
-            PLACES INSIDE {clientName}
-          </h3>
+        <div className={'placesInArea'}>
+          <h3 className={'placeInsideTitle'}>PLACES INSIDE {clientName}</h3>
           {/* <Img fixed={clientLogo} className={styles.logoClient} /> */}
         </div>
         {placesInArea.length > 0 ? (
-          <div className={styles.placeInsideList}>{placesInArea}</div>
+          <div className={'placeInsideList'}>{placesInArea}</div>
         ) : (
-          <div className={styles.placeInsideList}>
+          <div className={'placeInsideList'}>
             No places matching your search were found in {clientName}
           </div>
         )}
         {placesOutsideArea.length > 0 ? (
           <div>
-            <h3 className={styles.placeOutsideTitle}>
+            <h3 className={'placeOutsideTitle'}>
               PLACES OUTSIDE {clientName}{' '}
               {!hasRegistered ? (
                 <span onClick={handleResultClick}>
@@ -92,27 +89,26 @@ export function SearchResultsList(props: ISearchResultsListProps) {
                 </span>
               ) : null}
             </h3>
-            <div className={styles.placeOusideList}>{placesOutsideArea}</div>
+            <div className={'placeOusideList'}>{placesOutsideArea}</div>
           </div>
         ) : null}
       </div>
     );
   }
-  //
+
+  // topic
   else if (searchOption === 'topic' && !noResults) {
     const topicList = results.map((item, i) => {
       return <SearchResultTopic key={'item' + i} itemData={item} />;
     });
     ResultsList = (
       <div>
-        <h3 className={styles.topicTitle}>TOPICS WITHIN {clientName}</h3>
+        <h3 className={'topicTitle'}>TOPICS WITHIN {clientName}</h3>
         {topicList}
       </div>
     );
   } else {
     ResultsList = <NoSearchResultItem key={1} clientLongName={clientName} />;
   }
-  return (
-    <div className={`${styles.scroller} resultScroller`}>{ResultsList}</div>
-  );
+  return <div className={`Scroller resultScroller`}>{ResultsList}</div>;
 }

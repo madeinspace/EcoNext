@@ -5,15 +5,14 @@ import SearchResults from './SearchResults';
 import OptionSwitch from './SearchOptionSwitch';
 import { CloseButton } from './CloseButton';
 import { withCookies, Cookies } from 'react-cookie';
-import { getHashParams } from '../Utils';
+import { getHashParams } from '../../utils/';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-const styles = require('./search.module.scss');
 import { HeaderRow } from '../grid';
 
 interface ISearchConfig {
   getAPiUrl: string;
-  getClientAlias: string;
+  getclientAlias: string;
   getClientLogoUrl: string;
   getClientLongName: string;
   getHubspotAPiUrl: string;
@@ -92,6 +91,15 @@ const ResultsContainer = styled.div`
 const MainSearchWrapper = styled.div`
   height: 155px;
   background-color: #f2f2f2;
+  opacity: 1;
+  margin-top: 0;
+  background-color: #f2f2f2;
+  z-index: 101;
+  position: relative;
+
+  .underlay {
+    display: block;
+  }
 `;
 
 const SearchTermInputContainer = styled.div`
@@ -113,7 +121,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
   private hsCookie = 'id001-hubspot-form-submitted';
   private searchOptionPlaceholders: any = {
     place: 'e.g Adelaide',
-    topic: 'e.g Jobs, population'
+    topic: 'e.g Jobs, population',
   };
   private searchConfig: any = {};
 
@@ -124,9 +132,9 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
     const kuky = cookies.get(this.hsCookie) || false;
     this.searchConfig = {
       getAPiUrl: 'https://micro.id.com.au/api/search',
-      getClientAlias: alias,
+      getclientAlias: alias,
       getClientLongName: longName,
-      getTrackingID: 'UA-27808229-2'
+      getTrackingID: 'UA-27808229-2',
     };
 
     this.state = {
@@ -140,7 +148,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       showSearch: false,
       tabs: [],
       hasRegistered: kuky,
-      placeholder: 'e.g Adelaide'
+      placeholder: 'e.g Adelaide',
     };
   }
 
@@ -162,25 +170,21 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
   // great switch statement alternative btw
   private getSearchEndPoint = searchOption => {
     const searchOptionsApis = {
-      place:
-        this.searchConfig.getAPiUrl +
-        '/place/' +
-        this.searchConfig.getClientAlias +
-        '/',
+      place: this.searchConfig.getAPiUrl + '/place/' + this.searchConfig.getclientAlias + '/',
       topic:
         this.searchConfig.getAPiUrl +
         '/topic/' +
-        this.searchConfig.getClientAlias +
+        this.searchConfig.getclientAlias +
         '/' +
         this.searchConfig.getWebId +
-        '/'
+        '/',
     };
     return searchOptionsApis[searchOption] || searchOptionsApis.place;
   };
 
   private searchFocus = () => {
     this.setState({
-      showSearch: true
+      showSearch: true,
     });
   };
 
@@ -189,7 +193,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
 
     this.setState({
       inProgress: true,
-      noResults: false
+      noResults: false,
     });
 
     const query = this.getSearchEndPoint(searchOption) + term;
@@ -205,7 +209,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
           showSearch: true,
           inProgress: false,
           noResults: data.results.length === 0,
-          tabs: data.products
+          tabs: data.products,
         });
 
         if (data.results.length > 0) {
@@ -216,8 +220,8 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       .catch(error =>
         this.setState({
           results: [],
-          inProgress: false
-        })
+          inProgress: false,
+        }),
       );
   };
 
@@ -233,7 +237,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       results: [],
       searchTerms: '',
       searchOption: option,
-      placeholder: this.searchOptionPlaceholders[option]
+      placeholder: this.searchOptionPlaceholders[option],
     });
   };
 
@@ -242,7 +246,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       results: [],
       showSearch: false,
       searchTerms: '',
-      noResults: false
+      noResults: false,
     });
   };
 
@@ -256,13 +260,10 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
     const results =
       id === 0
         ? this.initialSearchResults
-        : _.filter(
-            this.initialSearchResults,
-            (result: any) => result.productID === id
-          );
+        : _.filter(this.initialSearchResults, (result: any) => result.productID === id);
     this.setState({
       results,
-      currentTab: id
+      currentTab: id,
     });
   };
 
@@ -277,22 +278,14 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       tabs,
       noResults,
       placeholder,
-      showSearch
+      showSearch,
     } = this.state;
-
-    const showSearchClassName = showSearch
-      ? styles.searchopened
-      : styles.searchclosed;
 
     return (
       <React.Fragment>
         <HeaderID>
           <FauxWrapper>
-            <IDentity
-              className="id-identity"
-              href="http://home.id.com.au/demographic-resources/"
-              target="_BLANK"
-            >
+            <IDentity className="id-identity" href="http://home.id.com.au/demographic-resources/" target="_BLANK">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 50">
                 <title>idc-logo</title>
                 <path
@@ -331,10 +324,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
                   d="M209.2,25.38c0-1.55-.27-2.29-1.49-2.29s-1.76,1-1.76,2.84v5.22h-1.55v-13h1.55v5a2.78,2.78,0,0,1,2.41-1.26,2.25,2.25,0,0,1,2.41,2.43v6.82H209.2Z"
                   style={{ fill: '#757575' }}
                 />
-                <path
-                  d="M212.49,18.19H214v1.66h-1.5Zm0,3.93H214v9h-1.5Z"
-                  style={{ fill: '#757575' }}
-                />
+                <path d="M212.49,18.19H214v1.66h-1.5Zm0,3.93H214v9h-1.5Z" style={{ fill: '#757575' }} />
                 <path
                   d="M222.2,28.1a3,3,0,0,1-3.26,3.28c-2.45,0-3.38-1.48-3.38-4.72s.94-4.73,3.38-4.73c1.94,0,3.21,1.13,3.21,2.79v.2h-1.53A1.49,1.49,0,0,0,219,23.23c-1.48,0-1.89,1.06-1.89,3.42s.43,3.4,1.8,3.4c1,0,1.66-.74,1.69-2Z"
                   style={{ fill: '#757575' }}
@@ -383,7 +373,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
                   style={{
                     fill: 'none',
                     stroke: '#dedede',
-                    strokeMiterlimit: 10
+                    strokeMiterlimit: 10,
                   }}
                 />
                 <path
@@ -407,10 +397,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
                   style={{ fill: '#757575' }}
                 />
 
-                <path
-                  d="M100.19,17.43v-2.3h2.08v2.3Zm0,15.73V20.58h2.08V33.16Z"
-                  style={{ fill: '#757575' }}
-                />
+                <path d="M100.19,17.43v-2.3h2.08v2.3Zm0,15.73V20.58h2.08V33.16Z" style={{ fill: '#757575' }} />
                 <path
                   d="M107.14,17v3.56h2.51v1.55h-2.51v7.53a2.31,2.31,0,0,0,.31,1.4,1.41,1.41,0,0,0,1.14.39q.29,0,1,0h.07V33q-.5.11-.94.16a6.53,6.53,0,0,1-.82.06,3.2,3.2,0,0,1-2.24-.62,3,3,0,0,1-.65-2.2V22.14h-4.77V20.58H105V18.05Z"
                   style={{ fill: '#757575' }}
@@ -423,18 +410,12 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
                   d="M76.45,21.12A3.26,3.26,0,0,0,74,20.21a3.88,3.88,0,0,0-2.06.53,3.94,3.94,0,0,0-1.42,1.57,3,3,0,0,0-1.2-1.55,3.61,3.61,0,0,0-2-.56,4,4,0,0,0-1.87.42,4.89,4.89,0,0,0-1.65,1.62A4.2,4.2,0,0,1,64,23.6v1.23a4.64,4.64,0,0,1,.55-2,2,2,0,0,1,1.87-.95,1.82,1.82,0,0,1,1.61.68,4.73,4.73,0,0,1,.47,2.51v8h2.18V25.82a5.87,5.87,0,0,1,.59-3,2,2,0,0,1,1.85-1,1.82,1.82,0,0,1,1.62.68,4.79,4.79,0,0,1,.46,2.51v8h2.15V23.6A3.39,3.39,0,0,0,76.45,21.12Z"
                   style={{ fill: '#757575' }}
                 />
-                <path
-                  d="M7.92,14.53h3.8v3.3H7.92Zm3.8,5.67V33.27H7.92V20.2Z"
-                  style={{ fill: '#212121' }}
-                />
+                <path d="M7.92,14.53h3.8v3.3H7.92Zm3.8,5.67V33.27H7.92V20.2Z" style={{ fill: '#212121' }} />
                 <path
                   d="M22.26,31.39a4.51,4.51,0,0,1-3.93,2.13C15.26,33.53,13,31,13,26.74S15.18,20,18.28,20a4.41,4.41,0,0,1,3.93,2V14.53H26V30.64a17.64,17.64,0,0,0,.13,2.63H22.39ZM19.5,31c1.67,0,2.78-1.54,2.78-4.24s-1.12-4.27-2.78-4.27S16.84,24,16.84,26.76,17.86,31,19.5,31Z"
                   style={{ fill: '#212121' }}
                 />
-                <path
-                  d="M4.85,33.43a1.92,1.92,0,1,0-1.92-1.92,1.92,1.92,0,0,0,1.92,1.92"
-                  style={{ fill: '#ff4612' }}
-                />
+                <path d="M4.85,33.43a1.92,1.92,0,1,0-1.92-1.92,1.92,1.92,0,0,0,1.92,1.92" style={{ fill: '#ff4612' }} />
               </svg>
             </IDentity>
             {!showSearch && (
@@ -450,51 +431,50 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
             )}
           </FauxWrapper>
         </HeaderID>
-        <MainSearchWrapper className={showSearchClassName}>
-          <SearchInputWrapper>
-            <SearchTermInputContainer>
-              <SearchTermInput>
-                <OptionSwitch
-                  activeOption={searchOption}
-                  onSwitch={this.handleOptionSwitch}
-                  client={this.searchConfig.getClientLongName}
-                />
-                <SearchInput
-                  searchOption={searchOption}
-                  searchTerms={searchTerms}
-                  onUserInput={this.updateTerms}
-                  onSearch={this.search}
-                  onSearchFocus={this.searchFocus}
-                  inProgress={inProgress}
-                  close={this.closeSearch}
-                  placeholder={placeholder}
-                />
-                <CloseButton
-                  handleClick={this.closeSearch}
-                  clientLongName={this.searchConfig.getClientLongName}
-                />
-              </SearchTermInput>
-            </SearchTermInputContainer>
-          </SearchInputWrapper>
+        {showSearch && (
+          <MainSearchWrapper>
+            <SearchInputWrapper>
+              <SearchTermInputContainer>
+                <SearchTermInput>
+                  <OptionSwitch
+                    activeOption={searchOption}
+                    onSwitch={this.handleOptionSwitch}
+                    client={this.searchConfig.getClientLongName}
+                  />
+                  <SearchInput
+                    searchOption={searchOption}
+                    searchTerms={searchTerms}
+                    onUserInput={this.updateTerms}
+                    onSearch={this.search}
+                    onSearchFocus={this.searchFocus}
+                    inProgress={inProgress}
+                    close={this.closeSearch}
+                    placeholder={placeholder}
+                  />
+                  <CloseButton handleClick={this.closeSearch} clientLongName={this.searchConfig.getClientLongName} />
+                </SearchTermInput>
+              </SearchTermInputContainer>
+            </SearchInputWrapper>
 
-          <ResultsContainer>
-            <ResultScroller>
-              <SearchResults
-                noResults={noResults}
-                results={results}
-                tabs={tabs}
-                currentTab={currentTab}
-                filter={this.filterResultsByTab}
-                countTotal={this.initialSearchResults.length}
-                searchOption={searchOption}
-                hasRegistered={hasRegistered}
-                client={this.searchConfig.getClientLongName}
-                clientLogo={this.props.clientImage}
-              />
-            </ResultScroller>
-            {results.length > 0 && <div className={styles.underlay} />}
-          </ResultsContainer>
-        </MainSearchWrapper>
+            <ResultsContainer>
+              <ResultScroller>
+                <SearchResults
+                  noResults={noResults}
+                  results={results}
+                  tabs={tabs}
+                  currentTab={currentTab}
+                  filter={this.filterResultsByTab}
+                  countTotal={this.initialSearchResults.length}
+                  searchOption={searchOption}
+                  hasRegistered={hasRegistered}
+                  client={this.searchConfig.getClientLongName}
+                  clientLogo={this.props.clientImage}
+                />
+              </ResultScroller>
+              {results.length > 0 && <div className={'underlay'} />}
+            </ResultsContainer>
+          </MainSearchWrapper>
+        )}
       </React.Fragment>
     );
   }

@@ -1,10 +1,8 @@
-import Link from 'next/link';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import ClientProductsNav from './ClientProductsNav';
 import { HeaderRow } from './grid';
-// import Img from "gatsby-image"
+import { ClientContext } from '../utils/context';
 
 const ClientLogo = styled.div`
   align-self: flex-end;
@@ -67,51 +65,29 @@ const HeaderWrapper = styled.div`
   grid-area: header;
 `;
 
-export const ClientHeader = ({
-  alias,
-  longName,
-  products,
-  isLite,
-  clientImage
-}) => (
-  <Decoration>
-    <HeaderRow>
-      <HeaderWrapper>
-        <Header>
-          <Stack>
-            <Title>
-              <ClientName>{longName} </ClientName>
-              <Separator />
-              <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
-            </Title>
-            <ClientProductsNav products={products} alias={alias} />
-          </Stack>
-          <ClientLogo>
-            {/* <Img
-              fixed={clientImage}
-              alt={`${longName} Logo`}
-              title={longName}
-            /> */}
-          </ClientLogo>
-        </Header>
-      </HeaderWrapper>
-    </HeaderRow>
-  </Decoration>
-);
-
-ClientHeader.propTypes = {
-  clientID: PropTypes.number,
-  name: PropTypes.string,
-  alias: PropTypes.string,
-  longName: PropTypes.string,
-  logoUrl: PropTypes.string
-};
-
-ClientHeader.defaultProps = {
-  name: ``,
-  alias: ``,
-  longName: ``,
-  logoUrl: ``
+export const ClientHeader = () => {
+  const { LongName, isLite, clientAlias, clientLogo } = useContext(ClientContext);
+  return (
+    <Decoration>
+      <HeaderRow>
+        <HeaderWrapper>
+          <Header>
+            <Stack>
+              <Title>
+                <ClientName>{LongName} </ClientName>
+                <Separator />
+                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
+              </Title>
+              <ClientProductsNav alias={clientAlias} />
+            </Stack>
+            <ClientLogo>
+              <img src={clientLogo} alt={`${clientAlias} logo`} />
+            </ClientLogo>
+          </Header>
+        </HeaderWrapper>
+      </HeaderRow>
+    </Decoration>
+  );
 };
 
 export default ClientHeader;

@@ -1,5 +1,5 @@
 // default chart: vertical
-import { getParameterByName } from '../../Utils';
+import { getParameterByName } from '../../../utils/';
 import * as deepmerge from 'deepmerge';
 
 export const ChartDefault = (...opts) => {
@@ -13,7 +13,8 @@ export const ChartDefault = (...opts) => {
     spacingLeft: 30,
     marginLeft: null,
     zoomType: 'x',
-    className: 'standard-chart'
+    className: 'standard-chart',
+    styledMode: true,
   };
 
   chartDefaults.exporting = {
@@ -32,7 +33,7 @@ export const ChartDefault = (...opts) => {
               .g()
               .attr({
                 transform: `translate(740, 450)`,
-                class: 'exportLogo'
+                class: 'exportLogo',
               })
               .add();
             // tslint:disable-next-line:prefer-for-of
@@ -42,25 +43,25 @@ export const ChartDefault = (...opts) => {
               .css({
                 width: '600px',
                 fontSize: '10px',
-                color: '#6a6a6a'
+                color: '#6a6a6a',
               })
               .add();
-          }
-        }
+          },
+        },
       },
       title: {
         style: {
-          color: 'black'
-        }
-      }
-    }
+          color: 'black',
+        },
+      },
+    },
   };
 
   chartDefaults.xAxis = {
     tickmarkPlacement: 'on',
     style: {
-      textOverflow: 'none'
-    }
+      textOverflow: 'none',
+    },
   };
 
   /* THIS CONDITION IS CATERING FOR DUAL YAXIS */
@@ -68,17 +69,17 @@ export const ChartDefault = (...opts) => {
     chartDefaults.yAxis = [
       {
         style: {
-          textOverflow: 'none'
+          textOverflow: 'none',
         },
         alignTicks: true,
         allowDecimals: false,
         softMin: 0,
         title: {
           text: '',
-          align: 'low'
+          align: 'low',
         },
-        labels: options.yAxis[0].labels
-      }
+        labels: options.yAxis[0].labels,
+      },
     ];
   } else {
     chartDefaults.series[0].yAxis = 0;
@@ -86,59 +87,45 @@ export const ChartDefault = (...opts) => {
     chartDefaults.yAxis = [
       {
         style: {
-          textOverflow: 'none'
+          textOverflow: 'none',
         },
         alignTicks: false,
         allowDecimals: false,
         title: {
           text: '',
-          align: 'low'
+          align: 'low',
         },
         tickPositioner: function(min, max) {
-          var maxDeviation = Math.ceil(
-            Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin))
-          );
+          const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
           if (this.dataMin < 0 && this.dataMax >= 0) {
-            return this.getLinearTickPositions(
-              this.tickInterval,
-              -maxDeviation,
-              maxDeviation
-            );
+            return this.getLinearTickPositions(this.tickInterval, -maxDeviation, maxDeviation);
           }
         },
-        labels: options.yAxis[0].labels
+        labels: options.yAxis[0].labels,
       },
       {
         style: {
-          textOverflow: 'none'
+          textOverflow: 'none',
         },
         className: 'yAxisSecondary',
         alignTicks: true,
         allowDecimals: false,
         title: {
           text: '',
-          align: 'low'
+          align: 'low',
         },
         tickPositioner: function(min, max) {
-          var maxDeviation = Math.ceil(
-            Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin))
-          );
-          var halfMaxDeviation = Math.ceil(maxDeviation / 2);
+          const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
+          const halfMaxDeviation = Math.ceil(maxDeviation / 2);
           if (this.dataMin < 0 && this.dataMax >= 0) {
-            return [
-              -maxDeviation,
-              -halfMaxDeviation,
-              0,
-              halfMaxDeviation,
-              maxDeviation
-            ];
+            return [-maxDeviation, -halfMaxDeviation, 0, halfMaxDeviation, maxDeviation];
           } else if (this.dataMax <= 0) {
             return [-maxDeviation, -halfMaxDeviation, 0];
           }
         },
         labels: options.yAxis[1].labels,
-        opposite: true
-      }
+        opposite: true,
+      },
     ];
   }
 
@@ -147,24 +134,24 @@ export const ChartDefault = (...opts) => {
       groupPadding: 0.2,
       pointPadding: 0,
       borderWidth: 0,
-      stacking: undefined
+      stacking: undefined,
     },
     column: {
       pointPadding: 0.2,
-      borderWidth: 0
+      borderWidth: 0,
     },
     line: {
       marker: {
-        enabled: false
-      }
-    }
+        enabled: false,
+      },
+    },
   };
 
   chartDefaults.tooltip = {
     shadow: false,
     delayForDisplay: 100,
     hideDelay: 10,
-    headFormat: '<span> {point.y} - </span>'
+    headFormat: '<span> {point.y} - </span>',
   };
 
   chartDefaults.legend = {
@@ -178,7 +165,7 @@ export const ChartDefault = (...opts) => {
     verticalAlign: 'top',
     x: 5,
     y: -30,
-    margin: 30
+    margin: 30,
   };
 
   chartDefaults.title = {
@@ -186,10 +173,10 @@ export const ChartDefault = (...opts) => {
     text: options.title.text,
     align: 'left',
     margin: 40,
-    widthAdjust: -100
+    widthAdjust: -100,
   };
   chartDefaults.subtitle = {
-    x: 10
+    x: 10,
   };
 
   function getHeight() {

@@ -1,16 +1,15 @@
-import * as React from "react"
-const styles = require("./search.module.scss")
+import * as React from 'react';
 
 export const SearchButton: React.FunctionComponent<any> = props => {
-  const { inProgress, handleClick } = props
+  const { inProgress, handleClick } = props;
 
   return (
     <button
       type="button"
       className={
-        styles.headerSearchForm__btn +
-        " " +
-        (inProgress ? styles.headerSearchForm__btn__loading : " ")
+        'headerSearchForm__btn' +
+        ' ' +
+        (inProgress ? 'headerSearchForm__btn__loading' : ' ')
       }
       onClick={handleClick}
     >
@@ -22,5 +21,5 @@ export const SearchButton: React.FunctionComponent<any> = props => {
         />
       </svg>
     </button>
-  )
-}
+  );
+};

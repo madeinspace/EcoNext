@@ -1,63 +1,48 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useContext } from 'react';
+import Link from '../components/Link';
 import styled from 'styled-components';
-import { pathParts, IsNextPage } from './Utils';
+import { pathParts } from '../utils/';
 import _ from 'lodash';
-import Router, { useRouter } from 'next/router';
-// import { Location } from '@reach/router';
+import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
+import { ClientContext, PageContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
-const buildIsCurrent = currentPageAlias => navigationNode =>
-  navigationNode.Alias == currentPageAlias;
+const buildIsCurrent = currentPageAlias => navigationNode => navigationNode.Alias == currentPageAlias;
 
 const buildMenuGroups = navNodes => groupBy(navNodes, 'GroupName');
 
-const validateGroupName = groupname =>
-  groupname !== '' && groupname !== 'Undefined';
+const validateGroupName = groupname => groupname !== '' && groupname !== 'Undefined';
 
-const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
+const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
   const groupedNavigation = groupBy(navigationNodes, 'ParentPageID');
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);
+  const isCurrent = buildIsCurrent(handle);
 
   return _.map(menuGroups, (group, groupName) => (
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
-        const {
-          Disabled,
-          MenuTitle,
-          Alias: pageAlias,
-          PageID,
-          ParentPageID
-        } = topNode;
+        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID } = topNode;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
-        const location = useRouter().pathname;
-        const { pageAlias: currentPageAlias } = pathParts(location);
-        const isCurrent = buildIsCurrent(currentPageAlias);
+
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
-        const isActive = childIsCurrent || pageAlias === currentPageAlias;
+
+        const isActive = childIsCurrent || pageAlias === handle;
 
         return (
           <MenuItem key={i} className={isParent && 'parent'}>
             {Disabled ? (
               <DisabledLink>{MenuTitle}</DisabledLink>
             ) : (
-              <StyledLink
-                className={isActive && 'active'}
-                href={`/${clientAlias}/${pageAlias}`}
-              >
+              <StyledLink className={isActive && 'active'} href={`/${clientAlias}/${pageAlias}`}>
                 {MenuTitle}
               </StyledLink>
             )}
-            {isParent && (
-              <SubMenu>
-                {buildMenu(clientAlias, navigationNodes, PageID)}
-              </SubMenu>
-            )}
+            {isParent && <SubMenu>{buildMenu(handle, clientAlias, navigationNodes, PageID)}</SubMenu>}
           </MenuItem>
         );
       })}
@@ -65,30 +50,19 @@ const buildMenu = (clientAlias, navigationNodes, ParentPageID = 0) => {
   ));
 };
 
-const MonolithOrNextLink = props => {
-  const { href, children, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, className }} />
-    </Link>
-  ) : (
-    <a href={`https://economy.id.com.au${href}`} {...{ children, className }} />
-  );
-};
+const MainNavigation = () => {
+  const { clientPages, clientAlias } = useContext(ClientContext);
+  const data = useContext(PageContext);
+  const { handle } = data;
 
-const MainNavigation = ({ alias, navigationNodes }) => {
   return (
     <MainNav>
       <Menu>
-        {buildMenu(alias, navigationNodes)}
+        {buildMenu(handle, clientAlias, clientPages)}
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>
-            <HardCodedLink
-              href={link.url}
-              target="_blank"
-              title={link.displayText}
-            >
+            <HardCodedLink href={link.url} target="_blank" title={link.displayText}>
               {link.displayText}
             </HardCodedLink>
           </MenuItem>
@@ -100,7 +74,7 @@ const MainNavigation = ({ alias, navigationNodes }) => {
 
 export default MainNavigation;
 
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
   display: block;

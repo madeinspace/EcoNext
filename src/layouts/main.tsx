@@ -1,76 +1,48 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import ClientHeader from '../components/ClientHeader';
-import { useRouter } from 'next/router';
-import Header from '../components/header';
 import SearchApp from '../components/search/_Search';
 import MainNavigation from '../components/MainNavigation';
-import styled from 'styled-components';
 import { ContentRow } from '../components/grid';
 import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
-import some from 'lodash/some';
 import SiblingsMenu from '../components/SiblingsMenu';
+import { IsDisabled } from '../utils/';
+import DisabledPageWarning from '../components/DisabledPageWarning';
+import LockIcon from '../components/LockIcon';
+import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
+import { ClientContext, PageContext } from '../utils/context';
+import Head from 'next/head';
+import SEO from '../utils/SEO';
 
-const IsLite = nodes => some(nodes, 'Disabled');
+const Layout = ({ children, Template = null }) => {
+  if (Template) {
+    return <Template />;
+  }
 
-const Layout = ({ children, client, navnodes, products, sitemapGroup }) => {
+  const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
+  const logo = require(`../images/logos/${clientAlias}.png`);
+  const isDisabled = IsDisabled(clientPages, handle);
+
   return (
     <>
-      {useRouter().pathname === '/' ? (
-        <Header siteTitle={'Find your economic profile…'} />
-      ) : (
-        <>
-          <SearchApp
-            alias={client.Alias}
-            clientID={client.clientID}
-            longName={client.LongName}
-            clientImage={'data.clientLogo.imageData.fixed'}
-          />
-          <ClientHeader
-            alias={client.Alias}
-            name={client.Name}
-            longName={client.LongName}
-            products={products}
-            clientID={client.clientID}
-            clientImage={'data.clientLogo.imageData.fixed'}
-            isLite={IsLite(navnodes)}
-          />
-        </>
-      )}
-      <ContentRow>
-        <SidebarNav>
-          <MainNavigation alias={client.Alias} navigationNodes={navnodes} />
+      <SEO />
+      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
+      <ClientHeader />
+      <ContentRow id="content-wrapper">
+        <SidebarNav id="main-nav">
+          <MainNavigation />
         </SidebarNav>
-        <SiteContent>
-          <SiblingsMenu navigationNodes={navnodes} clientAlias={client.Alias} />
-          {children}
+        <SiteContent id="main-content">
+          <SiblingsMenu />
+          {/* <LockIcon /> */}
+          {isDisabled ? <DisabledPageWarning /> : children}
         </SiteContent>
       </ContentRow>
-      <SiteMap
-        alias={client.Alias}
-        colGroups={sitemapGroup}
-        longName={client.LongName}
-        products={products}
-        navigationNodes={navnodes}
-      />
+      <SiteMap />
       <SharedFooter />
     </>
   );
 };
 
-Layout.propTypes = {
-  alias: PropTypes.any,
-  navnodes: PropTypes.any,
-  children: PropTypes.node.isRequired
-};
-
 export default Layout;
-
-const SidebarNav = styled.div`
-  grid-area: navigation;
-`;
-
-const SiteContent = styled.div`
-  grid-area: content;
-`;

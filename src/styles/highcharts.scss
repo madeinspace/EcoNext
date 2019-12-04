@@ -1,5 +1,5 @@
-@import "./variables.scss";
-@import "./mixins.scss";
+@import './variables.scss';
+@import './mixins.scss';
 /* Colors for data series and points. */
 $colors: $color-economy-dark #434348 #90ed7d #f7a35c #8085e9 #f15c80 #e4d354
   #2b908f #f45b5b #91e8e1;
@@ -555,4 +555,9 @@ Used for image export
     cursor: pointer;
     fill: #fff;
   }
+}
+
+.highcharts-line-series {
+  color: transparent;
+  fill: transparent;
 }

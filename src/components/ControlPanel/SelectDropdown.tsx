@@ -1,37 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SelectDropdown: React.FC<any> = props => {
-  const { title, list, value, handleChange } = props;
-
-  return (
-    <_SelectDropdown>
-      <h5>{title}</h5>
-      <_Select name="select" value={value} onChange={handleChange}>
-        {list.map((item, i) => (
-          <_Option key={i} value={item.ID}>
-            {item.Name}
-          </_Option>
-        ))}
-      </_Select>
-    </_SelectDropdown>
-  );
-};
-
-export default SelectDropdown;
-
-const _SelectDropdown = styled.div`
-  h5 {
-    margin: 0 0 6px 0;
-  }
+const Title = styled.h5`
+  margin: 0 0 6px 0;
 `;
-const _Select = styled.select`
-  height: 25px;
+
+const Select = styled.select`
   border: none;
+  height: 25px;
   padding-left: 5px;
+  width: 100%;
 `;
 
-const _Option = styled.option`
+const Option = styled.option`
   height: 40px;
   padding: 5px 0;
 `;
+
+const SelectDropdown: React.FC<any> = ({ title, list, value, handleChange }) => (
+  <div>
+    <Title>{title}</Title>
+    <Select name="select" value={value} onChange={handleChange}>
+      {list.map(item => (
+        <Option key={item.Value} value={item.Value}>
+          {item.Label}
+        </Option>
+      ))}
+    </Select>
+  </div>
+);
+
+export default SelectDropdown;

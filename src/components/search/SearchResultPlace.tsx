@@ -1,29 +1,28 @@
-﻿import * as React from "react"
-const styles = require("./search.module.scss")
+﻿import * as React from 'react';
 
 interface ISearchResultItemProps {
-  itemData: resultItem
-  inArea?: boolean
-  hasRegistered?: boolean
+  itemData: resultItem;
+  inArea?: boolean;
+  hasRegistered?: boolean;
 }
 
 interface resultItem {
-  areaName: string
-  councilName: string
-  inArea: true
-  itemUrl: string
-  nodeName: string
-  originCouncilName: string
-  productDescription: string
-  productDomain: string
-  productID: number
+  areaName: string;
+  councilName: string;
+  inArea: true;
+  itemUrl: string;
+  nodeName: string;
+  originCouncilName: string;
+  productDescription: string;
+  productDomain: string;
+  productID: number;
 }
 
 const SearchResultItem: React.FunctionComponent<
   ISearchResultItemProps
 > = props => {
-  const { itemData, hasRegistered, inArea } = props
-  const id = styles["prod" + itemData.productID.toString()]
+  const { itemData, hasRegistered, inArea } = props;
+  const id = `prod${itemData.productID.toString()}`;
   const handleClick = () => {
     // window.idcAnalytics.pushEvent({
     //   category: "Search Service",
@@ -31,25 +30,25 @@ const SearchResultItem: React.FunctionComponent<
     //   label: itemData.areaName,
     //   value: 1,
     // })
-  }
+  };
 
   return (
-    <div className={styles.searchResult}>
+    <div className={'searchResult'}>
       <a
-        className={styles.searchResult__title}
-        href={hasRegistered || inArea ? itemData.itemUrl : "#"}
+        className={'searchResult__title'}
+        href={hasRegistered || inArea ? itemData.itemUrl : '#'}
         onClick={handleClick}
       >
         {itemData.areaName}
         {itemData.councilName == itemData.areaName
-          ? ""
-          : "in " + itemData.councilName}
+          ? ''
+          : 'in ' + itemData.councilName}
       </a>
-      <span className={styles.searchResult__product + " " + id}>
+      <span className={'searchResult__product' + ' ' + id}>
         {itemData.productDescription}
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default SearchResultItem
+export default SearchResultItem;

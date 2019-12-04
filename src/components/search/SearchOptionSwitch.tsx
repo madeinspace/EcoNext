@@ -1,49 +1,46 @@
-import * as React from "react"
-import SearchOptionItem from "./SearchOptionItem"
-const styles = require("./search.module.scss")
+import * as React from 'react';
+import SearchOptionItem from './SearchOptionItem';
 
 interface ISearchOptionSwitchProps {
-  activeOption: string
-  onSwitch: any
-  client: string
+  activeOption: string;
+  onSwitch: any;
+  client: string;
 }
 
 const SearchOptionSwitch: React.FunctionComponent<
   ISearchOptionSwitchProps
 > = props => {
-  const { activeOption, onSwitch } = props
+  const { activeOption, onSwitch } = props;
   const handleClick = (option: string) => {
-    onSwitch(option)
+    onSwitch(option);
     // window.idcAnalytics.pushEvent({
     //   category: "Search service",
     //   action: "Option click",
     //   label: option,
     //   value: 1,
     // })
-  }
+  };
 
   const getCssClass = (option: string) => {
-    return `${styles.optionTopic} ${
-      activeOption === option ? styles.optionActive : " "
-    }`
-  }
+    return `${'optionTopic'} ${activeOption === option ? 'optionActive' : ' '}`;
+  };
 
   return (
-    <div className={styles.SearchOptionSwitch + " row"}>
-      <div className={"col-md-12"}>
+    <div className={'SearchOptionSwitch' + ' row'}>
+      <div className={'col-md-12'}>
         <SearchOptionItem
-          option={"place"}
+          option={'place'}
           handleClick={handleClick}
-          cssClass={getCssClass("place")}
+          cssClass={getCssClass('place')}
         />
         <SearchOptionItem
-          option={"topic"}
+          option={'topic'}
           handleClick={handleClick}
-          cssClass={getCssClass("topic")}
+          cssClass={getCssClass('topic')}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SearchOptionSwitch
+export default SearchOptionSwitch;

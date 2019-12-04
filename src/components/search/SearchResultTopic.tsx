@@ -1,6 +1,5 @@
 ﻿import * as React from 'react';
 import { IGAEvent } from './interfaces.search';
-const styles = require('./search.module.scss');
 
 interface resultItem {
   productID: number;
@@ -17,7 +16,7 @@ const SearchResultItem: React.FunctionComponent<
   SearchResultTopicProps
 > = props => {
   const { itemData } = props;
-  const id = styles['prod' + itemData.productID.toString()];
+  const id = `prod${itemData.productID.toString()}`;
 
   const handleClick = e => {
     e.preventDefault();
@@ -31,21 +30,18 @@ const SearchResultItem: React.FunctionComponent<
   };
 
   return (
-    <div className={styles.searchResult}>
+    <div className={'searchResult'}>
       <a
-        className={styles.searchResult__title}
+        className={'searchResult__title'}
         href={itemData.itemUrl}
         onClick={handleClick}
       >
         {itemData.itemTitle}
       </a>
-      <span className={styles.searchResult__product + ' ' + id}>
+      <span className={`searchResult__product ${id}`}>
         {itemData.productDescription}
       </span>
-      <p className={styles.searchResult__description}>
-        {' '}
-        {itemData.itemDescription}
-      </p>
+      <p className={'searchResult__description'}> {itemData.itemDescription}</p>
     </div>
   );
 };

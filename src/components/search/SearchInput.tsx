@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 import { SearchButton } from './SearchButton';
-const styles = require('./search.module.scss');
 
 interface ISearchInputProps {
   onSearchFocus: any;
@@ -73,11 +72,11 @@ class SearchInput extends React.Component<
     const { placeholder, searchTerms, inProgress } = this.props;
 
     return (
-      <div className={styles.searchInputContainer}>
+      <div className={'searchInputContainer'}>
         <input
           maxLength={100}
           type="text"
-          className={styles.headerSearchForm__input}
+          className={'headerSearchForm__input'}
           placeholder={placeholder}
           value={searchTerms}
           ref="searchTermsInput"

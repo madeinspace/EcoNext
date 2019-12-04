@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import groupBy from 'lodash/groupBy';
-import { pathParts, IsNextPage } from './Utils';
 import _ from 'lodash';
-import Link from 'next/link';
+import Link from '../components/Link';
 import { FooterRow, SiteMapGrid } from './grid';
+import { ClientContext } from '../utils/context';
+
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const SiteMapHeader = styled.h1`
@@ -93,21 +94,7 @@ const DisabledLink = styled(PageItem)`
   cursor: default;
 `;
 
-const MonolithOrNextLink = props => {
-  const { href, children, style, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, style, className }} />
-    </Link>
-  ) : (
-    <a
-      href={`https://economy.id.com.au${href}`}
-      {...{ children, style, className }}
-    />
-  );
-};
-
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   font-size: 11px;
   line-height: 16px;
   text-decoration: none;
@@ -126,35 +113,26 @@ const Column = styled.div`
   grid-area: ${props => `col${props.col}`};
 `;
 
-const buildSiteMap = (clientAlias, columns, navigationNodes) => {
+const buildSiteMap = (clientAlias, columns, navigation) => {
   return columns.map((column, i) => {
     return (
       <Column key={i} col={i + 1}>
         {column.map((groups, i) => {
           const pageIDs = groups.Pages.split(',').map(Number);
-          const pages = navigationNodes.filter(node =>
-            pageIDs.includes(node.PageID)
-          );
+          const pages = navigation.filter(node => pageIDs.includes(node.PageID));
           return (
             <ColumnGroup key={i}>
               <GroupName>{groups.GroupName}</GroupName>
               <PageList>
                 {pages.map((page, i) => {
-                  const {
-                    Alias: pageAlias,
-                    PageID,
-                    MenuTitle,
-                    Disabled
-                  } = page;
+                  const { Alias, PageID, MenuTitle, Disabled } = page;
                   return (
                     <React.Fragment key={PageID}>
                       {Disabled ? (
                         <DisabledLink>{MenuTitle}</DisabledLink>
                       ) : (
                         <li>
-                          <StyledLink href={`/${clientAlias}/${pageAlias}/`}>
-                            {MenuTitle}
-                          </StyledLink>
+                          <StyledLink href={`/${clientAlias}/${Alias}/`}>{MenuTitle}</StyledLink>
                         </li>
                       )}
                     </React.Fragment>
@@ -169,13 +147,15 @@ const buildSiteMap = (clientAlias, columns, navigationNodes) => {
   });
 };
 
-const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
-  const columns = _.values(groupBy(colGroups, 'ColNumber'));
+const SiteMap = () => {
+  const { clientProducts, clientPages, sitemapGroups, LongName, clientAlias } = useContext(ClientContext);
+
+  const columns = _.values(groupBy(sitemapGroups, 'ColNumber'));
   return (
     <SitemapWrapper>
       <FooterRow>
         <FooterContents>
-          <SiteMapHeader>{longName}</SiteMapHeader>
+          <SiteMapHeader>{LongName}</SiteMapHeader>
         </FooterContents>
       </FooterRow>
       <FooterRow>
@@ -183,19 +163,16 @@ const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
           <Subtitle>economic profile</Subtitle>
         </FooterContents>
       </FooterRow>
-      <SiteMapGrid>{buildSiteMap(alias, columns, navigationNodes)}</SiteMapGrid>
+      <SiteMapGrid>{buildSiteMap(clientAlias, columns, clientPages)}</SiteMapGrid>
       <FooterRow>
         <ProductItems>
-          {products
-            .filter(p => p.ApplicationID != 4)
+          {clientProducts
+            .filter(p => p.AppID != 4)
             .map((product, i) => {
               return (
-                <ProductItem key={i} className={`app-${product.ApplicationID}`}>
-                  <a
-                    key={i}
-                    href={`https://${product.SubDomainName}.id.com.au/${alias}`}
-                  >
-                    {product.ProductName}
+                <ProductItem key={i} className={`app-${product.AppID}`}>
+                  <a key={i} href={`https://${product.SubDomainName}.id.com.au/${clientAlias}`}>
+                    {product.FullName}
                   </a>
                 </ProductItem>
               );
@@ -205,4 +182,5 @@ const SiteMap = ({ alias, products, longName, navigationNodes, colGroups }) => {
     </SitemapWrapper>
   );
 };
+
 export default SiteMap;

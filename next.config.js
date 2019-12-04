@@ -1,42 +1,39 @@
 const webpack = require('webpack');
 const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
+const withImages = require('next-images');
 require('dotenv').config();
-
+const isProd = process.env.NODE_ENV === 'production';
+const assetPrefix = process.env.ASSET_PREFIX || 'https://econext.azurewebsites.net';
 module.exports = withCSS(
-  withSass({
-    cssModules: true,
-    webpack(config) {
-      config.module.rules.push({
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 100000
-          }
+  withSass(
+    withImages({
+      cssModules: false,
+      assetPrefix: isProd ? assetPrefix : '',
+      webpack(config, { isServer }) {
+        if (!isServer) {
+          config.node = {
+            fs: 'empty',
+          };
         }
-      });
 
-      const env = Object.keys(process.env).reduce((acc, curr) => {
-        acc[`process.env.${curr}`] = JSON.stringify(process.env[curr]);
-        return acc;
-      }, {});
-      config.plugins.push(new webpack.DefinePlugin(env));
+        config.module.rules.push({
+          test: /\.(eot|ttf|woff|woff2)$/,
+          use: {
+            loader: 'url-loader',
+            options: {
+              limit: 100000,
+            },
+          },
+        });
 
-      return config;
-    }
-    // exportPathMap: async function() {
-    //   return {
-    //     '/': { page: '/' },
-    //     '/[clientAlias]/population': {
-    //       page: '/[clientAlias]/population',
-    //       query: { clientAlias: 'monash' }
-    //     },
-    //     '/[clientAlias]/workers-field-of-qualification': {
-    //       page: '/[clientAlias]/workers-field-of-qualification',
-    //       query: { clientAlias: 'monash' }
-    //     }
-    //   };
-    // }
-  })
+        const env = Object.keys(process.env).reduce((acc, curr) => {
+          acc[`process.env.${curr}`] = JSON.stringify(process.env[curr]);
+          return acc;
+        }, {});
+        config.plugins.push(new webpack.DefinePlugin(env));
+        return config;
+      },
+    }),
+  ),
 );

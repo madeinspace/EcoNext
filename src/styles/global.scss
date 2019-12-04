@@ -1,10 +1,12 @@
+@import './variables.scss';
+@import './zurich.scss';
+@import './id-icons.scss';
 @import './flexboxgrid.min.scss';
 @import './layout.scss';
-@import './variables.scss';
 @import './mixins.scss';
 @import './highcharts.scss';
-@import './zurich.scss';
-// @import './id-icons.scss';
+@import './search.scss';
+@import './EntityTable.scss';
 
 body {
   font-family: 'Arial', 'Zurich', sans-serif !important;
@@ -40,4 +42,8 @@ h6 {
 .hidden {
   visibility: hidden;
   display: none;
+}
+
+.e-shad {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
 }

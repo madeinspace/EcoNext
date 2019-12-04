@@ -1,7 +1,7 @@
 import * as React from "react"
 import { shallow, mount } from "enzyme"
-jest.mock("../Utils/buildCells")
-import { buildCells } from "../Utils/buildCells"
+jest.mock("../utils/buildCells")
+import { buildCells } from "../utils/buildCells"
 import EntityTable from "../EntityTable"
 
 const mockBuildCells = buildCells as jest.Mock

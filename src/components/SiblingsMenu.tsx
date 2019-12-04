@@ -1,57 +1,36 @@
-import React from 'react';
-import { pathParts, IsNextPage } from './Utils';
-import Link from 'next/link';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import Link from '../components/Link';
+import { ClientContext, PageContext } from '../utils/context';
+
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
-const SiblingsMenu = ({ navigationNodes, clientAlias }) => {
-  const { pageAlias: currentPageAlias } = pathParts(useRouter().pathname);
-  const currentPageNode = navigationNodes.find(
-    node => node.Alias === currentPageAlias
-  );
-  const currentParentPageID =
-    (currentPageNode && currentPageNode.ParentPageID) || 0;
-  const siblings = navigationNodes
-    .filter(node => {
-      return node.ParentPageID === currentParentPageID;
-    })
-    .map((node, i) => {
-      const { Disabled, MenuTitle, Alias } = node;
-      return (
-        <React.Fragment key={i}>
-          {Disabled ? (
-            <DisabledLink>{MenuTitle}</DisabledLink>
-          ) : (
-            <StyledLink
-              href={`/${clientAlias}/${Alias}`}
-              className={currentPageAlias === Alias && 'active'}
-            >
-              {MenuTitle}
-            </StyledLink>
-          )}
-        </React.Fragment>
-      );
-    });
+const SiblingsMenu = () => {
+  const { clientAlias, clientPages } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
 
-  return <SiblingsMenuContainer>{siblings}</SiblingsMenuContainer>;
+  const currentPageNode = clientPages.find(node => node.Alias === handle);
+  const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
+
+  const siblings = clientPages
+    .filter(node => node.ParentPageID === currentParentPageID)
+
+    .map(({ Disabled, MenuTitle, Alias }) => (
+      <React.Fragment key={Alias}>
+        {Disabled ? (
+          <DisabledLink>{MenuTitle}</DisabledLink>
+        ) : (
+          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
+            {MenuTitle}
+          </StyledLink>
+        )}
+      </React.Fragment>
+    ));
+
+  return <SiblingsMenuContainer id="siblings-nav">{siblings}</SiblingsMenuContainer>;
 };
 
 export default SiblingsMenu;
-
-const MonolithOrNextLink = props => {
-  const { href, children, style, className } = props;
-  return IsNextPage(href) ? (
-    <Link href={`${href}`}>
-      <a {...{ children, style, className }} />
-    </Link>
-  ) : (
-    <a
-      href={`https://economy.id.com.au${href}`}
-      {...{ children, style, className }}
-    />
-  );
-};
 
 const SiblingsMenuContainer = styled.div`
   display: flex;
@@ -62,7 +41,7 @@ const SiblingsMenuContainer = styled.div`
   border-bottom: 1px solid ${variables.grayLighter};
 `;
 
-const StyledLink = styled(MonolithOrNextLink)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
   padding: 0px 12px 0 12px;
