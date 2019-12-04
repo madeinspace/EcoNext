@@ -9,7 +9,6 @@ export default () => {
     entities,
     pageData: { MetaTitle },
   } = useContext(PageContext);
-  console.log('MetaTitle: ', MetaTitle);
   const MetaDescription = entities ? entities[0].Text || '' : '';
   const { clientAlias } = useContext(ClientContext);
   const title = buildPageTitle(MetaTitle, clientAlias);
@@ -18,7 +17,6 @@ export default () => {
       <title>{title}</title>
       <meta name="viewport" content="width=1024"></meta>
       <meta name="Description" content={MetaDescription}></meta>
-      <link rel="shortcut icon" type="image/x-icon" href="/_next/static/images/favicon.ico" />
     </Head>
   );
 };

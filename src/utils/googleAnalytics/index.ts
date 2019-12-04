@@ -7,7 +7,6 @@ export const initGA = async () => {
 };
 
 export const logPageView = ({ clientAlias, page }) => {
-  console.log('clientAlias, page: ', clientAlias, page);
-  ReactGA.set({ page, clientAlias });
-  ReactGA.pageview(page);
+  ReactGA.set({ page: page || 'economy.id.com.au', clientAlias: clientAlias || '.id' });
+  ReactGA.pageview(page || 'economy.id.com.au');
 };

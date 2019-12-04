@@ -6,7 +6,7 @@ import { CenteredContainer } from '../components/grid';
 import ClientProductsNav from '../components/ClientProductsNav';
 import SharedFooter from '../components/SharedFooter';
 import { ClientContext } from '../utils/context';
-import SEO from '../utils/SEO';
+import Head from 'next/head';
 
 const LogoGrid = styled.div`
   display: grid;
@@ -113,7 +113,7 @@ const HomePage = ({ clients }) => {
     return (
       <Tile key={client.ClientID}>
         <Link href={`/${client.Alias}`} prefetch={false}>
-          <ClientLogo src={imgSrc} alt={`${client.Alias} logo`} />
+          <ClientLogo src={imgSrc} alt={`${client.Name} logo`} />
         </Link>
         <CouncilName>{client.Name}</CouncilName>
       </Tile>
@@ -122,6 +122,11 @@ const HomePage = ({ clients }) => {
 
   return (
     <>
+      <Head>
+        <title>Economy.id.com.au</title>
+        <meta name="viewport" content="width=1024"></meta>
+        <meta name="Description" content="Home page"></meta>
+      </Head>
       <ClientContext.Provider value={{ clientProducts: products }}>
         <CenteredContainer>
           <IDidentity />
@@ -162,8 +167,10 @@ const HomePage = ({ clients }) => {
 
 HomePage.getInitialProps = async () => {
   const clients = await fetchClients();
-
-  return { clients };
+  const pageData = {
+    MetaTitle: 'home page',
+  };
+  return { clients, pageData };
 };
 
 export default HomePage;
