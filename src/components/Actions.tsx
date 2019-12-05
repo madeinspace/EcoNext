@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import ExportOptions from '../utils/fecthPageReport/Formats';
+import fetchPageReport from '../utils/fecthPageReport';
+import { ClientContext, PageContext } from '../utils/context';
+import payload from '../utils/fecthPageReport/ReportPayload';
 // import { RenderContext } from '../src/word-renderer/word-render';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -129,9 +133,12 @@ export const Share = () => {
   );
 };
 
-export const ExportPage = ({ onExport, exportOptions }) => {
+const handlePageExport = payload => fetchPageReport(payload);
+export const ExportPage = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
+  const { LongName } = useContext(ClientContext);
+  const { pageData } = useContext(PageContext);
+  const { SubTitle: pageSubTitle } = pageData;
   return (
     <DropdownContainer>
       <ExportPageButton
@@ -147,14 +154,12 @@ export const ExportPage = ({ onExport, exportOptions }) => {
         }}
       />
       <ShareDropdownList dropdownVisible={dropdownVisible}>
-        {exportOptions.formats.map((format: any, i: number) => (
+        {ExportOptions.map((option: any, i: number) => (
           <ShareDropdownListItem
             key={i}
-            onClick={() => {
-              onExport(format.id);
-            }}
+            onClick={() => handlePageExport(payload({ formatID: option.id, LongName, pageSubTitle }))}
           >
-            {format.displayText}
+            {option.displayText}
           </ShareDropdownListItem>
         ))}
       </ShareDropdownList>

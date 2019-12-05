@@ -1,4 +1,4 @@
-export default async ({ formatID, LongName, pageSubTitle }) => {
+export default ({ formatID, LongName, pageSubTitle }) => {
   const FileName = `Economy.id-${LongName}-${pageSubTitle}`;
   const Product = `Economy`;
   const Urls = [
