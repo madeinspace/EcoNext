@@ -147,14 +147,14 @@ export const ExportPage = ({ onExport, exportOptions }) => {
         }}
       />
       <ShareDropdownList dropdownVisible={dropdownVisible}>
-        {exportOptions.formats.map((item: any, i: number) => (
+        {exportOptions.formats.map((format: any, i: number) => (
           <ShareDropdownListItem
             key={i}
             onClick={() => {
-              onExport(item);
+              onExport(format.id);
             }}
           >
-            {item.displayText}
+            {format.displayText}
           </ShareDropdownListItem>
         ))}
       </ShareDropdownList>
