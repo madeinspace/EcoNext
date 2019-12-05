@@ -4,9 +4,9 @@ import Page from './page';
 import { formatNumber } from '../../utils';
 
 const fetchData = async ({ filters }) => {
-  const { ClientID, WebID, BMID } = filters;
-
-  const tableData = await sqlConnection.raw(SQL({ ClientID, WebID, BMID }));
+  const { ClientID, WebID, BMID, IsLite } = filters;
+  const SQLQuery = IsLite ? SQLLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
+  const tableData = await sqlConnection.raw(SQLQuery);
 
   return tableData;
 };
@@ -96,4 +96,8 @@ export { fetchData, Page, pageContent };
 
 const SQL = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
+`;
+
+const SQLLite = ({ ClientID, WebID, BMID }) => `
+  select * from CommData_Economy.[dbo].[fn_IN_HeadLineGRP](${+ClientID},${+WebID},${+BMID}) ORDER BY Yr DESC
 `;
