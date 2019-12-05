@@ -96,6 +96,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
     ...pageDefaultFilters,
     ...providedFilters,
     ClientID: client.ID,
+    IsLite: client.isLite,
   };
 
   const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
