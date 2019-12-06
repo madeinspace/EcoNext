@@ -62,7 +62,7 @@ const SearchInputFaux = styled.div`
   padding-left: 30px;
   &:before {
     font-family: 'id-icons';
-    content: '\e62b';
+    content: '\\e62b';
     left: 25px;
     top: 2px;
     color: grey;
