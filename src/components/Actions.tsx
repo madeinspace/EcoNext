@@ -5,6 +5,8 @@ import fetchPageReport from '../utils/fecthPageReport';
 import { ClientContext, PageContext } from '../utils/context';
 import payload from '../utils/fecthPageReport/ReportPayload';
 import ReCAPTCHA from 'react-google-recaptcha';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 // import { RenderContext } from '../src/word-renderer/word-render';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -154,8 +156,6 @@ export const ExportPage = () => {
   const [reqPayload, setreqPayload] = useState({});
   const [NotARobot, setNotARobot] = useState(false);
   const [ThankYouNote, setThankYouNote] = useState(false);
-  const catchaKey = process.env.CAPTCHA_KEY;
-  console.log('catchaKey: ', catchaKey);
   let timer = null;
 
   const { LongName } = useContext(ClientContext);
@@ -187,7 +187,7 @@ export const ExportPage = () => {
   return (
     <>
       <NOROBOT>
-        {captchaVisible && <ReCAPTCHA sitekey={catchaKey} onChange={robotOrNot} />}
+        {captchaVisible && <ReCAPTCHA sitekey={publicRuntimeConfig.CaptchaSiteKey} onChange={robotOrNot} />}
         {NotARobot && ThankYouNote && <ThanksMsg />}
       </NOROBOT>
       <DropdownContainer>

@@ -8,6 +8,9 @@ const assetPrefix = process.env.ASSET_PREFIX || 'https://econext.azurewebsites.n
 module.exports = withCSS(
   withSass(
     withImages({
+      publicRuntimeConfig: {
+        CaptchaSiteKey: process.env.CAPTCHA_KEY,
+      },
       cssModules: false,
       assetPrefix: isProd ? assetPrefix : '',
       webpack(config, { isServer }) {
@@ -31,6 +34,7 @@ module.exports = withCSS(
           acc[`process.env.${curr}`] = JSON.stringify(process.env[curr]);
           return acc;
         }, {});
+
         config.plugins.push(new webpack.DefinePlugin(env));
         return config;
       },
