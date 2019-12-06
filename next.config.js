@@ -9,6 +9,7 @@ module.exports = withCSS(
   withSass(
     withImages({
       publicRuntimeConfig: {
+        // expose the CAPTCHA_KEY to the client (http://tilomitra.com/using-environment-variables-on-the-front-end-with-nextjs/)
         CaptchaSiteKey: process.env.CAPTCHA_KEY,
       },
       cssModules: false,
