@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+import HeadScripts from '../utils/HeadScripts';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -31,7 +32,11 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          {HeadScripts.map(script => (
+            <script src={script.src} type="text/javascript" />
+          ))}
+        </Head>
         <body>
           <Main />
           <NextScript />
