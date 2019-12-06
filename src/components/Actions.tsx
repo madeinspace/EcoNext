@@ -154,7 +154,8 @@ export const ExportPage = () => {
   const [reqPayload, setreqPayload] = useState({});
   const [NotARobot, setNotARobot] = useState(false);
   const [ThankYouNote, setThankYouNote] = useState(false);
-  0;
+  const catchaKey = `${process.env.CAPTCHA_KEY}`;
+  console.log('catchaKey: ', catchaKey);
   let timer = null;
 
   const { LongName } = useContext(ClientContext);
@@ -186,7 +187,7 @@ export const ExportPage = () => {
   return (
     <>
       <NOROBOT>
-        {captchaVisible && <ReCAPTCHA sitekey={`${process.env.CAPTCHA_KEY}`} onChange={robotOrNot} />}
+        {captchaVisible && <ReCAPTCHA sitekey={catchaKey} onChange={robotOrNot} />}
         {NotARobot && ThankYouNote && <ThanksMsg />}
       </NOROBOT>
       <DropdownContainer>
