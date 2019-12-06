@@ -143,14 +143,15 @@ const NOROBOT = styled.div`
 const ThankyouNote = styled.div`
   padding: 10px;
   background-color: #fff;
+  font-size: 12px;
 `;
 
 export const ExportPage = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [captchaVisible, setcaptchaVisible] = useState(false);
   const [reqPayload, setreqPayload] = useState({});
-  const [NotARobot, setNotARobot] = useState(false);
-  const [DownloadMsg, setDownloadMsg] = useState(true);
+  const [NotARobot, setNotARobot] = useState(true);
+  const [ThankYouNote, setThankYouNote] = useState(true);
   let timer = null;
 
   const { LongName } = useContext(ClientContext);
@@ -163,15 +164,15 @@ export const ExportPage = () => {
     setNotARobot(true);
 
     fetchPageReport(reqPayload).then(res => {
-      setDownloadMsg(true);
+      setThankYouNote(true);
       timer = setTimeout(() => {
-        setDownloadMsg(false);
+        setThankYouNote(false);
         clearTimeout(timer);
       }, 3000);
     });
   };
 
-  const DownloadMessage = () => {
+  const ThanksMsg = () => {
     return <ThankyouNote className="e-shad">thanks you, your report will download shortly</ThankyouNote>;
   };
 
@@ -179,7 +180,7 @@ export const ExportPage = () => {
     <>
       <NOROBOT>
         {captchaVisible && <ReCAPTCHA sitekey={`${process.env.CAPTCHA_KEY}`} onChange={robotOrNot} />}
-        {NotARobot && DownloadMsg && <DownloadMessage />}
+        {NotARobot && ThankYouNote && <ThanksMsg />}
       </NOROBOT>
       <DropdownContainer>
         <ExportPageButton
