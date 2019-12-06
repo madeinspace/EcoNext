@@ -143,15 +143,18 @@ const NOROBOT = styled.div`
 const ThankyouNote = styled.div`
   padding: 10px;
   background-color: #fff;
-  font-size: 12px;
+  font-size: 15px;
+  width: 300px;
+  height: 78px;
 `;
 
 export const ExportPage = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [captchaVisible, setcaptchaVisible] = useState(false);
   const [reqPayload, setreqPayload] = useState({});
-  const [NotARobot, setNotARobot] = useState(true);
-  const [ThankYouNote, setThankYouNote] = useState(true);
+  const [NotARobot, setNotARobot] = useState(false);
+  const [ThankYouNote, setThankYouNote] = useState(false);
+  0;
   let timer = null;
 
   const { LongName } = useContext(ClientContext);
@@ -173,7 +176,11 @@ export const ExportPage = () => {
   };
 
   const ThanksMsg = () => {
-    return <ThankyouNote className="e-shad">thanks you, your report will download shortly</ThankyouNote>;
+    return (
+      <ThankyouNote className="e-shad">
+        Thanks you, we are preparing your report, it will download shortly.
+      </ThankyouNote>
+    );
   };
 
   return (
