@@ -60,10 +60,15 @@ const SearchInputFaux = styled.div`
   right: 15px;
   height: 34px;
   padding-left: 30px;
-  /* &:after {
-    font-family: "id-icons";
-    content: "\\e62b";
-  } */
+  &:before {
+    font-family: 'id-icons';
+    content: '\e62b';
+    left: 25px;
+    top: 2px;
+    color: grey;
+    position: relative;
+    font-size: 16px;
+  }
 `;
 
 const SearchInit = styled.input`
