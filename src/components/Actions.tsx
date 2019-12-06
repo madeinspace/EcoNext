@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import ExportOptions from '../utils/fecthPageReport/Formats';
+import fetchPageReport from '../utils/fecthPageReport';
+import { ClientContext, PageContext } from '../utils/context';
+import payload from '../utils/fecthPageReport/ReportPayload';
+import ReCAPTCHA from 'react-google-recaptcha';
 // import { RenderContext } from '../src/word-renderer/word-render';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -129,36 +134,82 @@ export const Share = () => {
   );
 };
 
-export const ExportPage = ({ onExport, exportOptions }) => {
+const NOROBOT = styled.div`
+  position: absolute;
+  top: 40px;
+  right: -10px;
+`;
+
+const ThankyouNote = styled.div`
+  padding: 10px;
+  background-color: #fff;
+  font-size: 12px;
+`;
+
+export const ExportPage = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [captchaVisible, setcaptchaVisible] = useState(false);
+  const [reqPayload, setreqPayload] = useState({});
+  const [NotARobot, setNotARobot] = useState(true);
+  const [ThankYouNote, setThankYouNote] = useState(true);
+  let timer = null;
+
+  const { LongName } = useContext(ClientContext);
+  const {
+    pageData: { SubTitle: pageSubTitle },
+  } = useContext(PageContext);
+
+  const robotOrNot = value => {
+    setcaptchaVisible(false);
+    setNotARobot(true);
+
+    fetchPageReport(reqPayload).then(res => {
+      setThankYouNote(true);
+      timer = setTimeout(() => {
+        setThankYouNote(false);
+        clearTimeout(timer);
+      }, 3000);
+    });
+  };
+
+  const ThanksMsg = () => {
+    return <ThankyouNote className="e-shad">thanks you, your report will download shortly</ThankyouNote>;
+  };
 
   return (
-    <DropdownContainer>
-      <ExportPageButton
-        onClick={() => {
-          if (!dropdownVisible) {
-            const dismiss = (ev: MouseEvent) => {
-              setDropdownVisible(false);
-              document.removeEventListener('click', dismiss);
-            };
-            document.addEventListener('click', dismiss);
-          }
-          setDropdownVisible(!dropdownVisible);
-        }}
-      />
-      <ShareDropdownList dropdownVisible={dropdownVisible}>
-        {exportOptions.formats.map((item: any, i: number) => (
-          <ShareDropdownListItem
-            key={i}
-            onClick={() => {
-              onExport(item);
-            }}
-          >
-            {item.displayText}
-          </ShareDropdownListItem>
-        ))}
-      </ShareDropdownList>
-    </DropdownContainer>
+    <>
+      <NOROBOT>
+        {captchaVisible && <ReCAPTCHA sitekey={`${process.env.CAPTCHA_KEY}`} onChange={robotOrNot} />}
+        {NotARobot && ThankYouNote && <ThanksMsg />}
+      </NOROBOT>
+      <DropdownContainer>
+        <ExportPageButton
+          onClick={() => {
+            if (!dropdownVisible) {
+              const dismiss = (ev: MouseEvent) => {
+                setDropdownVisible(false);
+                document.removeEventListener('click', dismiss);
+              };
+              document.addEventListener('click', dismiss);
+            }
+            setDropdownVisible(!dropdownVisible);
+          }}
+        />
+        <ShareDropdownList dropdownVisible={dropdownVisible}>
+          {ExportOptions.map((option: any, i: number) => (
+            <ShareDropdownListItem
+              key={i}
+              onClick={() => {
+                setcaptchaVisible(true);
+                setreqPayload(payload({ formatID: option.id, LongName, pageSubTitle }));
+              }}
+            >
+              {option.displayText}
+            </ShareDropdownListItem>
+          ))}
+        </ShareDropdownList>
+      </DropdownContainer>
+    </>
   );
 };
 
