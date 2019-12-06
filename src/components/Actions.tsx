@@ -154,8 +154,7 @@ export const ExportPage = () => {
   const [reqPayload, setreqPayload] = useState({});
   const [NotARobot, setNotARobot] = useState(false);
   const [ThankYouNote, setThankYouNote] = useState(false);
-  const catchaKey = `${process.env.CAPTCHA_KEY}`;
-  console.log('catchaKey: ', catchaKey);
+  const catchaKey = process.env.CAPTCHA_KEY;
   let timer = null;
 
   const { LongName } = useContext(ClientContext);
