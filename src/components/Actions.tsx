@@ -7,7 +7,6 @@ import payload from '../utils/fecthPageReport/ReportPayload';
 import ReCAPTCHA from 'react-google-recaptcha';
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
-// import { RenderContext } from '../src/word-renderer/word-render';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const ExportDropdown: React.FC<any> = props => {
@@ -156,19 +155,21 @@ export const ExportPage = () => {
   const [reqPayload, setreqPayload] = useState({});
   const [NotARobot, setNotARobot] = useState(false);
   const [ThankYouNote, setThankYouNote] = useState(false);
-  let timer = null;
-
   const { LongName } = useContext(ClientContext);
   const {
     pageData: { SubTitle: pageSubTitle },
   } = useContext(PageContext);
+  let timer = null;
 
   const robotOrNot = value => {
     setcaptchaVisible(false);
     setNotARobot(true);
 
-    fetchPageReport(reqPayload).then(res => {
-      setThankYouNote(true);
+    fetchPageReport(reqPayload).then((res: any) => {
+      if (res.status === 200) {
+        setThankYouNote(true);
+      } else {
+      }
       timer = setTimeout(() => {
         setThankYouNote(false);
         clearTimeout(timer);
