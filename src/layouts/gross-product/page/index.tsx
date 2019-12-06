@@ -13,11 +13,13 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { useContext } from 'react';
-import getActiveToggle from '../../../utils/getActiveToggle';
+import LiteContent from './Lite';
+import FullContent from './Full';
+
 // #endregion
 
 const GrossProductPage = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { clientAlias, LongName, isLite } = useContext(ClientContext);
   const { tableData, filterToggles } = useContext(PageContext);
 
   // const currentAreaName = getActiveToggle(toggles, 'WebID', LongName);
@@ -28,7 +30,8 @@ const GrossProductPage = () => {
 
   return (
     <>
-      <ControlPanel />
+      {!isLite && <ControlPanel />}
+      {isLite ? <LiteContent /> : <FullContent />}
       {/* <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>

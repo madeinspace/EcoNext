@@ -1,7 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
-import { formatNumber } from '../../utils';
+import { formatNumber, formatMillionsCurrency } from '../../utils';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, BMID, IsLite } = filters;
@@ -40,8 +40,8 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, tableData }): string =>
-        `${data.currentAreaName}\'s Gross Regional Product was ${formatNumber(
-          tableData[0].HeadLineGRP,
+        `${data.currentAreaName}\'s Gross Regional Product was ${formatMillionsCurrency(
+          tableData[0].HeadLineGRP * 1000,
         )} as of the 30th June ${tableData[0].Year_End}.`,
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
@@ -54,7 +54,9 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, tableData }): string =>
-        `${data.currentAreaName}\'s Gross Regional Product was $[Econ_Ind_GrossProductLite].[LatestYearNum].{0:#,0}m as of the 30th June [Econ_Ind_GrossProductLite].[StartYear].`,
+        `${data.currentAreaName}\'s Gross Regional Product was ${formatMillionsCurrency(
+          tableData[0].ValWebID * 1000,
+        )} as of the 30th June ${tableData[0].Yr}.`,
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
         {
