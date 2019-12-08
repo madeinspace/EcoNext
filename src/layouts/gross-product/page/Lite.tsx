@@ -9,12 +9,11 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 const LiteContent = () => {
   const { clientAlias } = useContext(ClientContext);
-  const { tableData, filters, filterToggles } = useContext(PageContext);
+  const { tableData, filterToggles } = useContext(PageContext);
   const currentBMID = getActiveToggle(filterToggles, 'BMID');
-  console.log('LiteContent: ', tableData, filters, currentBMID);
-
   const chartData = chartBuilder(tableData);
   const tableParams = tableBuilder(currentBMID, clientAlias, tableData);
+
   return (
     <>
       <ItemWrapper>
@@ -146,8 +145,8 @@ const tableBuilder = (currentBMID, clientAlias, nodes) => {
         Yr,
         formatNumber(ValWebID),
         formatChangeNumber(PerWebID, '--'),
-        formatChangePercent(ValBM, '--'),
-        formatNumber(PerBM),
+        formatNumber(ValBM),
+        formatChangeNumber(PerBM, '--'),
         formatChangeNumber(PerWebIDofBM, '--'),
       ],
       id: i,
