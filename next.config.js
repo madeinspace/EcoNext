@@ -3,17 +3,12 @@ const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
 require('dotenv').config();
-const isProd = process.env.NODE_ENV === 'production';
-const assetPrefix = process.env.ASSET_PREFIX || 'https://econext.azurewebsites.net';
+const assetPrefix = process.env.ASSET_PREFIX || '';
 module.exports = withCSS(
   withSass(
     withImages({
-      publicRuntimeConfig: {
-        // expose the CAPTCHA_KEY to the client (http://tilomitra.com/using-environment-variables-on-the-front-end-with-nextjs/)
-        CaptchaSiteKey: process.env.CAPTCHA_KEY,
-      },
       cssModules: false,
-      assetPrefix: isProd ? assetPrefix : '',
+      assetPrefix,
       webpack(config, { isServer }) {
         if (!isServer) {
           config.node = {
