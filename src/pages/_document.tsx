@@ -33,8 +33,8 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {HeadScripts.map(script => (
-            <script src={script.src} type="text/javascript" />
+          {HeadScripts.map((script, i) => (
+            <script key={i} src={script.src} type="text/javascript" />
           ))}
         </Head>
         <body>
