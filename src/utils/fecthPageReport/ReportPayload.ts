@@ -1,4 +1,4 @@
-export default ({ formatID, LongName, pageSubTitle }) => {
+export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
   const FileName = `Economy.id-${LongName}-${pageSubTitle}`;
   const Product = `Economy`;
   const Urls = [
@@ -16,7 +16,7 @@ export default ({ formatID, LongName, pageSubTitle }) => {
     },
   ];
   const Format = formatID;
-  const EmailAddress = '';
+  const EmailAddress = emailAddress;
 
   const payload = {
     FileName,

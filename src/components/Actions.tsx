@@ -4,8 +4,9 @@ import ExportOptions from '../utils/fecthPageReport/Formats';
 import fetchPageReport from '../utils/fecthPageReport';
 import { ClientContext, PageContext } from '../utils/context';
 import payload from '../utils/fecthPageReport/ReportPayload';
-import ReCAPTCHA from 'react-google-recaptcha';
+import useForm from 'react-hook-form';
 import getConfig from 'next/config';
+import { emailRGX } from '../utils/Regex';
 const { publicRuntimeConfig } = getConfig();
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -138,22 +139,62 @@ export const Share = () => {
 const NOROBOT = styled.div`
   position: absolute;
   top: 40px;
-  right: -10px;
+  right: -20px;
+  width: 300px;
+  padding: 5px;
+  background-color: #fff;
 `;
 
 const ThankyouNote = styled.div`
   padding: 10px;
   background-color: #fff;
-  font-size: 15px;
+  line-height: 18px;
+  font-size: 12px;
   width: 300px;
-  height: 78px;
+`;
+
+const RequestReportForm = styled.form`
+  font-size: 12px;
+  line-height: 18px;
+  padding: 10px;
+  margin: 0;
+`;
+const EmailAddress = styled.input`
+  display: block;
+`;
+const ErrorMsg = styled.span`
+  color: red;
+`;
+const Align = styled.div`
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: [label] auto [input];
+  margin: 10px 0;
+  p {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  input {
+    grid-column: input;
+    align-self: center;
+  }
+  label {
+    grid-column: label;
+    align-self: center;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: ${variables.colorEconomy};
+  color: #fff;
+  border-radius: 5px;
+  border: none;
 `;
 
 export const ExportPage = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [captchaVisible, setcaptchaVisible] = useState(false);
-  const [reqPayload, setreqPayload] = useState({});
-  const [NotARobot, setNotARobot] = useState(false);
+  const [requestFormVisible, setrequestFormVisible] = useState(false);
+  const [reqPayload, setreqPayload] = useState({ formatID: 1, LongName: '', pageSubTitle: '', emailAddress: '' });
   const [ThankYouNote, setThankYouNote] = useState(false);
   const { LongName } = useContext(ClientContext);
   const {
@@ -161,11 +202,11 @@ export const ExportPage = () => {
   } = useContext(PageContext);
   let timer = null;
 
-  const robotOrNot = value => {
-    setcaptchaVisible(false);
-    setNotARobot(true);
-
-    fetchPageReport(reqPayload).then((res: any) => {
+  const Submit = value => {
+    setrequestFormVisible(false);
+    setreqPayload({ ...reqPayload, emailAddress: value.emailAddress });
+    const PayLoad = payload({ ...reqPayload, emailAddress: value.emailAddress });
+    fetchPageReport(PayLoad).then((res: any) => {
       if (res.status === 200) {
         setThankYouNote(true);
       } else {
@@ -173,14 +214,41 @@ export const ExportPage = () => {
       timer = setTimeout(() => {
         setThankYouNote(false);
         clearTimeout(timer);
-      }, 3000);
+      }, 5000);
     });
+  };
+
+  const ReportRequestForm = () => {
+    const { register, errors, handleSubmit } = useForm();
+    return (
+      <RequestReportForm onSubmit={handleSubmit(Submit)} className="e-shad">
+        <p>
+          Thank you, we're preparing your report, please enter your email address and we'll email you a link when it's
+          ready — usually within a few minutes.
+        </p>
+        <Align>
+          <label>Email address</label>
+          <EmailAddress
+            type="text"
+            name="emailAddress"
+            ref={register({
+              required: true,
+              pattern: emailRGX,
+            })}
+          />
+        </Align>
+        <Align>
+          <ErrorMsg>{errors.emailAddress && 'Please enter a valid email address'}</ErrorMsg>
+          <SubmitButton type="submit">Submit</SubmitButton>
+        </Align>
+      </RequestReportForm>
+    );
   };
 
   const ThanksMsg = () => {
     return (
       <ThankyouNote className="e-shad">
-        Thanks you, we are preparing your report, it will download shortly.
+        Thanks you, an email with a download link is on its way to {reqPayload.emailAddress}
       </ThankyouNote>
     );
   };
@@ -188,8 +256,8 @@ export const ExportPage = () => {
   return (
     <>
       <NOROBOT>
-        {captchaVisible && <ReCAPTCHA sitekey={publicRuntimeConfig.CaptchaSiteKey} onChange={robotOrNot} />}
-        {NotARobot && ThankYouNote && <ThanksMsg />}
+        {requestFormVisible && <ReportRequestForm />}
+        {ThankYouNote && <ThanksMsg />}
       </NOROBOT>
       <DropdownContainer>
         <ExportPageButton
@@ -209,8 +277,8 @@ export const ExportPage = () => {
             <ShareDropdownListItem
               key={i}
               onClick={() => {
-                setcaptchaVisible(true);
-                setreqPayload(payload({ formatID: option.id, LongName, pageSubTitle }));
+                setreqPayload({ formatID: option.id, LongName, pageSubTitle, emailAddress: '' });
+                setrequestFormVisible(true);
               }}
             >
               {option.displayText}
