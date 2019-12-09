@@ -39,6 +39,7 @@ async function renderAndCache(req, res) {
   if (ssrCache.has(key) && CACHE_ENABLED) {
     console.log(`serving from cache ${key}`);
     res.setHeader('x-cache', 'HIT');
+    res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     res.send(ssrCache.get(key));
     return;
   }
@@ -63,6 +64,7 @@ async function renderAndCache(req, res) {
     }
 
     res.setHeader('x-cache', 'MISS');
+    res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     res.send(html);
   } catch (err) {
     app.renderError(err, req, res, req.path, req.query);

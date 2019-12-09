@@ -107,26 +107,26 @@ export const Share = () => {
       />
       <ShareDropdownList dropdownVisible={dropdownVisible}>
         <ShareDropdownListItem>
-          <a className="addthis_button_twitter" target="_blank">
+          <a href="" title="Share to twitter" className="addthis_button_twitter" target="_blank">
             <TwitterLogo />
             <PageButtonName>Twitter</PageButtonName>
           </a>
         </ShareDropdownListItem>
 
         <ShareDropdownListItem>
-          <a className="addthis_button_facebook" target="_blank">
+          <a href="" title="Share to facebook" className="addthis_button_facebook" target="_blank">
             <FacebookLogo />
             <PageButtonName>Facebook</PageButtonName>
           </a>
         </ShareDropdownListItem>
         <ShareDropdownListItem>
-          <a className="addthis_button_linkedin" target="_blank">
+          <a href="" title="Share to linkedin" className="addthis_button_linkedin" target="_blank">
             <LinkedInLogo />
             <PageButtonName>LinkedIn</PageButtonName>
           </a>
         </ShareDropdownListItem>
         <ShareDropdownListItem>
-          <a className="addthis_button_email" target="_blank">
+          <a href="" title="Share via email" className="addthis_button_email" target="_blank">
             <EmailLogo />
             <PageButtonName>Email</PageButtonName>
           </a>
@@ -161,6 +161,14 @@ const RequestReportForm = styled.form`
 `;
 const EmailAddress = styled.input`
   display: block;
+  border: 1px solid lightgray;
+  padding: 0 5px;
+  -webkit-autofill,
+  -webkit-autofill:hover,
+  -webkit-autofill:focus,
+  -webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
 `;
 const ErrorMsg = styled.span`
   color: red;
@@ -227,7 +235,7 @@ export const ExportPage = () => {
           ready — usually within a few minutes.
         </p>
         <Align>
-          <label>Email address</label>
+          <label>Email</label>
           <EmailAddress
             type="text"
             name="emailAddress"

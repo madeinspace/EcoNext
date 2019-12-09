@@ -101,7 +101,7 @@ class EntityTable extends React.Component<any, any> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { rows, footRows, cols, headRows } = nextProps.data;
     const renderedHeadRows = headRows.map(this.renderHeaders);
     const initRows = rows.map(this.renderRow);
