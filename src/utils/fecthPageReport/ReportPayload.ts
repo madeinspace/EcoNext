@@ -25,6 +25,7 @@ export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
     Format,
     EmailAddress,
   };
+  console.log('payload: ', payload);
 
   return payload;
 };
