@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // default chart: vertical
 import { getParameterByName } from '../../../utils/';
 import * as deepmerge from 'deepmerge';
@@ -5,6 +6,12 @@ import * as deepmerge from 'deepmerge';
 export const ChartDefault = (...opts) => {
   const options = Object.assign.apply(Object, [{}].concat(...opts));
   const chartDefaults = {};
+
+  const getHeight = () => {
+    const yoffset = 50;
+    const height = options.height !== undefined ? options.height : 400;
+    return getParameterByName('pdf', null) === '1' ? height : height + yoffset;
+  };
 
   chartDefaults.chart = {
     height: getHeight(),
@@ -29,7 +36,7 @@ export const ChartDefault = (...opts) => {
           load() {
             // this.container.classList.add("export");
             // append svg logo to chart
-            const group = this.renderer
+            this.renderer
               .g()
               .attr({
                 transform: `translate(740, 450)`,
@@ -95,7 +102,7 @@ export const ChartDefault = (...opts) => {
           text: '',
           align: 'low',
         },
-        tickPositioner: function(min, max) {
+        tickPositioner: function() {
           const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
           if (this.dataMin < 0 && this.dataMax >= 0) {
             return this.getLinearTickPositions(this.tickInterval, -maxDeviation, maxDeviation);
@@ -114,7 +121,7 @@ export const ChartDefault = (...opts) => {
           text: '',
           align: 'low',
         },
-        tickPositioner: function(min, max) {
+        tickPositioner: function() {
           const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
           const halfMaxDeviation = Math.ceil(maxDeviation / 2);
           if (this.dataMin < 0 && this.dataMax >= 0) {
@@ -178,12 +185,6 @@ export const ChartDefault = (...opts) => {
   chartDefaults.subtitle = {
     x: 10,
   };
-
-  function getHeight() {
-    const yoffset = 50;
-    const height = options.height !== undefined ? options.height : 400;
-    return getParameterByName('pdf', null) === '1' ? height : height + yoffset;
-  }
 
   const deepmerged = deepmerge(chartDefaults, options);
   return deepmerged;
