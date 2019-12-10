@@ -20,9 +20,14 @@ export const HeaderRow = styled.div`
   grid-template-areas: '. header header .';
 `;
 
-export const ContentRow = styled(HeaderRow)`
-  grid-gap: 0 15px;
-  grid-template-areas: '. navigation content .';
+export const ContentRow = styled.div`
+  width: 960px;
+  @media screen and (min-width: 1200px) {
+    width: 1200px;
+  }
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
 `;
 export const BaseFooterRow = styled.div`
   display: grid;

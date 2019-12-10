@@ -2,11 +2,21 @@ import styled from 'styled-components';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const SidebarNav = styled.div`
-  grid-area: navigation;
+  margin-right: 1rem;
+  width: 240px;
+  flex: 1;
+  @media screen and (min-width: 1200px) {
+    width: 280px;
+  }
 `;
 
 export const SiteContent = styled.div`
-  grid-area: content;
+  /* grid-area: content; */
+  flex: 3;
+  width: 720px;
+  @media screen and (min-width: 1200px) {
+    width: 920px;
+  }
 `;
 
 export const TitleContainer = styled.div`
