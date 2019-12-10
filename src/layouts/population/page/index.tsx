@@ -34,7 +34,7 @@ const PopulationPage = () => {
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+        <EntityTable data={tableParams} name={'Estimated Resident Population'} />
       </ItemWrapper>
 
       {hasForecast(clientProducts) && (
@@ -260,6 +260,10 @@ const tableBuilder = (alias, nodes) => {
 
 // #region chartLineBuilder
 const chartLineBuilder = nodes => {
+  const clientSerie = _.map(nodes, 'Changeper').reverse();
+  const stateSerie = _.map(nodes, 'ChangeperSTE').reverse();
+  const australiaSerie = _.map(nodes, 'ChangeperAUS').reverse();
+
   return {
     cssClass: '',
     highchartOptions: {
@@ -279,60 +283,46 @@ const chartLineBuilder = nodes => {
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
           name: nodes[0].Geoname,
-          data: _.map(nodes, 'Changeper').reverse(),
+          data: clientSerie,
         },
         {
-          color: '',
-          yAxis: 0,
           name: nodes[0].GeonameSTE,
-          data: _.map(nodes, 'ChangeperSTE').reverse(),
+          data: stateSerie,
         },
         {
-          color: '',
-          yAxis: 0,
           name: nodes[0].GeonameAUS,
-          data: _.map(nodes, 'ChangeperAUS').reverse(),
+          data: australiaSerie,
         },
       ],
       xAxis: {
         categories: _.map(nodes, 'Year').reverse(),
-        croshair: false,
         title: {
           text: 'Year ending June',
           align: 'low',
         },
-
         labels: {
           staggerLines: 0,
           format: '',
         },
-        opposite: false,
-        plotBands: [],
       },
       yAxis: [
         {
-          croshair: false,
           title: {
             text: 'Percentage change',
           },
           labels: {
-            staggerLines: 0,
             formatter: function() {
               return formatChangeNumber(this.value);
             },
           },
-          opposite: false,
-          plotBands: [],
         },
       ],
     },
     rawDataSource:
       'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
     dataSource: <Source />,
-    chartContainerID: 'chart2',
+    chartContainerID: 'line',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
     entityID: 1,
     chartTemplate: 'Standard',
