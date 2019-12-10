@@ -142,15 +142,15 @@ const NOROBOT = styled.div`
   right: -20px;
   width: 300px;
   padding: 5px;
-  background-color: #fff;
 `;
 
 const ThankyouNote = styled.div`
   padding: 10px;
-  background-color: #fff;
+  background-color: ${variables.colorEconomy};
   line-height: 18px;
   font-size: 12px;
   width: 300px;
+  color: #fff;
 `;
 
 const RequestReportForm = styled.form`
@@ -158,17 +158,16 @@ const RequestReportForm = styled.form`
   line-height: 18px;
   padding: 10px;
   margin: 0;
+  background-color: ${variables.colorEconomy};
+  p {
+    color: #fff;
+  }
 `;
 const EmailAddress = styled.input`
   display: block;
   border: 1px solid lightgray;
   padding: 0 5px;
-  -webkit-autofill,
-  -webkit-autofill:hover,
-  -webkit-autofill:focus,
-  -webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-  }
+  height: 25px;
 `;
 const ErrorMsg = styled.span`
   color: red;
@@ -177,10 +176,10 @@ const Align = styled.div`
   display: grid;
   grid-gap: 10px;
   grid-template-columns: [label] auto [input];
-  margin: 10px 0;
   p {
     font-size: 12px;
     line-height: 18px;
+    color: #fff;
   }
   input {
     grid-column: input;
@@ -189,14 +188,17 @@ const Align = styled.div`
   label {
     grid-column: label;
     align-self: center;
+    color: #fff;
   }
 `;
 
 const SubmitButton = styled.button`
-  background-color: ${variables.colorEconomy};
-  color: #fff;
+  background-color: #fff;
+  color: ${variables.colorEconomy};
+  font-weight: bold;
   border-radius: 5px;
   border: none;
+  height: 30px;
 `;
 
 export const ExportPage = () => {
@@ -448,7 +450,7 @@ const _Actions = styled.div`
 
 export class Actions extends React.Component {
   public render = () => {
-    return <_Actions>{this.props.children}</_Actions>;
+    return <_Actions className="action">{this.props.children}</_Actions>;
   };
 }
 
