@@ -10,7 +10,7 @@ export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
         { PropertyName: 'InvisibleElementIds', PropertyValue: 'siblings-nav' },
         {
           PropertyName: 'UserStyleSheet',
-          PropertyValue: `#content-wrapper{grid-template-columns:auto};#main-nav{grid-area:none; display:none};#main-content{grid-area:auto; margin 0 50px};.e-shad{box-shadow:none; border:1px solid lightgray}`,
+          PropertyValue: `.action{display:none} #main-nav{display:none} .e-shad{box-shadow:none; border:1px solid lightgray}`,
         },
       ],
     },
