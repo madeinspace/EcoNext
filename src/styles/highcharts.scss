@@ -17,7 +17,7 @@
   z-index: 0;
   /* #1072 */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Helvetica, sans-serif;
+  font-family: 'Arial', 'Zurich', sans-serif;
   font-size: 12px;
 }
 
@@ -72,12 +72,13 @@
 
 /* Titles */
 .highcharts-title {
-  fill: #333333;
+  fill: $color-economy-dark;
   font-size: 1.5em;
 }
 
 .highcharts-subtitle {
   fill: #666666;
+  font-weight: bold;
 }
 
 /* Axes */
