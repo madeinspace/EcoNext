@@ -1,31 +1,31 @@
 export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
-  const FileName = `Economy.id-${LongName}-${pageSubTitle}`;
+  const fileName = `Economy.id-${LongName}-${pageSubTitle}`;
   const Product = `Economy`;
-  const Urls = [
+  const urls = [
     {
-      Title: `${pageSubTitle}`,
-      Url: window.location.href,
-      Pdfoptions: [
-        { PropertyName: 'VisibleElementIds', PropertyValue: 'main-content' },
-        { PropertyName: 'InvisibleElementIds', PropertyValue: 'siblings-nav' },
+      title: `${pageSubTitle}`,
+      url: window.location.href,
+      pdfOptions: [
+        { propertyName: 'VisibleElementIds', propertyValue: 'main-content' },
+        { propertyName: 'InvisibleElementIds', propertyValue: 'siblings-nav' },
         {
-          PropertyName: 'UserStyleSheet',
-          PropertyValue: `.action{display:none} #main-nav{display:none} .e-shad{box-shadow:none; border:1px solid lightgray}`,
+          propertyName: 'UserStyleSheet',
+          propertyValue: `.action{display:none} #main-nav{display:none} .e-shad{box-shadow:none; border:1px solid lightgray}`,
         },
       ],
     },
   ];
-  const Format = formatID;
-  const EmailAddress = emailAddress;
+  const format = formatID;
+  const geoName = LongName;
 
   const payload = {
-    FileName,
+    fileName,
     Product,
-    Urls,
-    Format,
-    EmailAddress,
+    urls,
+    format,
+    emailAddress,
+    geoName,
   };
-  console.log('payload: ', payload);
 
   return payload;
 };
