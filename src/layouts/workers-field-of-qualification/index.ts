@@ -29,6 +29,10 @@ const pageContent = {
           largest(tableData, 'NoYear1').LabelName
         } qualifications than any other field of qualification.`,
     },
+    {
+      Title: 'SubTitle',
+      renderString: ({ data }): string => `Local workers - Field of qualification - ${data.currentIndustryName}`,
+    },
   ],
   filterToggles: [
     {

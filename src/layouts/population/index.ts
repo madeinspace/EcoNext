@@ -14,6 +14,10 @@ const fetchData = async ({ filters }) => {
 const pageContent = {
   entities: [
     {
+      Title: 'SubTitle',
+      renderString: (): string => `Population`,
+    },
+    {
       Title: 'Headline',
       renderString: ({ data, tableData }): string =>
         `The Estimated Resident Population of ${data.currentAreaName} was ${formatNumber(
