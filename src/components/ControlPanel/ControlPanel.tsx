@@ -6,6 +6,7 @@ import Sticky from '@wicked_query/react-sticky';
 import Router from 'next/router';
 import qs from 'qs';
 import { PageContext, ClientContext } from '../../utils/context';
+const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const StyledControlPanel = styled.div`
   align-items: end;
@@ -23,6 +24,9 @@ const StyledControlPanel = styled.div`
   padding: 15px;
   position: relative;
   z-index: 2;
+  button {
+    color: #000;
+  }
 `;
 
 const ControlPanel: React.SFC<{}> = () => {

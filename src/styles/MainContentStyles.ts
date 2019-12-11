@@ -36,10 +36,11 @@ export const MainTitle = styled.h1`
   border-bottom: none;
 `;
 
-export const SubTitle = styled.h3`
+export const _SubTitle = styled.h3`
   font-size: 23px;
   line-height: 27px;
 `;
+
 export const Headline = styled.p`
   position: relative;
   color: ${variables.colorEconomyDark};
