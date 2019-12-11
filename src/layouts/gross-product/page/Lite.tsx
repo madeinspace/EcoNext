@@ -10,9 +10,9 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 const LiteContent = () => {
   const { clientAlias } = useContext(ClientContext);
   const { tableData, filterToggles } = useContext(PageContext);
-  const currentBMID = getActiveToggle(filterToggles, 'BMID');
+  const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
   const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(currentBMID, clientAlias, tableData);
+  const tableParams = tableBuilder(currentBenchmark, clientAlias, tableData);
 
   return (
     <>
@@ -30,17 +30,12 @@ const LiteContent = () => {
 export default LiteContent;
 
 // #region tableBuilder
-const tableBuilder = (currentBMID, clientAlias, nodes) => {
-  console.log('nodes: ', nodes[0].GeoName);
+const tableBuilder = (currentBenchmark, clientAlias, nodes) => {
   const tableTitle = 'Gross Regional Product (GRP)';
   const clientLongName = nodes[0].GeoName;
 
   return {
     cssClass: '',
-    allowExport: false,
-    allowSort: true,
-    allowSortReset: true,
-    groupOn: '',
     clientAlias,
     source: <Source />,
     anchorName: tableTitle,
@@ -52,90 +47,57 @@ const tableBuilder = (currentBMID, clientAlias, nodes) => {
             cssClass: 'table-area-name',
             displayText: tableTitle,
             colSpan: 6,
-            rowSpan: 0,
           },
         ],
-        key: 'hr0',
       },
       {
-        cssClass: '',
+        cssClass: 'heading',
         cols: [
           {
             cssClass: '',
             displayText: '',
             colSpan: 1,
-            rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'xeven',
             displayText: clientLongName,
             colSpan: 2,
-            rowSpan: 0,
           },
           {
-            cssClass: 'xodd end-year',
-            displayText: currentBMID,
+            cssClass: 'xodd',
+            displayText: currentBenchmark,
             colSpan: 2,
-            rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'xeven',
             displayText: '',
             colSpan: 1,
-            rowSpan: 0,
           },
         ],
-        key: 'hr1',
       },
     ],
     cols: [
-      {
-        id: 0,
-        displayText: 'Year (ending June 30)',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'xodd xfirst',
-      },
-      {
-        id: 1,
-        displayText: '$m',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'xeven latest',
-        format: '{0:#,0}',
-      },
+      { id: 0, displayText: 'Year (ending June 30)', cssClass: 'xodd xfirst' },
+      { id: 1, displayText: '$m', cssClass: 'xeven int' },
       {
         id: 2,
         displayText: '%change',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'xeven latest',
-        format: '{0:+#,0;-#,0;0}',
+        cssClass: 'xeven int',
       },
       {
         id: 3,
         displayText: '$m',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'xodd',
-        format: '{0:+#,0;-#,0;0}',
+        cssClass: 'xodd int',
       },
       {
         id: 4,
         displayText: '%change',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'xodd',
-        format: '{0:#,0}',
+        cssClass: 'xodd int',
       },
       {
         id: 5,
-        displayText: 'city of []',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'per xeven ',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: `${clientLongName} as a % of ${currentBenchmark}`,
+        cssClass: 'xeven int',
       },
     ],
     footRows: [],
@@ -151,7 +113,6 @@ const tableBuilder = (currentBMID, clientAlias, nodes) => {
       ],
       id: i,
     })),
-    noOfRowsOnInit: 11,
   };
 };
 // #endregion

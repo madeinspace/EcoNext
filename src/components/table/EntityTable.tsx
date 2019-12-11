@@ -117,7 +117,7 @@ class EntityTable extends React.Component<any, any> {
     });
   }
 
-  private renderHeaders = (headerRow: IHeaderRow): JSX.Element => {
+  private renderHeaders = (headerRow: IHeaderRow, i: number): JSX.Element => {
     const cells: any[] = headerRow.cols.map((cell: ICell, i: number) => {
       const { displayText, cssClass, colSpan } = cell;
       const headerCellProps = {
@@ -130,7 +130,7 @@ class EntityTable extends React.Component<any, any> {
     });
 
     return (
-      <tr className={headerRow.cssClass} key={headerRow.key}>
+      <tr className={headerRow.cssClass} key={i}>
         {cells}
       </tr>
     );
@@ -142,7 +142,7 @@ class EntityTable extends React.Component<any, any> {
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
         className:
-          (_.has(col, 'sortable') && col.sortable ? ' ' + 'sortable' : '') + ' ' + col.cssClass + ' ' + col.dataType,
+          (_.has(col, 'sortable') && !col.sortable ? ' ' + '' : 'sortable') + ' ' + col.cssClass + ' ' + col.dataType,
       };
 
       // keeping the classes for the rows' cells out of the state.
@@ -170,7 +170,7 @@ class EntityTable extends React.Component<any, any> {
         childRows={row.childRows}
         expandable={expandable}
         colClass={this.colClass}
-        key={row.id}
+        key={i}
         i={i}
       />
     );

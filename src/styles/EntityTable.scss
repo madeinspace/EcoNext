@@ -234,10 +234,6 @@ $even-row-color: $odd-color;
 }
 
 .entity-table {
-  &.entity {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
   width: 100%;
 
   th,
@@ -258,40 +254,12 @@ $even-row-color: $odd-color;
     tr {
       border-bottom: 1px solid #5f6062;
 
-      &.primary-header {
+      &.heading {
         th {
-          border-bottom: 1px solid #5f6062;
-        }
-      }
-
-      &.secondary-header {
-        th {
-          &.table-title {
-            @include theme {
-              color: nth($product_colours, $index);
-            }
-
-            font-size: 12px;
-            font-weight: normal;
-            padding-left: 8px;
-            vertical-align: middle;
-            height: 46px;
-            text-align: left;
-            line-height: normal;
-          }
-
-          &.start-year,
-          &.end-year,
-          &.change {
-            text-align: center;
-            vertical-align: middle;
-          }
-        }
-      }
-
-      &.table_header_true_pdf {
-        th {
-          font-size: 9px;
+          font-weight: normal;
+          font-size: 21px;
+          text-align: center;
+          vertical-align: middle;
         }
       }
 
@@ -309,10 +277,7 @@ $even-row-color: $odd-color;
           text-align: left;
         }
 
-        &.int,
-        &.decimal,
-        &.float,
-        &.money {
+        &.int {
           text-align: right;
           width: 70px;
           min-width: 70px;
@@ -334,20 +299,8 @@ $even-row-color: $odd-color;
           vertical-align: middle;
         }
 
-        &.start-year,
-        &.end-year {
-          font-weight: normal;
-          font-size: 21px;
-          text-align: center;
-          vertical-align: middle;
-        }
-
         &.table-title {
-          @include theme {
-            color: nth($product_colours, $index);
-          }
-
-          color: #bf1e2d;
+          color: $color-economy-dark;
           font-size: 12px;
           font-weight: 400;
           padding-left: 8px;
@@ -405,36 +358,12 @@ $even-row-color: $odd-color;
             }
           }
         }
-
-        &.latest {
-          @include theme {
-            background-color: lighten(nth($product_colours, $index), 45);
-          }
-          position: relative;
-
-          &.cnew:after {
-            content: 'new';
-            color: #fff;
-            padding: 2px 10px;
-            background-color: #01b700;
-            position: absolute;
-            top: 0;
-            left: 0;
-            font-size: 12px;
-            text-transform: uppercase;
-          }
-        }
       }
 
       td {
-        &.int,
-        &.decimal,
-        &.float,
-        &.money {
+        &.int {
           text-align: right;
           width: 70px;
-          min-width: 70px;
-          max-width: 70px;
           padding-right: 14px;
         }
       }
@@ -443,10 +372,7 @@ $even-row-color: $odd-color;
 
   tbody {
     td {
-      &.int,
-      &.decimal,
-      &.float,
-      &.money {
+      &.int {
         text-align: right;
         width: 70px;
         min-width: 70px;
@@ -467,78 +393,15 @@ $even-row-color: $odd-color;
         td {
           &.xeven {
             background-color: $even-color;
-
-            &.latest {
-              @include theme {
-                background-color: lighten(nth($product_colours, $index), 45);
-              }
-            }
-          }
-        }
-        &.idc-snapshot {
-          td {
-            background-color: silver;
-            &.xodd,
-            &.xeven {
-              background-color: silver;
-              &.latest {
-                @include theme {
-                  background-color: desaturate(lighten(nth($product_colours, $index), 20), 20%);
-                }
-              }
-            }
-          }
-        }
-      }
-
-      &.even {
-        &.idc-snapshot {
-          td {
-            background-color: silver;
-            &.xodd,
-            &.xeven {
-              background-color: silver;
-              &.latest {
-                @include theme {
-                  background-color: desaturate(lighten(nth($product_colours, $index), 20), 20%);
-                }
-              }
-            }
-          }
-        }
-      }
-
-      &.idc-indent {
-        td {
-          &.xfirst {
-            // &:before{
-            //     content:  "\2219 ";
-            //     size: 1em;
-            // }
-            padding-left: 40px;
           }
         }
       }
 
       &.child {
         border-bottom: 1px solid #fff;
-
-        td:first-child {
-          // display: list-item;
-          // list-style-type: disc;
-          // list-style-position: inside;
-          // padding-left: 10px;
-        }
-
         td,
         th {
           background-color: #e6f4ec !important;
-
-          &.latest {
-            @include theme {
-              background-color: darken(nth($product_colours, $index), 20);
-            }
-          }
         }
 
         &:hover {
@@ -550,30 +413,6 @@ $even-row-color: $odd-color;
       }
 
       &:hover {
-        &.idc-snapshot {
-          td,
-          th {
-            background-color: $hover-color;
-            color: white;
-
-            &.xeven,
-            &.xodd {
-              background-color: $hover-color;
-
-              &.latest {
-                @include theme {
-                  background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
-                }
-              }
-            }
-
-            &.latest {
-              @include theme {
-                background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
-              }
-            }
-          }
-        }
         td,
         th {
           background-color: $hover-color;
@@ -581,18 +420,6 @@ $even-row-color: $odd-color;
 
           &.xeven {
             background-color: $hover-color;
-
-            &.latest {
-              @include theme {
-                background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
-              }
-            }
-          }
-
-          &.latest {
-            @include theme {
-              background-color: desaturate(darken(nth($product_colours, $index), 5), 30%);
-            }
           }
         }
       }
@@ -627,6 +454,7 @@ $even-row-color: $odd-color;
 
         &.xfirst {
           text-align: left;
+          width: 200px;
         }
 
         &.xlast {
@@ -638,30 +466,7 @@ $even-row-color: $odd-color;
           padding: 5px;
           margin-left: 16px;
         }
-
-        a.atlas {
-          background-color: $color-atlas-dark;
-          margin-right: 10px;
-
-          &:after {
-            content: 'a';
-            color: #fff;
-            padding: 5px;
-          }
-        }
-
-        a.forecast {
-          background-color: $color-forecast;
-        }
-
-        a.economy {
-          background-color: $color-economy;
-        }
       }
-    }
-
-    tr.idc-italic td {
-      font-style: italic;
     }
   }
 
@@ -677,21 +482,11 @@ $even-row-color: $odd-color;
           text-align: left;
         }
 
-        &.latest {
-          @include theme {
-            background-color: rgba(lighten(nth($product_colours, $index), 25), 0.8);
-          }
-        }
-
         &.xlast,
         &:last-child {
           border-right: none;
         }
       }
     }
-  }
-
-  thead tr.table_header_true_pdf th {
-    font-size: 9px;
   }
 }

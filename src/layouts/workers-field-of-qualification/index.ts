@@ -23,15 +23,15 @@ const fetchData = async ({ filters }) => {
 const pageContent = {
   entities: [
     {
+      Title: 'SubTitle',
+      renderString: ({ data }): string => `Local workers - Field of qualification - ${data.currentIndustryName}`,
+    },
+    {
       Title: 'Headline',
       renderString: ({ data, tableData }): string =>
         `Within ${data.currentAreaName}, there are more ${without(data.currentIndustryName, 'All industries')} with ${
           largest(tableData, 'NoYear1').LabelName
         } qualifications than any other field of qualification.`,
-    },
-    {
-      Title: 'SubTitle',
-      renderString: ({ data }): string => `Local workers - Field of qualification - ${data.currentIndustryName}`,
     },
   ],
   filterToggles: [
