@@ -49,7 +49,6 @@ const PageTemplate = () => {
       <Headline />
       <Description />
       <MainContent />
-      <RelatedPagesCTA />
     </MainLayout>
   );
 };
