@@ -14,6 +14,7 @@ import * as docx from 'docx';
 import styled from 'styled-components';
 import PubSub from 'pubsub-js';
 import { IColumn, IRow, IHeaderRow, ICell, ISourceAndTopicNotesProps } from './Interfaces.table';
+import ShowMoreButton from './ShowMoreButton';
 // #endregion
 
 const SourceCell = styled.td`
@@ -141,8 +142,7 @@ class EntityTable extends React.Component<any, any> {
       let label: string = col.displayText;
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
-        className:
-          (_.has(col, 'sortable') && !col.sortable ? ' ' + '' : 'sortable') + ' ' + col.cssClass + ' ' + col.dataType,
+        className: (_.has(col, 'sortable') && !col.sortable ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
       };
 
       // keeping the classes for the rows' cells out of the state.
@@ -362,8 +362,20 @@ class EntityTable extends React.Component<any, any> {
 
   // #endregion
 
+  toggleShow = () => {
+    // console.log("toggle state:  ", this.state.showMore)
+    this.setState({
+      rows: this.getnNumberOfRows(this.initialRows, this.state.showMore ? this.props.data.rows.length : 10).map(
+        this.renderRow,
+      ),
+      showMore: this.state.showMore ? false : true,
+    });
+
+    // the sticky function listens to that event to recalculate the dimensions of the window
+    $(window).trigger('resize');
+  };
   render(): JSX.Element {
-    const { headRows, cols, rows, footRows } = this.state;
+    const { headRows, cols, rows, footRows, showMore, showMoreButton } = this.state;
     const { data } = this.props;
     const SourceAndTopicNotesProps: ISourceAndTopicNotesProps = {
       source: data.source,
@@ -372,10 +384,6 @@ class EntityTable extends React.Component<any, any> {
     };
     if (rows) {
       return (
-        // <RenderContext.Consumer>
-        // {(renderContext)=> (
-        //   renderContext === 'word' ?
-        //     <React.Fragment/> :
         <EntityContainer>
           <Actions>
             <ResetButton onClick={this.resetSort} />
@@ -396,9 +404,10 @@ class EntityTable extends React.Component<any, any> {
               </tr>
             </tfoot>
           </table>
+          {showMoreButton && (
+            <ShowMoreButton showMore={showMore} nEntries={data.rows.length} handleClick={this.toggleShow} />
+          )}
         </EntityContainer>
-        //   )}
-        // </RenderContext.Consumer>
       );
     }
     return <div>Loading...</div>;
