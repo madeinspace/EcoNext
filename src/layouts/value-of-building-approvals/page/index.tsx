@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatPercent } from '../../../utils/';
+import { formatNumber, formatPercent, idlogo } from '../../../utils/';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -71,31 +71,27 @@ const tableBuilder = (alias, nodes) => {
         key: 'hr0',
       },
       {
-        cssClass: '',
+        cssClass: 'heading',
         cols: [
           {
             cssClass: '',
             displayText: '',
             colSpan: 1,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
+            cssClass: 'even ',
             displayText: nodes[0].GeoName,
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'odd end-year',
+            cssClass: 'odd ',
             displayText: 'Victoria',
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
+            cssClass: 'even ',
             displayText: '',
             colSpan: 3,
-            rowSpan: 0,
           },
         ],
         key: 'hr1',
@@ -105,67 +101,42 @@ const tableBuilder = (alias, nodes) => {
       {
         id: 0,
         displayText: 'Financial year',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'odd first',
+        cssClass: 'odd first int',
       },
       {
         id: 1,
-        displayText: 'Residential',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:#,0}',
+        displayText: "Residential $('000') ",
+        cssClass: 'even latest int',
       },
       {
         id: 2,
-        displayText: 'Non-residential',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: "Non-residential $('000')",
+        cssClass: 'even latest int',
       },
       {
         id: 3,
-        displayText: 'Total',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: "Total $('000')",
+        cssClass: 'even latest int',
       },
       {
         id: 4,
-        displayText: 'Residential',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'odd',
-        format: '{0:#,0}',
+        displayText: "Residential $('000')",
+        cssClass: 'odd int',
       },
       {
         id: 5,
-        displayText: 'Non-residential',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'per odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: "Non-residential $('000')",
+        cssClass: 'per odd int',
       },
       {
         id: 6,
-        displayText: 'Total',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: "Total $('000')",
+        cssClass: 'odd int',
       },
       {
         id: 7,
         displayText: 'City of Monash as a % of Victoria',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'even',
-        format: '{0:#,0}',
+        cssClass: 'even int',
       },
     ],
     footRows: [],
@@ -195,63 +166,54 @@ const tableBuilder = (alias, nodes) => {
 
 // #region  chartbuilder
 const chartBuilder = nodes => {
+  const chartType = 'column';
+  const chartTemplate = 'Standard';
+  const chartTitle = 'Value of total building approvals';
+  const clientAlias = nodes[0].GeoName;
+  const residentialSerie = _.map(nodes, 'Residential').reverse();
+  const nonRresidentialSerie = _.map(nodes, 'NonResidential').reverse();
+  const categories = _.map(nodes, 'LabelName').reverse();
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const chartContainerID = 'totalValueOfBuildingApprovals';
+
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'column',
-        styledMode: true,
+        type: chartType,
       },
       title: {
-        text: 'Value of total building approvals',
-        align: 'left',
+        text: chartTitle,
       },
       subtitle: {
-        text: nodes[0].GeoName,
-        align: 'left',
+        text: clientAlias,
       },
       plotOptions: {
         column: {
           stacking: 'normal',
-          dataLabels: {
-            enabled: false,
-          },
         },
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
           name: 'Residential',
-          data: _.map(nodes, 'Residential'),
+          data: residentialSerie,
         },
         {
-          color: '',
-          yAxis: 0,
           name: 'Non Residential',
-          data: _.map(nodes, 'NonResidential'),
+          data: nonRresidentialSerie,
         },
       ],
       xAxis: {
-        categories: _.map(nodes, 'LabelName').reverse(),
-        croshair: false,
+        categories,
         title: {
-          text: 'Year ending June',
-          align: 'low',
+          text: 'Year (ending June)',
         },
-        labels: {
-          staggerLines: 0,
-          format: '',
-        },
-        opposite: false,
-        plotBands: [],
       },
       yAxis: [
         {
-          croshair: false,
           title: {
-            text: 'Total value',
-            align: 'low',
+            text: 'value S("000")',
           },
           labels: {
             staggerLines: 0,
@@ -259,17 +221,14 @@ const chartBuilder = nodes => {
               return formatNumber(this.value);
             },
           },
-          opposite: false,
-          plotBands: [],
         },
       ],
     },
-    rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+    rawDataSource,
     dataSource: <Source />,
-    chartContainerID: 'chart1',
-    logoUrl: '/images/id-logo.png',
-    chartTemplate: 'Standard',
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
   };
 };
 // #endregion
