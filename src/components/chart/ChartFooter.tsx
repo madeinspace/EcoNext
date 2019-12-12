@@ -4,12 +4,14 @@ const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!
 
 interface IFooterData {
   dataSource: JSX.Element;
+  logoUrl: string;
 }
 
 const Footer = styled.div`
   position: relative;
-  height: 59px;
-
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: [source] auto [idlogo];
   a {
     color: ${variables['linkColor']};
     text-decoration: none;
@@ -20,28 +22,24 @@ const Footer = styled.div`
   }
 `;
 const DataSourceText = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 59px;
   line-height: 14px;
   padding: 8px;
   font-size: 12px;
-  width: calc(100% - 92px);
+  grid-column: source;
 `;
 
 const Logo = styled.div`
-  position: absolute;
-  right: 6px;
-  bottom: 6px;
-  width: 92px;
   background-repeat: no-repeat;
   height: 41px;
+  margin-right: 20px;
+  grid-column: idlogo;
 `;
 
-export const ChartFooter: React.SFC<IFooterData> = ({ dataSource }) => (
+export const ChartFooter: React.SFC<IFooterData> = ({ dataSource, logoUrl }) => (
   <Footer>
     <DataSourceText>{dataSource}</DataSourceText>
-    <Logo />
+    <Logo>
+      <img src={logoUrl} />
+    </Logo>
   </Footer>
 );

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 // default chart: vertical
 import { getParameterByName } from '../../../utils/';
+import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
 import * as deepmerge from 'deepmerge';
 
 export const ChartDefault = (...opts) => {
+  // eslint-disable-next-line prefer-spread
   const options = Object.assign.apply(Object, [{}].concat(...opts));
   const chartDefaults = {};
 
@@ -69,25 +71,44 @@ export const ChartDefault = (...opts) => {
     style: {
       textOverflow: 'none',
     },
+    croshair: false,
+    title: {
+      align: 'low',
+      text: 'xAxis title',
+    },
+    labels: {
+      staggerLines: 0,
+      format: '',
+    },
+    opposite: false,
+    plotBands: [],
   };
 
   /* THIS CONDITION IS CATERING FOR DUAL YAXIS */
   if (options.yAxis.length === 1) {
-    chartDefaults.yAxis = [
-      {
-        style: {
-          textOverflow: 'none',
-        },
-        alignTicks: true,
-        allowDecimals: false,
-        softMin: 0,
-        title: {
-          text: '',
-          align: 'low',
-        },
-        labels: options.yAxis[0].labels,
+    chartDefaults.yAxis = {
+      style: {
+        textOverflow: 'none',
       },
-    ];
+      alignTicks: true,
+      allowDecimals: false,
+      softMin: 0,
+      title: {
+        text: 'yAxis title',
+        align: 'low',
+      },
+      labels: {
+        staggerLines: 0,
+        formatter: function() {
+          const formatedNumber = formatChangePercent(this.value);
+          return formatedNumber;
+        },
+        ...options.yAxis.labels,
+      },
+      opposite: false,
+      plotBands: [],
+      croshair: false,
+    };
   } else {
     chartDefaults.series[0].yAxis = 0;
     chartDefaults.series[1].yAxis = 1;
@@ -99,7 +120,7 @@ export const ChartDefault = (...opts) => {
         alignTicks: false,
         allowDecimals: false,
         title: {
-          text: '',
+          text: 'yAxis Primary title',
           align: 'low',
         },
         tickPositioner: function() {
@@ -118,7 +139,7 @@ export const ChartDefault = (...opts) => {
         alignTicks: true,
         allowDecimals: false,
         title: {
-          text: '',
+          text: 'yAxis Secondary title',
           align: 'low',
         },
         tickPositioner: function() {
@@ -130,7 +151,13 @@ export const ChartDefault = (...opts) => {
             return [-maxDeviation, -halfMaxDeviation, 0];
           }
         },
-        labels: options.yAxis[1].labels,
+        labels: {
+          ...options.yAxis[1].labels,
+          staggerLines: 0,
+          formatter: function() {
+            return formatNumber(this.value);
+          },
+        },
         opposite: true,
       },
     ];
@@ -184,6 +211,7 @@ export const ChartDefault = (...opts) => {
   };
   chartDefaults.subtitle = {
     x: 10,
+    align: 'left',
   };
 
   const deepmerged = deepmerge(chartDefaults, options);
