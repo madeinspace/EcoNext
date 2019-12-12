@@ -16,3 +16,5 @@ const amI = (param, defaultValue) => (navNodes, currentPageAlias) => {
 export const IsDisabled = amI('Disabled', false);
 export const IsSecure = amI('Secure', false);
 export const IsParent = amI('ParentPageID', true);
+
+export const idlogo = require(`../images/id_grey.png`);
