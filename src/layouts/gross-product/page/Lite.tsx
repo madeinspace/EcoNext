@@ -133,6 +133,7 @@ const Source = () => (
 
 // #region  chartbuilder
 const chartBuilder = nodes => {
+  const chartType = 'column';
   const chartTitle = 'Gross Regional Product';
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'GRP $million';
@@ -141,45 +142,30 @@ const chartBuilder = nodes => {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'column',
-        styledMode: true,
+        type: chartType,
       },
       title: {
         text: chartTitle,
-        align: 'left',
       },
       subtitle: {
         text: nodes[0].Geoname,
-        align: 'left',
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
           name: nodes[0].Geoname,
           data: _.map(nodes, 'ValWebID').reverse(),
         },
       ],
       xAxis: {
         categories: _.map(nodes, 'Yr').reverse(),
-        croshair: false,
         title: {
           text: xAxisTitle,
-          align: 'low',
         },
-        labels: {
-          staggerLines: 0,
-          format: '',
-        },
-        opposite: false,
-        plotBands: [],
       },
       yAxis: [
         {
-          croshair: false,
           title: {
             text: yAxisTitle,
-            align: 'low',
           },
           labels: {
             staggerLines: 0,
@@ -187,8 +173,6 @@ const chartBuilder = nodes => {
               return formatNumber(this.value);
             },
           },
-          opposite: false,
-          plotBands: [],
         },
       ],
     },

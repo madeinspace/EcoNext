@@ -170,19 +170,15 @@ const GRPChartBuilder = nodes => {
     highchartOptions: {
       chart: {
         type: 'column',
-        styledMode: true,
       },
       title: {
         text: chartTitle,
       },
       subtitle: {
-        text: nodes[0].Geoname,
+        text: '',
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
-          name: nodes[0].Geoname,
           data: serie,
         },
       ],
@@ -250,22 +246,14 @@ const CumulitativeChangeChartBuilder = (nodes, currentBenchmark) => {
       ],
       xAxis: {
         categories,
-        croshair: false,
         title: {
           text: xAxisTitle,
-          align: 'low',
-        },
-        labels: {
-          staggerLines: 0,
-          format: '',
         },
       },
       yAxis: [
         {
-          croshair: false,
           title: {
             text: yAxisTitle,
-            align: 'low',
           },
           labels: {
             staggerLines: 0,
@@ -285,6 +273,7 @@ const CumulitativeChangeChartBuilder = (nodes, currentBenchmark) => {
 };
 
 const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
+  const chartType = 'line';
   const chartTitle = 'Annual change in Gross Regional Product';
   const yAxisTitle = '% change from previous year'; // vert axis
   const xAxisTitle = 'Year ending June'; // horizontal axis
@@ -293,11 +282,17 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
   const benchmarkSerie = _.map(nodes, 'BMchangePer').reverse();
   const averageSerie = _.map(nodes, 'ChangePer4').reverse();
   const geoName = nodes[0].GeoName;
+  const chartTemplate = 'Standard';
+  const chartContainerID = 'annual-chart';
+  const rawDataSource =
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+  const averageSerieName = 'Average annual growth rate';
+
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'line',
+        type: chartType,
       },
       title: {
         text: chartTitle,
@@ -312,28 +307,20 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
           data: benchmarkSerie,
         },
         {
-          name: 'Average annual growth rate',
+          name: averageSerieName,
           data: averageSerie,
         },
       ],
       xAxis: {
         categories,
-        croshair: false,
         title: {
           text: xAxisTitle,
-          align: 'low',
-        },
-        labels: {
-          staggerLines: 0,
-          format: '',
         },
       },
       yAxis: [
         {
-          croshair: false,
           title: {
             text: yAxisTitle,
-            align: 'low',
           },
           labels: {
             staggerLines: 0,
@@ -344,11 +331,10 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
         },
       ],
     },
-    rawDataSource:
-      'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts',
+    rawDataSource,
     dataSource: <Source />,
-    chartContainerID: 'annual-chart',
+    chartContainerID,
     logoUrl: idlogo,
-    chartTemplate: 'Standard',
+    chartTemplate,
   };
 };

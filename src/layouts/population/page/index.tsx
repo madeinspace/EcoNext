@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
+import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent, idlogo } from '../../../utils';
 import { ItemWrapper, CrossLink, ForecastProductIcon } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -332,7 +332,7 @@ const chartBuilder = nodes => {
     rawDataSource,
     dataSource: <Source />,
     chartContainerID,
-    logoUrl: require(`../../../images/id_grey.png`),
+    logoUrl: idlogo,
   };
 };
 // #endregion
