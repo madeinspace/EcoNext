@@ -273,10 +273,6 @@ $even-row-color: $odd-color;
           text-align: center;
         }
 
-        &.xfirst {
-          text-align: left;
-        }
-
         &.int {
           text-align: right;
           width: 70px;
@@ -284,19 +280,13 @@ $even-row-color: $odd-color;
           max-width: 70px;
           padding-right: 14px;
         }
-
-        &.xeven,
-        &.start-year,
-        &.change,
-        &.changeXeven {
-          background-color: $even-color;
-          background-clip: padding-box;
+        &.first {
+          text-align: left;
         }
 
-        &.change {
-          font-weight: normal;
-          text-align: center;
-          vertical-align: middle;
+        &.even {
+          background-color: $even-color;
+          background-clip: padding-box;
         }
 
         &.table-title {
@@ -382,16 +372,9 @@ $even-row-color: $odd-color;
     }
 
     tr {
-      th {
-        .changeXodd {
-          font-weight: normal;
-          text-align: right;
-        }
-      }
-
       &.odd {
         td {
-          &.xeven {
+          &.even {
             background-color: $even-color;
           }
         }
@@ -418,7 +401,7 @@ $even-row-color: $odd-color;
           background-color: $hover-color;
           color: white;
 
-          &.xeven {
+          &.even {
             background-color: $hover-color;
           }
         }
@@ -428,43 +411,11 @@ $even-row-color: $odd-color;
         border-right: dashed 1px #999;
         line-height: 16px;
         text-align: right;
-
+        &.first {
+          text-align: left;
+        }
         &:last-child {
           border-right: none;
-        }
-
-        &.xeven {
-          &.latest {
-            @include theme {
-              background-color: lighten(nth($product_colours, $index), 35);
-            }
-          }
-        }
-
-        &.changeXodd {
-          font-weight: normal;
-
-          text-align: right;
-        }
-
-        &.changeXeven {
-          font-weight: normal;
-          background-color: $even-color; /*F5F6F6*/
-        }
-
-        &.xfirst {
-          text-align: left;
-          width: 200px;
-        }
-
-        &.xlast {
-          border-right: none;
-        }
-
-        div.crosslink-spacer {
-          float: left;
-          padding: 5px;
-          margin-left: 16px;
         }
       }
     }
@@ -482,7 +433,6 @@ $even-row-color: $odd-color;
           text-align: left;
         }
 
-        &.xlast,
         &:last-child {
           border-right: none;
         }
