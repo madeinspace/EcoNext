@@ -283,7 +283,7 @@ const chartLineBuilder = nodes => {
     rawDataSource,
     dataSource: <Source />,
     chartContainerID: 'line',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
+    logoUrl: idlogo,
   };
 };
 // #endregion
