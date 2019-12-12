@@ -59,17 +59,17 @@ const tableBuilder = (currentBenchmark, clientAlias, nodes) => {
             colSpan: 1,
           },
           {
-            cssClass: 'xeven',
+            cssClass: 'even',
             displayText: clientLongName,
             colSpan: 2,
           },
           {
-            cssClass: 'xodd',
+            cssClass: 'odd',
             displayText: currentBenchmark,
             colSpan: 2,
           },
           {
-            cssClass: 'xeven',
+            cssClass: 'even',
             displayText: '',
             colSpan: 1,
           },
@@ -77,27 +77,27 @@ const tableBuilder = (currentBenchmark, clientAlias, nodes) => {
       },
     ],
     cols: [
-      { id: 0, displayText: 'Year (ending June 30)', cssClass: 'xodd xfirst' },
-      { id: 1, displayText: '$m', cssClass: 'xeven int' },
+      { id: 0, displayText: 'Year (ending June 30)', cssClass: 'odd first int' },
+      { id: 1, displayText: '$m', cssClass: 'even int' },
       {
         id: 2,
         displayText: '%change',
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
       {
         id: 3,
         displayText: '$m',
-        cssClass: 'xodd int',
+        cssClass: 'odd int',
       },
       {
         id: 4,
         displayText: '%change',
-        cssClass: 'xodd int',
+        cssClass: 'odd int',
       },
       {
         id: 5,
         displayText: `${clientLongName} as a % of ${currentBenchmark}`,
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
     ],
     footRows: [],
@@ -113,6 +113,7 @@ const tableBuilder = (currentBenchmark, clientAlias, nodes) => {
       ],
       id: i,
     })),
+    noOfRowsOnInit: 0,
   };
 };
 // #endregion
@@ -196,7 +197,6 @@ const chartBuilder = nodes => {
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: '/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };

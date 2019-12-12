@@ -389,10 +389,6 @@ const tableBuilder = ({
 
   return {
     cssClass: '',
-    allowExport: false,
-    allowSort: true,
-    allowSortReset: true,
-    groupOn: '',
     clientAlias: 'Monash',
     source: <Source />,
     rawDataSource:
@@ -418,17 +414,17 @@ const tableBuilder = ({
             colSpan: 1,
           },
           {
-            cssClass: 'xeven',
+            cssClass: 'even',
             displayText: ' 2016',
             colSpan: 3,
           },
           {
-            cssClass: 'xodd',
+            cssClass: 'odd',
             displayText: '2011',
             colSpan: 3,
           },
           {
-            cssClass: 'xeven',
+            cssClass: 'even',
             displayText: 'Change',
             colSpan: 1,
           },
@@ -439,42 +435,42 @@ const tableBuilder = ({
       {
         id: 0,
         displayText: 'Field of qualification (Click rows to view sub-categories)',
-        cssClass: 'xodd xfirst',
+        cssClass: 'odd first',
       },
       {
         id: 1,
         displayText: 'Number',
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
       {
         id: 2,
         displayText: '%',
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
       {
         id: 3,
         displayText: `${benchmark}`,
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
       {
         id: 4,
         displayText: 'Number',
-        cssClass: 'xodd int',
+        cssClass: 'odd int',
       },
       {
         id: 5,
         displayText: '%',
-        cssClass: 'xodd int',
+        cssClass: 'odd int',
       },
       {
         id: 6,
         displayText: `${benchmark}`,
-        cssClass: 'xodd int',
+        cssClass: 'odd int',
       },
       {
         id: 7,
         displayText: '2011 - 2016',
-        cssClass: 'xeven int',
+        cssClass: 'even int',
       },
     ],
     rows: parents.map(row => ({
@@ -543,7 +539,7 @@ const tableBuilder = ({
         ],
       };
     }),
-    noOfRowsOnInit: 16,
+    noOfRowsOnInit: 0,
   };
 };
 // #endregion
@@ -667,7 +663,6 @@ const chartBuilder = ({
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };
@@ -749,7 +744,6 @@ const chartBuilderChange = ({
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };

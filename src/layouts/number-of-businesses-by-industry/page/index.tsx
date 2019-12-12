@@ -130,19 +130,19 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: currentYear,
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xodd end-year',
+            cssClass: 'odd end-year',
             displayText: benchmarkYear,
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: 'change',
             colSpan: 3,
             rowSpan: 0,
@@ -157,14 +157,14 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         displayText: 'Industry',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd xfirst',
+        cssClass: 'odd first',
       },
       {
         id: 1,
         displayText: 'Number',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:#,0}',
       },
       {
@@ -172,7 +172,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         displayText: 'Change in number',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -180,7 +180,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         displayText: 'Change in percent',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -189,7 +189,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:#,0}',
       },
       {
@@ -197,7 +197,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         displayText: 'Change in number',
         dataType: 'money',
         sortable: true,
-        cssClass: 'per xodd',
+        cssClass: 'per odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -205,7 +205,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         displayText: 'Change in percent',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -214,7 +214,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven',
+        cssClass: 'even',
         format: '{0:#,0}',
       },
     ],
@@ -233,7 +233,7 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
       ],
       id: i,
     })),
-    noOfRowsOnInit: 11,
+    noOfRowsOnInit: 0,
   };
 };
 // #endregion
@@ -309,7 +309,6 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };
@@ -381,7 +380,6 @@ const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) 
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };

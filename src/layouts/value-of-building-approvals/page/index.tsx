@@ -80,19 +80,19 @@ const tableBuilder = (alias, nodes) => {
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: nodes[0].GeoName,
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xodd end-year',
+            cssClass: 'odd end-year',
             displayText: 'Victoria',
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: '',
             colSpan: 3,
             rowSpan: 0,
@@ -107,14 +107,14 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Financial year',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd xfirst',
+        cssClass: 'odd first',
       },
       {
         id: 1,
         displayText: 'Residential',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:#,0}',
       },
       {
@@ -122,7 +122,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Non-residential',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -130,7 +130,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Total',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -139,7 +139,7 @@ const tableBuilder = (alias, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:#,0}',
       },
       {
@@ -147,7 +147,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Non-residential',
         dataType: 'money',
         sortable: true,
-        cssClass: 'per xodd',
+        cssClass: 'per odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -155,7 +155,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Total',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -164,7 +164,7 @@ const tableBuilder = (alias, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven',
+        cssClass: 'even',
         format: '{0:#,0}',
       },
     ],
@@ -188,7 +188,7 @@ const tableBuilder = (alias, nodes) => {
         id: i,
       }),
     ),
-    noOfRowsOnInit: 11,
+    noOfRowsOnInit: 0,
   };
 };
 // #endregion
@@ -269,7 +269,6 @@ const chartBuilder = nodes => {
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: '/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };

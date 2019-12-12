@@ -89,19 +89,19 @@ const tableBuilder = (alias, nodes) => {
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: nodes[0].Geoname,
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xodd end-year',
+            cssClass: 'odd end-year',
             displayText: nodes[0].GeonameSTE,
             colSpan: 3,
             rowSpan: 0,
           },
           {
-            cssClass: 'xeven start-year',
+            cssClass: 'even start-year',
             displayText: nodes[0].GeonameAUS,
             colSpan: 3,
             rowSpan: 0,
@@ -116,14 +116,14 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Year (ending June 30)',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd xfirst',
+        cssClass: 'odd first',
       },
       {
         id: 1,
         displayText: 'Number',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:#,0}',
       },
       {
@@ -131,7 +131,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in number',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -139,7 +139,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in percent',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven latest',
+        cssClass: 'even latest',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -148,7 +148,7 @@ const tableBuilder = (alias, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:#,0}',
       },
       {
@@ -156,7 +156,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in number',
         dataType: 'money',
         sortable: true,
-        cssClass: 'per xodd',
+        cssClass: 'per odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -164,7 +164,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in percent',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xodd',
+        cssClass: 'odd',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -173,7 +173,7 @@ const tableBuilder = (alias, nodes) => {
         title: '',
         dataType: 'int',
         sortable: true,
-        cssClass: 'xeven',
+        cssClass: 'even',
         format: '{0:#,0}',
       },
       {
@@ -181,7 +181,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in number',
         dataType: 'money',
         sortable: true,
-        cssClass: 'per xeven',
+        cssClass: 'per even',
         format: '{0:+#,0;-#,0;0}',
       },
       {
@@ -189,7 +189,7 @@ const tableBuilder = (alias, nodes) => {
         displayText: 'Change in percent',
         dataType: 'money',
         sortable: true,
-        cssClass: 'xeven',
+        cssClass: 'even',
         format: '{0:+#,0;-#,0;0}',
       },
     ],
@@ -237,7 +237,7 @@ const tableBuilder = (alias, nodes) => {
         id: i,
       }),
     ),
-    noOfRowsOnInit: 11,
+    noOfRowsOnInit: 0,
   };
 };
 // #endregion
@@ -318,7 +318,6 @@ const chartLineBuilder = nodes => {
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };
@@ -331,44 +330,29 @@ const chartBuilder = nodes => {
     highchartOptions: {
       chart: {
         type: 'column',
-        styledMode: true,
       },
       title: {
         text: 'Estimated Resident Population (ERP)',
-        align: 'left',
       },
       subtitle: {
         text: nodes[0].Geoname,
-        align: 'left',
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
           name: nodes[0].Geoname,
           data: _.map(nodes, 'Number').reverse(),
         },
       ],
       xAxis: {
         categories: _.map(nodes, 'Year').reverse(),
-        croshair: false,
         title: {
           text: 'Year ending June',
-          align: 'low',
         },
-        labels: {
-          staggerLines: 0,
-          format: '',
-        },
-        opposite: false,
-        plotBands: [],
       },
       yAxis: [
         {
-          croshair: false,
           title: {
             text: 'Total Estimated Resident Population (ERP)',
-            align: 'low',
           },
           labels: {
             staggerLines: 0,
@@ -376,8 +360,6 @@ const chartBuilder = nodes => {
               return formatNumber(this.value);
             },
           },
-          opposite: false,
-          plotBands: [],
         },
       ],
     },
@@ -386,7 +368,6 @@ const chartBuilder = nodes => {
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: '/images/id-logo.png',
-    entityID: 1,
     chartTemplate: 'Standard',
   };
 };
