@@ -429,7 +429,6 @@ const Source = () => (
 
 // #region tableBuilder
 const tableBuilder = (currentBenchmark, clientAlias, rows) => {
-  console.log('tableData: ', rows);
   const tableTitle = 'Gross Regional Product (GRP)';
   const clientLongName = rows[0].GeoName;
   const totalColSpan = 8;

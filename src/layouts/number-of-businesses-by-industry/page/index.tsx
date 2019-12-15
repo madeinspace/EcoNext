@@ -14,8 +14,6 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const { tableData, filterToggles } = useContext(PageContext);
-  console.log('toggles: ', filterToggles);
-
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
   const currentYear = getActiveToggle(filterToggles, 'sStartYear', LongName);
   const benchmarkYear = getActiveToggle(filterToggles, 'sEndYear', LongName);
