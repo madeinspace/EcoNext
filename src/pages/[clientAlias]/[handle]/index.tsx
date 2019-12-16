@@ -16,12 +16,12 @@ import Headline from '../../../components/Headline';
 import Description from '../../../components/Description';
 import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
+import { withAuthSync } from '../../../utils/auth';
 
 import { PageContext, ClientContext } from '../../../utils/context';
-
-const ErrorPage = ({ status }) => {
-  return <div>Oh no, this is a {status} page</div>;
-};
+import { Actions, ExportPage, Share } from '../../../components/Actions';
+import ErrorPage from '../../../layouts/error';
+// #endregion
 
 const PageTemplate = () => {
   const { pageData, handle } = useContext(PageContext);
@@ -37,7 +37,11 @@ const PageTemplate = () => {
   if (!ParentPageID) {
     return (
       <ParentLandingPageLayout>
-        <PageHeader />
+        <PageHeader>
+          <Actions>
+            <Share />
+          </Actions>
+        </PageHeader>
         <MainContent />
       </ParentLandingPageLayout>
     );
@@ -45,7 +49,12 @@ const PageTemplate = () => {
 
   return (
     <MainLayout>
-      <PageHeader />
+      <PageHeader>
+        <Actions>
+          <Share />
+          <ExportPage />
+        </Actions>
+      </PageHeader>
       <Headline />
       <Description />
       <MainContent />
@@ -53,13 +62,15 @@ const PageTemplate = () => {
   );
 };
 
-const PageComponent = ({ client, page }) => (
-  <PageContext.Provider value={page}>
-    <ClientContext.Provider value={client}>
-      <PageTemplate />
-    </ClientContext.Provider>
-  </PageContext.Provider>
-);
+const PageComponent = ({ client, page }) => {
+  return (
+    <PageContext.Provider value={page}>
+      <ClientContext.Provider value={client}>
+        <PageTemplate />
+      </ClientContext.Provider>
+    </PageContext.Provider>
+  );
+};
 
 PageComponent.getInitialProps = async function({ query, req: { containers } }) {
   const { clientAlias: clientAlias, handle, ...providedFilters } = query;
@@ -125,4 +136,4 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }) {
   };
 };
 
-export default PageComponent;
+export default withAuthSync(PageComponent);

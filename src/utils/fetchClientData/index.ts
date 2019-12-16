@@ -24,8 +24,7 @@ const queryClientDB = async ({ clientAlias, containers }) => {
   if (clientData.length === 0) {
     return null;
   }
-
-  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages } = clientData[0];
+  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, AppSettings, HomePage } = clientData[0];
 
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);
@@ -38,6 +37,7 @@ const queryClientDB = async ({ clientAlias, containers }) => {
   }));
 
   const isLite = await checkIfLite(id);
+  const isSecure = AppSettings.filter(app => app.AppID === 4)[0].Secure;
   const logoUrl = require(`../../images/logos/${clientAlias}.png`);
 
   return {
@@ -46,7 +46,9 @@ const queryClientDB = async ({ clientAlias, containers }) => {
     ShortName,
     LongName,
     Name,
+    HomePage,
     isLite,
+    isSecure,
     clientPages,
     clientProducts: Applications,
     clientAreas: filteredAreas,

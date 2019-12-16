@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import Login from '../../../components/Login';
+import Login from '../../../components/LoginForm';
 // #endregion
 
 // #region population page

@@ -8,16 +8,19 @@ export const login = ({ token }) => {
   Router.push('/profile');
 };
 
-export const auth = ctx => {
+export const auth = async ctx => {
+  const { res, query } = ctx;
   const { token } = nextCookie(ctx);
 
   // If there's no token, it means the user is not logged in.
   if (!token) {
     if (typeof window === 'undefined') {
-      ctx.res.writeHead(302, { Location: '/login' });
-      ctx.res.end();
+      if (res) {
+        res.writeHead(302, { Location: `/${query.clientAlias}/login` });
+        res.end();
+      }
     } else {
-      Router.push('/login');
+      Router.push(`/${query.clientAlias}/login`);
     }
   }
 
@@ -53,11 +56,16 @@ export const withAuthSync = (WrappedComponent: any) => {
   };
 
   Wrapper.getInitialProps = async ctx => {
-    const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
+    const WrappedComponentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
+    const { isSecure: isAppSecure, clientAlias } = WrappedComponentProps.client || {};
+    const { IsSecure: isPageSecure } = WrappedComponentProps.page.pageData || {};
+    const needsAuth = isAppSecure || isPageSecure;
 
-    const token = auth(ctx);
-
-    return { ...componentProps, token };
+    if (needsAuth) {
+      const token = auth(ctx);
+      return { ...WrappedComponentProps, token };
+    }
+    return { ...WrappedComponentProps };
   };
 
   return Wrapper;

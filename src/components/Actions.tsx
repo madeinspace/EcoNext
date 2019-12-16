@@ -6,7 +6,7 @@ import { ClientContext, PageContext } from '../utils/context';
 import payload from '../utils/fecthPageReport/ReportPayload';
 import useForm from 'react-hook-form';
 import getConfig from 'next/config';
-import { emailRGX } from '../utils/Regex';
+import { EMAILREGEX } from '../utils/Regex';
 const { publicRuntimeConfig } = getConfig();
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
@@ -226,7 +226,7 @@ export const ExportPage = () => {
             name="emailAddress"
             ref={register({
               required: true,
-              pattern: emailRGX,
+              pattern: EMAILREGEX,
             })}
           />
         </Align>

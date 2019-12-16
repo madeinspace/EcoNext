@@ -20,9 +20,9 @@ const Layout = ({ children, Template = null }) => {
   }
 
   const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
-  const { handle } = useContext(PageContext);
+  const { handle } = useContext(PageContext) || {};
   const logo = require(`../images/logos/${clientAlias}.png`);
-  const isDisabled = IsDisabled(clientPages, handle);
+  const isDisabled = handle ? IsDisabled(clientPages, handle) : false;
 
   return (
     <>
