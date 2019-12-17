@@ -6,7 +6,6 @@ const LRUCache = require('lru-cache');
 const Cosmos = require('./db/cosmos');
 const favicon = require('serve-favicon');
 const path = require('path');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
