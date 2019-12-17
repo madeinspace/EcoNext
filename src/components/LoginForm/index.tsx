@@ -14,7 +14,7 @@ const LoginForm = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogOut = () => {
-    axios.get('/logout').then(res => {
+    axios.get('/clear').then(res => {
       console.log('res logout: ', res);
       setLoggedIn(false);
     });
@@ -48,7 +48,7 @@ const LoginForm = () => {
 
   return (
     <>
-      {loggedIn && <button onClick={handleLogOut} />}
+      {loggedIn && <button onClick={handleLogOut}>logout</button>}
       <_LoginForm onSubmit={handleLogin}>
         <label htmlFor="username">username</label>
         <Username

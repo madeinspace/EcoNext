@@ -108,6 +108,7 @@ passport.deserializeUser(function(id, cb) {
 
 app.prepare().then(() => {
   const server = express();
+
   // BodyParser Middleware
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
@@ -137,9 +138,8 @@ app.prepare().then(() => {
   });
 
   // Endpoint to login
-  server.post('/login', passport.authenticate('local', { failureRedirect: 'signin' }), function(req, res) {
+  server.post('/login', passport.authenticate('local'), function(req, res) {
     console.log('success: req, res: ', req, res);
-
     res.send(req.user);
   });
 
@@ -152,7 +152,14 @@ app.prepare().then(() => {
   server.get('/logout', function(req, res) {
     console.log('loggingout ');
     req.logout();
-    res.send(null);
+    res.send('loggedout');
+  });
+
+  server.get('/clear', (req, res) => {
+    res
+      .clearCookie('connect.sid', { path: '/' })
+      .status(200)
+      .send('Ok.');
   });
   /* starting server */
   server.listen(port, err => {
