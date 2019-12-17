@@ -1,10 +1,17 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const express = require('express');
 const next = require('next');
 const LRUCache = require('lru-cache');
 const Cosmos = require('./db/cosmos');
 const favicon = require('serve-favicon');
 const path = require('path');
-
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
+const db = require('./users');
 require('dotenv').config();
 
 const CACHE_ENABLED = process.env.CACHE_ENABLED === 'true' || false;
@@ -26,12 +33,10 @@ const ssrCache = new LRUCache({
  * NB: make sure to modify this to take into account anything that should trigger
  * an immediate page change (e.g a locale stored in req.session)
  */
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getCacheKey(req) {
   return `${req.path}${JSON.stringify(req.query)}`;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function renderAndCache(req, res) {
   const key = getCacheKey(req);
 
@@ -71,8 +76,56 @@ async function renderAndCache(req, res) {
   }
 }
 
+const LocalStrategy = require('passport-local').Strategy;
+passport.use(
+  new LocalStrategy(function(username, password, cb) {
+    db.users.findByUsername(username, function(err, user) {
+      if (err) {
+        return cb(err);
+      }
+      if (!user) {
+        return cb(null, false);
+      }
+      if (user.password != password) {
+        return cb(null, false);
+      }
+      return cb(null, user);
+    });
+  }),
+);
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+  db.users.findById(id, function(err, user) {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, user);
+  });
+});
+
 app.prepare().then(() => {
   const server = express();
+  // BodyParser Middleware
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: false }));
+  server.use(cookieParser());
+
+  // Express Session
+  server.use(
+    session({
+      secret: 'secret',
+      saveUninitialized: true,
+      resave: true,
+    }),
+  );
+
+  // Passport init
+  server.use(passport.initialize());
+  server.use(passport.session());
   server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
   server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
@@ -84,6 +137,24 @@ app.prepare().then(() => {
     return renderAndCache(req, res);
   });
 
+  // Endpoint to login
+  server.post('/login', passport.authenticate('local', { failureRedirect: 'signin' }), function(req, res) {
+    console.log('success: req, res: ', req, res);
+
+    res.send(req.user);
+  });
+
+  // Endpoint to get current user
+  server.get('/user', function(req, res) {
+    res.send(req.user);
+  });
+
+  // Endpoint to logout
+  server.get('/logout', function(req, res) {
+    console.log('loggingout ');
+    req.logout();
+    res.send(null);
+  });
   /* starting server */
   server.listen(port, err => {
     if (err) throw err;

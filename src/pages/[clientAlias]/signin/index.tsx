@@ -1,12 +1,12 @@
-import * as _ from 'lodash';
-import Head from 'next/head';
+import * as _ from './node_modules/lodash';
+import Head from './node_modules/next/head';
 import fetchClientData from '../../../utils/fetchClientData';
 import { PageMappings } from '../../../layouts';
 import MainLayout from '../../../layouts/main';
 import { PageContext, ClientContext } from '../../../utils/context';
 import PageHeader from '../../../components/PageHeader';
 import LoginForm from '../../../components/LoginForm';
-import { useContext } from 'react';
+import { useContext } from './node_modules/react';
 import { Actions, Share } from '../../../components/Actions';
 import ErrorPage from '../../../layouts/error';
 import SignInPage from '../../../layouts/signin';

@@ -16,11 +16,11 @@ export const auth = async ctx => {
   if (!token) {
     if (typeof window === 'undefined') {
       if (res) {
-        res.writeHead(302, { Location: `/${query.clientAlias}/login` });
+        res.writeHead(302, { Location: `/${query.clientAlias}/signin` });
         res.end();
       }
     } else {
-      Router.push(`/${query.clientAlias}/login`);
+      Router.push(`/${query.clientAlias}/signin`);
     }
   }
 
