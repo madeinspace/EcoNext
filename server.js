@@ -3,7 +3,6 @@ const next = require('next');
 const LRUCache = require('lru-cache');
 const Cosmos = require('./db/cosmos');
 const favicon = require('serve-favicon');
-const path = require('path');
 
 require('dotenv').config();
 
@@ -73,7 +72,7 @@ async function renderAndCache(req, res) {
 
 app.prepare().then(() => {
   const server = express();
-  server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
+  // server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
   server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
     handle(req, res);
