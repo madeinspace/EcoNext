@@ -7,7 +7,7 @@ export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
       url: window.location.href,
       pdfOptions: [
         { propertyName: 'VisibleElementIds', propertyValue: 'main-content' },
-        { propertyName: 'InvisibleElementIds', propertyValue: 'siblings-nav' },
+        { propertyName: 'InvisibleElementIds', propertyValue: 'siblings-nav;control-panel' },
         {
           propertyName: 'UserStyleSheet',
           propertyValue: `.action{display:none} #main-nav{display:none} .e-shad{box-shadow:none; border:1px solid lightgray}`,
