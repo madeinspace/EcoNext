@@ -199,16 +199,20 @@ export const ExportPage = () => {
     setrequestFormVisible(false);
     setreqPayload({ ...reqPayload, emailAddress: value.emailAddress });
     const PayLoad = payload({ ...reqPayload, emailAddress: value.emailAddress });
-    fetchPageReport(PayLoad).then((res: any) => {
-      if (res.status === 200) {
-        setThankYouNote(true);
-      } else {
-      }
-      timer = setTimeout(() => {
-        setThankYouNote(false);
-        clearTimeout(timer);
-      }, 5000);
-    });
+    fetchPageReport(PayLoad)
+      .then((res: any) => {
+        if (res.status === 200) {
+          setThankYouNote(true);
+        } else {
+        }
+        timer = setTimeout(() => {
+          setThankYouNote(false);
+          clearTimeout(timer);
+        }, 5000);
+      })
+      .catch(err => {
+        throw Error('oops, something went wrong with the report service: ', err);
+      });
   };
 
   const ReportRequestForm = () => {
