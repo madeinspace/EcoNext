@@ -9,6 +9,12 @@ module.exports = withCSS(
     withImages({
       cssModules: false,
       assetPrefix,
+      onDemandEntries: {
+        // period (in ms) where the server will keep pages in the buffer
+        maxInactiveAge: 60 * 1000,
+        // number of pages that should be kept simultaneously without being disposed
+        pagesBufferLength: 10,
+      },
       webpack(config, { isServer }) {
         if (!isServer) {
           config.node = {
