@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent } from '../../../utils/';
+import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent, idlogo } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -374,6 +374,10 @@ const tableBuilder = ({
   genderName: gender,
   TabularData: data,
 }) => {
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const tableTitle = 'Local workers field of qualification - Summary';
+  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
   const footerRows = data.filter(item => item.IndustryName === 'Total');
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
@@ -389,18 +393,17 @@ const tableBuilder = ({
 
   return {
     cssClass: '',
-    clientAlias: 'Monash',
+    clientAlias: areaName,
     source: <Source />,
-    rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.',
-    anchorName: 'service-age-groups',
+    rawDataSource,
+    anchorName: '',
     headRows: [
       {
         cssClass: '',
         cols: [
           {
             cssClass: 'table-area-name',
-            displayText: 'Local workers field of qualification - Summary',
+            displayText: tableTitle,
             colSpan: 10,
           },
         ],
@@ -434,7 +437,7 @@ const tableBuilder = ({
     cols: [
       {
         id: 0,
-        displayText: 'Field of qualification (Click rows to view sub-categories)',
+        displayText: firstColTitle,
         cssClass: 'odd first',
       },
       {
@@ -595,18 +598,27 @@ const chartBuilder = ({
     };
   });
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
+
+  const chartType = 'bar';
+  const chartTitle = 'Local workers field of qualification, 2016';
+  const chartSubtitle = `${areaName} - ${currentIndustry} - ${gender}`;
+  const xAxisTitle = 'Field of qualification';
+  const yAxisTitle = `Percentage of ${gender} workers`;
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const chartContainerID = 'chart1';
+  const chartTemplate = 'Standard';
+
   return {
     highchartOptions: {
       chart: {
-        type: 'bar',
+        type: chartType,
       },
       title: {
-        text: 'Local workers field of qualification, 2016',
-        align: 'left',
+        text: chartTitle,
       },
       subtitle: {
-        text: `${areaName} - ${currentIndustry} - ${gender}`,
-        align: 'left',
+        text: chartSubtitle,
       },
       tooltip: {
         pointFormatter: function() {
@@ -640,14 +652,13 @@ const chartBuilder = ({
       xAxis: {
         type: 'category',
         title: {
-          text: 'Field of qualification',
-          align: 'low',
+          text: xAxisTitle,
         },
       },
       yAxis: [
         {
           title: {
-            text: `Percentage of ${gender} workers`,
+            text: yAxisTitle,
           },
           labels: {
             staggerLines: 0,
@@ -658,12 +669,11 @@ const chartBuilder = ({
         },
       ],
     },
-    rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+    rawDataSource,
     dataSource: <Source />,
-    chartContainerID: 'chart1',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    chartTemplate: 'Standard',
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
   };
 };
 // #endregion
@@ -681,19 +691,27 @@ const chartBuilderChange = ({
     item => item.LabelKey,
   );
   const categories = _.map(parents, 'LabelName');
+  const chartType = 'bar';
+  const chartTitle = 'Change in local workers field of qualification, 2016';
+  const chartSubtitle = `${areaName} - ${currentIndustry}-${gender}`;
+  const serie = _.map(parents, 'Change12');
+  const xAxisTitle = 'Field of qualification';
+  const yAxisTitle = `Change in ${gender} local workers`;
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const chartContainerID = 'chartwfoqChange';
+  const chartTemplate = 'Standard';
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'bar',
+        type: chartType,
       },
       title: {
-        text: 'Change in local workers field of qualification, 2016',
-        align: 'left',
+        text: chartTitle,
       },
       subtitle: {
-        text: `${areaName} - ${currentIndustry}-${gender}`,
-        align: 'left',
+        text: chartSubtitle,
       },
       tooltip: {
         pointFormatter: function() {
@@ -704,30 +722,20 @@ const chartBuilderChange = ({
       },
       series: [
         {
-          color: '',
-          yAxis: 0,
           name: `${currentIndustry}`,
-          data: _.map(parents, 'Change12'),
+          data: serie,
         },
       ],
       xAxis: {
         categories,
-        croshair: false,
         title: {
-          text: 'Field of qualification',
-          align: 'low',
+          text: xAxisTitle,
         },
-
-        labels: {
-          staggerLines: 0,
-          format: '',
-        },
-        opposite: false,
       },
       yAxis: [
         {
           title: {
-            text: `Change in ${gender} local workers`,
+            text: yAxisTitle,
           },
           labels: {
             staggerLines: 0,
@@ -735,16 +743,14 @@ const chartBuilderChange = ({
               return formatChangeNumber(this.value);
             },
           },
-          opposite: false,
         },
       ],
     },
-    rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+    rawDataSource,
     dataSource: <Source />,
-    chartContainerID: 'chart2',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    chartTemplate: 'Standard',
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
   };
 };
 
