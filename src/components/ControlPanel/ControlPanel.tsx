@@ -6,7 +6,6 @@ import Sticky from '@wicked_query/react-sticky';
 import Router from 'next/router';
 import qs from 'qs';
 import { PageContext, ClientContext } from '../../utils/context';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const StyledControlPanel = styled.div`
   align-items: end;
@@ -56,7 +55,7 @@ const ControlPanel: React.SFC<{}> = () => {
 
   return (
     <Sticky>
-      <StyledControlPanel>
+      <StyledControlPanel id="control-panel">
         {filterToggles.map(({ title, value, key, list, hidden }) => {
           if (list.length === 1 || hidden) {
             // this toggle only has one item, so we don't need to display a dropdown
