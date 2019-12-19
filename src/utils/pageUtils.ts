@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import filter from 'lodash/filter';
+import XRegExp from 'xregexp';
 
 export const pathParts = (path: string) => {
-  const REGEX = /^\/?(?<clientAlias>[^\/]+)\/?(?<pageAlias>[^\/]+)?\/?/;
-  return path.match(REGEX).groups;
+  const XRegExp = /^\/?(?<clientAlias>[^\/]+)\/?(?<pageAlias>[^\/]+)?\/?/;
+  const groups = XRegExp.exec(path).groups;
+  return groups;
 };
 
 const amI = (param, defaultValue) => (navNodes, currentPageAlias) => {
