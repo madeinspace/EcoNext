@@ -1,8 +1,10 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/display-name */
 import styled from 'styled-components';
 const _IDIdentity = styled.a`
-  width: 450px;
   display: inline-block;
   position: relative;
+  width: 300px;
   height: 50px;
 `;
 export default () => (
