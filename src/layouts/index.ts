@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import EconomicImpactAssesment from './economic-impact-assesment/page';
 import GrossProduct from './gross-product/page';
 import Indicator from './indicator/page';
@@ -31,19 +32,18 @@ const devPages = [
   'industry-sector-analysis',
 ];
 
-const fetchPageData = async handle => {
+const fetchPageData = async (handle: string) => {
   const pageData = await import(`./${handle}`);
 
   return pageData;
 };
 
-export const isNextPage = handle => {
-  const availablePages = process.env.NODE_ENV === 'production' ? productionPages : devPages;
-
+export const isNextPage = (handle: string) => {
+  const availablePages = process.env.ALL_PAGES_ENABLED === 'true' ? devPages : productionPages;
   return availablePages.indexOf(handle) >= 0;
 };
 
-export default async handle => {
+export default async (handle: string) => {
   if (!isNextPage(handle)) {
     return null;
   }
