@@ -2,6 +2,7 @@ const express = require('express');
 const next = require('next');
 const LRUCache = require('lru-cache');
 const Cosmos = require('./db/cosmos');
+const path = require('path');
 const favicon = require('serve-favicon');
 
 require('dotenv').config();
@@ -15,7 +16,7 @@ const handle = app.getRequestHandler();
 // This is where we cache our rendered HTML pages
 const ssrCache = new LRUCache({
   max: 100 * 1024 * 1024 /* cache size will be 100 MB using `return n.length` as length() function */,
-  length: function(n, key) {
+  length: function (n, key) {
     return n.length;
   },
   maxAge: 1000 * 60 * 60 * 24 * 30,
@@ -72,7 +73,7 @@ async function renderAndCache(req, res) {
 
 app.prepare().then(() => {
   const server = express();
-  // server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
+  server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
   server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
     handle(req, res);
@@ -86,6 +87,6 @@ app.prepare().then(() => {
   /* starting server */
   server.listen(port, err => {
     if (err) throw err;
-    // console.log(`> Ready on http://localhost:${port}`);
+    console.log(`> Ready on http://localhost:${port}`);
   });
 });
