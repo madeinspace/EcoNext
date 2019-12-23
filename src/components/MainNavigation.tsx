@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import Link from '../components/Link';
 import styled from 'styled-components';
-import { pathParts } from '../utils/';
 import _ from 'lodash';
-import { useRouter } from 'next/router';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
 import { ClientContext, PageContext } from '../utils/context';
@@ -16,7 +14,7 @@ const buildMenuGroups = navNodes => groupBy(navNodes, 'GroupName');
 
 const validateGroupName = groupname => groupname !== '' && groupname !== 'Undefined';
 
-const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID = 10) => {
+const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID = 10): JSX.Element[] => {
   const groupedNavigation = groupBy(navigationNodes, 'ParentPageID');
   const topNavNodes = groupedNavigation[ParentPageID];
   const menuGroups = buildMenuGroups(topNavNodes);
@@ -50,7 +48,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
   ));
 };
 
-const MainNavigation = () => {
+const MainNavigation = (): JSX.Element => {
   const { clientPages, clientAlias } = useContext(ClientContext);
   const data = useContext(PageContext);
   const { handle } = data;
@@ -135,8 +133,8 @@ const MenuItem = styled.li`
     a,
     div {
       cursor: pointer;
-      &::after {
-        font-family: 'id-icons';
+      &::before {
+        font-family: 'id-icons' !important;
         font-size: 18px;
         line-height: 0;
         content: '\\E603';

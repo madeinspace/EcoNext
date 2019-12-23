@@ -19,11 +19,11 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 import { PageContext, ClientContext } from '../../../utils/context';
 
-const ErrorPage = ({ status }) => {
+const ErrorPage = ({ status }): JSX.Element => {
   return <div>Oh no, this is a {status} page</div>;
 };
 
-const PageTemplate = () => {
+const PageTemplate = (): JSX.Element => {
   const { pageData, handle } = useContext(PageContext);
 
   if (!pageData) {
@@ -53,7 +53,7 @@ const PageTemplate = () => {
   );
 };
 
-const PageComponent = ({ client, page }) => (
+const PageComponent = ({ client, page }): JSX.Element => (
   <PageContext.Provider value={page}>
     <ClientContext.Provider value={client}>
       <PageTemplate />
@@ -61,7 +61,7 @@ const PageComponent = ({ client, page }) => (
   </PageContext.Provider>
 );
 
-PageComponent.getInitialProps = async function({ query, req: { containers } }) {
+PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias: clientAlias, handle, ...providedFilters } = query;
 
   const client = await fetchClientData({ clientAlias, containers });
