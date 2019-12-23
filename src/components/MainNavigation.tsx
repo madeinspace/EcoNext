@@ -133,7 +133,7 @@ const MenuItem = styled.li`
     a,
     div {
       cursor: pointer;
-      &::before {
+      &::after {
         font-family: 'id-icons' !important;
         font-size: 18px;
         line-height: 0;
