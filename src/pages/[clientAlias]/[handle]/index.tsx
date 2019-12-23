@@ -1,5 +1,5 @@
 // #region imports
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 // #region imports api
 import fetchClientData from '../../../utils/fetchClientData';

@@ -5,18 +5,12 @@ const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
 const path = require('path');
 require('dotenv').config();
-const assetPrefix = process.env.ASSET_PREFIX || '';
+const assetPrefix = process.env.ASSET_PREFIX || 'https://econext.azurewebsites.net';
 module.exports = withCSS(
   withSass(
     withImages({
       cssModules: false,
       assetPrefix,
-      onDemandEntries: {
-        // period (in ms) where the server will keep pages in the buffer
-        maxInactiveAge: 60 * 1000,
-        // number of pages that should be kept simultaneously without being disposed
-        pagesBufferLength: 10,
-      },
       webpack(config, { isServer }) {
         if (!isServer) {
           config.node = {
