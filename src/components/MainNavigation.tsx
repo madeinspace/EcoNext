@@ -153,7 +153,7 @@ const MenuItem = styled.li`
       }
       a,
       div {
-        &::after {
+        &::before {
           content: '';
         }
       }
