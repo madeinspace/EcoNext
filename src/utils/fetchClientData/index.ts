@@ -4,7 +4,7 @@ import fetchSitemap from '../fetchSitemap';
 const DATABASE = 'CommApp';
 const LITE_CLIENT = 178;
 
-const checkIfLite = async clientID => {
+const checkIfLite = async (clientID): Promise<boolean> => {
   const connectionString = `exec ${DATABASE}.[dbo].[sp_Condition_IsLiteClient] ${clientID}`;
 
   const data = await sqlConnection.raw(connectionString);
@@ -14,7 +14,7 @@ const checkIfLite = async clientID => {
   return +Result === LITE_CLIENT;
 };
 
-const queryClientDB = async ({ clientAlias, containers }) => {
+const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
   const { ClientContainer, AllPages } = containers;
 
   const { resources: clientData } = await ClientContainer.items
@@ -38,7 +38,8 @@ const queryClientDB = async ({ clientAlias, containers }) => {
   }));
 
   const isLite = await checkIfLite(id);
-  const logoUrl = require(`../../images/logos/${clientAlias}.png`);
+  const cdnBaseUrl = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
+  const logoUrl = `${cdnBaseUrl}/eco-assets/client-logos/${clientAlias}.png`;
 
   return {
     clientAlias: Alias,
@@ -54,7 +55,7 @@ const queryClientDB = async ({ clientAlias, containers }) => {
   };
 };
 
-const fetchClientData = async ({ clientAlias, containers }) => {
+const fetchClientData = async ({ clientAlias, containers }): Promise<{}> => {
   const clientData: any = await queryClientDB({
     clientAlias,
     containers,

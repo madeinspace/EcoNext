@@ -6,9 +6,14 @@ const withImages = require('next-images');
 const path = require('path');
 require('dotenv').config();
 const assetPrefix = process.env.ASSET_PREFIX || '';
+const CDN_ENPOINT = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
+console.log('CDN_ENPOINT: ', CDN_ENPOINT);
 module.exports = withCSS(
   withSass(
     withImages({
+      publicRuntimeConfig: {
+        EcoCDNEndPoint: CDN_ENPOINT
+      },
       cssModules: false,
       assetPrefix,
       webpack(config, { isServer }) {
@@ -19,12 +24,9 @@ module.exports = withCSS(
         }
 
         config.module.rules.push({
-          test: /\.(eot|ttf|woff|woff2)$/,
+          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
           use: {
             loader: 'url-loader',
-            options: {
-              limit: 100000,
-            },
           },
         });
 

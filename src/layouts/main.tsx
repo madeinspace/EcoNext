@@ -14,20 +14,19 @@ import { ClientContext, PageContext } from '../utils/context';
 import Head from 'next/head';
 import SEO from '../utils/SEO';
 
-const Layout = ({ children, Template = null }) => {
+const Layout = ({ children, Template = null }): JSX.Element => {
   if (Template) {
     return <Template />;
   }
 
-  const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
+  const { clientAlias, clientID, clientPages, LongName, clientLogo } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
-  const logo = require(`../images/logos/${clientAlias}.png`);
   const isDisabled = IsDisabled(clientPages, handle);
 
   return (
     <>
       <SEO />
-      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
+      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={clientLogo} />
       <ClientHeader />
       <ContentRow id="content-wrapper">
         <SidebarNav id="main-nav">

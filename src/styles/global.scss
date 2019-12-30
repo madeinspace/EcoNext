@@ -1,12 +1,12 @@
 @import './variables.scss';
 @import './zurich.scss';
-@import './id-icons.scss';
 @import './flexboxgrid.min.scss';
 @import './layout.scss';
 @import './mixins.scss';
 @import './highcharts.scss';
 @import './search.scss';
 @import './EntityTable.scss';
+@import '~@fortawesome/fontawesome-svg-core/styles';
 
 body {
   font-family: 'Arial', 'Zurich', sans-serif !important;

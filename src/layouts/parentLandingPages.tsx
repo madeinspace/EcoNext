@@ -14,16 +14,14 @@ import LockIcon from '../components/LockIcon';
 import SEO from '../utils/SEO';
 
 const ParentLandingPageLayout = ({ children = null }) => {
-  const { clientAlias, clientID, clientPages, LongName, isLite } = useContext(ClientContext);
+  const { clientAlias, clientID, clientPages, LongName, clientLogo } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
-
-  const logo = require(`../images/logos/${clientAlias}.png`);
   const isDisabled = IsDisabled(clientPages, handle);
 
   return (
     <>
       <SEO />
-      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={logo} />
+      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={clientLogo} />
       <ClientHeader />
       <ContentRow id="content-wrapper">
         <SidebarNav id="main-nav">

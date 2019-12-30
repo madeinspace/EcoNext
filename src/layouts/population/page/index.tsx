@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-no-target-blank */
+/* eslint-disable react/react-in-jsx-scope */
 // #region imports
 import _ from 'lodash';
+import React from 'react';
 import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent, idlogo } from '../../../utils';
 import { ItemWrapper, CrossLink, ForecastProductIcon } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
@@ -7,56 +10,8 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-// #endregion
-
-// #region population page
-const PopulationPage = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
-  const { tableData } = useContext(PageContext);
-
-  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
-
-  const chartData = chartBuilder(tableData);
-  const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
-
-  return (
-    <>
-      <ItemWrapper>
-        <ControlPanel />
-      </ItemWrapper>
-      <ItemWrapper>
-        <EntityChart data={chartData} />
-      </ItemWrapper>
-
-      <ItemWrapper>
-        <EntityChart data={chartLineData} />
-      </ItemWrapper>
-
-      <ItemWrapper>
-        <EntityTable data={tableParams} name={'Estimated Resident Population'} />
-      </ItemWrapper>
-
-      {hasForecast(clientProducts) && (
-        <CrossLink>
-          <ForecastProductIcon />
-          <a
-            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
-            target="_blank"
-            title="link to forecast"
-          >
-            Population forecasts
-            <span className="hidden"> (opens a new window)</span>
-          </a>
-        </CrossLink>
-      )}
-    </>
-  );
-};
 
 // #endregion
-
-export default PopulationPage;
 
 // #region Source
 const Source = () => (
@@ -336,3 +291,52 @@ const chartBuilder = nodes => {
   };
 };
 // #endregion
+
+// #region population page
+const PopulationPage = (): JSX.Element => {
+  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const { tableData } = useContext(PageContext);
+
+  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
+
+  const chartData = chartBuilder(tableData);
+  const chartLineData = chartLineBuilder(tableData);
+  const tableParams = tableBuilder(clientAlias, tableData);
+
+  return (
+    <>
+      <ItemWrapper>
+        <ControlPanel />
+      </ItemWrapper>
+      <ItemWrapper>
+        <EntityChart data={chartData} />
+      </ItemWrapper>
+
+      <ItemWrapper>
+        <EntityChart data={chartLineData} />
+      </ItemWrapper>
+
+      <ItemWrapper>
+        <EntityTable data={tableParams} name={'Estimated Resident Population'} />
+      </ItemWrapper>
+
+      {hasForecast(clientProducts) && (
+        <CrossLink>
+          <ForecastProductIcon />
+          <a
+            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
+            target="_blank"
+            title="link to forecast"
+          >
+            Population forecasts
+            <span className="hidden"> (opens a new window)</span>
+          </a>
+        </CrossLink>
+      )}
+    </>
+  );
+};
+
+// #endregion
+
+export default PopulationPage;

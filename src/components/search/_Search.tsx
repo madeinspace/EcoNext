@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { HeaderRow } from '../grid';
 import IDIdentity from '../ui/IDIdentity';
+import SearchIcon from './SearchIcon';
 
 interface ISearchConfig {
   getAPiUrl: string;
@@ -54,15 +55,6 @@ const SearchInputFaux = styled.div`
   right: 15px;
   height: 34px;
   padding-left: 30px;
-  &:before {
-    font-family: 'id-icons';
-    content: '\\e62b';
-    left: 25px;
-    top: 2px;
-    color: grey;
-    position: relative;
-    font-size: 16px;
-  }
 `;
 
 const SearchInit = styled.input`
@@ -287,6 +279,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
             <IDIdentity />
             {!showSearch && (
               <SearchInputFaux>
+                <SearchIcon />
                 <SearchInit
                   id="idSearchInit"
                   type="text"

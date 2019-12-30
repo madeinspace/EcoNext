@@ -67,6 +67,7 @@ const HeaderWrapper = styled.div`
 
 export const ClientHeader = () => {
   const { LongName, isLite, clientAlias, clientLogo } = useContext(ClientContext);
+
   return (
     <Decoration>
       <HeaderRow>

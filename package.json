@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
     "@types/highcharts": "^7.0.0",
     "@types/lodash": "^4.14.149",
     "@wicked_query/react-sticky": "^1.0.0-rc1",

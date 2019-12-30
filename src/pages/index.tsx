@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+import React from 'react';
 import fetchClients from '../api/home';
 import Link from 'next/link';
 import IDidentity from '../components/ui/IDIdentity';
@@ -107,9 +109,9 @@ const products = [
   },
 ];
 
-const HomePage = ({ clients }) => {
+const HomePage = ({ clients }): JSX.Element => {
   const clientList = clients.map(client => {
-    const imgSrc = require(`../images/logos/${client.Alias}.png`);
+    const imgSrc = `https://econext-cdn.azureedge.net/eco-assets/client-logos/${client.Alias}.png`;
     return (
       <Tile key={client.ClientID}>
         <Link href={`/${client.Alias}`} prefetch={false}>

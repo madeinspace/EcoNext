@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable react/prop-types */
 import App from 'next/app';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import '../styles/global.scss';
-import ReactGA from 'react-ga';
 import { initGA, logPageView } from '../utils/googleAnalytics';
-import { ClientContext } from '../utils/context';
-import dynamic from 'next/dynamic';
 
 const theme = {
   colors: {

@@ -1,3 +1,4 @@
+import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 import HeadScripts from '../utils/HeadScripts';
@@ -33,8 +34,9 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta charSet="UTF-8"></meta>
           {HeadScripts.map((script, i) => (
-            <script key={i} src={script.src} type="text/javascript" />
+            <script key={i} src={script.src} type="text/javascript" async={script.async} />
           ))}
         </Head>
         <body>

@@ -4,16 +4,12 @@ import data from 'highcharts/modules/export-data';
 import exporting from 'highcharts/modules/exporting';
 import offline from 'highcharts/modules/offline-exporting';
 import drilldown from 'highcharts/modules/drilldown';
-
 import * as _ from 'lodash';
 import * as React from 'react';
 import { detectIE } from '../../utils/';
 import { ExportDropdown, Actions } from '../Actions';
 import styled from 'styled-components';
-import { saveAs } from 'file-saver';
 import { IChartProps, IChartState } from './Interfaces.chart';
-// import { RenderContext, Image as WordImage } from "../../../lib/docx-render.jsx"
-
 // #endregion
 
 const HighChartContainer = styled.div`
@@ -59,7 +55,7 @@ class HighChart extends React.Component<IChartProps, IChartState> {
   }
 
   componentWillUnmount(): void {
-    //this.chart.destroy();
+    //this.chart.destroy();r
   }
 
   protected handleExport = item => {
@@ -85,64 +81,8 @@ class HighChart extends React.Component<IChartProps, IChartState> {
     }
   };
 
-  // public highchartsSVGtoImage = (): Promise<ExportImageData> => {
-  //   return new Promise(resolve => {
-  //     const { config, highchartOptions } = this.props;
-
-  //     Highcharts.setOptions({
-  //       lang: {
-  //         decimalPoint: '.',
-  //         thousandsSep: ','
-  //       }
-  //     });
-
-  //     const chart = new Highcharts.Chart(
-  //       document.createElement('div'),
-  //       config([highchartOptions])
-  //     );
-
-  //     // Hardcoded 2:1 aspect ratio; it's close enough
-  //     const a4pageWidthInDWIPUnits = 595.3;
-  //     const width = a4pageWidthInDWIPUnits;
-  //     const height = width / 2;
-
-  //     // Get the cart's SVG code
-  //     const svg = chart.getSVG({
-  //       exporting: {
-  //         sourceWidth: width,
-  //         sourceHeight: height
-  //       }
-  //     });
-
-  //     // Create a canvas
-  //     const canvas = document.createElement('canvas');
-  //     canvas.height = height;
-  //     canvas.width = width;
-
-  //     // Create an image and draw the SVG onto the canvas
-  //     const image = new Image();
-  //     image.onload = function() {
-  //       canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-  //       canvas.toBlob(
-  //         imageData => resolve({ imageData, width, height }),
-  //         'image/png',
-  //         4
-  //       );
-  //     };
-  //     image.src =
-  //       'data:image/svg+xml;base64,' +
-  //       window.btoa(unescape(encodeURIComponent(svg)));
-  //   });
-  // };
-
-  // renderWord() {
-  //   return <WordImage promise={this.highchartsSVGtoImage()} />;
-  // }
-
   render(): any {
     const { exportOptions, chartContainerID } = this.props;
-
-    // if (this.context === 'word') return this.renderWord();
 
     return (
       <EntityContainer>

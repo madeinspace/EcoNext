@@ -133,13 +133,18 @@ const MenuItem = styled.li`
     a,
     div {
       cursor: pointer;
-      &::before {
-        font-family: 'id-icons' !important;
-        font-size: 18px;
-        line-height: 0;
-        content: '\\E603';
+      &::after {
+        border-style: solid;
+        border-width: 0.12em 0.12em 0 0;
+        content: '';
+        height: 0.55em;
+        left: 0.15em;
+        position: relative;
+        top: 0.25em;
+        transform: rotate(45deg);
+        vertical-align: top;
+        width: 0.55em;
         float: right;
-        margin-top: 8px;
       }
     }
   }
@@ -153,7 +158,8 @@ const MenuItem = styled.li`
       }
       a,
       div {
-        &::before {
+        &::after {
+          border: none;
           content: '';
         }
       }

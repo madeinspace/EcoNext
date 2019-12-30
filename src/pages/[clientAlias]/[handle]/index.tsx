@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // #region imports
 import React, { useContext } from 'react';
 
@@ -10,7 +11,6 @@ import MainLayout from '../../../layouts/main';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
-import RelatedPagesCTA from '../../../components/RelatedPages';
 import PageHeader from '../../../components/PageHeader';
 import Headline from '../../../components/Headline';
 import Description from '../../../components/Description';
@@ -64,7 +64,7 @@ const PageComponent = ({ client, page }): JSX.Element => (
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias: clientAlias, handle, ...providedFilters } = query;
 
-  const client = await fetchClientData({ clientAlias, containers });
+  const client: any = await fetchClientData({ clientAlias, containers });
 
   const layoutData = await fetchLayout(handle);
 

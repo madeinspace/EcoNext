@@ -39,7 +39,7 @@ const fetchPageData = async (handle: string) => {
 };
 
 export const isNextPage = (handle: string) => {
-  const availablePages = process.env.ALL_PAGES_ENABLED === 'true' ? devPages : productionPages;
+  const availablePages = process.env.DEV_PAGES_ENABLED === 'true' ? devPages : productionPages;
   return availablePages.indexOf(handle) >= 0;
 };
 

@@ -35,11 +35,13 @@ const Logo = styled.div`
   grid-column: idlogo;
 `;
 
-export const ChartFooter: React.SFC<IFooterData> = ({ dataSource, logoUrl }) => (
-  <Footer>
-    <DataSourceText>{dataSource}</DataSourceText>
-    <Logo>
-      <img src={logoUrl} />
-    </Logo>
-  </Footer>
-);
+export const ChartFooter: React.SFC<IFooterData> = ({ dataSource, logoUrl }) => {
+  return (
+    <Footer>
+      <DataSourceText>{dataSource}</DataSourceText>
+      <Logo>
+        <img src={logoUrl} />
+      </Logo>
+    </Footer>
+  );
+};
