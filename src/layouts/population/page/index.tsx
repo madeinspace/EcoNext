@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-target-blank */
-/* eslint-disable react/react-in-jsx-scope */
 // #region imports
 import _ from 'lodash';
 import React from 'react';
@@ -10,7 +8,6 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-
 // #endregion
 
 // #region Source
@@ -178,28 +175,25 @@ const tableBuilder = (alias, nodes) => {
 
 // #region chartLineBuilder
 const chartLineBuilder = nodes => {
+  const chartType = 'line';
   const clientSerie = _.map(nodes, 'Changeper').reverse();
   const stateSerie = _.map(nodes, 'ChangeperSTE').reverse();
   const australiaSerie = _.map(nodes, 'ChangeperAUS').reverse();
   const categories = _.map(nodes, 'Year').reverse();
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-
+  const chartTitle = 'Estimated Resident Population (ERP)';
+  const xAxisTitle = 'Year ending June';
+  const yAxisTitle = 'Percentage change';
+  const chartContainerID = 'lineChart';
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'line',
+        type: chartType,
       },
       title: {
-        text: 'Estimated Resident Population (ERP)',
-      },
-      tooltip: {
-        pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
-        },
+        text: chartTitle,
       },
       series: [
         {
@@ -218,13 +212,13 @@ const chartLineBuilder = nodes => {
       xAxis: {
         categories,
         title: {
-          text: 'Year ending June',
+          text: xAxisTitle,
         },
       },
       yAxis: [
         {
           title: {
-            text: 'Percentage change',
+            text: yAxisTitle,
           },
           labels: {
             formatter: function() {
@@ -234,10 +228,17 @@ const chartLineBuilder = nodes => {
           },
         },
       ],
+      tooltip: {
+        pointFormatter: function() {
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+            this.series.name
+          }: ${formatShortDecimal(this.y)}%`;
+        },
+      },
     },
     rawDataSource,
     dataSource: <Source />,
-    chartContainerID: 'line',
+    chartContainerID,
     logoUrl: idlogo,
   };
 };
@@ -245,19 +246,23 @@ const chartLineBuilder = nodes => {
 
 // #region  chartbuilder
 const chartBuilder = nodes => {
+  const chartType = 'column';
+  const chartTitle = 'Estimated Resident Population (ERP)';
   const serieData = _.map(nodes, 'Number').reverse();
   const categories = _.map(nodes, 'Year').reverse();
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const xAxisTitle = 'Year ending June';
+  const yAxisTitle = 'Total Estimated Resident Population (ERP)';
   const chartContainerID = 'chart1';
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'column',
+        type: chartType,
       },
       title: {
-        text: 'Estimated Resident Population (ERP)',
+        text: chartTitle,
       },
       subtitle: {
         text: nodes[0].Geoname,
@@ -273,13 +278,13 @@ const chartBuilder = nodes => {
       xAxis: {
         categories,
         title: {
-          text: 'Year ending June',
+          text: xAxisTitle,
         },
       },
       yAxis: [
         {
           title: {
-            text: 'Total Estimated Resident Population (ERP)',
+            text: yAxisTitle,
           },
         },
       ],
@@ -337,7 +342,6 @@ const PopulationPage = (): JSX.Element => {
     </>
   );
 };
-
 // #endregion
 
 export default PopulationPage;

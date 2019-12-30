@@ -19,10 +19,14 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `The Estimated Resident Population of ${data.currentAreaName} was ${formatNumber(
-          tableData[0].Number,
-        )} as of the 30th June ${tableData[0].Year}.`,
+      renderString: ({ data, tableData }): string => {
+        const prefix = data.HasPrefix ? 'The' : '';
+        const areaName = data.currentAreaName;
+        const ERP = formatNumber(tableData[0].Number);
+        const currentYear = tableData[0].Year;
+
+        return `The Estimated Resident Population of ${prefix} ${areaName} was ${ERP} as of the 30th June ${currentYear}.`;
+      },
     },
     {
       Title: 'Description',
