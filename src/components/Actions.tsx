@@ -100,20 +100,20 @@ export const Share = (): JSX.Element => {
       />
       <ShareDropdownList dropdownVisible={dropdownVisible}>
         <ShareDropdownListItem>
-          <a href="" title="Share to twitter" className="addthis_button_twitter" target="_blank">
+          <a href="" title="Share to twitter" className="addthis_button_twitter" rel="noopener" target="_blank">
             <TwitterLogo />
             <PageButtonName>Twitter</PageButtonName>
           </a>
         </ShareDropdownListItem>
 
         <ShareDropdownListItem>
-          <a href="" title="Share to facebook" className="addthis_button_facebook" target="_blank">
+          <a href="" title="Share to facebook" className="addthis_button_facebook" rel="noopener" target="_blank">
             <FacebookLogo />
             <PageButtonName>Facebook</PageButtonName>
           </a>
         </ShareDropdownListItem>
         <ShareDropdownListItem>
-          <a href="" title="Share to linkedin" className="addthis_button_linkedin" target="_blank">
+          <a href="" title="Share to linkedin" className="addthis_button_linkedin" rel="noopener" target="_blank">
             <LinkedInLogo />
             <PageButtonName>LinkedIn</PageButtonName>
           </a>

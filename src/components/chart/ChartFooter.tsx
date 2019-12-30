@@ -40,7 +40,7 @@ export const ChartFooter: React.SFC<IFooterData> = ({ dataSource, logoUrl }) => 
     <Footer>
       <DataSourceText>{dataSource}</DataSourceText>
       <Logo>
-        <img src={logoUrl} />
+        <img src={logoUrl} alt=".id logo" />
       </Logo>
     </Footer>
   );

@@ -293,6 +293,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
           <a
             href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
             target="_blank"
+            rel="noopener"
             title="link to forecast"
           >
             Residents qualifications by small area
@@ -360,7 +361,7 @@ const Source = () => (
   <>
     Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
     economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" title=".id website">
+    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
       .id, the population experts.
       <span className="hidden"> (opens a new window)</span>
     </a>

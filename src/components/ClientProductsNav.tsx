@@ -82,6 +82,7 @@ const ClientProductsNav = ({ alias }) => {
           <ProductItem
             key={i}
             target="_blank"
+            rel="noopener"
             className={`app-${product.AppID} ${product.AppID === 4 ? 'active' : null}`}
             href={`https://${product.SubDomainName}.id.com.au/${alias}`}
           >

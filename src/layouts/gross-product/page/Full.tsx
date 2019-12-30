@@ -147,7 +147,7 @@ const tableBuilder = (currentBenchmark, clientAlias, rows) => {
 const Source = () => (
   <>
     Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" title=".id website">
+    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
       .id, the population experts.
       <span className="hidden"> (opens a new window)</span>
     </a>

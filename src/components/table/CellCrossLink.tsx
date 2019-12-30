@@ -14,11 +14,6 @@ interface ICrossLink {
 export default function CellCrossLink(props: ICellCrossLinkProps) {
   const { crosslink } = props;
   return (
-    <a
-      target="_blank"
-      title={crosslink.linkText}
-      className={crosslink.cssClass}
-      href={crosslink.url}
-    />
+    <a target="_blank" rel="noopener" title={crosslink.linkText} className={crosslink.cssClass} href={crosslink.url} />
   );
 }

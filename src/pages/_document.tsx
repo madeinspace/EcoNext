@@ -5,6 +5,7 @@ import HeadScripts from '../utils/HeadScripts';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
+    console.log('ctx: ', ctx.req.locale);
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
@@ -32,7 +33,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <meta charSet="UTF-8"></meta>
           {HeadScripts.map((script, i) => (

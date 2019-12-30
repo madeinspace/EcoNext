@@ -9,6 +9,7 @@ export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
         <a
           className="tableFooterNotes"
           target="_blank"
+          rel="noopener"
           title="Click for more information"
           href={`https://economy.id.com.au/${clientAlias}/topic-notes#${anchorName}`}
         >

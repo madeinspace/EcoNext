@@ -60,7 +60,7 @@ const MainNavigation = (): JSX.Element => {
         <GroupName>Other resources</GroupName>
         {OtherResources.map((link, i) => (
           <MenuItem key={i}>
-            <HardCodedLink href={link.url} target="_blank" title={link.displayText}>
+            <HardCodedLink href={link.url} target="_blank" rel="noopener" title={link.displayText}>
               {link.displayText}
             </HardCodedLink>
           </MenuItem>
