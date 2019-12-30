@@ -100,10 +100,12 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
 
+  // we pass that data to interpolate the entities
   const data = {
     currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+    HasPrefix: client.HasPrefix,
   };
 
   const tableData = await fetchData({ filters });

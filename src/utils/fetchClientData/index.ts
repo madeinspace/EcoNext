@@ -25,7 +25,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     return null;
   }
 
-  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages } = clientData[0];
+  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix } = clientData[0];
 
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);
@@ -48,6 +48,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     LongName,
     Name,
     isLite,
+    HasPrefix,
     clientPages,
     clientProducts: Applications,
     clientAreas: filteredAreas,

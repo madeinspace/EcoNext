@@ -5,7 +5,6 @@ import HeadScripts from '../utils/HeadScripts';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    console.log('ctx: ', ctx.req.locale);
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
