@@ -15,7 +15,7 @@ import { IdLink } from '../../../components/ui/links';
 const Source = () => (
   <p>
     Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by <IdLink />>
+    economy.id by <IdLink />
   </p>
 );
 // #endregion
