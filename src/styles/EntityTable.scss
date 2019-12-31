@@ -6,34 +6,6 @@ $odd-color: #e6e6e6;
 $even-color: #f7f7f7;
 $even-row-color: $odd-color;
 
-.dataTableSource {
-  color: #6a6a6a;
-  position: relative;
-  font-size: 12px;
-  line-height: 14px;
-  padding: 12px 6px;
-  border-top: 1px solid #d2cfcf;
-
-  a {
-    border-bottom: 1px solid #222;
-    text-decoration: none;
-    padding-bottom: 2px;
-    color: $link-color;
-    &:visited {
-      color: $link-color;
-    }
-  }
-  .source {
-    margin-bottom: 5px;
-    line-height: 17px;
-    font-size: 11px;
-  }
-
-  .tableFooterNotes {
-    font-size: 11px;
-  }
-}
-
 .smallNote {
   color: #6a6a6a;
   font-size: 12px;
