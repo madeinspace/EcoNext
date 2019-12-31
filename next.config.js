@@ -4,10 +4,8 @@ const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
 const withImages = require('next-images');
 const path = require('path');
-require('dotenv').config();
 const assetPrefix = process.env.ASSET_PREFIX || '';
 const CDN_ENPOINT = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
-console.log('CDN_ENPOINT: ', CDN_ENPOINT);
 module.exports = withCSS(
   withSass(
     withImages({
@@ -30,7 +28,7 @@ module.exports = withCSS(
           },
         });
 
-        // necesary for Edge to support spread operator
+        // necesary for Edge to support spread operator (knex was not babeled)
         config.module.rules.push({
           test: /\.js(\?[^?]*)?$/,
           include: [path.resolve(__dirname, './node_modules/knex')],
