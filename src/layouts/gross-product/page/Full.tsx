@@ -4,12 +4,13 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import _ from 'lodash';
-import { formatNumber, formatChangeNumber, idlogo } from '../../../utils';
+import { formatNumber, formatChangeNumber, idlogo, formatPercent } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
+import { NierLink, IdLink } from '../../../components/ui/links';
 
 const FullContent = () => {
   const { clientAlias } = useContext(ClientContext);
-  const { tableData, filterToggles, entities } = useContext(PageContext);
+  const { tableData, filterToggles } = useContext(PageContext);
   const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
   const GRPChartData = GRPChartBuilder(tableData);
   const CumulitativeChangeChartData = CumulitativeChangeChartBuilder(tableData, currentBenchmark);
@@ -44,7 +45,7 @@ const tableBuilder = (currentBenchmark, clientAlias, rows) => {
   return {
     cssClass: '',
     clientAlias,
-    source: <Source />,
+    source: <TableSource />,
     anchorName: tableTitle,
     headRows: [
       {
@@ -144,37 +145,53 @@ const tableBuilder = (currentBenchmark, clientAlias, rows) => {
 };
 
 // #region Source
-const Source = () => (
-  <>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
-      .id, the population experts.
-      <span className="hidden"> (opens a new window)</span>
-    </a>
-  </>
+const TableSource = () => (
+  <p>
+    Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+    base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
+    releases adjust previous years’ figures to a new base year.Learn more *Cumulative change uses 2010 as the base year.
+  </p>
 );
 // #endregion
 
+// #region Source
+const ChartSource = () => (
+  <p>
+    Source: <NierLink /> ©2019 Compiled and presented in economy.id by <IdLink />.
+  </p>
+);
+// #endregion
+
+const rawDataSource =
+  'Source: National Institute of Economic and Industry Research(NIEIR) ©2019. Compiled and presented in economy.id by.id, the population experts Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
+
 const GRPChartBuilder = nodes => {
   const chartTitle = 'Gross Regional Product';
+  const chartType = 'column';
+  const geoName = nodes[0].GeoName;
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'GRP $million';
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
-
+  const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'Year_End').reverse();
   const serie = _.map(nodes, 'HeadLineGRP').reverse();
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${geoName}: $${formatNumber(
+      this.y,
+    )} millions`;
+  };
   return {
     cssClass: '',
     highchartOptions: {
       chart: {
-        type: 'column',
+        type: chartType,
       },
       title: {
         text: chartTitle,
       },
       subtitle: {
-        text: '',
+        text: geoName,
       },
       series: [
         {
@@ -200,12 +217,16 @@ const GRPChartBuilder = nodes => {
           },
         },
       ],
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
     },
     rawDataSource,
-    dataSource: <Source />,
-    chartContainerID: 'grp-chart',
+    dataSource: <ChartSource />,
+    chartContainerID,
     logoUrl: idlogo,
-    chartTemplate: 'Standard',
   };
 };
 
@@ -220,6 +241,11 @@ const CumulitativeChangeChartBuilder = (nodes, currentBenchmark) => {
   const categories = _.map(nodes, 'Year_End').reverse();
   const serie0 = _.map(nodes, 'ChangePer3').reverse();
   const serie1 = _.map(nodes, 'BMChangePer3').reverse();
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> $${geoName}: ${formatNumber(
+      this.y,
+    )} millions`;
+  };
   return {
     cssClass: '',
     highchartOptions: {
@@ -262,12 +288,16 @@ const CumulitativeChangeChartBuilder = (nodes, currentBenchmark) => {
           },
         },
       ],
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
     },
     rawDataSource,
-    dataSource: <Source />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
-    chartTemplate: 'Standard',
   };
 };
 
@@ -281,12 +311,11 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
   const benchmarkSerie = _.map(nodes, 'BMchangePer').reverse();
   const averageSerie = _.map(nodes, 'ChangePer4').reverse();
   const geoName = nodes[0].GeoName;
-  const chartTemplate = 'Standard';
   const chartContainerID = 'annual-chart';
-  const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
   const averageSerieName = 'Average annual growth rate';
-
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${geoName}: $${formatPercent(this.y)}%`;
+  };
   return {
     cssClass: '',
     highchartOptions: {
@@ -324,16 +353,20 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
           labels: {
             staggerLines: 0,
             formatter: function() {
-              return formatNumber(this.value);
+              return `${formatNumber(this.value)}%`;
             },
           },
         },
       ],
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
     },
     rawDataSource,
-    dataSource: <Source />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
-    chartTemplate,
   };
 };

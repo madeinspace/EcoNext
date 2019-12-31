@@ -8,18 +8,15 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { IdLink } from '../../../components/ui/links';
 // #endregion
 
 // #region Source
 const Source = () => (
-  <>
+  <p>
     Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
-      .id, the population experts.
-      <span className="hidden"> (opens a new window)</span>
-    </a>
-  </>
+    economy.id by <IdLink />>
+  </p>
 );
 // #endregion
 
@@ -244,7 +241,7 @@ const chartLineBuilder = nodes => {
 };
 // #endregion
 
-// #region  chartbuilder
+// #region chartbuilder
 const chartBuilder = nodes => {
   const chartType = 'column';
   const chartTitle = 'Estimated Resident Population (ERP)';
@@ -313,6 +310,7 @@ const PopulationPage = (): JSX.Element => {
       <ItemWrapper>
         <ControlPanel />
       </ItemWrapper>
+
       <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>

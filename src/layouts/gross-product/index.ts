@@ -1,11 +1,18 @@
 import { sqlConnection } from '../../utils/sql';
-
 import Page from './page';
-import { formatNumber, formatMillionsCurrency } from '../../utils';
+import { formatMillionsCurrencyNoRounding } from '../../utils';
+
+const SQL = ({ ClientID, WebID, BMID }) => `
+  select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
+`;
+
+const SQLite = ({ ClientID, WebID, BMID }) => `
+  select * from CommData_Economy.[dbo].[fn_IN_HeadLineGRP](${+ClientID},${+WebID},${+BMID}) ORDER BY Yr DESC
+`;
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, BMID, IsLite } = filters;
-  const SQLQuery = IsLite ? SQLLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
+  const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
   const tableData = await sqlConnection.raw(SQLQuery);
 
   return tableData;
@@ -43,10 +50,14 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `${data.currentAreaName}\'s Gross Regional Product was ${formatMillionsCurrency(
-          tableData[0].HeadLineGRP * 1000,
-        )} as of the 30th June ${tableData[0].Year_End}.`,
+      renderString: ({ data, tableData }): string => {
+        const prefix = data.HasPrefix ? 'The ' : '';
+        const areaName = data.currentAreaName;
+        const GRP = formatMillionsCurrencyNoRounding(tableData[0].HeadLineGRP * 1000);
+        const endYear = tableData[0].Year_End;
+
+        return `${prefix}${areaName}\'s Gross Regional Product was ${GRP} as of the 30th June ${endYear}.`;
+      },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
         {
@@ -57,10 +68,14 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `${data.currentAreaName}\'s Gross Regional Product was ${formatMillionsCurrency(
-          tableData[0].ValWebID * 1000,
-        )} as of the 30th June ${tableData[0].Yr}.`,
+      renderString: ({ data, tableData }): string => {
+        const prefix = data.HasPrefix ? 'The ' : '';
+        const areaName = data.currentAreaName;
+        const GRP = formatMillionsCurrencyNoRounding(tableData[0].ValWebID * 1000);
+        const endYear = tableData[0].Yr;
+
+        return `${prefix}${areaName}\'s Gross Regional Product was ${GRP} as of the 30th June ${endYear}.`;
+      },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
         {
@@ -99,11 +114,3 @@ const pageContent = {
 };
 
 export { fetchData, Page, pageContent };
-
-const SQL = ({ ClientID, WebID, BMID }) => `
-  select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
-`;
-
-const SQLLite = ({ ClientID, WebID, BMID }) => `
-  select * from CommData_Economy.[dbo].[fn_IN_HeadLineGRP](${+ClientID},${+WebID},${+BMID}) ORDER BY Yr DESC
-`;
