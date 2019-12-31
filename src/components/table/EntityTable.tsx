@@ -22,6 +22,7 @@ const SourceCell = styled.td`
   border-right: none;
   // && adds enough specificity to overrule annoying other rules
   && {
+    padding: 0px;
     border-right: none;
     background-color: white;
   }
@@ -363,7 +364,6 @@ class EntityTable extends React.Component<any, any> {
   // #endregion
 
   toggleShow = () => {
-    // console.log("toggle state:  ", this.state.showMore)
     this.setState({
       rows: this.getnNumberOfRows(this.initialRows, this.state.showMore ? this.props.data.rows.length : 10).map(
         this.renderRow,

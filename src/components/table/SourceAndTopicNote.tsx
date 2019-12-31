@@ -4,22 +4,32 @@ import styled from 'styled-components';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const DataTableSource = styled.div`
-  color: #6a6a6a;
   position: relative;
-  font-size: 11px;
   line-height: 14px;
-  padding: 10px 6px 5px 6px;
   display: flex;
   align-items: flex-end;
   border-top: 1px solid #d2cfcf;
+  padding: 10px;
+
+  p {
+    color: ${variables.graySligtlyLighter};
+    font-size: 11px;
+    margin: 0;
+  }
   a {
-    color: ${variables.grayDark};
+    color: ${variables.graySligtlyLighter};
     text-decoration: none;
     &:hover {
       text-decoration: underline;
     }
     &:visited {
-      color: ${variables.grayDark};
+      color: ${variables.graySligtlyLighter};
+    }
+  }
+  &:hover {
+    p,
+    a {
+      color: ${variables.gray};
     }
   }
 `;
@@ -27,13 +37,14 @@ const DataTableSource = styled.div`
 const DataNote = styled.a`
   display: inline-block;
   text-decoration: none;
-  color: ${variables.grayDark};
+  color: ${variables.graySligtlyLighter};
   display: block;
+  font-size: 11px;
   &:hover {
     text-decoration: underline;
   }
   &:visited {
-    color: ${variables.grayDark};
+    color: ${variables.graySligtlyLighter};
   }
 `;
 

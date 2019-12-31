@@ -25,8 +25,6 @@ const Login = () => {
       Password,
     };
 
-    console.log('payload: ', payload);
-
     await axios
       .post(url, payload, { withCredentials: true })
       .then(function(response) {

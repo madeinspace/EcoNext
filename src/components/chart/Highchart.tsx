@@ -13,7 +13,7 @@ import { IChartProps, IChartState } from './Interfaces.chart';
 // #endregion
 
 const HighChartContainer = styled.div`
-  padding-top: 10px;
+  padding: 10px 0;
 `;
 
 export const EntityContainer = styled.div`
