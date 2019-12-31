@@ -276,9 +276,8 @@ $even-row-color: $odd-color;
           font-size: 20px;
           line-height: 36px;
           font-weight: normal;
-          padding-left: 40px;
-          padding-right: 190px;
           text-align: left;
+          padding: 10px 190px 10px 40px;
         }
 
         &.sortable {
