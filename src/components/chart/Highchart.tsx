@@ -10,10 +10,12 @@ import { detectIE } from '../../utils/';
 import { ExportDropdown, Actions } from '../Actions';
 import styled from 'styled-components';
 import { IChartProps, IChartState } from './Interfaces.chart';
+import { Loader } from '../ui/loader';
 // #endregion
 
 const HighChartContainer = styled.div`
   padding: 10px 0;
+  visibility: ${props => (props.loaded ? 'visible' : 'hidden')};
 `;
 
 export const EntityContainer = styled.div`
@@ -30,13 +32,12 @@ class HighChart extends React.Component<IChartProps, IChartState> {
 
   constructor(props: any, context: any) {
     super(props, context);
-    if (this.context === 'word') return;
-
-    const { config, highchartOptions, chartContainerID } = this.props;
+    this.state = { isLoaded: false };
   }
 
   componentDidMount(): void {
     const { config, highchartOptions, chartContainerID } = this.props;
+    this.setState({ isLoaded: true });
     Highcharts.setOptions({
       lang: {
         decimalPoint: '.',
@@ -83,15 +84,17 @@ class HighChart extends React.Component<IChartProps, IChartState> {
 
   render(): any {
     const { exportOptions, chartContainerID } = this.props;
+    const { isLoaded } = this.state;
 
     return (
       <EntityContainer>
-        {exportOptions && exportOptions.enabled && (
+        {exportOptions && exportOptions.enabled && isLoaded && (
           <Actions>
             <ExportDropdown exportOptions={exportOptions} handleExport={this.handleExport} />
           </Actions>
         )}
-        <HighChartContainer id={chartContainerID} />
+        <Loader loaded={isLoaded} />
+        <HighChartContainer id={chartContainerID} loaded={isLoaded} />
       </EntityContainer>
     );
   }

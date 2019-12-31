@@ -20,11 +20,7 @@ export interface IChartProps {
 }
 
 export interface IChartState {
-  addendum: string;
-  selectedValue: any;
-  hasSiblings: boolean;
-  sets: any[];
-  title: '';
+  isLoaded: boolean;
 }
 
 export interface ExportImageData {
