@@ -18,6 +18,7 @@ import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
 import { PageContext, ClientContext } from '../../../utils/context';
+import { Actions, Share, ExportPage } from '../../../components/Actions';
 
 const ErrorPage = ({ status }): JSX.Element => {
   return <div>Oh no, this is a {status} page</div>;
@@ -45,7 +46,12 @@ const PageTemplate = (): JSX.Element => {
 
   return (
     <MainLayout>
-      <PageHeader />
+      <PageHeader>
+        <Actions>
+          <Share />
+          <ExportPage />
+        </Actions>
+      </PageHeader>
       <Headline />
       <Description />
       <MainContent />
