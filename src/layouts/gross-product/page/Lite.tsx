@@ -148,7 +148,7 @@ const chartBuilder = nodes => {
   const chartContainerID = 'GRPLite';
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${geoName}: ${formatNumber(
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(
       this.y,
     )} millions`;
   };

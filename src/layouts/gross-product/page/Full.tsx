@@ -26,10 +26,10 @@ const FullContent = () => {
         <EntityChart data={CumulitativeChangeChartData} />
       </ItemWrapper>
       <ItemWrapper>
-        <EntityTable data={tableParams} />
+        <EntityChart data={AnnualChangeChartData} />
       </ItemWrapper>
       <ItemWrapper>
-        <EntityChart data={AnnualChangeChartData} />
+        <EntityTable data={tableParams} />
       </ItemWrapper>
     </>
   );
@@ -242,7 +242,7 @@ const CumulitativeChangeChartBuilder = (nodes, currentBenchmark) => {
   const serie0 = _.map(nodes, 'ChangePer3').reverse();
   const serie1 = _.map(nodes, 'BMChangePer3').reverse();
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> $${geoName}: ${formatNumber(
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: $${formatNumber(
       this.y,
     )} millions`;
   };
@@ -314,7 +314,10 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
   const chartContainerID = 'annual-chart';
   const averageSerieName = 'Average annual growth rate';
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${geoName}: $${formatPercent(this.y)}%`;
+    console.log(this);
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+      this.y,
+    )}%`;
   };
   return {
     cssClass: '',
