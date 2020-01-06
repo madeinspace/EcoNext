@@ -1,6 +1,13 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatChangeNumber, formatShortDecimal, formatPercent, idlogo } from '../../../utils/';
+import {
+  formatNumber,
+  formatChangeNumber,
+  formatShortDecimal,
+  formatPercent,
+  idlogo,
+  formatChangeInt,
+} from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -15,11 +22,14 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import InfoBox from '../../../components/InfoBox';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import InfoBox from '../../../components/ui/infoBox';
+import { ABSCensusHousingLink, IdLink } from '../../../components/ui/links';
+import Link from 'next/link';
+import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
@@ -233,8 +243,8 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         <div>
           <p>
             Field of Qualification presents the primary field of study for the highest qualification the person has
-            received.&nbsp;While this is likely to have some relationship to the current occupation, this is not
-            necessarily the case.{' '}
+            received. While this is likely to have some relationship to the current occupation, this is not necessarily
+            the case.{' '}
           </p>
           <p>The field of study relates to a number of factors, such as:</p>
           <ul>
@@ -245,16 +255,18 @@ const LocalWorkerFieldsOfQualificationPage = () => {
           </ul>
           <p>
             The fields of qualification held by local workers in a particular industry are likely to show the type of
-            skills required in that industry. &nbsp;Large numbers of a particular field of qualification in an industry
-            may indicate that it is a pre-requisite for that industry. The presence of fields of qualification outside
-            the main range of qualifications used in that industry may indicate that the industry values employees of a
+            skills required in that industry. Large numbers of a particular field of qualification in an industry may
+            indicate that it is a pre-requisite for that industry. The presence of fields of qualification outside the
+            main range of qualifications used in that industry may indicate that the industry values employees of a
             broad educational background, or that people haven't been able to find employment in their chosen field.
           </p>
           <p>
             Field of Qualification information should be looked at in conjunction with{' '}
-            <a href={`${clientAlias}/workers-level-of-qualifications?`}>Level of qualification </a>
-            and <a href={`${clientAlias}/workers-occupations?`}>Occupation</a> data for a clearer picture of the skills
-            available for the local workers in {LongName}.
+            <MonolithOrNextLink href={`/${clientAlias}/workers-level-of-qualifications`}>
+              Level of qualification
+            </MonolithOrNextLink>{' '}
+            and <MonolithOrNextLink href={`/${clientAlias}/workers-occupations`}>Occupation</MonolithOrNextLink> data
+            for a clearer picture of the skills available for the local workers in {LongName}.
           </p>
         </div>
         <SourceBubble>
@@ -276,13 +288,14 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         however, and not compare directly with 2011 data from any other source.
       </Note>
 
+      <ControlPanel />
+
       <InfoBox>
         <span>
           <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
         </span>
       </InfoBox>
 
-      <ControlPanel />
       <ItemWrapper>
         <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
       </ItemWrapper>
@@ -356,18 +369,23 @@ export default LocalWorkerFieldsOfQualificationPage;
 
 // #endregion
 
-// #region table builders
-const Source = () => (
-  <>
-    Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
-      .id, the population experts.
-      <span className="hidden"> (opens a new window)</span>
-    </a>
-  </>
+// #region sources
+const TableSource = () => (
+  <p>
+    Source: Australian Bureau of Statistics, <ABSCensusHousingLink /> 2011 and 2016. Compiled and presented by{' '}
+    <IdLink />
+  </p>
 );
 
+const ChartSource = () => (
+  <p>
+    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
+    by <IdLink />.
+  </p>
+);
+// #endregion
+
+// #region table builders
 const tableBuilder = ({
   areaName,
   industryName: industry,
@@ -395,7 +413,7 @@ const tableBuilder = ({
   return {
     cssClass: '',
     clientAlias: areaName,
-    source: <Source />,
+    source: <TableSource />,
     rawDataSource,
     anchorName: '',
     headRows: [
@@ -498,7 +516,7 @@ const tableBuilder = ({
         formatNumber(row.NoYear2),
         formatNumber(row.PerYear2),
         formatNumber(row.BMYear2),
-        formatChangeNumber(row.Change12, '--'),
+        formatChangeInt(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
         id: childRow.LabelKey,
@@ -520,7 +538,7 @@ const tableBuilder = ({
           formatNumber(childRow.NoYear2),
           formatNumber(childRow.PerYear2),
           formatNumber(childRow.BMYear2),
-          formatChangeNumber(childRow.Change12, '--'),
+          formatChangeInt(childRow.Change12, '--'),
         ],
       })),
     })),
@@ -537,7 +555,7 @@ const tableBuilder = ({
           { cssClass: '', displayText: formatNumber(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
-            displayText: formatChangeNumber(row.Change12),
+            displayText: formatChangeInt(row.Change12),
             colSpan: 1,
           },
         ],
@@ -671,7 +689,7 @@ const chartBuilder = ({
       ],
     },
     rawDataSource,
-    dataSource: <Source />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,
@@ -694,7 +712,7 @@ const chartBuilderChange = ({
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
   const chartTitle = 'Change in local workers field of qualification, 2016';
-  const chartSubtitle = `${areaName} - ${currentIndustry}-${gender}`;
+  const chartSubtitle = `${areaName} - ${currentIndustry} - ${gender}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Field of qualification';
   const yAxisTitle = `Change in ${gender} local workers`;
@@ -702,6 +720,14 @@ const chartBuilderChange = ({
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
+
+  const tooltip = function() {
+    console.log('this: ', this);
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${areaName} - ${
+      this.series.name
+    }: ${formatChangeInt(this.y)}`;
+  };
+
   return {
     cssClass: '',
     highchartOptions: {
@@ -715,10 +741,9 @@ const chartBuilderChange = ({
         text: chartSubtitle,
       },
       tooltip: {
+        headerFormat: '',
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return tooltip.apply(this);
         },
       },
       series: [
@@ -741,14 +766,14 @@ const chartBuilderChange = ({
           labels: {
             staggerLines: 0,
             formatter: function() {
-              return formatChangeNumber(this.value);
+              return formatChangeInt(this.value);
             },
           },
         },
       ],
     },
     rawDataSource,
-    dataSource: <Source />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,

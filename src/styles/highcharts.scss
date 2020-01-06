@@ -234,6 +234,9 @@ g.highcharts-series,
 .highcharts-color-0 {
   fill: $color-economy-dark;
   stroke: $color-economy-dark;
+  &.highcharts-negative {
+    fill: #80ca9f;
+  }
 }
 
 .highcharts-color-1 {
@@ -292,7 +295,7 @@ g.highcharts-series,
 }
 
 .highcharts-point {
-  stroke-width: 1px;
+  stroke-width: 0px;
 }
 
 .highcharts-dense-data .highcharts-point {

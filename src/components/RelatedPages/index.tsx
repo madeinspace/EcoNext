@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import Link from 'next/link';
 import { ClientContext, PageContext } from '../../utils/context';
+import MonolithOrNextLink from '../Link';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
@@ -15,14 +18,6 @@ const StyledCTA = styled.div`
   h3 {
     color: ${variables.colorEconomyDark};
     margin-bottom: 0;
-    &::after {
-      font-family: 'id-icons';
-      font-size: 28px;
-      line-height: 0;
-      content: '\\E603';
-      float: right;
-      margin-top: 15px;
-    }
   }
   ul {
     list-style: none;
@@ -38,23 +33,33 @@ const StyledCTA = styled.div`
   }
 `;
 
+const IconBase = styled.span`
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+`;
+
 const RelatedPagesCTA = () => {
   const { clientAlias } = useContext(ClientContext);
-  const { pageData } = useContext(PageContext);
-
-  const { RelatedPages } = pageData;
+  const {
+    pageData: { RelatedPages },
+  } = useContext(PageContext);
 
   if (!RelatedPages || RelatedPages.length === 0) return null;
 
   return (
     <StyledCTA>
       <h3>To continue building your economic story go to...</h3>
+      <IconBase>
+        <FontAwesomeIcon size={'lg'} icon={faChevronRight} />
+      </IconBase>
       <ul>
         {RelatedPages.map(({ Alias, MenuTitle }) => (
           <li key={Alias}>
-            <Link href={`${clientAlias}/${Alias}`}>
-              <a>{MenuTitle}</a>
-            </Link>
+            <MonolithOrNextLink href={`/${clientAlias}/${Alias}`}>{MenuTitle}</MonolithOrNextLink>
           </li>
         ))}
       </ul>

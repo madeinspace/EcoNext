@@ -25,3 +25,9 @@ export const IdLink = () => (
     .id the population experts
   </a>
 );
+
+export const ABSCensusHousingLink = () => (
+  <a href="http://www.abs.gov.au/census" title="Census of Population and Housing" target="_blank">
+    Census of Population and Housing
+  </a>
+);
