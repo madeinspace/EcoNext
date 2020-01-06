@@ -314,7 +314,6 @@ const AnnualChangeChartBuilder = (nodes, currentBenchmark) => {
   const chartContainerID = 'annual-chart';
   const averageSerieName = 'Average annual growth rate';
   const tooltip = function() {
-    console.log(this);
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
       this.y,
     )}%`;
