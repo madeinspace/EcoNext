@@ -7,6 +7,8 @@ import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
 import NumberOfBusinessesByIndustry from './number-of-businesses-by-industry/page';
 import IndustrySectorAnalysis from './industry-sector-analysis/page';
+import productionPages from './productionPages';
+import developmentPages from './developmentPages';
 
 export const PageMappings = {
   'gross-product': GrossProduct,
@@ -19,19 +21,6 @@ export const PageMappings = {
   'industry-sector-analysis': IndustrySectorAnalysis,
 };
 
-const productionPages = ['population'];
-
-const devPages = [
-  'gross-product',
-  'indicator',
-  'population',
-  'value-of-building-approvals',
-  'workers-field-of-qualification',
-  'economic-impact-assesment',
-  'number-of-businesses-by-industry',
-  'industry-sector-analysis',
-];
-
 const fetchPageData = async (handle: string) => {
   const pageData = await import(`./${handle}`);
 
@@ -39,7 +28,7 @@ const fetchPageData = async (handle: string) => {
 };
 
 export const isNextPage = (handle: string) => {
-  const availablePages = process.env.DEV_PAGES_ENABLED === 'true' ? devPages : productionPages;
+  const availablePages = process.env.DEV_PAGES_ENABLED === 'true' ? developmentPages : productionPages;
   return availablePages.indexOf(handle) >= 0;
 };
 
