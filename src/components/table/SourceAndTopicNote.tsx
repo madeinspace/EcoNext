@@ -53,14 +53,16 @@ export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
     <DataTableSource>
       <div>
         {source}
-        <DataNote
-          target="_blank"
-          rel="noopener"
-          title="Click for more information"
-          href={`https://economy.id.com.au/${clientAlias}/topic-notes#${anchorName}`}
-        >
-          Please refer to specific data notes for more information
-        </DataNote>
+        {anchorName && (
+          <DataNote
+            target="_blank"
+            rel="noopener"
+            title="Click for more information"
+            href={`https://economy.id.com.au/${clientAlias}/topic-notes#${anchorName}`}
+          >
+            Please refer to specific data notes for more information
+          </DataNote>
+        )}
       </div>
     </DataTableSource>
   );
