@@ -1,6 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-import { formatMillionsCurrencyNoRounding } from '../../utils';
+import { formatMillionsCurrencyNoRounding, formatNumber } from '../../utils';
 
 const SQL = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
@@ -53,10 +53,10 @@ const pageContent = {
       renderString: ({ data, tableData }): string => {
         const prefix = data.HasPrefix ? 'The ' : '';
         const areaName = data.currentAreaName;
-        const GRP = formatMillionsCurrencyNoRounding(tableData[0].HeadLineGRP * 1000);
+        const GRP = formatNumber(tableData[0].HeadLineGRP);
         const endYear = tableData[0].Year_End;
 
-        return `${prefix}${areaName}\'s Gross Regional Product was ${GRP} as of the 30th June ${endYear}.`;
+        return `${prefix}${areaName}\'s Gross Regional Product was $${GRP}m as of the 30th June ${endYear}.`;
       },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
@@ -71,10 +71,10 @@ const pageContent = {
       renderString: ({ data, tableData }): string => {
         const prefix = data.HasPrefix ? 'The ' : '';
         const areaName = data.currentAreaName;
-        const GRP = formatMillionsCurrencyNoRounding(tableData[0].ValWebID * 1000);
+        const GRP = formatNumber(tableData[0].ValWebID);
         const endYear = tableData[0].Yr;
 
-        return `${prefix}${areaName}\'s Gross Regional Product was ${GRP} as of the 30th June ${endYear}.`;
+        return `${prefix}${areaName}\'s Gross Regional Product was $${GRP}m as of the 30th June ${endYear}.`;
       },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
