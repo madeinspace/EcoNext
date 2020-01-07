@@ -29,12 +29,14 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, tableData }): string => {
-        const prefix = data.HasPrefix ? 'The ' : '';
+        const prefix = data.HasPrefix ? 'the ' : '';
         const areaName = data.currentAreaName;
         const currentInd = without(data.currentIndustryName, 'All industries');
-        console.log('currentInd: ', currentInd);
         const largestInd = largest(tableData, 'NoYear1').LabelName;
-        return `Within ${prefix}${areaName}, there are more workers in the ${currentInd} industry with ${largestInd} qualifications than any other field of qualification.`;
+        const headline = `Within ${prefix}${areaName}, there are more workers in the ${currentInd} industry with ${largestInd} qualifications than any other field of qualification.`;
+        const headlineAlt = `${largestInd} is the most common qualification for ${currentInd} workers in ${prefix}${areaName}.`;
+
+        return headlineAlt;
       },
     },
   ],
