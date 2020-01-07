@@ -7,7 +7,7 @@ import EntityChart from '../../../components/chart/EntityChart';
 import _ from 'lodash';
 import EntityTable from '../../../components/table/EntityTable';
 import getActiveToggle from '../../../utils/getActiveToggle';
-import { ABSLink, NierLink, IdLink } from '../../../components/ui/links';
+import { ABSLink, NierLink, IdLink, ABSLinkBuilder } from '../../../components/ui/links';
 // #endregion
 // #region LiteContent
 const LiteContent = () => {
@@ -123,9 +123,9 @@ const tableBuilder = (currentBenchmark, clientAlias, nodes) => {
 // #region TableSource
 const TableSource = () => (
   <p>
-    Source:
-    <ABSLink /> , catalogue number 5206.0, and the <NierLink /> ©2019. Compiled and presented in economy.id by{' '}
-    <IdLink />
+    Source: Australian Bureau of Statistics. Australian National Accounts:
+    {ABSLinkBuilder('abs@.nsf/mf/5206.0', 'National Income, Expenditure and Product')} , catalogue number 5206.0, and
+    the <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />
   </p>
 );
 // #endregion

@@ -45,6 +45,9 @@ const Source = () => (
 
 // #region tableBuilder
 const tableBuilder = (alias, nodes) => {
+  const anchorName = 'indicators---building-approvals';
+  const tableTitle = 'Value of total building approvals';
+
   return {
     cssClass: '',
     allowExport: false,
@@ -53,14 +56,14 @@ const tableBuilder = (alias, nodes) => {
     groupOn: '',
     clientAlias: alias,
     source: <Source />,
-    anchorName: 'indicators---building-approvals',
+    anchorName,
     headRows: [
       {
         cssClass: '',
         cols: [
           {
             cssClass: 'table-area-name',
-            displayText: 'Value of total building approvals',
+            displayText: tableTitle,
             colSpan: 10,
             rowSpan: 0,
           },
