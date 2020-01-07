@@ -63,7 +63,7 @@ const TopThreeFields = ({ industryName }) => {
       <ul>
         {topThree.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} or {formatPercent(qual.PerYear1)}%)
+            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
           </li>
         ))}
       </ul>
@@ -90,12 +90,12 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   }
 
   const topquals = TopLevelQualifications(tableData);
-  const highestQuals = HighestQualifications(topquals, 'BMYear1');
+  const highestQuals = HighestQualifications(topquals, 'NoYear1');
   const topThree: any = TopThree(highestQuals);
 
   if (!topThree.length) return null;
 
-  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)} in ${LabelName}`);
+  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)}% in ${LabelName}`);
 
   const [lastItem, ...comparisons] = formatComparisons.reverse();
 
@@ -116,7 +116,7 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
   let industryText = industryName;
   if (Indkey == 23000) {
     //All Industries === 23000
-    industryText = 'total';
+    industryText = '';
   }
   industryText = `the ${industryText} workforce`;
 
@@ -511,11 +511,11 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatNumber(row.PerYear1),
-        formatNumber(row.BMYear1),
+        formatShortDecimal(row.PerYear1),
+        formatShortDecimal(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatNumber(row.PerYear2),
-        formatNumber(row.BMYear2),
+        formatShortDecimal(row.PerYear2),
+        formatShortDecimal(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
@@ -533,11 +533,11 @@ const tableBuilder = ({
         formattedData: [
           `${childRow.LabelName}`,
           formatNumber(childRow.NoYear1),
-          formatNumber(childRow.PerYear1),
-          formatNumber(childRow.BMYear1),
+          formatShortDecimal(childRow.PerYear1),
+          formatShortDecimal(childRow.BMYear1),
           formatNumber(childRow.NoYear2),
-          formatNumber(childRow.PerYear2),
-          formatNumber(childRow.BMYear2),
+          formatShortDecimal(childRow.PerYear2),
+          formatShortDecimal(childRow.BMYear2),
           formatChangeInt(childRow.Change12, '--'),
         ],
       })),
@@ -548,11 +548,11 @@ const tableBuilder = ({
         cols: [
           { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeInt(row.Change12),

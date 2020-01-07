@@ -28,10 +28,14 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `Within ${data.currentAreaName}, there are more ${without(data.currentIndustryName, 'All industries')} with ${
-          largest(tableData, 'NoYear1').LabelName
-        } qualifications than any other field of qualification.`,
+      renderString: ({ data, tableData }): string => {
+        const prefix = data.HasPrefix ? 'The ' : '';
+        const areaName = data.currentAreaName;
+        const currentInd = without(data.currentIndustryName, 'All industries');
+        console.log('currentInd: ', currentInd);
+        const largestInd = largest(tableData, 'NoYear1').LabelName;
+        return `Within ${prefix}${areaName}, there are more workers in the ${currentInd} industry with ${largestInd} qualifications than any other field of qualification.`;
+      },
     },
   ],
   filterToggles: [
