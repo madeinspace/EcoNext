@@ -7,11 +7,12 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
 import { IdLink, ABSLinkBuilder } from '../../../components/ui/links';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #endregion
 
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
-  const { clientAlias } = useContext(ClientContext);
+  const { clientAlias, isLite } = useContext(ClientContext);
   const { tableData } = useContext(PageContext);
 
   const pageName = 'Value of total building approvals';
@@ -20,6 +21,7 @@ const ValueOfBuildingApprovalsPage = () => {
 
   return (
     <>
+      {!isLite && <ControlPanel />}
       <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
