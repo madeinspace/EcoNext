@@ -178,7 +178,11 @@ const chartBuilder = nodes => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'totalValueOfBuildingApprovals';
-
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(
+      this.y,
+    )}`;
+  };
   return {
     cssClass: '',
     highchartOptions: {
@@ -227,6 +231,11 @@ const chartBuilder = nodes => {
           },
         },
       ],
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
     },
     rawDataSource,
     dataSource: <Source />,
