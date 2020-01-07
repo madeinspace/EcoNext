@@ -1,1 +1,1 @@
-export default ['population', 'gross-product', 'indicator'];
+export default ['population', 'gross-product', 'indicator', 'workers-field-of-qualification'];

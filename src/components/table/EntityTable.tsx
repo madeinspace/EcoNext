@@ -155,7 +155,7 @@ class EntityTable extends React.Component<any, any> {
       );
       return (
         <th {...columnCellProps} key={col.id}>
-          {label === '%' ? '\u0025' : label}
+          {label === '%' ? percent : label}
         </th>
       );
     });
