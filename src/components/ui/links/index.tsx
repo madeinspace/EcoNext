@@ -1,33 +1,24 @@
-export const ABSLink = () => (
-  <a
-    href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/5206.0"
-    target="_blank"
-    rel="noopener"
-    title="Australian National Accounts: National Income, Expenditure and Product"
-  >
-    Australian Bureau of Statistics. Australian National Accounts: National Income, Expenditure and Product{' '}
-  </a>
-);
+export const ABSLink = () =>
+  ABSLinkBuilder(
+    'abs@.nsf/mf/5206.0',
+    'Australian Bureau of Statistics. Australian National Accounts: National Income, Expenditure and Product',
+  );
 
-export const NierLink = () => (
-  <a
-    href="http://www.nieir.com.au/"
-    rel="noopener"
-    target="_blank"
-    title="National Institute of Economic and Industry Research"
-  >
-    National Institute of Economic and Industry Research (NIEIR)
-  </a>
-);
+export const NierLink = () =>
+  LinkBuilder('http://www.nieir.com.au/', 'National Institute of Economic and Industry Research (NIEIR)');
 
-export const IdLink = () => (
-  <a href="http://home.id.com.au/about-us/" rel="noopener" target="_blank" title=".id the population experts">
-    .id the population experts
-  </a>
-);
+export const IdLink = () => LinkBuilder('http://home.id.com.au/about-us/', '.id the population experts');
 
-export const ABSCensusHousingLink = () => (
-  <a href="http://www.abs.gov.au/census" title="Census of Population and Housing" target="_blank">
-    Census of Population and Housing
-  </a>
-);
+export const ABSCensusHousingLink = () =>
+  LinkBuilder('http://www.abs.gov.au/census', 'Census of Population and Housing');
+
+export const ABSLinkBuilder = (handle, displayText, target?, title?) =>
+  LinkBuilder(`http://www.abs.gov.au/ausstats/${handle}`, displayText, target, title);
+
+export const LinkBuilder = (href, displayText, target?, title?): JSX.Element => {
+  return (
+    <a href={href} rel="noopener" target={target || '_blank'} title={title || displayText}>
+      {displayText}
+    </a>
+  );
+};
