@@ -7,6 +7,7 @@ import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
 import NumberOfBusinessesByIndustry from './number-of-businesses-by-industry/page';
 import IndustrySectorAnalysis from './industry-sector-analysis/page';
+import LocalJobs from './local-jobs/page';
 import productionPages from './productionPages';
 import developmentPages from './developmentPages';
 
@@ -14,6 +15,7 @@ export const PageMappings = {
   'gross-product': GrossProduct,
   indicator: Indicator,
   population: Population,
+  'local-jobs': LocalJobs,
   'value-of-building-approvals': ValueOfBuildingApprovals,
   'workers-field-of-qualification': WorkersFieldOfQualification,
   'economic-impact-assesment': EconomicImpactAssesment,

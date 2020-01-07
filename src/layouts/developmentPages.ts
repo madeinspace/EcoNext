@@ -1,7 +1,8 @@
 export default [
-  'gross-product',
   'indicator',
   'population',
+  'gross-product',
+  'local-jobs',
   'value-of-building-approvals',
   'workers-field-of-qualification',
   'economic-impact-assesment',
