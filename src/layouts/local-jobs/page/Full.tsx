@@ -144,7 +144,7 @@ const JobsChartBuilder = nodes => {
   const chartType = 'column';
   const geoName = nodes[0].GeoName;
   const xAxisTitle = 'Year ending June';
-  const yAxisTitle = 'GRP $million';
+  const yAxisTitle = 'Local jobs';
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
   const chartContainerID = 'grp-chart';

@@ -14,7 +14,7 @@ const LiteContent = () => {
   const { LongName, clientAlias } = useContext(ClientContext);
   const { tableData, filterToggles } = useContext(PageContext);
   const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
-  const chartData = chartBuilder(tableData);
+  const chartData = chartBuilder(LongName, tableData);
   const tableParams = tableBuilder(currentBenchmark, clientAlias, LongName, tableData);
 
   return (
@@ -137,20 +137,17 @@ const ChartSource = () => (
 );
 // #endregion
 // #region chartbuilder
-const chartBuilder = nodes => {
+const chartBuilder = (LongName, nodes) => {
   const chartType = 'column';
   const chartTitle = 'Local jobs  ';
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Local jobs';
-  const geoName = nodes[0].GeoName;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
   const chartContainerID = 'JobsLite';
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(
-      this.y,
-    )}`;
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${LongName}: ${formatNumber(this.y)}`;
   };
 
   return {
@@ -163,11 +160,11 @@ const chartBuilder = nodes => {
         text: chartTitle,
       },
       subtitle: {
-        text: geoName,
+        text: LongName,
       },
       series: [
         {
-          name: geoName,
+          name: LongName,
           data: _.map(nodes, 'ValWebID').reverse(),
         },
       ],
