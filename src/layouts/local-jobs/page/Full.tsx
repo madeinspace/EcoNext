@@ -44,7 +44,6 @@ const Source = () => (
 // #endregion
 
 const tableBuilder = (currentBenchmark, clientAlias, rows) => {
-  console.log('rows: ', rows);
   const tableTitle = 'Local jobs';
   const clientLongName = rows[0].GeoName;
   const totalColSpan = 8;
