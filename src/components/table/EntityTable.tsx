@@ -148,10 +148,14 @@ class EntityTable extends React.Component<any, any> {
 
       // keeping the classes for the rows' cells out of the state.
       this.colClass.push(columnCellProps.className);
-
+      const percent = (
+        <span>
+          %<span style={{ display: 'none' }}>.</span>{' '}
+        </span>
+      );
       return (
         <th {...columnCellProps} key={col.id}>
-          {label}
+          {label === '%' ? '\u0025' : label}
         </th>
       );
     });
