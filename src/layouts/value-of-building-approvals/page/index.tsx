@@ -6,6 +6,7 @@ import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
+import { IdLink, ABSLinkBuilder } from '../../../components/ui/links';
 // #endregion
 
 // #region population page
@@ -35,14 +36,10 @@ export default ValueOfBuildingApprovalsPage;
 
 // #region Source
 const Source = () => (
-  <>
-    Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
-      .id, the population experts.
-      <span className="hidden"> (opens a new window)</span>
-    </a>
-  </>
+  <p>
+    Source: Australian Bureau of Statistics, {ABSLinkBuilder('abs@.nsf/mf/8731.0', 'Building Approvals')}, Australia,
+    catalogue number 8731.0. Compiled and presented in economy.id by <IdLink />
+  </p>
 );
 // #endregion
 
@@ -56,7 +53,7 @@ const tableBuilder = (alias, nodes) => {
     groupOn: '',
     clientAlias: alias,
     source: <Source />,
-    anchorName: 'service-age-groups',
+    anchorName: 'indicators---building-approvals',
     headRows: [
       {
         cssClass: '',
@@ -196,12 +193,14 @@ const chartBuilder = nodes => {
       },
       series: [
         {
-          name: 'Residential',
-          data: residentialSerie,
-        },
-        {
           name: 'Non Residential',
           data: nonRresidentialSerie,
+          colorIndex: 1,
+        },
+        {
+          name: 'Residential',
+          data: residentialSerie,
+          colorIndex: 0,
         },
       ],
       xAxis: {

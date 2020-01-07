@@ -30,11 +30,10 @@ const pageContent = {
       Title: 'Headline',
       renderString: ({ data, tableData }): string => {
         const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = data.currentAreaName;
-        const currentInd = without(data.currentIndustryName, 'All industries');
-        const largestInd = largest(tableData, 'NoYear1').LabelName;
-        const headline = `Within ${prefix}${areaName}, there are more workers in the ${currentInd} industry with ${largestInd} qualifications than any other field of qualification.`;
-        const headlineAlt = `${largestInd} is the most common qualification for ${currentInd} workers in ${prefix}${areaName}.`;
+        const areaName = `${prefix}${data.currentAreaName}`;
+        const selectedIndustry = without(data.currentIndustryName, 'All industries');
+        const mostCommonQual = largest(tableData, 'NoYear1').LabelName;
+        const headlineAlt = `${mostCommonQual} is the most common qualification for ${selectedIndustry} workers in ${areaName}.`;
 
         return headlineAlt;
       },
