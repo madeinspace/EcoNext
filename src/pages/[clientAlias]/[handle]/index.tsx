@@ -19,6 +19,7 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
+import SiblingsMenu from '../../../components/SiblingsMenu';
 
 const ErrorPage = ({ status }): JSX.Element => {
   return <div>Oh no, this is a {status} page</div>;
@@ -46,6 +47,7 @@ const PageTemplate = (): JSX.Element => {
 
   return (
     <MainLayout>
+      <SiblingsMenu />
       <PageHeader>
         <Actions>
           <Share />
