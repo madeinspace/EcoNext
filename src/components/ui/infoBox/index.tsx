@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../../styles/variables.scss`);
+config.autoAddCss = false;
 
 const _InfoBox = styled.div`
   display: ${props => (props.visible ? 'flex' : 'none')};
