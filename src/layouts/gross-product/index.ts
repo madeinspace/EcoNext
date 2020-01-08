@@ -1,6 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-import { formatMillionsCurrencyNoRounding, formatNumber } from '../../utils';
+import { formatNumber } from '../../utils';
 
 const SQL = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
@@ -14,7 +14,6 @@ const fetchData = async ({ filters }) => {
   const { ClientID, WebID, BMID, IsLite } = filters;
   const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
   const tableData = await sqlConnection.raw(SQLQuery);
-
   return tableData;
 };
 
