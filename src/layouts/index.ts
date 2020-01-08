@@ -10,8 +10,10 @@ import IndustrySectorAnalysis from './industry-sector-analysis/page';
 import LocalJobs from './local-jobs/page';
 import productionPages from './productionPages';
 import developmentPages from './developmentPages';
+import HomePage from './home/page';
 
 export const PageMappings = {
+  home: HomePage,
   'gross-product': GrossProduct,
   indicator: Indicator,
   population: Population,

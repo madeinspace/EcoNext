@@ -32,11 +32,7 @@ const Layout = ({ children, Template = null }): JSX.Element => {
         <SidebarNav id="main-nav">
           <MainNavigation />
         </SidebarNav>
-        <SiteContent id="main-content">
-          <SiblingsMenu />
-          {/* <LockIcon /> */}
-          {isDisabled ? <DisabledPageWarning /> : children}
-        </SiteContent>
+        <SiteContent id="main-content">{isDisabled ? <DisabledPageWarning /> : children}</SiteContent>
       </ContentRow>
       <SiteMap />
       <SharedFooter />
