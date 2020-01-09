@@ -9,8 +9,7 @@ import { ClientContext, PageContext } from '../utils/context';
 import payload from '../utils/fecthPageReport/ReportPayload';
 import useForm from 'react-hook-form';
 import { emailRGX } from '../utils/Regex';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareAlt, faRecycle, faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { FaFileExport, FaShareAlt, FaUndo } from 'react-icons/fa';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const ExportDropdown: React.FC<any> = props => {
@@ -299,13 +298,13 @@ const PageButtonName = styled.span`
 
 const ShareButton = ({ onClick }): JSX.Element => (
   <PageShareButtonLink onClick={onClick}>
-    <FontAwesomeIcon icon={faShareAlt} fixedWidth size={'lg'} />
+    <FaShareAlt size={'18px'} />
     <PageButtonName>Share</PageButtonName>
   </PageShareButtonLink>
 );
 const ExportPageButton = ({ onClick }): JSX.Element => (
   <PageExportButtonLink onClick={onClick}>
-    <FontAwesomeIcon icon={faFileExport} fixedWidth size={'lg'} />
+    <FaFileExport size={'18px'} />
     <PageButtonName>Export</PageButtonName>
   </PageExportButtonLink>
 );
@@ -394,12 +393,14 @@ const IconBase = styled.span`
   justify-content: center;
 `;
 
-const FAIcon = ({ icon }): JSX.Element => <FontAwesomeIcon icon={icon} fixedWidth size={'sm'} />;
-
 const PageShareButtonLink = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 const PageExportButtonLink = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 
@@ -413,7 +414,7 @@ const Button = ({ name, action, children }): JSX.Element => (
 const ExportButton = ({ onClick }): JSX.Element => (
   <Button name="export" action={onClick}>
     <IconBase>
-      <FAIcon icon={faFileExport} />
+      <FaFileExport />
     </IconBase>
   </Button>
 );
@@ -421,7 +422,7 @@ const ExportButton = ({ onClick }): JSX.Element => (
 export const ResetButton = ({ onClick }): JSX.Element => (
   <Button name="reset" action={onClick}>
     <IconBase>
-      <FAIcon icon={faRecycle} />
+      <FaUndo />
     </IconBase>
   </Button>
 );

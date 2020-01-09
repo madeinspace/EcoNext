@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../utils/context';
 import MonolithOrNextLink from '../Link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-
+import { FaChevronRight } from 'react-icons/fa';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const StyledCTA = styled.div`
@@ -53,7 +51,7 @@ const RelatedPagesCTA = () => {
     <StyledCTA>
       <h3>To continue building your economic story go to...</h3>
       <IconBase>
-        <FontAwesomeIcon size={'lg'} icon={faChevronRight} fixedWidth />
+        <FaChevronRight />
       </IconBase>
       <ul>
         {RelatedPages.map(({ Alias, MenuTitle }) => (

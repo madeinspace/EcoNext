@@ -35,7 +35,6 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="UTF-8"></meta>
-          <link href="https://use.fontawesome.com/releases/v5.12.0/css/svg-with-js.css" rel="stylesheet"></link>
           {HeadScripts.map((script, i) => (
             <script key={i} src={script.src} type="text/javascript" async={script.async} />
           ))}

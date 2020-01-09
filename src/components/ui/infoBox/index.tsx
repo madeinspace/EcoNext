@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FaInfoCircle } from 'react-icons/fa';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../../styles/variables.scss`);
 
 const _InfoBox = styled.div`
@@ -38,7 +37,7 @@ const IconBase = styled.span`
   height: 25px;
   width: 25px;
   color: #fff;
-  margin: 0 10px;
+  margin: 0 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +48,7 @@ const InfoBox = ({ children }) => {
   return (
     <_InfoBox visible={visible}>
       <IconBase>
-        <FontAwesomeIcon size={'lg'} color="#00a8ff" icon={faInfoCircle} fixedWidth />
+        <FaInfoCircle size="18px" color="#00a8ff" />
       </IconBase>
       {children}
       <CloseButton
