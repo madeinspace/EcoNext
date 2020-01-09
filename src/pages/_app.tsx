@@ -3,14 +3,7 @@
 import App from 'next/app';
 import React, { useEffect } from 'react';
 import '../styles/global.scss';
-import { ThemeProvider } from 'styled-components';
 import { initGA, logPageView } from '../utils/googleAnalytics';
-
-const theme = {
-  colors: {
-    primary: '#70b859',
-  },
-};
 
 const MyComponent = props => {
   const {
@@ -31,11 +24,9 @@ export default class Economy extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <ThemeProvider theme={theme}>
-        <MyComponent {...this.props}>
-          <Component {...pageProps} />
-        </MyComponent>
-      </ThemeProvider>
+      <MyComponent {...this.props}>
+        <Component {...pageProps} />
+      </MyComponent>
     );
   }
 }
