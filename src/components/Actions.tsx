@@ -301,13 +301,13 @@ const PageButtonName = styled.span`
 
 const ShareButton = ({ onClick }): JSX.Element => (
   <PageShareButtonLink onClick={onClick}>
-    <FAIcon icon={faShareAlt} />
+    <FontAwesomeIcon icon={faShareAlt} fixedWidth size={'lg'} />
     <PageButtonName>Share</PageButtonName>
   </PageShareButtonLink>
 );
 const ExportPageButton = ({ onClick }): JSX.Element => (
   <PageExportButtonLink onClick={onClick}>
-    <FAIcon icon={faFileExport} />
+    <FontAwesomeIcon icon={faFileExport} fixedWidth size={'lg'} />
     <PageButtonName>Export</PageButtonName>
   </PageExportButtonLink>
 );
@@ -396,7 +396,7 @@ const IconBase = styled.span`
   justify-content: center;
 `;
 
-const FAIcon = ({ icon }): JSX.Element => <FontAwesomeIcon icon={icon} />;
+const FAIcon = ({ icon }): JSX.Element => <FontAwesomeIcon icon={icon} fixedWidth size={'sm'} />;
 
 const PageShareButtonLink = styled.div`
   cursor: pointer;

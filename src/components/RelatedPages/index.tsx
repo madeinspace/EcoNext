@@ -56,7 +56,7 @@ const RelatedPagesCTA = () => {
     <StyledCTA>
       <h3>To continue building your economic story go to...</h3>
       <IconBase>
-        <FontAwesomeIcon size={'lg'} icon={faChevronRight} />
+        <FontAwesomeIcon size={'lg'} icon={faChevronRight} fixedWidth />
       </IconBase>
       <ul>
         {RelatedPages.map(({ Alias, MenuTitle }) => (

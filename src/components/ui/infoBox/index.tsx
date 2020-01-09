@@ -51,7 +51,7 @@ const InfoBox = ({ children }) => {
   return (
     <_InfoBox visible={visible}>
       <IconBase>
-        <FontAwesomeIcon size={'lg'} color="#00a8ff" icon={faInfoCircle} />
+        <FontAwesomeIcon size={'lg'} color="#00a8ff" icon={faInfoCircle} fixedWidth />
       </IconBase>
       {children}
       <CloseButton

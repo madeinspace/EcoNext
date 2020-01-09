@@ -5,18 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 config.autoAddCss = false;
 
-const FAIcon = ({ icon }): JSX.Element => <FontAwesomeIcon icon={icon} />;
-
-const SearchIcon = styled.div`
+const _SearchIcon = styled.div`
   display: inline-block;
   margin-right: -23px;
   position: relative;
 `;
 
-export default () => {
-  return (
-    <SearchIcon>
-      <FAIcon icon={faSearch} />
-    </SearchIcon>
-  );
-};
+const SerchIcon = () => (
+  <_SearchIcon>
+    <FontAwesomeIcon icon={faSearch} fixedWidth size={'sm'} />
+  </_SearchIcon>
+);
+
+export default SerchIcon;
