@@ -2,10 +2,9 @@
 /* eslint-disable react/prop-types */
 import App from 'next/app';
 import React, { useEffect } from 'react';
-import '@fortawesome/fontawesome-svg-core/styles.css';
+import '../styles/global.scss';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { ThemeProvider } from 'styled-components';
-import '../styles/global.scss';
 import { initGA, logPageView } from '../utils/googleAnalytics';
 config.autoAddCss = false;
 

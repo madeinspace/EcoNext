@@ -150,7 +150,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
       const searchTerm = hashParams['s'];
       const searchOption = hashParams['o'];
       this.handleOptionSwitch(searchOption);
-      this.setState({ searchOption }, () => {
+      this.setState({ searchOption, showSearch: true }, () => {
         if (searchTerm) {
           this.search(searchTerm);
         }

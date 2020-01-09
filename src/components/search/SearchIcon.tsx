@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,10 +9,18 @@ const _SearchIcon = styled.div`
   position: relative;
 `;
 
-const SerchIcon = () => (
-  <_SearchIcon>
-    <FontAwesomeIcon icon={faSearch} fixedWidth size={'sm'} />
-  </_SearchIcon>
-);
+const SerchIcon = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    setVisible(true);
+  });
+  return (
+    visible && (
+      <_SearchIcon>
+        <FontAwesomeIcon icon={faSearch} fixedWidth size={'sm'} />
+      </_SearchIcon>
+    )
+  );
+};
 
 export default SerchIcon;

@@ -434,9 +434,19 @@ const _Actions = styled.div`
   z-index: 100;
 `;
 
-export class Actions extends React.Component {
+export class Actions extends React.Component<{}, { visible: boolean }> {
+  constructor(props) {
+    super(props);
+    this.state = { visible: false };
+  }
+
+  componentDidMount = () => {
+    this.setState({ visible: true });
+  };
+
   public render = () => {
-    return <_Actions className="action">{this.props.children}</_Actions>;
+    const { visible } = this.state;
+    return visible && <_Actions className="action">{this.props.children}</_Actions>;
   };
 }
 
