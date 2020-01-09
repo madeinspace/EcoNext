@@ -2,13 +2,12 @@
 require('webpack');
 const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
-const withImages = require('next-images');
 const path = require('path');
 const assetPrefix = process.env.ASSET_PREFIX || '';
 const CDN_ENPOINT = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
-module.exports = withCSS(
-  withSass(
-    withImages({
+module.exports = withSass(
+  withCSS(
+    {
       publicRuntimeConfig: {
         EcoCDNEndPoint: CDN_ENPOINT
       },
@@ -28,6 +27,7 @@ module.exports = withCSS(
           },
         });
 
+
         // necesary for Edge to support spread operator (knex was not babeled)
         config.module.rules.push({
           test: /\.js(\?[^?]*)?$/,
@@ -43,6 +43,6 @@ module.exports = withCSS(
 
         return config;
       },
-    }),
+    },
   ),
 );
