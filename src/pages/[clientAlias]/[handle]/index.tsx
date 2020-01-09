@@ -50,7 +50,7 @@ const PageTemplate = (): JSX.Element => {
       <SiblingsMenu />
       <PageHeader>
         <Actions>
-          {/* <Share /> */}
+          <Share />
           <ExportPage />
         </Actions>
       </PageHeader>
