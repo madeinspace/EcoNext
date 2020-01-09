@@ -9,11 +9,9 @@ import { ClientContext, PageContext } from '../utils/context';
 import payload from '../utils/fecthPageReport/ReportPayload';
 import useForm from 'react-hook-form';
 import { emailRGX } from '../utils/Regex';
-import { config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt, faRecycle, faFileExport } from '@fortawesome/free-solid-svg-icons';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
-config.autoAddCss = false;
 
 export const ExportDropdown: React.FC<any> = props => {
   const [dropdownVisible, setDropdownVisible] = useState(false);

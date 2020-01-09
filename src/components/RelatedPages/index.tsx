@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 
 import { useContext } from 'react';
-import Link from 'next/link';
 import { ClientContext, PageContext } from '../../utils/context';
 import MonolithOrNextLink from '../Link';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-config.autoAddCss = false;
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
