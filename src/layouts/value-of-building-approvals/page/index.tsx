@@ -8,16 +8,17 @@ import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
 import { IdLink, ABSLinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import getActiveToggle from '../../../utils/getActiveToggle';
 // #endregion
 
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
   const { clientAlias, isLite } = useContext(ClientContext);
-  const { tableData } = useContext(PageContext);
-
+  const { tableData, entityData } = useContext(PageContext);
+  const defaultBenchmarkName = entityData.defaultBenchmarkName;
   const pageName = 'Value of total building approvals';
   const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, tableData);
 
   return (
     <>
@@ -46,9 +47,11 @@ const Source = () => (
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (alias, nodes) => {
+const tableBuilder = (bm, alias, nodes) => {
   const anchorName = 'indicators---building-approvals';
   const tableTitle = 'Value of total building approvals';
+  const LGA = nodes[0].GeoName;
+  const changeColDisplayText = `${LGA} as a % of ${bm}`;
 
   return {
     cssClass: '',
@@ -137,7 +140,7 @@ const tableBuilder = (alias, nodes) => {
       },
       {
         id: 7,
-        displayText: 'City of Monash as a % of Victoria',
+        displayText: changeColDisplayText,
         cssClass: 'even int',
       },
     ],

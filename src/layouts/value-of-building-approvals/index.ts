@@ -5,7 +5,6 @@ import { formatMillionsCurrency } from '../../utils';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID } = filters;
-
   const tableData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 
   return tableData;

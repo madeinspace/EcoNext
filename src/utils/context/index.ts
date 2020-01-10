@@ -20,6 +20,7 @@ type PageProps = {
   tableData?: Array<any>;
   filterToggles?: Array<any>;
   pageData?: any;
+  entityData?: any;
 };
 
 const ClientContext = React.createContext<Partial<ClientProps>>({});

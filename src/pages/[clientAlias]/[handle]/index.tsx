@@ -74,6 +74,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   const client: any = await fetchClientData({ clientAlias, containers });
 
+  //
   const layoutData = await fetchLayout(handle);
 
   if (!layoutData || !client) {
@@ -113,6 +114,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+    defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     HasPrefix: client.HasPrefix,
   };
 
@@ -127,6 +129,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     filterToggles,
     pageData,
     entities,
+    entityData: data,
   };
 
   return {

@@ -85,7 +85,7 @@ input:focus {
     * {
       color: #5f6062;
       font-size: 15px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-weight: 300;
       box-sizing: border-box;
     }
@@ -191,7 +191,7 @@ input:focus {
   }
   &:after {
     display: inline-block;
-    content: "";
+    content: '';
     margin: 2px auto;
     border: 3px solid transparent;
     border-top-color: #949494;
@@ -215,23 +215,9 @@ input:focus {
   }
 }
 
-.testSeacrh {
-  display: none;
-  transition: all 1s linear;
-  opacity: 0;
-}
-
 .showSearch {
   display: flex;
   opacity: 1;
-}
-
-.searchopened,
-.searchclosed {
-  -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
-  -ms-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
 }
 
 .underlay {
@@ -299,7 +285,7 @@ input:focus {
 .searchResults {
   color: #5f6062;
   font-size: 16px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.4;
   font-weight: 300;
   background: #fff;
@@ -681,17 +667,7 @@ a.badge:focus {
   -webkit-box-shadow: 10px 10px 32px -5px rgba(0, 0, 0, 0.14);
   -moz-box-shadow: 10px 10px 32px -5px rgba(0, 0, 0, 0.14);
   box-shadow: 10px 10px 32px -5px rgba(0, 0, 0, 0.14);
-  -webkit-transition: all 0.5s 0.1s;
-  -moz-transition: all 0.5s 0.1s;
-  transition: all 0.5s 0.1s;
   transform: translateY(20px);
-  animation: fadein 1s;
-  -moz-animation: fadein 1s;
-  /* Firefox */
-  -webkit-animation: fadein 1s;
-  /* Safari and Chrome */
-  -o-animation: fadein 1s;
-  /* Opera */
 }
 
 @keyframes fadein {
@@ -753,7 +729,7 @@ a.badge:focus {
   bottom: 100%;
   left: 50%;
   border: solid transparent;
-  content: " ";
+  content: ' ';
   height: 0;
   width: 0;
   position: absolute;
@@ -858,8 +834,8 @@ a.badge:focus {
   padding-bottom: 25px;
   padding-top: 20px;
   a {
-    font-family: "Zurich Condensed", "Zurich", -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Zurich Condensed', 'Zurich', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+      Arial, sans-serif;
     text-decoration: none;
     font-size: 18px;
     cursor: pointer;
@@ -989,7 +965,7 @@ a.badge:focus {
   font-size: 18px;
 }
 
-.searchInputContainer input[type="text"] {
+.searchInputContainer input[type='text'] {
   border: none !important;
 }
 
