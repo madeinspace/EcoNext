@@ -12,7 +12,7 @@ export default ({ formatID, LongName, pageSubTitle, emailAddress }) => {
           propertyName: 'UserStyleSheet',
           propertyValue: `table tr td{font-size:14px!important;} p{font-size:16px!important; line-height:26px!important} .action{display:none} #main-nav{display:none} .e-shad{box-shadow:none; border:1px solid lightgray}`,
         },
-        { propertyName: 'OutputArea', propertyValue: 'new RectangleF(0.5f, 0.5f, 7.5f, 10f)' },
+        { propertyName: 'OutputArea', propertyValue: 'new RectangleF(0.4f, 0.4f, 7.7f, 10f)' },
       ],
     },
   ];
