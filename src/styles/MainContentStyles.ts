@@ -101,6 +101,8 @@ export const PageIntroFullWidth = styled.div`
 `;
 
 export const ItemWrapper = styled.div`
+  page-break-inside: avoid;
+  /* page-break-after: always; */
   margin: 20px 0;
 `;
 
