@@ -90,7 +90,7 @@ const tableBuilder = (bm, alias, nodes) => {
           },
           {
             cssClass: 'odd ',
-            displayText: 'Victoria',
+            displayText: bm,
             colSpan: 3,
           },
           {
