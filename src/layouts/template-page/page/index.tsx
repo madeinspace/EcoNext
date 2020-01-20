@@ -11,9 +11,9 @@ import { PageContext, ClientContext } from '../../../utils/context';
 // #region template page
 const TemplatePage = () => {
   // const { clientAlias } = useContext(ClientContext);
-  // const { tableData } = useContext(PageContext);
+  // const { contentData } = useContext(PageContext);
 
-  const tableData = [
+  const contentData = [
     {
       ClientID: 102,
       WebID: 10,
@@ -397,8 +397,8 @@ const TemplatePage = () => {
   ];
   const clientAlias = 'clientAlias';
   const currenBenchmark = 'Victoria';
-  const chartLineData = chartLineBuilder(currenBenchmark, clientAlias, tableData);
-  const tableParams = tableBuilder(currenBenchmark, clientAlias, tableData);
+  const chartLineData = chartLineBuilder(currenBenchmark, clientAlias, contentData);
+  const tableParams = tableBuilder(currenBenchmark, clientAlias, contentData);
   return (
     <>
       <ItemWrapper>

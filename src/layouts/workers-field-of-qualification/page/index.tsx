@@ -49,9 +49,9 @@ const TopThree = Top(3);
 const TopFour = Top(4);
 
 const TopThreeFields = ({ industryName }) => {
-  const { tableData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
-  const topquals = TopLevelQualifications(tableData);
+  const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
   const topThree = TopThree(highestQuals);
 
@@ -78,7 +78,7 @@ const TopThreeFields = ({ industryName }) => {
 const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   const {
     filters: { IGBMID },
-    tableData,
+    contentData,
   } = useContext(PageContext);
 
   let currentBenchmarkName: any = benchmarkName;
@@ -89,7 +89,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
     currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
   }
 
-  const topquals = TopLevelQualifications(tableData);
+  const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
   const topThree: any = TopThree(highestQuals);
 
@@ -138,9 +138,9 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
 };
 
 const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
-  const { tableData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
-  const topquals = TopLevelQualifications(tableData);
+  const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
   const majorDifferences = _.sortBy(qualsWithData, qual => {
     const compare = [qual.PerYear1, qual.BMYear1];
@@ -183,9 +183,9 @@ const EmergingGroupsHeading = ({ areaName, industryName }) => {
 };
 
 const EmergingGroups = () => {
-  const { tableData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
-  const topquals = TopLevelQualifications(tableData);
+  const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
   const topFour = TopFour(highestQuals);
 
@@ -204,7 +204,7 @@ const EmergingGroups = () => {
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { tableData, filterToggles } = useContext(PageContext);
+  const { contentData, filterToggles } = useContext(PageContext);
 
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
   const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
@@ -216,7 +216,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
-    TabularData: tableData,
+    TabularData: contentData,
   });
 
   const chartData = chartBuilder({
@@ -224,7 +224,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
-    TabularData: tableData,
+    TabularData: contentData,
   });
 
   const chartChangeData = chartBuilderChange({
@@ -232,7 +232,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
-    TabularData: tableData,
+    TabularData: contentData,
   });
 
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);

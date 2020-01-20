@@ -13,13 +13,13 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { tableData, filterToggles } = useContext(PageContext);
+  const { contentData, filterToggles } = useContext(PageContext);
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
   const currentYear = getActiveToggle(filterToggles, 'sStartYear', LongName);
   const benchmarkYear = getActiveToggle(filterToggles, 'sEndYear', LongName);
-  const tableParams = tableBuilder(currentYear, benchmarkYear, clientAlias, tableData);
-  const chartData = chartBuilder(currentYear, benchmarkYear, currentAreaName, tableData);
-  const chartChangeData = chartBuilderChange(currentYear, benchmarkYear, currentAreaName, tableData);
+  const tableParams = tableBuilder(currentYear, benchmarkYear, clientAlias, contentData);
+  const chartData = chartBuilder(currentYear, benchmarkYear, currentAreaName, contentData);
+  const chartChangeData = chartBuilderChange(currentYear, benchmarkYear, currentAreaName, contentData);
 
   return (
     <>

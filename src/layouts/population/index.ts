@@ -6,9 +6,9 @@ import Page from './page';
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, IGBMID } = filters;
 
-  const tableData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
+  const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
@@ -19,18 +19,18 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string => {
+      renderString: ({ data, contentData }): string => {
         const prefix = data.HasPrefix ? 'The' : '';
         const areaName = data.currentAreaName;
-        const ERP = formatNumber(tableData[0].Number);
-        const currentYear = tableData[0].Year;
+        const ERP = formatNumber(contentData[0].Number);
+        const currentYear = contentData[0].Year;
 
         return `The Estimated Resident Population of ${prefix} ${areaName} was ${ERP} as of the 30th June ${currentYear}.`;
       },
     },
     {
       Title: 'Description',
-      renderString: ({ data, tableData }): string =>
+      renderString: ({ data, contentData }): string =>
         `<p>The Estimated Resident Population (ERP) is the official population of the area. It is updated annually by the Australian Bureau of Statistics, and reassessed every Census. The chart and table show last 10 years ERP for ${data.currentAreaName}, the state and Australia, with percentage comparisons. A growing population can indicate a growing economy, but this is not necessarily the case and depends on the residential role and function of the area.</p>`,
     },
   ],

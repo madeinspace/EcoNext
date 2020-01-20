@@ -15,9 +15,9 @@ const largest = (arr, key) => {
 import Page from './page';
 
 const fetchData = async ({ filters }) => {
-  const tableData = await sqlConnection.raw(tableDataQuery(filters));
+  const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
@@ -28,11 +28,11 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string => {
+      renderString: ({ data, contentData }): string => {
         const prefix = data.HasPrefix ? 'the ' : '';
         const areaName = `${prefix}${data.currentAreaName}`;
         const selectedIndustry = without(data.currentIndustryName, 'All industries');
-        const mostCommonQual = largest(tableData, 'NoYear1').LabelName;
+        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
         const headlineAlt = `${mostCommonQual} is the most common qualification for ${selectedIndustry} workers in ${areaName}.`;
 
         return headlineAlt;
@@ -98,8 +98,8 @@ const pageContent = {
 
 export { fetchData, Page, pageContent };
 
-/* #region  tableDataQuery */
-const tableDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+/* #region  contentDataQuery */
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
     ${ClientID},
     ${WebID},

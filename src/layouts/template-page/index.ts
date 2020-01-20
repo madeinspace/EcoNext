@@ -3,10 +3,10 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 
 const fetchData = async ({ filters }) => {
-  const tableData = {};
-  // const tableData = await sqlConnection.raw(tableDataQuery(filters));
+  const contentData = {};
+  // const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
@@ -18,5 +18,5 @@ export { fetchData, Page, pageContent };
 
 // uncomment the below function with the correct SQL
 
-// const tableDataQuery = filters =>
+// const contentDataQuery = filters =>
 // `select * from CommData_Economy.[dbo].[${TableName}]() order by ${OrderBy}`;

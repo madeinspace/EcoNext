@@ -10,12 +10,12 @@ import { NierLink, IdLink } from '../../../components/ui/links';
 
 const FullContent = () => {
   const { clientAlias } = useContext(ClientContext);
-  const { tableData, filterToggles } = useContext(PageContext);
+  const { contentData, filterToggles } = useContext(PageContext);
   const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
-  const GRPChartData = GRPChartBuilder(tableData);
-  const CumulitativeChangeChartData = CumulitativeChangeChartBuilder(tableData, currentBenchmark);
-  const AnnualChangeChartData = AnnualChangeChartBuilder(tableData, currentBenchmark);
-  const tableParams = tableBuilder(currentBenchmark, clientAlias, tableData);
+  const GRPChartData = GRPChartBuilder(contentData);
+  const CumulitativeChangeChartData = CumulitativeChangeChartBuilder(contentData, currentBenchmark);
+  const AnnualChangeChartData = AnnualChangeChartBuilder(contentData, currentBenchmark);
+  const tableParams = tableBuilder(currentBenchmark, clientAlias, contentData);
 
   return (
     <>

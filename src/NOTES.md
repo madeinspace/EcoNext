@@ -42,7 +42,7 @@ _Now, we'll need to fetch the data for this page._
 
 - Make note of the Name -- we'll need this shortly
 
-- Copy the TableName and OrderBy values into the `tableDataQuery` function in `value-of-building-approvals/index`
+- Copy the TableName and OrderBy values into the `contentDataQuery` function in `value-of-building-approvals/index`
 
 - The parameters (eg everything inside the "()", so ClientID, WebID, BMID) will need to be in the same order as in the `Parameters` object in Cosmos (or just look up the function in SQL)
 
@@ -68,7 +68,7 @@ First, check that the Name of the HtmlTable above matches the table being refere
 
 Second, look at the `Attributes` key in the Table object -- there should be an entry whose `Name` matches the variable we're looking for (eg `LocalJobNumber`). _This is not the column name_. The value we need to get is the `ReturnColumnName`, eg `PerYear1`.
 
-This value will be one of the columns returned by the SQL call, which we have access to in the `tableData` array. _Sometimes we want the first row back, sometimes we want the largest row back_. For now, until we can work out the best logic, it might be easier to manipulate `tableData` on a case-by-case basis to get the correct data returned.
+This value will be one of the columns returned by the SQL call, which we have access to in the `contentData` array. _Sometimes we want the first row back, sometimes we want the largest row back_. For now, until we can work out the best logic, it might be easier to manipulate `contentData` on a case-by-case basis to get the correct data returned.
 
 ---
 

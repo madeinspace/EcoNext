@@ -297,13 +297,13 @@ const chartBuilder = nodes => {
 // #region population page
 const PopulationPage = (): JSX.Element => {
   const { clientAlias, clientProducts } = useContext(ClientContext);
-  const { tableData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
   const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
 
-  const chartData = chartBuilder(tableData);
-  const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  const chartData = chartBuilder(contentData);
+  const chartLineData = chartLineBuilder(contentData);
+  const tableParams = tableBuilder(clientAlias, contentData);
 
   return (
     <>

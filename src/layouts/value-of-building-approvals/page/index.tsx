@@ -14,11 +14,11 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
   const { clientAlias, isLite } = useContext(ClientContext);
-  const { tableData, entityData } = useContext(PageContext);
+  const { contentData, entityData } = useContext(PageContext);
   const defaultBenchmarkName = entityData.defaultBenchmarkName;
   const pageName = 'Value of total building approvals';
-  const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, tableData);
+  const chartData = chartBuilder(contentData);
+  const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);
 
   return (
     <>

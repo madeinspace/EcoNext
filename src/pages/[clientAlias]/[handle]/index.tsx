@@ -76,6 +76,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   //
   const layoutData = await fetchLayout(handle);
+  console.log('layoutData: ', layoutData);
 
   if (!layoutData || !client) {
     // 404
@@ -118,13 +119,13 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     HasPrefix: client.HasPrefix,
   };
 
-  const tableData = await fetchData({ filters });
+  const contentData = await fetchData({ filters });
 
-  const entities = await filterEntities(filters, pageContent['entities'], { tableData, data });
+  const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {
     handle,
-    tableData,
+    contentData,
     filters,
     filterToggles,
     pageData,

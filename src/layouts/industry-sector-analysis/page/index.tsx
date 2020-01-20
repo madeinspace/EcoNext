@@ -12,10 +12,10 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { tableData, filterToggles } = useContext(PageContext);
-  const chartData = chartBuilder(tableData);
-  const chartLineData = chartLineBuilder(tableData);
-  const tableParams = tableBuilder(clientAlias, tableData);
+  const { contentData, filterToggles } = useContext(PageContext);
+  const chartData = chartBuilder(contentData);
+  const chartLineData = chartLineBuilder(contentData);
+  const tableParams = tableBuilder(clientAlias, contentData);
 
   return (
     <>

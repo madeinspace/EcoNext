@@ -5,9 +5,9 @@ import { formatMillionsCurrency } from '../../utils';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID } = filters;
-  const tableData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
+  const contentData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
@@ -18,10 +18,10 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
+      renderString: ({ data, contentData }): string =>
         `The value of building approvals in ${data.currentAreaName} was ${formatMillionsCurrency(
-          tableData[0].Total * 1000,
-        )} in the ${tableData[0].LabelName} financial year.`,
+          contentData[0].Total * 1000,
+        )} in the ${contentData[0].LabelName} financial year.`,
     },
     {
       Title: 'Description',

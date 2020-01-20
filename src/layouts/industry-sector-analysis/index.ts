@@ -3,16 +3,16 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 
 const fetchData = async ({ filters }) => {
-  const tableData = await sqlConnection.raw(tableDataQuery(filters));
+  const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
+      renderString: ({ data, contentData }): string =>
         `In [Parameter].[sStartYearLabel], ${data.currentAreaName} contributed [Econ_IndustryAnalysis].[EmploymentPer].{0:0.0}% of [BM]’s [IndkeyNieirAlt1] employment and [Econ_IndustryAnalysis].[ValueAddedPer].{0:0.0}% of its value added.`,
     },
   ],
@@ -86,7 +86,7 @@ export { fetchData, Page, pageContent };
 // @LblID varchar(max) = null,
 // @Indkey int = NULL
 
-const tableDataQuery = ({
+const contentDataQuery = ({
   ClientID,
   WebID,
   IGBMID,

@@ -13,8 +13,8 @@ const SQLite = ({ ClientID, WebID, BMID }) => `
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, BMID, IsLite } = filters;
   const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
-  const tableData = await sqlConnection.raw(SQLQuery);
-  return tableData;
+  const contentData = await sqlConnection.raw(SQLQuery);
+  return contentData;
 };
 
 const pageContent = {
@@ -49,11 +49,11 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string => {
+      renderString: ({ data, contentData }): string => {
         const prefix = data.HasPrefix ? 'The ' : '';
         const areaName = data.currentAreaName;
-        const GRP = formatNumber(tableData[0].HeadLineGRP);
-        const endYear = tableData[0].Year_End;
+        const GRP = formatNumber(contentData[0].HeadLineGRP);
+        const endYear = contentData[0].Year_End;
 
         return `${prefix}${areaName}\'s Gross Regional Product was $${GRP}m as of the 30th June ${endYear}.`;
       },
@@ -67,11 +67,11 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string => {
+      renderString: ({ data, contentData }): string => {
         const prefix = data.HasPrefix ? 'The ' : '';
         const areaName = data.currentAreaName;
-        const GRP = formatNumber(tableData[0].ValWebID);
-        const endYear = tableData[0].Yr;
+        const GRP = formatNumber(contentData[0].ValWebID);
+        const endYear = contentData[0].Yr;
 
         return `${prefix}${areaName}\'s Gross Regional Product was $${GRP}m as of the 30th June ${endYear}.`;
       },

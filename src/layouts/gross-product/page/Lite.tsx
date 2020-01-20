@@ -12,10 +12,10 @@ import { ABSLink, NierLink, IdLink, ABSLinkBuilder } from '../../../components/u
 // #region LiteContent
 const LiteContent = () => {
   const { clientAlias } = useContext(ClientContext);
-  const { tableData, filterToggles } = useContext(PageContext);
+  const { contentData, filterToggles } = useContext(PageContext);
   const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
-  const chartData = chartBuilder(tableData);
-  const tableParams = tableBuilder(currentBenchmark, clientAlias, tableData);
+  const chartData = chartBuilder(contentData);
+  const tableParams = tableBuilder(currentBenchmark, clientAlias, contentData);
 
   return (
     <>

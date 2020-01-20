@@ -3,17 +3,17 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 
 const fetchData = async ({ filters }) => {
-  const tableData = await sqlConnection.raw(tableDataQuery(filters));
+  const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
-  return tableData;
+  return contentData;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'Headline',
-      renderString: ({ data, tableData }): string =>
-        `The ${tableData[0].LabelName} industry had the largest number of [BTypeAlt] in ${data.currentAreaName}, comprising ${tableData[0].PerYear1}% of all  [BTypeAlt], compared to [Econ_BusinessRegister].[Top1PerBM].{0:0.0}% in [BM].`,
+      renderString: ({ data, contentData }): string =>
+        `The ${contentData[0].LabelName} industry had the largest number of [BTypeAlt] in ${data.currentAreaName}, comprising ${contentData[0].PerYear1}% of all  [BTypeAlt], compared to [Econ_BusinessRegister].[Top1PerBM].{0:0.0}% in [BM].`,
     },
   ], // copy this from the relevant key in 'data/content.ts'
   filterToggles: [
@@ -59,7 +59,7 @@ const pageContent = {
 export { fetchData, Page, pageContent };
 
 // uncomment the below function with the correct SQL
-const tableDataQuery = filters => {
+const contentDataQuery = filters => {
   const { ClientID, WebID, sStartYear, sEndYear, BType } = filters;
 
   return `select * from CommData_Economy.[dbo].[fn_BusinessRegister](${ClientID}, ${WebID}, 40, ${sStartYear}, ${sEndYear}, 1, null, ${BType}) order by LabelKey`;

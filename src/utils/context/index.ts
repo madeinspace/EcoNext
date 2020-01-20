@@ -17,7 +17,7 @@ type PageProps = {
   entities?: Array<any>;
   handle?: string;
   filters?: any;
-  tableData?: Array<any>;
+  contentData?: any;
   filterToggles?: Array<any>;
   pageData?: any;
   entityData?: any;
