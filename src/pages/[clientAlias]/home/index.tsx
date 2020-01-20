@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import Router from 'next/router';
 
-const ClientLandingPage = () => <></>;
+const HomeLandingPage = () => <></>;
 
-ClientLandingPage.getInitialProps = async context => {
+HomeLandingPage.getInitialProps = async context => {
   const {
     query: { clientAlias },
     res,
@@ -20,4 +20,4 @@ ClientLandingPage.getInitialProps = async context => {
   return {};
 };
 
-export default ClientLandingPage;
+export default HomeLandingPage;

@@ -7,11 +7,11 @@ import PageHeader from '../../components/PageHeader';
 import Headline from '../../components/Headline';
 import Description from '../../components/Description';
 import filterEntities from '../../utils/filterEntities';
-import axios from 'axios';
+
 import { PageContext, ClientContext } from '../../utils/context';
 import { Actions, Share, ExportPage } from '../../components/Actions';
 
-const PageComponent = ({ client, page }): JSX.Element => {
+const HomePageComponent = ({ client, page }): JSX.Element => {
   const MainContent = PageMappings['home'];
   return (
     <PageContext.Provider value={page}>
@@ -32,7 +32,7 @@ const PageComponent = ({ client, page }): JSX.Element => {
   );
 };
 
-PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
+HomePageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias: clientAlias, ...providedFilters } = query;
   const handle = 'home';
   const client: any = await fetchClientData({ clientAlias, containers });
@@ -71,14 +71,8 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     HasPrefix: client.HasPrefix,
   };
 
-  const contentData = await fetchData({ filters });
-  const url = `https://economy.id.com.au/${clientAlias}/geo/areasbytypeid/4`;
-  const mapData = await axios
-    .get(url)
-    .then(response => response.data)
-    .catch(error => {
-      console.log(error);
-    });
+  const contentData = await fetchData({ filters, clientAlias });
+  console.log('contentData: ', contentData);
 
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
   console.log('entities: ', entities);
@@ -89,7 +83,6 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     filters,
     filterToggles: [],
     pageData,
-    mapData,
     entities,
   };
 
@@ -99,4 +92,4 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   };
 };
 
-export default PageComponent;
+export default HomePageComponent;
