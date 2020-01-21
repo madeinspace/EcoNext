@@ -10,7 +10,6 @@ const homeStatsDataQuery = filters =>
 const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`;
 
 const fetchData = async ({ filters, clientAlias }) => {
-  console.log('filters: ', filters);
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));
   const newsData = await sqlConnection.raw(newDataQuery());
   const url = `https://economy.id.com.au/${clientAlias}/geo/areasbytypeid/4`;

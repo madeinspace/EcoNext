@@ -72,10 +72,8 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   };
 
   const contentData = await fetchData({ filters, clientAlias });
-  console.log('contentData: ', contentData);
 
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
-  console.log('entities: ', entities);
 
   const page = {
     handle,
