@@ -120,6 +120,7 @@ const SubMenu = styled.ul`
   left: 100%;
   z-index: 1000;
   margin-left: -1px;
+  padding: 0;
 `;
 
 const MenuItem = styled.li`

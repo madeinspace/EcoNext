@@ -47,6 +47,7 @@ const StyledLink = styled(Link)`
   padding: 0px 12px 0 12px;
   margin-bottom: 10px;
   border-bottom: 2px solid transparent;
+  line-height: 27px;
   &.active,
   :hover {
     border-bottom: 2px solid ${variables.colorEconomy};
@@ -58,6 +59,7 @@ const DisabledLink = styled.a`
   margin-bottom: 10px;
   color: ${variables.grayLight};
   text-decoration: none;
+  line-height: 27px;
   cursor: default;
   :hover {
     border-bottom: 2px solid ${variables.colorEconomy};

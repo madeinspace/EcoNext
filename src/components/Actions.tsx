@@ -317,7 +317,7 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownListItem = styled.li`
-  padding: 0 10px;
+  padding: 8px;
 
   &:hover {
     cursor: pointer;
