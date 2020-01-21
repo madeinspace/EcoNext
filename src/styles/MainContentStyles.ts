@@ -39,6 +39,7 @@ export const MainTitle = styled.h1`
 export const _SubTitle = styled.h3`
   font-size: 23px;
   line-height: 27px;
+  margin-bottom: 1.45em;
 `;
 
 export const Headline = styled.p`
