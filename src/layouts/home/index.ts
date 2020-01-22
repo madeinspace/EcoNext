@@ -9,17 +9,21 @@ const homeStatsDataQuery = filters =>
 
 const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`;
 
-const fetchData = async ({ filters, clientAlias }) => {
+const GeomQuery = clientId => `exec CommClient.[dbo].[sp_GeomEconomyEnvelopeLGA] ${clientId}`;
+
+const fetchData = async ({ filters, clientAlias, mapLayers }) => {
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));
   const newsData = await sqlConnection.raw(newDataQuery());
-  const url = `https://economy.id.com.au/${clientAlias}/geo/areasbytypeid/4`;
-  const mapData = await axios
+  const geomData = await sqlConnection.raw(GeomQuery(filters.ClientID));
+  console.log('fetchData geomData: ', geomData);
+  const url = `https://economy.id.com.au/${clientAlias}/geo/MapMeta/${mapLayers}`;
+  let mapData = await axios
     .get(url)
     .then(response => response.data)
     .catch(error => {
       console.log(error);
     });
-
+  mapData = { ...mapData, geomData };
   return { statsData, newsData, mapData };
 };
 

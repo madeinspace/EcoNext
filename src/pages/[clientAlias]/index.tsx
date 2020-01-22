@@ -47,7 +47,6 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
 
   const { AllPages } = containers;
   const pageData = AllPages[handle];
-
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
@@ -71,7 +70,19 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     HasPrefix: client.HasPrefix,
   };
 
-  const contentData = await fetchData({ filters, clientAlias });
+  const uniqueLayers = [];
+  const map = new Map();
+  for (const item of client.clientAreas) {
+    if (!map.has(item.LayerID)) {
+      map.set(item.LayerID, true);
+      uniqueLayers.push({
+        id: item.LayerID,
+        name: item.Group,
+      });
+    }
+  }
+  const mapLayers = [...new Set(client.clientAreas.map(item => item.LayerID))].join(',');
+  const contentData = await fetchData({ filters, clientAlias, mapLayers });
 
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 

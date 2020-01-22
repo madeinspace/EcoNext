@@ -1,17 +1,7 @@
 import styled from 'styled-components';
-export const NewsGrid = ({ newsTiles }) => {
-  const SectionTitle = styled.h3`
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-    margin: 0;
-    padding: 0;
-    padding-bottom: 10px;
-    margin: 20px 0;
-  `;
-  const NewsWrapper = styled.div`
-    margin-top: 20px;
-  `;
+export const NewsGrid = ({ tiles }) => {
   const TilesGrid = styled.div`
+    margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     grid-gap: 20px;
@@ -28,6 +18,7 @@ export const NewsGrid = ({ newsTiles }) => {
       font-size: 16px;
       font-weight: bold;
       color: rgb(0, 154, 68);
+      margin-bottom: 10px;
     }
     &:hover {
       box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.1), 0 12px 17px 2px rgba(0, 0, 0, 0.08),
@@ -44,7 +35,7 @@ export const NewsGrid = ({ newsTiles }) => {
     },
   ];
 
-  const NewsTiles = [...newsTiles, ...extraNews].map(news => {
+  const NewsTiles = [...tiles, ...extraNews].map(news => {
     return (
       <Tile href={news.URL} target="_blank" rel="noopener" key={news.NewsID}>
         <article>
@@ -55,10 +46,5 @@ export const NewsGrid = ({ newsTiles }) => {
     );
   });
 
-  return (
-    <NewsWrapper>
-      <SectionTitle>News</SectionTitle>
-      <TilesGrid>{NewsTiles}</TilesGrid>
-    </NewsWrapper>
-  );
+  return <TilesGrid>{NewsTiles}</TilesGrid>;
 };

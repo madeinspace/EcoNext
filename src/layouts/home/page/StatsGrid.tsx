@@ -6,14 +6,6 @@ export const StatsGrid = ({ tiles }) => {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 20px;
   `;
-  const SectionTitle = styled.h3`
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-    margin: 0;
-    padding: 0;
-    padding-bottom: 10px;
-    margin: 20px 0;
-  `;
 
   const Tile = styled.section`
     padding: 10px 20px 10px 15px;
@@ -49,6 +41,8 @@ export const StatsGrid = ({ tiles }) => {
     justify-content: flex-start;
     align-items: flex-end;
     margin: 0;
+    font-size: 12px;
+    opacity: 0.7;
   `;
 
   const statsTiles = tiles.map(tile => {
@@ -73,10 +67,5 @@ export const StatsGrid = ({ tiles }) => {
       </Tile>
     );
   });
-  return (
-    <>
-      <SectionTitle>Key Statistics</SectionTitle>
-      <TilesGrid>{statsTiles}</TilesGrid>
-    </>
-  );
+  return <TilesGrid>{statsTiles}</TilesGrid>;
 };
