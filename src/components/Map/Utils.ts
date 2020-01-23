@@ -1,7 +1,8 @@
 import L from 'leaflet';
 import Wkt from 'wicket';
+import _ from 'lodash';
 
-export const mashLayers = ({ entitylayers, layers, LongName }) => {
+export const createMapLayers = ({ entitylayers, layers, LongName }) => {
   const lookup = entitylayers.reduce((a, c) => {
     a[c.TypeID] = {
       id: c.TypeID,
@@ -16,14 +17,38 @@ export const mashLayers = ({ entitylayers, layers, LongName }) => {
 
   const mapLayers = layers.reduce((acc, currlayer) => {
     const match = lookup[parseInt(currlayer.id)];
+    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
     const key = match.name;
     if (!(key in acc)) {
-      acc.push({ ...match, shapes: currlayer.shapes });
+      acc.push({ ...match, decodedLayer: decodedAreas });
     }
     return acc;
   }, []);
 
   return mapLayers;
+};
+
+export const decodeArea = ({ area, type }) => {
+  // each area can be just a simple polygon or a collection of polygons
+  // (multipolygon shape) or a polygon with holes or a combination or both
+  const polys = [];
+  const decodedArea = { areaName: area.shapeName, areaId: area.id, leafletPolys: polys, type };
+
+  const mainGeo = decodePoints(area.points, true);
+  polys.push(mainGeo);
+
+  // if area has hole polys become a multidimensional array (https://leafletjs.com/reference-1.6.0.html#polygon)
+  if (area.holes.length > 0) {
+    const holes = area.holes.map(hole => decodePoints(hole.points, true));
+    polys.push(holes);
+  }
+
+  if (area.shapes.length > 0) {
+    area.shapes.forEach(shape => {
+      polys.push(decodePoints(shape.points, true));
+    });
+  }
+  return decodedArea;
 };
 
 export const getBoundariesFromWKT = WKT => {
@@ -39,4 +64,45 @@ export const getBoundariesFromWKT = WKT => {
 
 export const reverseCoordinates = coordinates => {
   return coordinates.map(arr => arr.reverse());
+};
+
+export const decodePoints = (encoded: string, flipLatLng: boolean = true) => {
+  if (encoded === undefined) return [];
+  let len = String(encoded).length;
+  let index = 0;
+  let ar = [];
+  let lat = 0;
+  let lng = 0;
+
+  try {
+    while (index < len) {
+      let b;
+      let shift = 0;
+      let result = 0;
+      do {
+        b = encoded.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+
+      let dlat = result & 1 ? ~(result >> 1) : result >> 1;
+      lat += dlat;
+
+      shift = 0;
+      result = 0;
+      do {
+        b = encoded.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+
+      let dlng = result & 1 ? ~(result >> 1) : result >> 1;
+      lng += dlng;
+
+      ar.push(L.latLng((flipLatLng ? lng : lat) * 1e-5, (flipLatLng ? lat : lng) * 1e-5));
+    }
+  } catch (ex) {
+    console.log(ex);
+  }
+  return ar;
 };

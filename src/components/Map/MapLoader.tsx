@@ -2,7 +2,8 @@ import styled, { keyframes } from 'styled-components';
 export const MapLoader = ({ loaded }) => {
   const LoadingWrapper = styled.div`
     min-height: 400px;
-    position: relative;
+    width: 100%;
+    position: absolute;
     display: ${props => (props.loaded ? 'none' : 'flex')};
   `;
   const pulsate = keyframes`

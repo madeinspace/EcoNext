@@ -107,6 +107,11 @@ export const ItemWrapper = styled.div`
   margin: 20px 0;
 `;
 
+export const MapWrapper = styled(ItemWrapper).attrs({ className: `e-shad` })`
+  position: relative;
+  min-height: 400px;
+`;
+
 export const ProductIcon = styled.span`
   width: 20px;
   height: 20px;

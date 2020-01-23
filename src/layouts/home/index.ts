@@ -15,7 +15,6 @@ const fetchData = async ({ filters, clientAlias, mapLayers }) => {
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));
   const newsData = await sqlConnection.raw(newDataQuery());
   const geomData = await sqlConnection.raw(GeomQuery(filters.ClientID));
-  console.log('fetchData geomData: ', geomData);
   const url = `https://economy.id.com.au/${clientAlias}/geo/MapMeta/${mapLayers}`;
   let mapData = await axios
     .get(url)

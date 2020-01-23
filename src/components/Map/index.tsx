@@ -2,72 +2,82 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import L from 'leaflet';
 import '../../styles/leaflet.css';
 import { LayerControl } from './LayerControl';
-import styled from 'styled-components';
 import TileLayers from './TileLayers';
 import { ClientContext } from '../../utils/context';
-import { mashLayers, reverseCoordinates, getBoundariesFromWKT } from './Utils';
-
-const MapContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  position: relative;
-`;
-
-const InfoPanel = styled.div`
-  position: absolute;
-  z-index: 401;
-  background: white;
-  padding: 10px;
-  align-self: flex-end;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
-  right: 10px;
-  top: 10px;
-`;
-
-const Footer = styled.div`
-  padding: 10px;
-`;
-const Source = styled.p`
-  margin: 0;
-`;
+import { getBoundariesFromWKT, createMapLayers } from './Utils';
+import ToolTip from './Tooltip';
+import { MapContainer, InfoPanel, Footer, Source } from './MapStyledComponents';
 
 const LeafletMap = ({ mapData, onLoaded }) => {
-  const [map, setMap] = useState(null);
-  const mapContainer = useRef(null);
-  const { layers, entitylayers, geomData } = mapData;
-
   const { LongName } = useContext(ClientContext);
-
-  const maplayers = mashLayers({ entitylayers, layers, LongName });
+  const { layers, entitylayers, geomData } = mapData;
+  const [map, setMap] = useState(null);
+  const [mapLayers, setMapLayers] = useState(null);
+  const [featureGroups, setFeatureGroups] = useState([]);
+  const [activeLayers, setActiveLayers] = useState([]);
+  const mapContainer = useRef(null);
 
   useEffect(() => {
-    const initializeMap = ({ mapContainer }) => {
-      let map: L.map = L.map(mapContainer.current, {
-        layers: TileLayers.road,
-      });
+    !mapLayers ? initializeLayers() : DrawLayers();
+  }, [mapLayers]);
 
-      map.on('load', ev => {
-        onLoaded();
-        setMap(map);
-      });
-
-      const bounds = getBoundariesFromWKT(geomData[0].WKT);
-      map.fitBounds(bounds);
-    };
-
+  useEffect(() => {
     if (!map) initializeMap({ mapContainer });
   }, [map]);
 
+  useEffect(() => {
+    console.log('active layers are : ', activeLayers);
+  }, [activeLayers]);
+
+  const initializeMap = ({ mapContainer }) => {
+    let map: L.map = L.map(mapContainer.current, {
+      layers: TileLayers.road,
+    });
+    const bounds = getBoundariesFromWKT(geomData[0].WKT);
+    map.fitBounds(bounds);
+    setMap(map);
+    onLoaded();
+  };
+
+  const initializeLayers = () => setMapLayers(createMapLayers({ entitylayers, layers, LongName }));
+
+  const DrawLayers = () => {
+    const featureGroups = [];
+    mapLayers.forEach(layer => {
+      const featureGroup = {
+        id: layer.id,
+        zIndex: layer.zIndex,
+        featureGroup: createFeatureGroup(createLeafletLayer(layer))
+          .setZIndex(layer.zIndex)
+          .addTo(map),
+      };
+      featureGroups.push(featureGroup);
+    });
+    setFeatureGroups(featureGroups);
+  };
+
+  const createFeatureGroup = (shapes: L.Path[]): L.FeatureGroup => {
+    const LayerFeatureGroup = L.featureGroup();
+    shapes.forEach(shape => shape.addTo(LayerFeatureGroup));
+    return LayerFeatureGroup;
+  };
+
+  const createLeafletLayer = ({ decodedLayer }): L.Path =>
+    decodedLayer.map(poly => (poly.type === 'polygon' ? createPolygon(poly) : createPolyline(poly)));
+
+  const createPolygon = (polygon, isThematicMap = false): L.Polygon =>
+    L.polygon(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
+
+  const createPolyline = (polygon): L.Polyline =>
+    L.polyline(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
+
   const handleLayerToggle = checkedItems => {
-    console.log('layer toggled: ', checkedItems);
+    setActiveLayers(checkedItems);
   };
 
   return (
     <MapContainer>
-      <InfoPanel>
-        <LayerControl layers={maplayers} onLayerToggle={handleLayerToggle} />
-      </InfoPanel>
+      <InfoPanel>{mapLayers && <LayerControl layers={mapLayers} onLayerToggle={handleLayerToggle} />}</InfoPanel>
       <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: '400px' }} />
       <Footer>
         <Source>Compiled and presented in profile.id by .id, the population experts.</Source>

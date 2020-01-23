@@ -1,13 +1,13 @@
 // #region imports
 import _ from 'lodash';
 import { useContext, useState } from 'react';
-import { PageContext, ClientContext } from '../../../utils/context';
+import { PageContext } from '../../../utils/context';
 import { StatsGrid } from './StatsGrid';
 import { NewsGrid } from './NewsGrid';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { MapLoader } from '../../../components/Map/MapLoader';
-import { ItemWrapper } from '../../../styles/MainContentStyles';
+import { MapWrapper } from '../../../styles/MainContentStyles';
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
 const SectionTitle = styled.h3`
@@ -33,11 +33,11 @@ const HomeTemplate = () => {
     <>
       <SectionTitle>Key Statistics</SectionTitle>
       <StatsGrid tiles={statsData} />
-      <SectionTitle>Economic Region </SectionTitle>
-      <ItemWrapper className="e-shad">
+      <SectionTitle>Economic Region</SectionTitle>
+      <MapWrapper>
         <MapLoader loaded={mapLoaded} />
         <LeafletMap mapData={mapData} onLoaded={onMapLoaded} />
-      </ItemWrapper>
+      </MapWrapper>
       <SectionTitle>News</SectionTitle>
       <NewsGrid tiles={newsData} />
     </>
