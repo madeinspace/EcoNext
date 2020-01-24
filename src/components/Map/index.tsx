@@ -5,7 +5,7 @@ import { LayerControl } from './LayerControl';
 import TileLayers, { minimapLayer } from './TileLayers';
 import { ClientContext } from '../../utils/context';
 import { getBoundariesFromWKT, createMapLayers } from './Utils';
-import ToolTip from './Tooltip';
+import ToolTip from './ToolTip';
 import { MapContainer, InfoPanel, Footer, Source } from './MapStyledComponents';
 import MiniMap from 'leaflet-minimap';
 
