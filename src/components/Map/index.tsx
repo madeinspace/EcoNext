@@ -8,6 +8,7 @@ import { getBoundariesFromWKT, createMapLayers } from './Utils';
 import ToolTip from './ToolTip';
 import { MapContainer, InfoPanel, Footer, Source } from './MapStyledComponents';
 import MiniMap from 'leaflet-minimap';
+import { IdLink } from '../ui/links';
 
 const LeafletMap = ({ mapData, onMapLoaded }) => {
   const { LongName } = useContext(ClientContext);
@@ -124,7 +125,9 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
       <InfoPanel>{mapLayers && <LayerControl layers={mapLayers} onLayerToggle={handleLayerToggle} />}</InfoPanel>
       <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: '400px' }} />
       <Footer>
-        <Source>Compiled and presented in profile.id by .id, the population experts.</Source>
+        <Source>
+          Compiled and presented in economy.id by <IdLink />
+        </Source>
       </Footer>
     </MapContainer>
   );
