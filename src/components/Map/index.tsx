@@ -63,8 +63,8 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
 
   const useMiniMap = () => {
     const minimapOptions = {
-      width: '100',
-      height: '100',
+      width: '150',
+      height: '130',
     };
     const layer = minimapLayer();
 

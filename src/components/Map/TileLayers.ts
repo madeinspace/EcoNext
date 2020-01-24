@@ -34,9 +34,9 @@ export default {
 
 export const minimapLayer = () => {
   return new L.tileLayer(
-    `https://{s}.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?app_id=${hereCodes.appId}&app_code=${hereCodes.appCode}`,
+    `https://{s}.aerial.maps.api.here.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8?app_id=${hereCodes.appId}&app_code=${hereCodes.appCode}`,
     {
-      displayText: 'road',
+      displayText: 'Sat',
       attribution: 'Here.com',
       subdomains: ['1', '2', '3', '4'],
     },
