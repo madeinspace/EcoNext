@@ -2,6 +2,9 @@ import L from 'leaflet';
 import Wkt from 'wicket';
 import _ from 'lodash';
 
+/**
+ * Compiles a layer object ready to be consumed by the leaflet engine
+ */
 export const createMapLayers = ({ entitylayers, layers, LongName }) => {
   const lookup = entitylayers.reduce((a, c) => {
     a[c.TypeID] = {

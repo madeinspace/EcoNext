@@ -65,6 +65,7 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
     const minimapOptions = {
       width: '150',
       height: '130',
+      aimingRectOptions: { color: '#ff0000', fill: false, weight: 2 },
     };
     const layer = minimapLayer();
 
