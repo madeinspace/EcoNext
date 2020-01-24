@@ -1,4 +1,5 @@
 export default [
+  'home',
   'indicator',
   'population',
   'gross-product',
