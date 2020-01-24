@@ -36,7 +36,7 @@ const HomeTemplate = () => {
       <SectionTitle>Economic Region</SectionTitle>
       <MapWrapper>
         <MapLoader loaded={mapLoaded} />
-        <LeafletMap mapData={mapData} onLoaded={onMapLoaded} />
+        <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
       </MapWrapper>
       <SectionTitle>News</SectionTitle>
       <NewsGrid tiles={newsData} />

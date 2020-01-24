@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import L from 'leaflet';
 import '../../styles/leaflet.css';
 import { LayerControl } from './LayerControl';
-import TileLayers from './TileLayers';
+import TileLayers, { minimapLayer } from './TileLayers';
 import { ClientContext } from '../../utils/context';
 import { getBoundariesFromWKT, createMapLayers } from './Utils';
 import ToolTip from './Tooltip';
 import { MapContainer, InfoPanel, Footer, Source } from './MapStyledComponents';
+import MiniMap from 'leaflet-minimap';
 
-const LeafletMap = ({ mapData, onLoaded }) => {
+const LeafletMap = ({ mapData, onMapLoaded }) => {
   const { LongName } = useContext(ClientContext);
   const { layers, entitylayers, geomData } = mapData;
   const [map, setMap] = useState(null);
@@ -23,10 +24,14 @@ const LeafletMap = ({ mapData, onLoaded }) => {
 
   useEffect(() => {
     if (!map) initializeMap({ mapContainer });
+    else {
+      useMiniMap();
+    }
   }, [map]);
 
   useEffect(() => {
-    console.log('active layers are : ', activeLayers);
+    const active = featureGroups.filter(fg => activeLayers.includes(fg.id));
+    drawFeatureGroups(active);
   }, [activeLayers]);
 
   const initializeMap = ({ mapContainer }) => {
@@ -36,7 +41,7 @@ const LeafletMap = ({ mapData, onLoaded }) => {
     const bounds = getBoundariesFromWKT(geomData[0].WKT);
     map.fitBounds(bounds);
     setMap(map);
-    onLoaded();
+    onMapLoaded();
   };
 
   const initializeLayers = () => setMapLayers(createMapLayers({ entitylayers, layers, LongName }));
@@ -44,35 +49,73 @@ const LeafletMap = ({ mapData, onLoaded }) => {
   const DrawLayers = () => {
     const featureGroups = [];
     mapLayers.forEach(layer => {
+      const PathOptions = { color: layer.shapeOptions.borderColor.color, weight: 2 };
       const featureGroup = {
         id: layer.id,
         zIndex: layer.zIndex,
-        featureGroup: createFeatureGroup(createLeafletLayer(layer))
-          .setZIndex(layer.zIndex)
-          .addTo(map),
+        featureGroup: createFeatureGroup(createLeafletLayer(layer, PathOptions)).setZIndex(layer.zIndex),
+        // .setStyle(PathOptions),
       };
       featureGroups.push(featureGroup);
     });
     setFeatureGroups(featureGroups);
   };
 
-  const createFeatureGroup = (shapes: L.Path[]): L.FeatureGroup => {
+  const useMiniMap = () => {
+    const minimapOptions = {
+      width: '100',
+      height: '100',
+    };
+    const layer = minimapLayer();
+
+    return new MiniMap(layer, minimapOptions).addTo(map);
+  };
+
+  const createFeatureGroup = shapes => {
     const LayerFeatureGroup = L.featureGroup();
+
     shapes.forEach(shape => shape.addTo(LayerFeatureGroup));
     return LayerFeatureGroup;
   };
 
-  const createLeafletLayer = ({ decodedLayer }): L.Path =>
-    decodedLayer.map(poly => (poly.type === 'polygon' ? createPolygon(poly) : createPolyline(poly)));
+  const createLeafletLayer = ({ decodedLayer }, PathOptions) =>
+    decodedLayer.map(poly =>
+      applyStyles(poly.type === 'polygon' ? createPolygon(poly) : createPolyline(poly), PathOptions),
+    );
 
-  const createPolygon = (polygon, isThematicMap = false): L.Polygon =>
-    L.polygon(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
+  const createPolygon = polygon => L.polygon(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
 
-  const createPolyline = (polygon): L.Polyline =>
-    L.polyline(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
+  const applyStyles = (shape, style) => {
+    const hoverStyle = {
+      color: '#ffffff',
+      weight: 2,
+    };
 
-  const handleLayerToggle = checkedItems => {
-    setActiveLayers(checkedItems);
+    shape
+      .setStyle(style)
+      .on('mouseover', function(e) {
+        this.setStyle(hoverStyle);
+        this.bringToFront();
+      })
+      .on('mouseout', function(e) {
+        this.setStyle(style);
+      });
+    return shape;
+  };
+
+  const createPolyline = polygon => L.polyline(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
+
+  const handleLayerToggle = checkedItems => setActiveLayers(checkedItems);
+
+  const clearAllOverlays = () => featureGroups.forEach(fg => removeFeatureGroup(fg.featureGroup));
+
+  const removeFeatureGroup = fg => fg.removeFrom(map);
+
+  const drawFeatureGroups = active => {
+    clearAllOverlays();
+    active.forEach(fg => {
+      fg.featureGroup.addTo(map).setZIndex(fg.zIndex);
+    });
   };
 
   return (

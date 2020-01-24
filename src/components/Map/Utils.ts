@@ -17,8 +17,10 @@ export const createMapLayers = ({ entitylayers, layers, LongName }) => {
 
   const mapLayers = layers.reduce((acc, currlayer) => {
     const match = lookup[parseInt(currlayer.id)];
-    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
     const key = match.name;
+
+    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
+
     if (!(key in acc)) {
       acc.push({ ...match, decodedLayer: decodedAreas });
     }
