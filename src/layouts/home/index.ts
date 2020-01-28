@@ -31,8 +31,7 @@ const headline = ({ data, contentData }) => {
   const areaName = data.currentAreaName;
   const grp = formatShortDecimal(contentData.statsData[0].Number);
   const gsp = contentData.statsData[0].PercOfState;
-
-  return `${prefix}${areaName}'s Gross Regional Product is estimated at $${grp} billions, which represents ${gsp}% of the state's GSP (Gross State Product).`;
+  return `${prefix}${areaName}'s Gross Regional Product is estimated at $${grp} billion, which represents ${gsp}% of the state's GSP (Gross State Product).`;
 };
 
 const pageContent = {

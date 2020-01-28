@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { formatNumber } from '../../../utils';
+import { formatNumber, formatShortDecimal } from '../../../utils';
+import MonolithOrNextLink from '../../../components/Link';
+import { useContext } from 'react';
+import { ClientContext } from '../../../utils/context';
 export const StatsGrid = ({ tiles }) => {
   const TilesGrid = styled.div`
     display: grid;
@@ -45,8 +48,27 @@ export const StatsGrid = ({ tiles }) => {
     opacity: 0.7;
   `;
 
+  const StatsLink = styled(MonolithOrNextLink)`
+    text-decoration: none;
+    transition: all 0.5s cubic-bezier(0.02, 0.69, 0.14, 1);
+    &:hover {
+      box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.1), 0 12px 17px 2px rgba(0, 0, 0, 0.08),
+        0 5px 22px 4px rgba(0, 0, 0, 0.06);
+    }
+  `;
+
+  const statsLinksLookup = {
+    1: 'gross-product',
+    2: 'population',
+    3: 'local-jobs',
+    4: 'employment-by-industry',
+    5: 'number-of-businesses-by-industry',
+    6: 'employed-residents',
+  };
+
   const statsTiles = tiles.map(tile => {
-    const number = tile.BoxName === 'GRP' ? `$${formatNumber(tile.Number)} billion` : formatNumber(tile.Number);
+    const anchor = statsLinksLookup[tile.BoxNumber];
+    const number = tile.BoxName === 'GRP' ? `$${formatShortDecimal(tile.Number)} billion` : formatNumber(tile.Number);
     const bodyText = tile.TextValue ? <TextValue>{tile.TextValue}</TextValue> : <NumberValue>{number} </NumberValue>;
     const boxTitle =
       tile.BoxName === 'Largest industry' ? (
@@ -56,15 +78,17 @@ export const StatsGrid = ({ tiles }) => {
       ) : (
         <Title>{tile.TopTitle}</Title>
       );
-
+    const { clientAlias } = useContext(ClientContext);
     const { BottomTitle } = tile;
 
     return (
-      <Tile key={tile.BoxNumber}>
-        {boxTitle}
-        {bodyText}
-        <Footer>{BottomTitle}</Footer>
-      </Tile>
+      <StatsLink href={`/${clientAlias}/${anchor}`}>
+        <Tile key={tile.BoxNumber}>
+          {boxTitle}
+          {bodyText}
+          <Footer>{BottomTitle}</Footer>
+        </Tile>
+      </StatsLink>
     );
   });
   return <TilesGrid>{statsTiles}</TilesGrid>;
