@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
+import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent, idlogo } from '../../../utils';
 import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { IdLink } from '../../../components/ui/links';
 // #endregion
 
 // #region population page
@@ -83,14 +84,10 @@ export default TemplatePage;
 
 // #region Source
 const Source = () => (
-  <>
+  <p>
     Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by{' '}
-    <a href="http://home.id.com.au/about-us/" target="_blank" rel="noopener" title=".id website">
-      .id, the population experts.
-      <span className="hidden"> (opens a new window)</span>
-    </a>
-  </>
+    economy.id by <IdLink />
+  </p>
 );
 // #endregion
 
@@ -306,7 +303,7 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
       'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
     dataSource: <Source />,
     chartContainerID: 'chart1',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
+    logoUrl: idlogo,
     chartTemplate: 'Standard',
   };
 };
@@ -377,7 +374,7 @@ const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) 
       'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
     dataSource: <Source />,
     chartContainerID: 'chart2',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
+    logoUrl: idlogo,
     chartTemplate: 'Standard',
   };
 };

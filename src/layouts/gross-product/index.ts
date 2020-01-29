@@ -1,6 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import { formatNumber } from '../../utils';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const SQL = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_HeadlineGRP_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
@@ -15,6 +16,13 @@ const fetchData = async ({ filters }) => {
   const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID });
   const contentData = await sqlConnection.raw(SQLQuery);
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = {
+    defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -112,4 +120,4 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };

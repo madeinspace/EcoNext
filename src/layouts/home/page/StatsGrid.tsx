@@ -82,8 +82,8 @@ export const StatsGrid = ({ tiles }) => {
     const { BottomTitle } = tile;
 
     return (
-      <StatsLink href={`/${clientAlias}/${anchor}`}>
-        <Tile key={tile.BoxNumber}>
+      <StatsLink href={`/${clientAlias}/${anchor}`} key={tile.BoxNumber}>
+        <Tile>
           {boxTitle}
           {bodyText}
           <Footer>{BottomTitle}</Footer>

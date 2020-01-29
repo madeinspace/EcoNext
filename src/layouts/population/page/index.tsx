@@ -1,7 +1,14 @@
 // #region imports
 import _ from 'lodash';
 import React from 'react';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent, idlogo } from '../../../utils';
+import {
+  formatShortDecimal,
+  formatNumber,
+  formatChangeNumber,
+  formatChangePercent,
+  idlogo,
+  formatChangeInt,
+} from '../../../utils';
 import { ItemWrapper, CrossLink, ForecastProductIcon } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -153,7 +160,7 @@ const tableBuilder = (alias, nodes) => {
         formattedData: [
           Year,
           formatNumber(Number),
-          formatChangeNumber(ChangeYear1Year2, '--'),
+          formatChangeInt(ChangeYear1Year2, '--'),
           formatChangePercent(Changeper, '--'),
           formatNumber(NumberSTE),
           formatChangeNumber(ChangeYear1Year2STE, '--'),

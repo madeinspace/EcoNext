@@ -2,12 +2,18 @@ import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
 import { formatMillionsCurrency } from '../../utils';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID } = filters;
   const contentData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
 
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = { activeBenchmarkName: getActiveToggle(filterToggles, 'BMID') };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -45,7 +51,7 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
 
 const BuildingApprovalsSQL = ({ ClientID, WebID }) => `
  SELECT * from CommData_Economy.[dbo].[fn_IN_BuildingApprovals](${ClientID}, ${WebID}, 40 ) ORDER BY Yr DESC

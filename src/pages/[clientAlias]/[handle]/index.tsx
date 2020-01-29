@@ -82,7 +82,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     return { client, page: { pageData: null, filters: [], handle } };
   }
 
-  const { fetchData, pageContent } = layoutData;
+  const { fetchData, pageContent, activeCustomToggles } = layoutData;
 
   const { AllPages } = containers;
 
@@ -108,18 +108,15 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   };
 
   const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
+  const contentData = await fetchData({ filters });
+  const customToggles = await activeCustomToggles({ filterToggles });
 
   // we pass that data to interpolate the entities
   const data = {
     currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    ...customToggles,
     HasPrefix: client.HasPrefix,
   };
-
-  const contentData = await fetchData({ filters });
-
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {

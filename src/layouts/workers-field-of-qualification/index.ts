@@ -13,11 +13,21 @@ const largest = (arr, key) => {
 };
 
 import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = {
+    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+  };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -96,7 +106,7 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>

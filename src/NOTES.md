@@ -48,7 +48,7 @@ _Now, we'll need to fetch the data for this page._
 
 - Any parameters used should either appear in the `filterToggles` array, or be in filters already (eg ClientID, BMID, WebID)
 
-- If a parameter is not used by a toggle, and it's not already in filters, we'll need to just hardcode the default value
+- If a parameter is not used by a toggle, and it's not already in filters, we'll need to just hardcode the default value, if a toggle needs to be hidden just add: `Hidden: true,` to the toggle object.
 
 Once we've done these steps, we should be able to uncomment the lines so that data is being fetched using this SQL call.
 

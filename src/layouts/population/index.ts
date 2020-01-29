@@ -2,6 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 import { formatNumber } from '../../utils';
 
 import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, IGBMID } = filters;
@@ -9,6 +10,14 @@ const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
 
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = {
+    defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+  };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -50,7 +59,7 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
 
 const PopulationDataSQL = ({ ClientID, WebID, IGBMID }) => `
   select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID},${+IGBMID}) ORDER BY Year DESC

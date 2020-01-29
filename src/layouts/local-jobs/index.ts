@@ -2,6 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
 import { formatNumber } from '../../utils';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, IsLite } = filters;
@@ -14,6 +15,11 @@ const fetchData = async ({ filters }) => {
   const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID: 40 });
   const contentData = await sqlConnection.raw(SQLQuery);
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = { defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID') };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -78,4 +84,4 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
