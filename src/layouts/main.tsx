@@ -5,13 +5,10 @@ import MainNavigation from '../components/MainNavigation';
 import { ContentRow } from '../components/grid';
 import SiteMap from '../components/SiteMap';
 import SharedFooter from '../components/SharedFooter';
-import SiblingsMenu from '../components/SiblingsMenu';
 import { IsDisabled } from '../utils/';
 import DisabledPageWarning from '../components/DisabledPageWarning';
-import LockIcon from '../components/LockIcon';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import { ClientContext, PageContext } from '../utils/context';
-import Head from 'next/head';
 import SEO from '../utils/SEO';
 
 const Layout = ({ children, Template = null }): JSX.Element => {

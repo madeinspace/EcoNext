@@ -4,6 +4,7 @@ export default [
   'population',
   'gross-product',
   'local-jobs',
-  'workers-field-of-qualification',
   'value-of-building-approvals',
+  'workers-field-of-qualification',
+  'number-of-businesses-by-industry',
 ];
