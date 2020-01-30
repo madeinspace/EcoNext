@@ -20,7 +20,6 @@ export const PageMappings = {
   'local-jobs': LocalJobs,
   'value-of-building-approvals': ValueOfBuildingApprovals,
   'workers-field-of-qualification': WorkersFieldOfQualification,
-  'economic-impact-assesment': EconomicImpactAssesment,
   'number-of-businesses-by-industry': NumberOfBusinessesByIndustry,
   'industry-sector-analysis': IndustrySectorAnalysis,
 };

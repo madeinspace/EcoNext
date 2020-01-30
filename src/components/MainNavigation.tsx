@@ -26,9 +26,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
       {group.map((topNode, i) => {
         const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID } = topNode;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
-
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
-
         const isActive = childIsCurrent || pageAlias === handle;
 
         return (
@@ -36,7 +34,10 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
             {Disabled ? (
               <DisabledLink>{MenuTitle}</DisabledLink>
             ) : (
-              <StyledLink className={isActive && 'active'} href={`/${clientAlias}/${pageAlias}`}>
+              <StyledLink
+                className={isActive && 'active'}
+                href={`/${clientAlias}/${pageAlias === 'home' ? '' : pageAlias}`}
+              >
                 {MenuTitle}
               </StyledLink>
             )}

@@ -9,8 +9,7 @@ const MonolithOrNextLink = ({ href, ...props }) => {
     filters: { WebID },
   } = useContext(PageContext);
 
-  const queryString = WebID === 10 ? '' : `?WebID=${WebID}`;
-
+  const queryString = WebID === '10' ? '' : `?WebID=${WebID}`;
   const isNext = isNextPage(pathParts(href.split('?')[0]).pageAlias);
 
   return isNext ? (
