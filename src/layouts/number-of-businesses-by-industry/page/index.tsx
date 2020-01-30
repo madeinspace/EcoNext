@@ -1,6 +1,14 @@
 // #region imports
 import _ from 'lodash';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent, idlogo } from '../../../utils';
+import {
+  formatShortDecimal,
+  formatNumber,
+  formatChangeNumber,
+  formatChangePercent,
+  idlogo,
+  formatChangeInt,
+  formatPercent,
+} from '../../../utils';
 import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -11,6 +19,15 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { IdLink } from '../../../components/ui/links';
 // #endregion
 
+const lookup = {
+  'Non-employing': 'registered non-employing businesses',
+  Employing: 'registered employing businesses',
+  '1 to 4 ': 'businesses employing 1 to 4 people',
+  '5 to 19': 'businesses employing 5 to 19 people',
+  '200 or more': 'businesses employing 200 or more people',
+  'Total businesses': 'total registered businesses',
+};
+
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
@@ -18,9 +35,32 @@ const TemplatePage = () => {
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
   const currentYear = getActiveToggle(filterToggles, 'sStartYear', LongName);
   const benchmarkYear = getActiveToggle(filterToggles, 'sEndYear', LongName);
-  const tableParams = tableBuilder(currentYear, benchmarkYear, clientAlias, contentData);
-  const chartData = chartBuilder(currentYear, benchmarkYear, currentAreaName, contentData);
-  const chartChangeData = chartBuilderChange(currentYear, benchmarkYear, currentAreaName, contentData);
+  const currentBtype = getActiveToggle(filterToggles, 'BType');
+  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
+  const tableParams = tableBuilder(
+    currentBenchmarkName,
+    currentBtype,
+    currentYear,
+    benchmarkYear,
+    LongName,
+    contentData,
+  );
+  const chartData = chartBuilder(
+    currentBenchmarkName,
+    lookup[currentBtype],
+    currentYear,
+    benchmarkYear,
+    currentAreaName,
+    contentData,
+  );
+  const chartChangeData = chartBuilderChange(
+    currentBenchmarkName,
+    lookup[currentBtype],
+    currentYear,
+    benchmarkYear,
+    currentAreaName,
+    contentData,
+  );
 
   return (
     <>
@@ -92,7 +132,17 @@ const Source = () => (
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
+const tableBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
+  console.log(
+    'currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes: ',
+    currentBenchmarkName,
+    currentBtype,
+    currentYear,
+    benchmarkYear,
+    currentAreaName,
+    nodes,
+  );
+
   return {
     cssClass: '',
     allowExport: false,
@@ -110,37 +160,32 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
             cssClass: 'table-area-name',
             displayText: 'Registered businesses by industry',
             colSpan: 10,
-            rowSpan: 0,
           },
         ],
         key: 'hr0',
       },
       {
-        cssClass: '',
+        cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
-            displayText: `${currentAreaName}`,
+            cssClass: 'sub',
+            displayText: `${nodes[0].GeoName} - ${lookup[currentBtype]}`,
             colSpan: 1,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
+            cssClass: 'even',
             displayText: currentYear,
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'odd end-year',
+            cssClass: 'odd',
             displayText: benchmarkYear,
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
+            cssClass: 'even sml',
             displayText: 'change',
             colSpan: 3,
-            rowSpan: 0,
           },
         ],
         key: 'hr1',
@@ -150,67 +195,42 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
       {
         id: 0,
         displayText: 'Industry',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'odd first',
+        cssClass: 'odd first int',
       },
       {
         id: 1,
         displayText: 'Number',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:#,0}',
+        cssClass: 'even int',
       },
       {
         id: 2,
-        displayText: 'Change in number',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: '%',
+        cssClass: 'even int',
       },
       {
         id: 3,
-        displayText: 'Change in percent',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: `% ${currentBenchmarkName}`,
+        cssClass: 'even int',
       },
       {
         id: 4,
         displayText: 'Number',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'odd',
-        format: '{0:#,0}',
+        cssClass: 'odd int',
       },
       {
         id: 5,
-        displayText: 'Change in number',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'per odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: '%',
+        cssClass: 'odd int',
       },
       {
         id: 6,
-        displayText: 'Change in percent',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: `% ${currentBenchmarkName}`,
+        cssClass: 'odd int',
       },
       {
         id: 7,
-        displayText: 'Number',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'even',
-        format: '{0:#,0}',
+        displayText: `${benchmarkYear} to ${currentYear}`,
+        cssClass: 'even int',
       },
     ],
     footRows: [],
@@ -219,12 +239,12 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
       formattedData: [
         LabelName,
         formatNumber(NoYear1),
-        formatChangeNumber(PerYear1, '--'),
-        formatChangePercent(BMYear1, '--'),
+        formatPercent(PerYear1),
+        formatPercent(BMYear1),
         formatNumber(NoYear2),
-        formatChangeNumber(PerYear2, '--'),
-        formatChangePercent(BMYear2, '--'),
-        formatNumber(Change12),
+        formatPercent(PerYear2),
+        formatPercent(BMYear2),
+        formatChangeInt(Change12),
       ],
       id: i,
     })),
@@ -234,14 +254,17 @@ const tableBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
 // #endregion
 
 // #region chart builders
-const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
-  const perYear1Serie = _.map(nodes, item => {
+const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
+  const totalBiz = 999999;
+  const filterednodes = nodes.filter(item => item.LabelKey !== totalBiz);
+
+  const perYear1Serie = filterednodes.map(item => {
     return {
       name: item.LabelName,
       y: item.PerYear1,
     };
   });
-  const BMYear1Serie = _.map(nodes, item => {
+  const BMYear1Serie = filterednodes.map(item => {
     return {
       name: item.LabelName,
       y: item.BMYear1,
@@ -258,7 +281,7 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
         align: 'left',
       },
       subtitle: {
-        text: `${currentAreaName} - ${currentYear} - ${benchmarkYear}`,
+        text: `${currentBtype}`,
         align: 'left',
       },
       tooltip: {
@@ -274,7 +297,7 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
           data: perYear1Serie,
         },
         {
-          name: `BMID`,
+          name: `${currentBenchmarkName}`,
           data: BMYear1Serie,
         },
       ],
@@ -288,7 +311,7 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
       yAxis: [
         {
           title: {
-            text: `Total of [BType]`,
+            text: `% of ${currentBtype}`,
           },
           labels: {
             staggerLines: 0,
@@ -310,7 +333,7 @@ const chartBuilder = (currentYear, benchmarkYear, currentAreaName, nodes) => {
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) => {
+const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
   const categories = _.map(nodes, 'LabelName');
   return {
     cssClass: '',
@@ -319,11 +342,11 @@ const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) 
         type: 'bar',
       },
       title: {
-        text: 'Change in local workers field of qualification, 2016',
+        text: `Change in registered businesses by industry, ${benchmarkYear} to ${currentYear}`,
         align: 'left',
       },
       subtitle: {
-        text: `subtitle`,
+        text: `${currentAreaName} - ${currentBtype}`,
         align: 'left',
       },
       tooltip: {
@@ -345,7 +368,7 @@ const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) 
         categories,
         croshair: false,
         title: {
-          text: 'Field of qualification',
+          text: 'Industry sector',
           align: 'low',
         },
 
@@ -358,7 +381,7 @@ const chartBuilderChange = (currentYear, benchmarkYear, currentAreaName, nodes) 
       yAxis: [
         {
           title: {
-            text: `Change in [] local workers`,
+            text: `Change in number of ${currentBtype}`,
           },
           labels: {
             staggerLines: 0,

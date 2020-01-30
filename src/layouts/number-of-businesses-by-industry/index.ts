@@ -34,20 +34,20 @@ const headline = ({ data, contentData }) => {
     'Total businesses': 'total registered businesses',
   };
 
-  const TopInd = contentData
-    .filter(ind => ind.LabelKey !== 999999)
-    .reduce((prev, current) => (prev.NoYear1 > current.NoYear1 ? prev : current));
+  const totalLabelKey = 999999;
 
-  const {
-    PerYear1: { TopIndPerY1 },
-    BMYear1: { TopIndBenchmarkY1 },
-    LabelName: { TopIndName },
-  } = TopInd;
+  const TopInd = contentData
+    .filter(ind => ind.LabelKey !== totalLabelKey)
+    .reduce((prev, current) => {
+      return prev.NoYear1 > current.NoYear1 ? prev : current;
+    });
 
   const BusinessType = lookup[currentBtype] || '';
-  return `The ${TopIndName} industry had the largest number of ${BusinessType} in ${currentAreaName}, comprising ${formatPercent(
-    TopIndPerY1,
-  )}% of all ${BusinessType}, compared to ${formatPercent(TopIndBenchmarkY1)}% in ${currentBenchmarkName}.`;
+  return `The ${
+    TopInd.LabelName
+  } industry had the largest number of ${BusinessType} in ${currentAreaName}, comprising ${formatPercent(
+    TopInd.PerYear1,
+  )}% of all ${BusinessType}, compared to ${formatPercent(TopInd.BMYear1)}% in ${currentBenchmarkName}.`;
 };
 
 const pageContent = {
