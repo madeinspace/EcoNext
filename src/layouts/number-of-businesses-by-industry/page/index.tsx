@@ -16,7 +16,7 @@ import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { IdLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 // #endregion
 
 const lookup = {
@@ -67,12 +67,12 @@ const TemplatePage = () => {
       <PageIntro>
         <div>
           <p>
-            Registered business by industry shows how many businesses there are in City of Monash within each industry
-            sector using the Australian Bureau of Statistics (ABS) Business Register which itself is derived from the
-            GST register held by the Australian Tax Office (ATO). Businesses are included if they are registered with
-            the ATO, with an ABN used within the previous two financial years. Businesses are split up between employing
-            and non-employing businesses. Non-employing businesses may include sole traders and registered ABNs which
-            are part of larger enterprises.
+            Registered business by industry shows how many businesses there are in {currentAreaName} within each
+            industry sector using the Australian Bureau of Statistics (ABS) Business Register which itself is derived
+            from the GST register held by the Australian Tax Office (ATO). Businesses are included if they are
+            registered with the ATO, with an ABN used within the previous two financial years. Businesses are split up
+            between employing and non-employing businesses. Non-employing businesses may include sole traders and
+            registered ABNs which are part of larger enterprises.
           </p>
           <p>
             The distribution of businesses may reflect the industry structure of the area, or may differ significantly.
@@ -81,17 +81,24 @@ const TemplatePage = () => {
           </p>
 
           <p>
-            The number of businesses in the City of Monash should be viewed in conjunction with Employment by industry
-            (Total) and Value added datasets to see the relative size of industries, and with Employment locations data
-            to see where business employment occurs within the area.
+            The number of businesses in the {currentAreaName} should be viewed in conjunction with{' '}
+            {LinkBuilder('https://economy.id.com.au/tasmania/employment-by-industry', 'Employment by industry (Total)')}{' '}
+            and {LinkBuilder('https://economy.id.com.au/tasmania/value-add-by-industry', 'Value added')} datasets to see
+            the relative size of industries, and with{' '}
+            {LinkBuilder('https://economy.id.com.au/tasmania/employment-locations', 'Employment locations')} data to see
+            where business employment occurs within the area.
           </p>
           <p>
-            Please note that this data set has several limitations which are explained in the data notes for this topic.
-            Business register counts are an approximation to LGA boundaries based on SA2 level data provided by the
-            Australian Bureau of Statistics. As such, they may not exactly match figures sourced directly from the ATO,
-            due to boundary issues and the application of ABS randomisation to the dataset. Notably, public sector
-            institutions are not recorded which has a significant impact on the numbers for Health Care, Education and
-            Public Administration and Safety.
+            Please note that this data set has several limitations which are explained in the{' '}
+            {LinkBuilder(
+              'https://economy.id.com.au/tasmania/topic-notes?#employment-size-of-registered-businesses',
+              'data notes',
+            )}{' '}
+            for this topic. Business register counts are an approximation to LGA boundaries based on SA2 level data
+            provided by the Australian Bureau of Statistics. As such, they may not exactly match figures sourced
+            directly from the ATO, due to boundary issues and the application of ABS randomisation to the dataset.
+            Notably, public sector institutions are not recorded which has a significant impact on the numbers for
+            Health Care, Education and Public Administration and Safety.
           </p>
         </div>
         <SourceBubble>
@@ -323,7 +330,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 Cat. No. 8165.0',
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -334,7 +341,9 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
 
 // #region chart builder change
 const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
-  const categories = _.map(nodes, 'LabelName');
+  const totalBiz = 999999;
+  const filterednodes = nodes.filter(item => item.LabelKey !== totalBiz);
+  const categories = _.map(filterednodes, 'LabelName');
   return {
     cssClass: '',
     highchartOptions: {
@@ -361,7 +370,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
           color: '',
           yAxis: 0,
           name: `serie's name`,
-          data: _.map(nodes, 'Change12'),
+          data: _.map(filterednodes, 'Change12'),
         },
       ],
       xAxis: {
@@ -386,7 +395,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
           labels: {
             staggerLines: 0,
             formatter: function() {
-              return formatChangeNumber(this.value);
+              return formatChangeInt(this.value);
             },
           },
           opposite: false,
@@ -394,7 +403,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 Cat. No. 8165.0',
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: idlogo,
