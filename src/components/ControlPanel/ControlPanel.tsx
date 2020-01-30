@@ -20,7 +20,6 @@ const StyledControlPanel = styled.div`
   grid-gap: 1rem;
   justify-content: space-between;
   margin-bottom: 30px;
-  margin-top: 20px;
   padding: 15px;
   position: relative;
   z-index: 2;
