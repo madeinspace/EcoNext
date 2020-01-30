@@ -8,4 +8,6 @@ export default [
   'workers-field-of-qualification',
   'number-of-businesses-by-industry',
   'industry-sector-analysis',
+  'employment-by-industry',
+  'employment-by-industry-fte',
 ];

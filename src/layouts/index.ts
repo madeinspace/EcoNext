@@ -11,6 +11,8 @@ import LocalJobs from './local-jobs/page';
 import productionPages from './productionPages';
 import developmentPages from './developmentPages';
 import HomePage from './home/page';
+import EmploymentByIndustryPage from './employment-by-industry/page';
+import EmploymentByIndustryFtePage from './employment-by-industry-fte/page';
 
 export const PageMappings = {
   home: HomePage,
@@ -22,6 +24,8 @@ export const PageMappings = {
   'workers-field-of-qualification': WorkersFieldOfQualification,
   'number-of-businesses-by-industry': NumberOfBusinessesByIndustry,
   'industry-sector-analysis': IndustrySectorAnalysis,
+  'employment-by-industry': EmploymentByIndustryPage,
+  'employment-by-industry-fte': EmploymentByIndustryFtePage,
 };
 
 const fetchPageData = async (handle: string) => {

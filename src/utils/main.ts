@@ -128,3 +128,5 @@ export function naturalSort(a, b) {
   }
 }
 /* #endregion */
+
+export const capitalise = lower => lower.replace(/^\w/, chr => chr.toUpperCase());

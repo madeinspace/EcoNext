@@ -89,6 +89,7 @@ export const PageIntro = styled.div`
   p {
     line-height: 18px;
   }
+  margin-bottom: 20px;
 `;
 
 export const PageIntroFullWidth = styled.div`
