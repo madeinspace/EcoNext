@@ -8,6 +8,7 @@ import {
   idlogo,
   formatChangeInt,
   formatPercent,
+  capitalise,
 } from '../../../utils';
 import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
@@ -17,6 +18,7 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { IdLink, LinkBuilder } from '../../../components/ui/links';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 // #endregion
 
 const lookup = {
@@ -24,6 +26,7 @@ const lookup = {
   Employing: 'registered employing businesses',
   '1 to 4 ': 'businesses employing 1 to 4 people',
   '5 to 19': 'businesses employing 5 to 19 people',
+
   '200 or more': 'businesses employing 200 or more people',
   'Total businesses': 'total registered businesses',
 };
@@ -38,8 +41,9 @@ const TemplatePage = () => {
   const currentBtype = getActiveToggle(filterToggles, 'BType');
   const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
   const tableParams = tableBuilder(
+    clientAlias,
     currentBenchmarkName,
-    currentBtype,
+    lookup[currentBtype],
     currentYear,
     benchmarkYear,
     LongName,
@@ -104,9 +108,7 @@ const TemplatePage = () => {
         <SourceBubble>
           <div>
             <h3>Data source</h3>
-            <p>
-              Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) &amp; 2016 – by place of work
-            </p>
+            <p>Australian Bureau of Statistics – Business register – originally sourced from ATO data</p>
           </div>
         </SourceBubble>
       </PageIntro>
@@ -121,6 +123,7 @@ const TemplatePage = () => {
       <ItemWrapper>
         <EntityChart data={chartChangeData} />
       </ItemWrapper>
+      <RelatedPagesCTA />
     </>
   );
 };
@@ -130,35 +133,39 @@ const TemplatePage = () => {
 export default TemplatePage;
 
 // #region Source
-const Source = () => (
+const sourceLink = LinkBuilder(
+  'http://www.abs.gov.au/AUSSTATS/abs@.nsf/allprimarymainfeatures/85372091B76BD119CA257B710014993B?opendocument',
+  ' Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 ',
+);
+const TableSource = () => (
   <p>
-    Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by <IdLink />
+    Source: {sourceLink}
+    Note: Non-employing businesses includes sole proprietors where the proprietor does not receive a wage or salary
+    separate to the business income. <IdLink />
   </p>
 );
+const Source = () => <p>{sourceLink}</p>;
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
-  console.log(
-    'currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes: ',
-    currentBenchmarkName,
-    currentBtype,
-    currentYear,
-    benchmarkYear,
-    currentAreaName,
-    nodes,
-  );
-
+const tableBuilder = (
+  clientAlias,
+  currentBenchmarkName,
+  currentBtype,
+  currentYear,
+  benchmarkYear,
+  currentAreaName,
+  nodes,
+) => {
   return {
     cssClass: '',
     allowExport: false,
     allowSort: true,
     allowSortReset: true,
     groupOn: '',
-    ClientAlias: currentAreaName,
-    source: <Source />,
-    anchorName: 'Registered businesses by industry',
+    clientAlias,
+    source: <TableSource />,
+    anchorName: 'business-by-industry',
     headRows: [
       {
         cssClass: '',
@@ -176,7 +183,7 @@ const tableBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
         cols: [
           {
             cssClass: 'sub',
-            displayText: `${nodes[0].GeoName} - ${lookup[currentBtype]}`,
+            displayText: `${nodes[0].GeoName} - ${capitalise(currentBtype)}`,
             colSpan: 1,
           },
           {
@@ -288,14 +295,15 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
         align: 'left',
       },
       subtitle: {
-        text: `${currentBtype}`,
+        text: `${capitalise(currentBtype)}`,
         align: 'left',
       },
       tooltip: {
-        pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+        formatter: function() {
+          console.log(this);
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.key}, ${
             this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          } : ${formatShortDecimal(this.y)}%`;
         },
       },
       series: [
@@ -330,7 +338,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 Cat. No. 8165.0',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018',
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -355,21 +363,21 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
         align: 'left',
       },
       subtitle: {
-        text: `${currentAreaName} - ${currentBtype}`,
+        text: `${currentAreaName} - ${capitalise(currentBtype)}`,
         align: 'left',
       },
       tooltip: {
-        pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+        formatter: function() {
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.x} ${formatChangeInt(
+            this.y,
+          )}%`;
         },
       },
       series: [
         {
           color: '',
           yAxis: 0,
-          name: `serie's name`,
+          name: `${currentAreaName}`,
           data: _.map(filterednodes, 'Change12'),
         },
       ],
@@ -403,7 +411,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 Cat. No. 8165.0',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018',
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: idlogo,

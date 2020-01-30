@@ -9,4 +9,6 @@ export default [
   'economic-impact-assesment',
   'number-of-businesses-by-industry',
   'industry-sector-analysis',
+  'employment-by-industry',
+  'employment-by-industry-fte',
 ];
