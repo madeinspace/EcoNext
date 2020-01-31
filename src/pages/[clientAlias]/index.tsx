@@ -93,6 +93,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     filterToggles: [],
     pageData,
     entities,
+    entityData: data,
   };
 
   return {

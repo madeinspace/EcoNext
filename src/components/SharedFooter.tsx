@@ -101,11 +101,8 @@ const HomeLink = styled.a`
 
 export const SharedFooter = () => {
   const { LongName } = useContext(ClientContext);
-  const {
-    entityData: { HasPrefix },
-  } = useContext(PageContext);
-
-  const formattedClientName = HasPrefix ? `the ${LongName}` : LongName;
+  const { entityData } = useContext(PageContext);
+  const formattedClientName = entityData.HasPrefix ? `the ${LongName}` : LongName;
 
   return (
     <React.Fragment>
