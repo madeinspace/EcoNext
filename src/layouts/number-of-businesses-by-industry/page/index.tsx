@@ -26,7 +26,7 @@ const lookup = {
   Employing: 'registered employing businesses',
   '1 to 4 ': 'businesses employing 1 to 4 people',
   '5 to 19': 'businesses employing 5 to 19 people',
-
+  '20 to 199': 'businesses employing 20 to 199 people',
   '200 or more': 'businesses employing 200 or more people',
   'Total businesses': 'total registered businesses',
 };
