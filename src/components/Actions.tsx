@@ -142,6 +142,7 @@ const RequestReportForm = styled.form`
   line-height: 18px;
   padding: 10px;
   margin: 0;
+  position: relative;
   background-color: ${variables.colorEconomy};
   p {
     color: #fff;
@@ -155,12 +156,14 @@ const EmailAddress = styled.input`
 `;
 const ErrorMsg = styled.span`
   color: red;
-  margin-top: 8px;
+  display: block;
+  margin: 10px 0;
 `;
 const Align = styled.div`
   display: grid;
   grid-gap: 10px;
   grid-template-columns: [label] auto [input];
+  margin-bottom: 10px;
   p {
     font-size: 14px;
     line-height: 18px;
@@ -175,6 +178,18 @@ const Align = styled.div`
     align-self: center;
     color: #fff;
   }
+  button {
+    flex-direction: row;
+  }
+`;
+
+const AlignAlt = styled.div`
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: [cancel] auto [submit];
+  button {
+    cursor: pointer;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -184,6 +199,11 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   border: none;
   height: 30px;
+  grid-column: submit;
+`;
+
+const CancelButton = styled(SubmitButton)`
+  grid-column: cancel;
 `;
 
 export const ExportPage = (): JSX.Element => {
@@ -217,6 +237,10 @@ export const ExportPage = (): JSX.Element => {
       });
   };
 
+  const handleClose = () => {
+    setrequestFormVisible(false);
+  };
+
   const ReportRequestForm = (): JSX.Element => {
     const { register, errors, handleSubmit } = useForm();
     return (
@@ -236,10 +260,11 @@ export const ExportPage = (): JSX.Element => {
             })}
           />
         </Align>
-        <Align>
-          <ErrorMsg>{errors.emailAddress && 'Please enter a valid email address'}</ErrorMsg>
+        <ErrorMsg>{errors.emailAddress && 'Please enter a valid email address'}</ErrorMsg>
+        <AlignAlt>
+          <CancelButton onClick={handleClose}>Cancel</CancelButton>
           <SubmitButton type="submit">Submit</SubmitButton>
-        </Align>
+        </AlignAlt>
       </RequestReportForm>
     );
   };
@@ -247,7 +272,7 @@ export const ExportPage = (): JSX.Element => {
   const ThanksMsg = (): JSX.Element => {
     return (
       <ThankyouNote className="e-shad">
-        Thanks you, an email with a download link is on its way to {reqPayload.emailAddress}
+        Thank you, an email with a download link is on its way to {reqPayload.emailAddress}
       </ThankyouNote>
     );
   };
