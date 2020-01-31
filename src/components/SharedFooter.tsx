@@ -63,8 +63,19 @@ const StaticFooterText = styled.p`
 
 const ArrowIcon = styled.span`
   &::after {
-    font-family: 'id-icons';
-    content: '\\E603';
+    border-style: solid;
+    border-width: 0.12em 0.12em 0 0;
+    content: '';
+    height: 0.55em;
+    left: 0.15em;
+    position: relative;
+    top: 0.25em;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    vertical-align: top;
+    width: 0.55em;
+    display: inline-block;
   }
 `;
 
