@@ -62,6 +62,7 @@ const PageTemplate = (): JSX.Element => {
 };
 
 const PageComponent = ({ client, page }): JSX.Element => (
+  // we set the value of Page and Client context here
   <PageContext.Provider value={page}>
     <ClientContext.Provider value={client}>
       <PageTemplate />
@@ -109,9 +110,9 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
   const contentData = await fetchData({ filters });
-  const customToggles = await activeCustomToggles({ filterToggles });
 
   // we pass that data to interpolate the entities
+  const customToggles = await activeCustomToggles({ filterToggles });
   const data = {
     currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
     ...customToggles,
