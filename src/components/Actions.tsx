@@ -212,6 +212,7 @@ export const ExportPage = (): JSX.Element => {
   const [requestFormVisible, setrequestFormVisible] = useState(false);
   const [reqPayload, setreqPayload] = useState({ formatID: 1, LongName: '', pageSubTitle: '', emailAddress: '' });
   const [ThankYouNote, setThankYouNote] = useState(false);
+  const [WaitingNote, setWaitingNote] = useState(false);
   const { LongName } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
   const {
@@ -279,7 +280,20 @@ export const ExportPage = (): JSX.Element => {
     );
   };
 
+  const WaitMessage = () => {
+    return (
+      <ThankyouNote className="e-shad">
+        Thank you, your report will download soon (typically within 20 seconds)
+      </ThankyouNote>
+    );
+  };
+
   const handleExportPDF = () => {
+    setWaitingNote(true);
+    timer = setTimeout(() => {
+      setWaitingNote(false);
+      clearTimeout(timer);
+    }, 5000);
     axios
       .get(`https://pdfmyurl.com/api?license=H2oRd9Ih6vnA&url=${window.location.href}`, {
         responseType: 'arraybuffer',
@@ -288,7 +302,7 @@ export const ExportPage = (): JSX.Element => {
         let blob = new Blob([res.data], { type: 'application/pdf' });
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = `${LongName}-${handle}.pdf'`;
+        link.download = `${LongName}-${handle}.pdf`;
         link.click();
       });
   };
@@ -302,7 +316,7 @@ export const ExportPage = (): JSX.Element => {
     <>
       <NOROBOT>
         {requestFormVisible && <ReportRequestForm />}
-        {ThankYouNote && <ThanksMsg />}
+        {WaitingNote && <WaitMessage />}
       </NOROBOT>
       <DropdownContainer>
         <ExportPageButton
