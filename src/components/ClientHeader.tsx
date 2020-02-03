@@ -69,7 +69,7 @@ export const ClientHeader = () => {
   const { LongName, isLite, clientAlias, clientLogo } = useContext(ClientContext);
 
   return (
-    <Decoration>
+    <Decoration id="client-header">
       <HeaderRow>
         <HeaderWrapper>
           <Header>

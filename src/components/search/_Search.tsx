@@ -273,7 +273,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <div id="search">
         <HeaderID>
           <FauxWrapper>
             <IDIdentity />
@@ -335,7 +335,7 @@ class SearchApp extends React.Component<ISearchAppProps, ISearchState> {
             </ResultsContainer>
           </MainSearchWrapper>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }

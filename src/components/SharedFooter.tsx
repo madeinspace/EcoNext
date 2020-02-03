@@ -105,7 +105,7 @@ export const SharedFooter = () => {
   const formattedClientName = entityData.HasPrefix ? `the ${LongName}` : LongName;
 
   return (
-    <React.Fragment>
+    <div id="footer">
       <StaticFooter>
         <PoweredBy>
           <LogoBox>
@@ -316,7 +316,7 @@ export const SharedFooter = () => {
           </p>{' '}
         </DisclaimerText>
       </DisclaimerFooter>
-    </React.Fragment>
+    </div>
   );
 };
 export default SharedFooter;

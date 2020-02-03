@@ -152,7 +152,7 @@ const SiteMap = () => {
 
   const columns = _.values(groupBy(sitemapGroups, 'ColNumber'));
   return (
-    <SitemapWrapper>
+    <SitemapWrapper id="sitemap">
       <FooterRow>
         <FooterContents>
           <SiteMapHeader>{LongName}</SiteMapHeader>
