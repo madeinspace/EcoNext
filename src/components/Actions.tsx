@@ -213,6 +213,7 @@ export const ExportPage = (): JSX.Element => {
   const [reqPayload, setreqPayload] = useState({ formatID: 1, LongName: '', pageSubTitle: '', emailAddress: '' });
   const [ThankYouNote, setThankYouNote] = useState(false);
   const { LongName } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
   const {
     pageData: { SubTitle: pageSubTitle },
   } = useContext(PageContext);
@@ -279,10 +280,17 @@ export const ExportPage = (): JSX.Element => {
   };
 
   const handleExportPDF = () => {
-    console.log('requesting pdf');
     axios
-      .post(`https://pdfmyurl.com/saveaspdf?url=https://ecodev-next.azurewebsites.net${window.location.pathname}`)
-      .then(res => console.log(res));
+      .get(`https://pdfmyurl.com/api?license=H2oRd9Ih6vnA&url=${window.location.href}`, {
+        responseType: 'arraybuffer',
+      })
+      .then(res => {
+        let blob = new Blob([res.data], { type: 'application/pdf' });
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${LongName}-${handle}.pdf'`;
+        link.click();
+      });
   };
 
   const handleRequestExport = option => {
