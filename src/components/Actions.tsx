@@ -10,6 +10,7 @@ import payload from '../utils/fecthPageReport/ReportPayload';
 import useForm from 'react-hook-form';
 import { emailRGX } from '../utils/Regex';
 import { FaFileExport, FaShareAlt, FaUndo } from 'react-icons/fa';
+import axios from 'axios';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const ExportDropdown: React.FC<any> = props => {
@@ -277,6 +278,18 @@ export const ExportPage = (): JSX.Element => {
     );
   };
 
+  const handleExportPDF = () => {
+    console.log('requesting pdf');
+    axios
+      .post(`https://pdfmyurl.com/saveaspdf?url=https://ecodev-next.azurewebsites.net${window.location.pathname}`)
+      .then(res => console.log(res));
+  };
+
+  const handleRequestExport = option => {
+    setreqPayload({ formatID: option.id, LongName, pageSubTitle, emailAddress: '' });
+    setrequestFormVisible(true);
+  };
+
   return (
     <>
       <NOROBOT>
@@ -298,13 +311,7 @@ export const ExportPage = (): JSX.Element => {
         />
         <ShareDropdownList dropdownVisible={dropdownVisible}>
           {ExportOptions.map((option, i) => (
-            <ShareDropdownListItem
-              key={i}
-              onClick={(): void => {
-                setreqPayload({ formatID: option.id, LongName, pageSubTitle, emailAddress: '' });
-                setrequestFormVisible(true);
-              }}
-            >
+            <ShareDropdownListItem key={i} onClick={handleExportPDF}>
               {option.displayText}
             </ShareDropdownListItem>
           ))}
