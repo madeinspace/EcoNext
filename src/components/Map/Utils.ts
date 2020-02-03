@@ -18,17 +18,19 @@ export const createMapLayers = ({ entitylayers, layers, LongName }) => {
     return a;
   }, {});
 
-  const mapLayers = layers.reduce((acc, currlayer) => {
-    const match = lookup[parseInt(currlayer.id)];
-    const key = match.name;
+  const mapLayers = layers
+    .filter(layer => lookup[layer.id] !== undefined)
+    .reduce((acc, currlayer) => {
+      const match = lookup[parseInt(currlayer.id)];
+      if (match === undefined) return;
+      const key = match.name;
+      const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
 
-    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
-
-    if (!(key in acc)) {
-      acc.push({ ...match, decodedLayer: decodedAreas });
-    }
-    return acc;
-  }, []);
+      if (!(key in acc)) {
+        acc.push({ ...match, decodedLayer: decodedAreas });
+      }
+      return acc;
+    }, []);
 
   return mapLayers;
 };
