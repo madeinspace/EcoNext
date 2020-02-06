@@ -184,7 +184,8 @@ const EmploymentByIndustryTotalPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
   const { contentData, filterToggles, entityData } = useContext(PageContext);
 
-  const currentAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
+  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
   const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
   const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
   const { currentStartYear, currentComparaisonYear } = entityData;
@@ -209,15 +210,15 @@ const EmploymentByIndustryTotalPage = () => {
       <PageIntro>
         <div>
           <p>
-            Employment (total) is the most accurate and up to date measure of the total number of people employed in the
-            City of Monash. The statistics are modelled by NIEIR to correct for the known undercount of jobs recorded in
-            the Census. They estimate the total number of persons employed in an industry sector (full-time and
-            part-time) in Monash regardless of where they live. They are updated annually.
+            Employment (total) is the most accurate and up to date measure of the total number of people employed in{' '}
+            {prefixedAreaName}. The statistics are modelled by NIEIR to correct for the known undercount of jobs
+            recorded in the Census. They estimate the total number of persons employed in an industry sector (full-time
+            and part-time) in {prefixedAreaName} regardless of where they live. They are updated annually.
           </p>
           <p>
             By comparing the number of jobs in each industry sector to a regional benchmark, you can clearly see the
-            structure of Monash's economy. This can be done by directly comparing the area to its benchmark, or by using
-            a location quotient to look at the relative size of industries.
+            structure of {prefixedAreaName}'s economy. This can be done by directly comparing the area to its benchmark,
+            or by using a location quotient to look at the relative size of industries.
           </p>
           <p>
             Estimated total employment by industry should not be considered as a{' '}
@@ -597,7 +598,7 @@ const chartBuilder = ({
 
   const chartType = 'bar';
   const chartTitle = `Employment (total) by industry ${currentStartYear}`;
-  const chartSubtitle = `${areaName}`;
+  const chartSubtitle = ``;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Percentage of the employed (estimated)`;
   const rawDataSource =
