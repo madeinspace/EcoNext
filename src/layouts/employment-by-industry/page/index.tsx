@@ -84,18 +84,7 @@ const TopThreeFields = ({ industryName }) => {
 };
 
 const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
-  const {
-    filters: { IGBMID },
-    contentData,
-  } = useContext(PageContext);
-
-  let currentBenchmarkName: any = benchmarkName;
-
-  const industryBenchmark = IGBMID > 1000;
-
-  if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
-  }
+  const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -111,7 +100,7 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
 
   return (
     <p>
-      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
+      In comparison, {benchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
     </p>
   );
 };
@@ -313,8 +302,8 @@ const EmploymentByIndustryTotalPage = () => {
           industries were:
         </p>
         <TopThreeFields industryName={currentIndustryName} />
-        <ComparisonBenchmark areaName={currentAreaName} benchmarkName={currentBenchmarkName} />
-        <MajorDifferences areaName={currentAreaName} benchmarkName={currentBenchmarkName} />
+        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
+        <MajorDifferences areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
       </AnalysisContainer>
       <AnalysisContainer>
         <h3>Emerging groups</h3>
