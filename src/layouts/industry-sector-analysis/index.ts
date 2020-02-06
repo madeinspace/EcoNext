@@ -1,11 +1,19 @@
 import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
 
   return contentData;
+};
+
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = {
+    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  };
+  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -73,7 +81,7 @@ const pageContent = {
   ],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
 
 // @ClientID int,
 // @WebID varchar(MAX),

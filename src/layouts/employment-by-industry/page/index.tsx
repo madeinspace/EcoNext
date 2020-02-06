@@ -319,7 +319,7 @@ const EmploymentByIndustryTotalPage = () => {
       <AnalysisContainer>
         <h3>Emerging groups</h3>
         <EmergingGroupsHeading
-          areaName={currentAreaName}
+          areaName={prefixedAreaName}
           currentStartYear={currentStartYear}
           currentComparaisonYear={currentComparaisonYear}
         />
@@ -369,6 +369,7 @@ const tableBuilder = ({
   currentComparaisonYear,
   TabularData: data,
 }) => {
+  console.log('data: ', data);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Employment (total) by industry';
@@ -468,7 +469,7 @@ const tableBuilder = ({
       },
       {
         id: 7,
-        displayText: '2011 - 2016',
+        displayText: `${currentComparaisonYear} - ${currentStartYear} `,
         cssClass: 'even int',
       },
     ],

@@ -1,11 +1,11 @@
 import { sqlConnection } from '../../utils/sql';
 
 /* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, sStartYear, sEndYear, WebID }) =>
+const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_JTW_Employment_1and2Digit](
     ${ClientID},
     ${WebID},
-    ${IGBMID},
+    ${BMID},
     ${sStartYear},
     ${sEndYear},
     1,
@@ -102,7 +102,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2013',
+      DefaultValue: '2014',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',

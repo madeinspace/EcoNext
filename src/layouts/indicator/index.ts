@@ -8,9 +8,11 @@ const fetchData = async filters => {
   return data;
 };
 
+const activeCustomToggles = () => {};
+
 const pageContent = {
   entities: [],
   filterToggles: [],
 };
 
-export { fetchData, Page, pageContent };
+export { fetchData, activeCustomToggles, Page, pageContent };
