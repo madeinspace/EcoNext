@@ -56,7 +56,7 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const TopThreeFields = ({ industryName }) => {
+const TopThreeFields = () => {
   const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
@@ -83,7 +83,7 @@ const TopThreeFields = ({ industryName }) => {
   );
 };
 
-const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
+const ComparisonBenchmark = ({ benchmarkName }) => {
   const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
@@ -301,8 +301,8 @@ const EmploymentByIndustryTotalPage = () => {
           An analysis of the jobs held by the local workers in {prefixedAreaName} in 2018/19 shows the three largest
           industries were:
         </p>
-        <TopThreeFields industryName={currentIndustryName} />
-        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
+        <TopThreeFields />
+        <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
         <MajorDifferences areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
       </AnalysisContainer>
       <AnalysisContainer>
