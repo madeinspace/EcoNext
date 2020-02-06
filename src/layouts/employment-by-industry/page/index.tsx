@@ -180,7 +180,7 @@ const EmergingGroups = () => {
 // #endregion
 
 // #region page
-const LocalWorkerFieldsOfQualificationPage = () => {
+const EmploymentByIndustryTotalPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
   const { contentData, filterToggles, entityData } = useContext(PageContext);
 
@@ -338,7 +338,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   );
 };
 
-export default LocalWorkerFieldsOfQualificationPage;
+export default EmploymentByIndustryTotalPage;
 
 // #endregion
 

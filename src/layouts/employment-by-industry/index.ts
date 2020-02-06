@@ -44,6 +44,9 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headline = ({ data, contentData }): string => {
+  //  for some lite clietns (bayside afaik) this dataset doesn't exist
+  if (contentData.length <= 0) return;
+
   const prefix = data.HasPrefix ? 'the ' : '';
   const areaName = `${prefix}${data.currentAreaName}`;
   const largestEmployer = largest(contentData, 'NoYear1');
