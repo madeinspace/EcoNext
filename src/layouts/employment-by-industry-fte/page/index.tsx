@@ -27,12 +27,20 @@ import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink } from '../../../components/ui/links';
+import { ABSCensusHousingLink, IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import styled from 'styled-components';
 import Link from 'next/link';
 import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
+const TopList = styled.ul`
+  margin: 10px 0 10px 20px;
+  li {
+    list-style: disc;
+    line-height: 20px;
+  }
+`;
 // #region autotext / dynamic content
 
 const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
@@ -48,7 +56,7 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const TopThreeFields = ({ industryName }) => {
+const TopThreeFields = () => {
   const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
@@ -60,34 +68,23 @@ const TopThreeFields = ({ industryName }) => {
 
   return (
     <>
-      <ul>
+      <TopList>
         {topThree.map((qual: any, i) => (
           <li key={i}>
             {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
           </li>
         ))}
-      </ul>
+      </TopList>
       <p>
-        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or 6
-        {formatPercent(totalPercent)}% of {industryName}.
+        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or {}
+        {formatPercent(totalPercent)}% of the local workers.
       </p>
     </>
   );
 };
 
-const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
-  const {
-    filters: { IGBMID },
-    contentData,
-  } = useContext(PageContext);
-
-  let currentBenchmarkName: any = benchmarkName;
-
-  const industryBenchmark = IGBMID > 1000;
-
-  if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
-  }
+const ComparisonBenchmark = ({ benchmarkName }) => {
+  const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -103,42 +100,23 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
 
   return (
     <p>
-      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
+      In comparison, {benchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
     </p>
   );
 };
 
-const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName }) => {
-  const {
-    filters: { IGBMID, Indkey },
-  } = useContext(PageContext);
-
-  let industryText = industryName;
-  if (Indkey == 23000) {
-    //All Industries === 23000
-    industryText = '';
-  }
-  industryText = `the ${industryText} workforce`;
-
-  let benchmarkText = benchmarkName;
-  const industryBenchmark = IGBMID > 1000;
-  if (industryBenchmark) {
-    if (IGBMID == 23000) {
-      benchmarkText = 'total';
-    }
-    benchmarkText = `the ${benchmarkText} workforce`;
-  }
-
+const MajorDifferencesHeading = ({ areaName, benchmarkName }) => {
+  const { contentData, entityData } = useContext(PageContext);
   return (
     <Highlight>
-      The major differences between the fields of qualifications of {industryText} in {areaName} and {benchmarkText}{' '}
-      were:
+      The major differences between the jobs held by the full-time equivalent local workers of {areaName} and{' '}
+      {benchmarkName} were:
     </Highlight>
   );
 };
 
-const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
-  const { contentData } = useContext(PageContext);
+const MajorDifferences = ({ areaName, benchmarkName }) => {
+  const { contentData, entityData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -150,34 +128,29 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName }) => {
 
   return (
     <>
-      <MajorDifferencesHeading areaName={areaName} benchmarkName={benchmarkName} industryName={industryName} />
-      <ul>
+      <MajorDifferencesHeading areaName={areaName} benchmarkName={benchmarkName} />
+      <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local workers qualified in
-            the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of full-time equivalent workers
+            employed in the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
+            {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
-      </ul>
+      </TopList>
     </>
   );
 };
 
-const EmergingGroupsHeading = ({ areaName, industryName }) => {
-  const {
-    filters: { Indkey },
-  } = useContext(PageContext);
-
-  let industryText = industryName;
-  if (Indkey == 23000) {
-    //All Industries === 23000
-    industryText = 'total';
-  }
-  industryText = `the ${industryText} workforce`;
-
+const EmergingGroupsHeading = ({ areaName, currentStartYear, currentComparaisonYear }) => {
+  const { contentData } = useContext(PageContext);
+  const totals = contentData.filter(item => item.LabelName === 'Total Industries');
+  const difference = formatNumber(totals[0].NoYear1 - totals[0].NoYear2);
+  const diffText = totals[0].NoYear2 > totals[0].NoYear1 ? `decreased by ${difference}` : `increased by ${difference}`;
   return (
     <Highlight>
-      The largest changes in fields of qualifications of {industryText} in {areaName} between 2011 and 2016 were:
+      The number of local workers in {areaName} increased by {diffText} between {currentComparaisonYear} and{' '}
+      {currentStartYear}.
     </Highlight>
   );
 };
@@ -190,50 +163,40 @@ const EmergingGroups = () => {
   const topFour = TopFour(highestQuals);
 
   return (
-    <ul>
+    <TopList>
       {topFour.map((qual: any, i) => (
         <li key={i}>
-          {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
+          {qual.LabelName} ({formatChangeInt(qual.Change12)} local workers)
         </li>
       ))}
-    </ul>
+    </TopList>
   );
 };
 // #endregion
 
 // #region page
-const LocalWorkerFieldsOfQualificationPage = () => {
+const EmploymentByIndustryFTETotalPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles } = useContext(PageContext);
+  const { contentData, filterToggles, entityData } = useContext(PageContext);
 
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
+  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
   const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
+  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
+  const { currentStartYear, currentComparaisonYear } = entityData;
 
-  const tableParams = tableBuilder({
+  const builderPayload = {
     areaName: currentAreaName,
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
-    genderName: currentGenderName,
+    currentStartYear,
+    currentComparaisonYear,
     TabularData: contentData,
-  });
+  };
 
-  const chartData = chartBuilder({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
-  });
-
-  const chartChangeData = chartBuilderChange({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
-  });
+  const tableParams = tableBuilder(builderPayload);
+  const chartData = chartBuilder(builderPayload);
+  const chartChangeData = chartBuilderChange(builderPayload);
 
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
@@ -242,50 +205,52 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       <PageIntro>
         <div>
           <p>
-            Field of Qualification presents the primary field of study for the highest qualification the person has
-            received. While this is likely to have some relationship to the current occupation, this is not necessarily
-            the case.{' '}
-          </p>
-          <p>The field of study relates to a number of factors, such as:</p>
-          <ul>
-            <li>The age of the workforce;</li>
-            <li>The type of qualification required to enter an industry;</li>
-            <li>The availability of jobs related to fields of qualification in {currentAreaName};</li>
-            <li>The types of occupations which are available in an area or industry.</li>
-          </ul>
-          <p>
-            The fields of qualification held by local workers in a particular industry are likely to show the type of
-            skills required in that industry. Large numbers of a particular field of qualification in an industry may
-            indicate that it is a pre-requisite for that industry. The presence of fields of qualification outside the
-            main range of qualifications used in that industry may indicate that the industry values employees of a
-            broad educational background, or that people haven't been able to find employment in their chosen field.
+            Full-time equivalent (FTE) employment is modelled by NIEIR and takes into account differences in hours
+            worked between industry sectors. It is a measure that allows direct comparison of employment between
+            industries in {prefixedAreaName}.
           </p>
           <p>
-            Field of Qualification information should be looked at in conjunction with{' '}
-            <MonolithOrNextLink href={`/${clientAlias}/workers-level-of-qualifications`}>
-              Level of qualification
-            </MonolithOrNextLink>{' '}
-            and <MonolithOrNextLink href={`/${clientAlias}/workers-occupations`}>Occupation</MonolithOrNextLink> data
-            for a clearer picture of the skills available for the local workers in {LongName}.
+            Typically, industries such as Retail Trade and Accommodation and Food Services, which employ many part-time
+            workers, have lower FTE employment than total employment.
+          </p>{' '}
+          <p>
+            FTE employment is calculated directly by dividing the total hours worked in each industry by 38. By
+            comparing the number of full-time equivalent jobs in each industry sector to a regional benchmark, you can
+            clearly see the structure of {prefixedAreaName}'s economy. This can be done by directly comparing the area
+            to its benchmark, or by using a location quotient to look at the relative size of industries.
+          </p>
+          <p>
+            FTE employment should be viewed in conjunction with{' '}
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/employment-by-industry?`,
+              `Employment by industry (Total)`,
+            )}{' '}
+            and{' '}
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/Employment-census?`,
+              `Employment by industry (Census)`,
+            )}
+            , for a full understanding of the industry breakdown in the area.{' '}
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry?`,
+              `Worker productivity`,
+            )}{' '}
+            data shows the value of a worker in each industry to the local economy.{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-locations?`, `Employment locations`)}{' '}
+            shows where employment is taking place in each industry sector.
           </p>
         </div>
         <SourceBubble>
           <div>
             <h3>Data source</h3>
-            <p>
-              Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) &amp; 2016 – by place of work
-            </p>
+            <p>National Economics (NIEIR) - Modelled series</p>
           </div>
         </SourceBubble>
       </PageIntro>
       <Note>
-        <strong>Please note</strong> – The 2016 Census used a new methodology to “impute” a work location to people who
-        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
-        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {LongName} in 2011 had to be constructed from a best
-        fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it is
-        considered close enough to allow some comparison. Users should treat this time series data with caution,
-        however, and not compare directly with 2011 data from any other source.
+        <strong>Please note: </strong> FTE employment is derived from Census data but has been corrected for the known
+        undercount of employment in the Census. Detailed notes about how the figures are derived can be found in the
+        {LinkBuilder(`https://economy.id.com.au/${clientAlias}/topic-notes?`, `specific topic notes`)} section.
       </Note>
 
       <ControlPanel />
@@ -303,14 +268,10 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       {hasProfile() && (
         <CrossLink>
           <ProfileProductIcon />
-          <a
-            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to forecast"
-          >
-            Residents qualifications by small area
-          </a>
+          {LinkBuilder(
+            `https://profile.id.com.au/${clientAlias}/industries?WebId=10`,
+            `Residents employment by industry by small area`,
+          )}
         </CrossLink>
       )}
 
@@ -335,20 +296,20 @@ const LocalWorkerFieldsOfQualificationPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the fields of qualifications of the {currentIndustryName} shows that the three largest fields of
-          qualification were:
+          An analysis of the jobs held by the full-time equivalent local workers in {prefixedAreaName} in 2018/19 shows
+          the three largest industries were:
         </p>
-        <TopThreeFields industryName={currentIndustryName} />
-        <ComparisonBenchmark areaName={currentAreaName} benchmarkName={currentBenchmarkName} />
-        <MajorDifferences
-          areaName={currentAreaName}
-          benchmarkName={currentBenchmarkName}
-          industryName={currentIndustryName}
-        />
+        <TopThreeFields />
+        <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
+        <MajorDifferences areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
       </AnalysisContainer>
       <AnalysisContainer>
         <h3>Emerging groups</h3>
-        <EmergingGroupsHeading areaName={currentAreaName} industryName={currentIndustryName} />
+        <EmergingGroupsHeading
+          areaName={prefixedAreaName}
+          currentStartYear={currentStartYear}
+          currentComparaisonYear={currentComparaisonYear}
+        />
         <EmergingGroups />
       </AnalysisContainer>
       {
@@ -365,22 +326,27 @@ const LocalWorkerFieldsOfQualificationPage = () => {
   );
 };
 
-export default LocalWorkerFieldsOfQualificationPage;
+export default EmploymentByIndustryFTETotalPage;
 
 // #endregion
 
 // #region sources
-const TableSource = () => (
-  <p>
-    Source: Australian Bureau of Statistics, <ABSCensusHousingLink /> 2011 and 2016. Compiled and presented by{' '}
-    <IdLink />
-  </p>
-);
+const TableSource = () => {
+  const { clientAlias } = useContext(ClientContext);
+  return (
+    <p>
+      Source: <NierLink /> ©2019. Compiled and presented in economy.id by
+      <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
+      previous years’ figures.{' '}
+      {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
+    </p>
+  );
+};
 
 const ChartSource = () => (
   <p>
-    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by <IdLink />.
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    <IdLink />.
   </p>
 );
 // #endregion
@@ -390,23 +356,25 @@ const tableBuilder = ({
   areaName,
   industryName: industry,
   bmName: benchmark,
-  genderName: gender,
+  currentStartYear,
+  currentComparaisonYear,
   TabularData: data,
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Local workers field of qualification - Summary';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const tableTitle = 'Full-time equivalent employment by industry sector';
+  const firstColTitle = 'Industry';
+  const footerRows = data.filter(item => item.LabelName === 'Total Industries');
+
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
   );
   const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
     parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
+      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 100,
     );
   });
 
@@ -415,7 +383,7 @@ const tableBuilder = ({
     clientAlias: areaName,
     source: <TableSource />,
     rawDataSource,
-    anchorName: '',
+    anchorName: 'employment-by-industry-(total)',
     headRows: [
       {
         cssClass: '',
@@ -432,21 +400,21 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: '',
-            displayText: `${areaName} - ${industry}`,
+            displayText: `${areaName}`,
             colSpan: 1,
           },
           {
             cssClass: 'even',
-            displayText: ' 2016',
+            displayText: `${currentStartYear}`,
             colSpan: 3,
           },
           {
             cssClass: 'odd',
-            displayText: '2011',
+            displayText: `${currentComparaisonYear}`,
             colSpan: 3,
           },
           {
-            cssClass: 'even',
+            cssClass: 'sub even',
             displayText: 'Change',
             colSpan: 1,
           },
@@ -491,7 +459,7 @@ const tableBuilder = ({
       },
       {
         id: 7,
-        displayText: '2011 - 2016',
+        displayText: `${currentComparaisonYear} - ${currentStartYear} `,
         cssClass: 'even int',
       },
     ],
@@ -511,11 +479,11 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
+        formatPercent(row.PerYear1),
+        formatPercent(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
+        formatPercent(row.PerYear2),
+        formatPercent(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
@@ -533,26 +501,26 @@ const tableBuilder = ({
         formattedData: [
           `${childRow.LabelName}`,
           formatNumber(childRow.NoYear1),
-          formatShortDecimal(childRow.PerYear1),
-          formatShortDecimal(childRow.BMYear1),
+          formatPercent(childRow.PerYear1),
+          formatPercent(childRow.BMYear1),
           formatNumber(childRow.NoYear2),
-          formatShortDecimal(childRow.PerYear2),
-          formatShortDecimal(childRow.BMYear2),
+          formatPercent(childRow.PerYear2),
+          formatPercent(childRow.BMYear2),
           formatChangeInt(childRow.Change12, '--'),
         ],
       })),
     })),
     footRows: footerRows.map(row => {
       return {
-        cssClass: '',
+        cssClass: 'total',
         cols: [
-          { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
+          { cssClass: '', displayText: `Total industries`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeInt(row.Change12),
@@ -571,17 +539,18 @@ const chartBuilder = ({
   areaName,
   industryName: currentIndustry,
   bmName: currentBenchmark,
-  genderName: gender,
+  currentStartYear,
+  currentComparaisonYear,
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
   );
   const children = data.filter(item => item.Hierarchy === 'C');
   parents.forEach(parent => {
     parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
+      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 100,
     );
   });
   const perYear1Serie = _.map(parents, item => {
@@ -619,12 +588,12 @@ const chartBuilder = ({
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
   const chartType = 'bar';
-  const chartTitle = 'Local workers field of qualification, 2016';
-  const chartSubtitle = `${areaName} - ${currentIndustry} - ${gender}`;
-  const xAxisTitle = 'Field of qualification';
-  const yAxisTitle = `Percentage of ${gender} workers`;
+  const chartTitle = `Employment (FTE) ${currentStartYear}`;
+  const chartSubtitle = ``;
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `Percentage of the employed (FTE)`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -702,29 +671,30 @@ const chartBuilderChange = ({
   areaName,
   industryName: currentIndustry,
   bmName: currentBenchmark,
-  genderName: gender,
+  currentStartYear,
+  currentComparaisonYear,
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = 'Change in local workers field of qualification, 2016';
-  const chartSubtitle = `${areaName} - ${currentIndustry} - ${gender}`;
+  const chartTitle = `Change in employment (FTE), ${currentComparaisonYear} to ${currentStartYear}`;
+  const chartSubtitle = `${areaName}`;
   const serie = _.map(parents, 'Change12');
-  const xAxisTitle = 'Field of qualification';
-  const yAxisTitle = `Change in ${gender} local workers`;
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `Change in the number of employed (estimated)`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${areaName} - ${
-      this.series.name
-    }: ${formatChangeInt(this.y)}`;
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+      this.category
+    }, ${areaName}: ${formatChangeInt(this.y)}`;
   };
 
   return {

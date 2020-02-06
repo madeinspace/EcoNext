@@ -141,9 +141,13 @@ const MajorDifferences = ({ areaName, benchmarkName }) => {
 };
 
 const EmergingGroupsHeading = ({ areaName, currentStartYear, currentComparaisonYear }) => {
+  const { contentData } = useContext(PageContext);
+  const totals = contentData.filter(item => item.LabelName === 'Total Industries');
+  const difference = formatNumber(totals[0].NoYear1 - totals[0].NoYear2);
+  const diffText = totals[0].NoYear2 > totals[0].NoYear1 ? `decreased by ${difference}` : `increased by ${difference}`;
   return (
     <Highlight>
-      The number of local workers in {areaName} increased by 32,784 between {currentComparaisonYear} and{' '}
+      The number of local workers in {areaName} increased by {diffText} between {currentComparaisonYear} and{' '}
       {currentStartYear}.
     </Highlight>
   );
@@ -211,10 +215,13 @@ const EmploymentByIndustryTotalPage = () => {
           </p>
           <p>
             Estimated total employment by industry should not be considered as a{' '}
-            {LinkBuilder(`https://economy.id.com.au/rda-barossa/employment-by-industry-fte?`, `"Full-Time Equivalent"`)}{' '}
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/employment-by-industry-fte?`,
+              `"Full-Time Equivalent"`,
+            )}{' '}
             measure as different industries will have different ratios of part-time and full time employees.{' '}
             {LinkBuilder(
-              `https://economy.id.com.au/rda-barossa/employment-by-industry-fte?`,
+              `https://economy.id.com.au/${clientAlias}/employment-by-industry-fte?`,
               `Full-time employment by industry`,
             )}{' '}
             statistics are also available.
@@ -222,13 +229,13 @@ const EmploymentByIndustryTotalPage = () => {
           <p>
             To see how employment is distributed across the area, see the{' '}
             {LinkBuilder(
-              `https://economy.id.com.au/rda-barossa/employment-locations?sEndYear=2009&BMID=20`,
+              `https://economy.id.com.au/${clientAlias}/employment-locations?sEndYear=2009&BMID=20`,
               `Employment locations`,
             )}{' '}
             section and to see where people come from to work in these industries, these data should be viewed in
             conjunction with{' '}
             {LinkBuilder(
-              `https://economy.id.com.au/rda-barossa/workers-place-of-residence-industry?`,
+              `https://economy.id.com.au/${clientAlias}/workers-place-of-residence-industry?`,
               `Workers place of residence by industry`,
             )}{' '}
             data.{' '}
@@ -249,7 +256,7 @@ const EmploymentByIndustryTotalPage = () => {
       <Note>
         <strong>Please note</strong> – Detailed notes about how the figures are derived can be found in the{' '}
         {LinkBuilder(
-          `https://economy.id.com.au/rda-barossa/topic-notes?#employment-(total)-by-industry`,
+          `https://economy.id.com.au/${clientAlias}/topic-notes?#employment-(total)-by-industry`,
           `specific
         topic notes section.`,
         )}
@@ -333,13 +340,18 @@ export default EmploymentByIndustryTotalPage;
 // #endregion
 
 // #region sources
-const TableSource = () => (
-  <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by
-    <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
-    previous years’ figures. {LinkBuilder(`https://economy.id.com.au/monash/economic-model-updates`, 'Learn more')}
-  </p>
-);
+const TableSource = () => {
+  const { clientAlias } = useContext(ClientContext);
+  return (
+    <p>
+      Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id
+      by
+      <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
+      previous years’ figures.{' '}
+      {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
+    </p>
+  );
+};
 
 const ChartSource = () => (
   <p>
