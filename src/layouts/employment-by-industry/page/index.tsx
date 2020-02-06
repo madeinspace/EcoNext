@@ -309,7 +309,7 @@ const EmploymentByIndustryTotalPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the jobs held by the local workers in City of Monash in 2018/19 shows the three largest
+          An analysis of the jobs held by the local workers in {prefixedAreaName} in 2018/19 shows the three largest
           industries were:
         </p>
         <TopThreeFields industryName={currentIndustryName} />
