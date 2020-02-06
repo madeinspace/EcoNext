@@ -702,9 +702,9 @@ const chartBuilderChange = ({
   const chartTemplate = 'Standard';
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${areaName} - ${
-      this.series.name
-    }: ${formatChangeInt(this.y)}`;
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+      this.category
+    }, ${areaName}: ${formatChangeInt(this.y)}`;
   };
 
   return {
