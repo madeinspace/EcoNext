@@ -7,7 +7,7 @@ export const ABSLink = () =>
 export const NierLink = () =>
   LinkBuilder('http://www.nieir.com.au/', 'National Institute of Economic and Industry Research (NIEIR)');
 
-export const IdLink = () => LinkBuilder('http://home.id.com.au/about-us/', '.id the population experts');
+export const IdLink = () => LinkBuilder('http://home.id.com.au/about-us/', ' .id the population experts');
 
 export const ABSCensusHousingLink = () =>
   LinkBuilder('http://www.abs.gov.au/census', 'Census of Population and Housing');

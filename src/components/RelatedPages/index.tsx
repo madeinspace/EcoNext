@@ -12,6 +12,7 @@ const StyledCTA = styled.div`
   grid-template-columns: 65% 5% 30%;
   padding: 20px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
   h3 {
     color: ${variables.colorEconomyDark};
     margin-bottom: 0;
@@ -20,6 +21,9 @@ const StyledCTA = styled.div`
     list-style: none;
     grid-area: links;
     margin-bottom: 0;
+    li {
+      line-height: 20px;
+    }
     a {
       color: ${variables.gray};
       text-decoration: none;

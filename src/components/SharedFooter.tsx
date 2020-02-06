@@ -102,7 +102,7 @@ const HomeLink = styled.a`
 export const SharedFooter = () => {
   const { LongName } = useContext(ClientContext);
   const { entityData } = useContext(PageContext);
-  const formattedClientName = entityData.HasPrefix ? `the ${LongName}` : LongName;
+  const formattedClientName = LongName != undefined ? `for ${entityData.HasPrefix ? `the ${LongName}` : LongName}` : '';
 
   return (
     <div id="footer">
@@ -231,7 +231,7 @@ export const SharedFooter = () => {
               borderRight: '1px solid #ccc',
             }}
           >
-            <StaticFooterHeading>Powered by .id - the population experts for {formattedClientName}</StaticFooterHeading>
+            <StaticFooterHeading>Powered by .id - the population experts {formattedClientName}</StaticFooterHeading>
             <StaticFooterText>
               .id community is an evidence-base for over 250 local government areas in Australia and New Zealand,
               helping you make informed decisions.

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { CenteredContainer } from '../components/grid';
 import ClientProductsNav from '../components/ClientProductsNav';
 import SharedFooter from '../components/SharedFooter';
-import { ClientContext } from '../utils/context';
+import { ClientContext, PageContext } from '../utils/context';
 import Head from 'next/head';
 
 const LogoGrid = styled.div`
@@ -129,40 +129,42 @@ const HomePage = ({ clients }): JSX.Element => {
         <meta name="viewport" content="width=1024"></meta>
         <meta name="Description" content="Home page"></meta>
       </Head>
-      <ClientContext.Provider value={{ clientProducts: products }}>
-        <CenteredContainer>
-          <IDidentity />
-        </CenteredContainer>
-        <CenteredContainer>
-          <ClientProductsNav alias={''} />
-        </CenteredContainer>
-        <IntroWrapper>
+      <PageContext.Provider value={{ entityData: { HasPrefix: false } }}>
+        <ClientContext.Provider value={{ clientProducts: products }}>
           <CenteredContainer>
-            <h1>Find your economic profile…</h1>
-            <p>
-              .id delivers online economic profiles to councils across Australia. These are delivered in public
-              websites, branded economy.id, for anyone to access. The sites bring together economic data from multiple
-              sources to tell the story of a local economy and how it is changing. This information is designed to be
-              used by council staff, local businesses, investors, community groups, students and the general public.
-            </p>{' '}
-            <p>
-              You can be confident about the quality of the information in the economic profiles as it is derived from
-              official sources, includes the most robust economic modeling and is analysed and presented by experts.
-              Each data source is maintained with the latest series so you can be sure you are using the most up to date
-              information.
-            </p>{' '}
-            <p>
-              Click on the links below to access local economic data in its most compelling form including Gross
-              Regional Product, local jobs, local businesses, employment, unemployment, population, building approvals,
-              industry structure, journey to work and much more.
-            </p>
+            <IDidentity />
           </CenteredContainer>
-        </IntroWrapper>
-        <CenteredContainer>
-          <LogoGrid>{clientList}</LogoGrid>
-        </CenteredContainer>
-        <SharedFooter />
-      </ClientContext.Provider>
+          <CenteredContainer>
+            <ClientProductsNav alias={''} />
+          </CenteredContainer>
+          <IntroWrapper>
+            <CenteredContainer>
+              <h1>Find your economic profile…</h1>
+              <p>
+                .id delivers online economic profiles to councils across Australia. These are delivered in public
+                websites, branded economy.id, for anyone to access. The sites bring together economic data from multiple
+                sources to tell the story of a local economy and how it is changing. This information is designed to be
+                used by council staff, local businesses, investors, community groups, students and the general public.
+              </p>{' '}
+              <p>
+                You can be confident about the quality of the information in the economic profiles as it is derived from
+                official sources, includes the most robust economic modeling and is analysed and presented by experts.
+                Each data source is maintained with the latest series so you can be sure you are using the most up to
+                date information.
+              </p>{' '}
+              <p>
+                Click on the links below to access local economic data in its most compelling form including Gross
+                Regional Product, local jobs, local businesses, employment, unemployment, population, building
+                approvals, industry structure, journey to work and much more.
+              </p>
+            </CenteredContainer>
+          </IntroWrapper>
+          <CenteredContainer>
+            <LogoGrid>{clientList}</LogoGrid>
+          </CenteredContainer>
+          <SharedFooter />
+        </ClientContext.Provider>
+      </PageContext.Provider>
     </>
   );
 };

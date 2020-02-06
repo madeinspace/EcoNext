@@ -1,25 +1,19 @@
 import { sqlConnection } from '../../utils/sql';
 
 /* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
+const contentDataQuery = ({ ClientID, IGBMID, sStartYear, sEndYear, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_JTW_Employment_1and2Digit](
     ${ClientID},
     ${WebID},
     ${IGBMID},
-    2016,
-    2011,
-    'WP',
-    ${Sex},
+    ${sStartYear},
+    ${sEndYear},
     1,
     null,
-    ${Indkey}
-    ) order by LabelKey ASC
+    0
+    ) 
   `;
 /* #endregion */
-
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
 
 const largest = (arr, key) => {
   return arr
@@ -31,6 +25,7 @@ const largest = (arr, key) => {
 
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
+import { formatNumber } from '../../utils';
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
@@ -42,28 +37,30 @@ const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
     activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+    currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
+    currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
   };
   return activeCustomToggles;
+};
+
+const headline = ({ data, contentData }): string => {
+  const prefix = data.HasPrefix ? 'the ' : '';
+  const areaName = `${prefix}${data.currentAreaName}`;
+  const largestEmployer = largest(contentData, 'NoYear1');
+  const jobs = formatNumber(largestEmployer.NoYear1);
+  const currentStartYear = data.currentStartYear;
+  return `In ${areaName}, ${largestEmployer.LabelName} is the largest employer, generating ${jobs} local jobs in ${currentStartYear}.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Employment by industry`,
+      renderString: (): string => `Employment by industry (Total)`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
-        const selectedIndustry = without(data.currentIndustryName, 'All industries');
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `${mostCommonQual} is the most common qualification for ${selectedIndustry} workers in ${areaName}.`;
-
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [
@@ -81,44 +78,32 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '23000',
-      Label: 'Current industry:',
-      Params: [
-        {
-          IGBMID: '0',
-        },
-        {
-          a: '0',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Industry',
-      ParamName: 'Indkey',
-    },
-    {
-      Database: 'CommApp',
       DefaultValue: '40',
       Label: 'Current benchmark:',
       Params: [
         {
-          ClientID: '0',
-        },
-        {
-          Indkey: '0',
-        },
-        {
-          a: '0',
+          ClientID: '9',
         },
       ],
-      StoredProcedure: 'sp_Toggle_Econ_BM_Area_Ind',
-      ParamName: 'IGBMID',
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
     },
     {
       Database: 'CommApp',
-      DefaultValue: '3',
-      Label: 'Gender:',
+      DefaultValue: '2019',
+      Label: 'Year:',
       Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Gender',
-      ParamName: 'Sex',
+      StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
+      ParamName: 'sStartYear',
+      Hidden: true,
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '2013',
+      Label: 'Comparison year:',
+      Params: null,
+      StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
+      ParamName: 'sEndYear',
     },
   ],
 };
