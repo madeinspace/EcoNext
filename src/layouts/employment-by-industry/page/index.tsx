@@ -579,7 +579,7 @@ const chartBuilder = ({
   });
   const drilldownPerYear1Serie = _.map(parents, parent => {
     return {
-      name: `${currentIndustry}`,
+      name: `${areaName}`,
       id: `${parent.LabelName}-peryear`,
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.PerYear1];
