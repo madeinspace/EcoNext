@@ -9,4 +9,5 @@ export default [
   'number-of-businesses-by-industry',
   'employment-by-industry',
   'employment-by-industry-fte',
+  'employment-census',
 ];

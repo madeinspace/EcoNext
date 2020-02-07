@@ -14,13 +14,12 @@ const SiblingsMenu = () => {
 
   const siblings = clientPages
     .filter(node => node.ParentPageID === currentParentPageID)
-
     .map(({ Disabled, MenuTitle, Alias }) => (
       <React.Fragment key={Alias}>
         {Disabled ? (
           <DisabledLink>{MenuTitle}</DisabledLink>
         ) : (
-          <StyledLink href={`/${clientAlias}/${Alias}`} className={handle === Alias && 'active'}>
+          <StyledLink href={`/${clientAlias}/${Alias.toLowerCase()}`} className={handle === Alias && 'active'}>
             {MenuTitle}
           </StyledLink>
         )}

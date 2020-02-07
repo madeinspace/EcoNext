@@ -10,4 +10,5 @@ export default [
   'industry-sector-analysis',
   'employment-by-industry',
   'employment-by-industry-fte',
+  'employment-census',
 ];
