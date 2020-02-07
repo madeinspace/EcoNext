@@ -132,8 +132,8 @@ const MajorDifferences = ({ areaName, benchmarkName }) => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of full-time equivalent workers
-            employed in the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of full-time equivalent local
+            workers employed in {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
             {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
@@ -148,10 +148,16 @@ const EmergingGroupsHeading = ({ areaName, currentStartYear, currentComparaisonY
   const difference = formatNumber(totals[0].NoYear1 - totals[0].NoYear2);
   const diffText = totals[0].NoYear2 > totals[0].NoYear1 ? `decreased by ${difference}` : `increased by ${difference}`;
   return (
-    <Highlight>
-      The number of local workers in {areaName} increased by {diffText} between {currentComparaisonYear} and{' '}
-      {currentStartYear}.
-    </Highlight>
+    <>
+      <p>
+        The number of full-time equivalent local workers in {areaName} increased by {diffText} between{' '}
+        {currentComparaisonYear} and {currentStartYear}.
+      </p>
+      <Highlight>
+        The largest changes in the jobs held by the full-time equivalent local workers between {currentComparaisonYear}{' '}
+        and {currentStartYear} in {areaName} were for those employed in:
+      </Highlight>
+    </>
   );
 };
 
@@ -166,7 +172,7 @@ const EmergingGroups = () => {
     <TopList>
       {topFour.map((qual: any, i) => (
         <li key={i}>
-          {qual.LabelName} ({formatChangeInt(qual.Change12)} local workers)
+          {qual.LabelName} ({formatChangeInt(qual.Change12)} full-time equivalent local workers)
         </li>
       ))}
     </TopList>
