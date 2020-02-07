@@ -370,7 +370,6 @@ const tableBuilder = ({
   currentComparaisonYear,
   TabularData: data,
 }) => {
-  console.log('data: ', data);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Employment (total) by industry';

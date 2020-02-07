@@ -300,7 +300,6 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
       },
       tooltip: {
         formatter: function() {
-          console.log(this);
           return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.key}, ${
             this.series.name
           } : ${formatShortDecimal(this.y)}%`;
