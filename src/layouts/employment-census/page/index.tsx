@@ -540,7 +540,6 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total [genders]'),
     item => item.LabelKey,
   );
-  console.log('parents: ', parents);
   const children = data.filter(item => item.Hierarchy === 'C');
   parents.forEach(parent => {
     parent.children = children.filter(
