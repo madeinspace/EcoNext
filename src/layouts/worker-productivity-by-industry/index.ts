@@ -34,7 +34,6 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { formatNumber, formatPercent } from '../../utils';
 
 const fetchData = async ({ filters }) => {
-  console.log('filters: ', filters);
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
   return contentData;
 };
