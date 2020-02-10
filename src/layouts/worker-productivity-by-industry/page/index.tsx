@@ -230,8 +230,12 @@ const WorkerProductivityByIndustryPage = () => {
             whether employment is the main way income is derived.{' '}
           </p>
           <p>
-            Detailed notes about how the figures are derived can be found in the specific topic notes section. National
-            Economics (NIEIR) - Modelled series
+            Detailed notes about how the figures are derived can be found in the specific{' '}
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/topic-notes?#worker-productivity-by-industry`,
+              `topic notes section`,
+            )}
+            . National Economics (NIEIR) - Modelled series
           </p>
         </div>
         <SourceBubble>
