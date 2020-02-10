@@ -54,6 +54,10 @@ const headline = ({ data, contentData }) => {
 const pageContent = {
   entities: [
     {
+      Title: 'SubTitle',
+      renderString: (): string => `Businesses by industry`,
+    },
+    {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },

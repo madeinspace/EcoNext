@@ -114,7 +114,7 @@ const TemplatePage = () => {
       </PageIntro>
       <ControlPanel />
       <ItemWrapper>
-        <EntityTable data={tableParams} />
+        <EntityTable data={tableParams} name={'Businesses by industry'} />
       </ItemWrapper>
       <ItemWrapper>
         <EntityChart data={chartData} />
