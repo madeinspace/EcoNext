@@ -3,7 +3,6 @@ import _ from 'lodash';
 import {
   formatNumber,
   formatShortDecimal,
-  formatPercent,
   idlogo,
   formatChangeInt,
   absSort,
@@ -141,8 +140,8 @@ const EmergingGroupsHeading = ({ areaName, currentStartYear, currentComparaisonY
   return (
     <>
       <p>
-        The total worker productivity by industry in {areaName} increased by {diffText} between {currentComparaisonYear}{' '}
-        and {currentStartYear}.
+        The total worker productivity by industry in {areaName} {diffText} between {currentComparaisonYear} and{' '}
+        {currentStartYear}.
       </p>
       <Highlight>
         The largest changes in worker productivity by industries between {currentComparaisonYear} and {currentStartYear}{' '}
@@ -163,7 +162,7 @@ const EmergingGroups = () => {
         const changeCurrency = formatChangeCurrency(qual.Change12);
         return (
           <li key={i}>
-            {qual.LabelName} ({changeCurrency} full-time equivalent local workers)
+            {qual.LabelName} ({changeCurrency})
           </li>
         );
       })}

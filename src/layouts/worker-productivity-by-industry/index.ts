@@ -59,7 +59,7 @@ const headline = ({ data, contentData }): string => {
   );
   const IndName = largestEmployer.LabelName;
   const TotalEmploymentPerc = `$${formatNumber(largestEmployer.NoYear1)}`;
-  return `In ${prefixedAreaName}, ${IndName} Services had the highest productivity by industry, generating ${TotalEmploymentPerc} per worker in 2018/19.`;
+  return `In ${prefixedAreaName}, ${IndName} had the highest productivity by industry, generating ${TotalEmploymentPerc} per worker in 2018/19.`;
 };
 
 const pageContent = {
