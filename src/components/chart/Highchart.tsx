@@ -38,25 +38,26 @@ class HighChart extends React.Component<IChartProps, IChartState> {
   componentDidMount(): void {
     const { config, highchartOptions, chartContainerID } = this.props;
     this.setState({ isLoaded: true });
-    Highcharts.setOptions({
-      lang: {
-        decimalPoint: '.',
-        thousandsSep: ',',
-        drillUpText: `◁ back`,
-      },
-    });
+
     exporting(Highcharts);
     offline(Highcharts);
     data(Highcharts);
     if (!Highcharts.Chart.prototype.addSeriesAsDrilldown) {
       drilldown(Highcharts);
     }
+    Highcharts.setOptions({
+      lang: {
+        decimalPoint: '.',
+        thousandsSep: ',',
+        drillUpText: '◁ Back',
+      },
+    });
 
     this.chart = Highcharts.chart(chartContainerID, config({ ...highchartOptions, oneToOne: true }));
   }
 
   componentWillUnmount(): void {
-    //this.chart.destroy();r
+    this.chart.destroy();
   }
 
   protected handleExport = item => {

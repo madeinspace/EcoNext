@@ -581,9 +581,6 @@ const chartBuilder = ({
     return {
       name: `${areaName}`,
       id: `${parent.LabelName}-peryear`,
-      drillUpButton: {
-        text: '< Back',
-      },
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.PerYear1];
       }),
@@ -593,9 +590,6 @@ const chartBuilder = ({
     return {
       name: `${currentBenchmark}`,
       id: `${parent.LabelName}-change`,
-      drillUpButton: {
-        text: '< Back',
-      },
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.BMYear1];
       }),
@@ -642,15 +636,6 @@ const chartBuilder = ({
         },
       ],
       drilldown: {
-        allowPointDrilldown: false,
-        activeAxisLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        activeDataLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
         series: drilldownPerYear1Serie,
       },
       xAxis: {
