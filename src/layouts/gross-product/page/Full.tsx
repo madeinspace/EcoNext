@@ -29,7 +29,7 @@ const FullContent = () => {
         <EntityChart data={AnnualChangeChartData} />
       </ItemWrapper>
       <ItemWrapper>
-        <EntityTable data={tableParams} />
+        <EntityTable data={tableParams} name={'GRP'} />
       </ItemWrapper>
     </>
   );

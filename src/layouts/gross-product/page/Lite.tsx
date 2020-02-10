@@ -24,7 +24,7 @@ const LiteContent = () => {
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} />
+        <EntityTable data={tableParams} name={'GRP'} />
       </ItemWrapper>
     </>
   );

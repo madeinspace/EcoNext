@@ -253,7 +253,7 @@ const WorkerProductivityByIndustryPage = () => {
       </InfoBox>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+        <EntityTable data={tableParams} name={'Worker productivity'} />
       </ItemWrapper>
 
       <InfoBox>

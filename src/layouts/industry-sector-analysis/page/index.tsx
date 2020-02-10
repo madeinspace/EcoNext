@@ -24,7 +24,7 @@ const TemplatePage = () => {
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} />
+        <EntityTable data={tableParams} name={'Industry sector analysis'} />
       </ItemWrapper>
 
       <ItemWrapper>
