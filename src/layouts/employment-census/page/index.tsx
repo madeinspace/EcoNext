@@ -564,6 +564,9 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
     return {
       name: `${areaName}`,
       id: `${parent.LabelName}-peryear`,
+      drillUpButton: {
+        text: '< Back',
+      },
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.PerYear1];
       }),
@@ -573,6 +576,9 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
     return {
       name: `${currentBenchmark}`,
       id: `${parent.LabelName}-change`,
+      drillUpButton: {
+        text: '< Back',
+      },
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.BMYear1];
       }),
