@@ -130,3 +130,24 @@ export function naturalSort(a, b) {
 /* #endregion */
 
 export const capitalise = lower => lower.replace(/^\w/, chr => chr.toUpperCase());
+
+export const absSort = (arr, sortKey) => {
+  //build comparison function
+  function absoluteValueComparison(a, b) {
+    //sort by absolute value
+    if (Math.abs(a[sortKey]) < Math.abs(b[sortKey])) {
+      return -1;
+    } else if (Math.abs(a[sortKey]) > Math.abs(b[sortKey])) {
+      return 1;
+      //sort identical absolute values in numerical order
+    } else if (a[sortKey] < b[sortKey]) {
+      return -1;
+    } else if (a[sortKey] > b[sortKey]) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+  //call comparison function as callback in array sort
+  return arr.sort(absoluteValueComparison);
+};

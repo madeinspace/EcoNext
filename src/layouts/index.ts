@@ -14,6 +14,7 @@ import HomePage from './home/page';
 import EmploymentByIndustryPage from './employment-by-industry/page';
 import EmploymentByIndustryFtePage from './employment-by-industry-fte/page';
 import EmploymentCensusPage from './employment-census/page';
+import WorkerProductivityByIndustryPage from './worker-productivity-by-industry/page';
 
 export const PageMappings = {
   home: HomePage,
@@ -28,6 +29,7 @@ export const PageMappings = {
   'employment-by-industry': EmploymentByIndustryPage,
   'employment-by-industry-fte': EmploymentByIndustryFtePage,
   'employment-census': EmploymentCensusPage,
+  'worker-productivity-by-industry': WorkerProductivityByIndustryPage,
 };
 
 const fetchPageData = async (handle: string) => {
