@@ -11,4 +11,5 @@ export default [
   'employment-by-industry-fte',
   'employment-census',
   'worker-productivity-by-industry',
+  'value-add-by-industry',
 ];
