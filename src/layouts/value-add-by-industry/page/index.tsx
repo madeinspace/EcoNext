@@ -74,7 +74,7 @@ const TopThreeFields = ({ areaName }) => {
       <TopList>
         {topThree.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
+            {qual.LabelName} ({formatNumber(qual.NoYear1)} million or {formatPercent(qual.PerYear1)}%)
           </li>
         ))}
       </TopList>
@@ -274,16 +274,6 @@ const ValueAddByIndustryPage = () => {
         <EntityTable data={tableParams} name={'Value added'} />
       </ItemWrapper>
 
-      {hasProfile() && (
-        <CrossLink>
-          <ProfileProductIcon />
-          {LinkBuilder(
-            `https://profile.id.com.au/${clientAlias}/industries?WebId=10`,
-            `Residents employment by industry by small area`,
-          )}
-        </CrossLink>
-      )}
-
       <InfoBox>
         <span>
           <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
@@ -372,10 +362,10 @@ const tableBuilder = ({
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Employment (total) by industry';
+  const tableTitle = 'Value added by industry sector';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelName === 'Total Industries');
-
+  const dataNotesAnchor = `value-added-by-industry`;
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
@@ -393,7 +383,7 @@ const tableBuilder = ({
     clientAlias: areaName,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'employment-by-industry-(total)',
+    anchorName: dataNotesAnchor,
     headRows: [
       {
         cssClass: '',
@@ -488,10 +478,10 @@ const tableBuilder = ({
       ],
       formattedData: [
         `${row.LabelName}`,
-        formatOneDecimal(row.NoYear1),
+        formatPercent(row.NoYear1),
         formatPercent(row.PerYear1),
         formatPercent(row.BMYear1),
-        formatOneDecimal(row.NoYear2),
+        formatPercent(row.NoYear2),
         formatPercent(row.PerYear2),
         formatPercent(row.BMYear2),
         formatChangeOneDecimal(row.Change12, '--'),
@@ -510,10 +500,10 @@ const tableBuilder = ({
         ],
         formattedData: [
           `${childRow.LabelName}`,
-          formatOneDecimal(childRow.NoYear1),
+          formatPercent(childRow.NoYear1),
           formatPercent(childRow.PerYear1),
           formatPercent(childRow.BMYear1),
-          formatOneDecimal(childRow.NoYear2),
+          formatPercent(childRow.NoYear2),
           formatPercent(childRow.PerYear2),
           formatPercent(childRow.BMYear2),
           formatChangeOneDecimal(childRow.Change12, '--'),
@@ -525,10 +515,10 @@ const tableBuilder = ({
         cssClass: 'total',
         cols: [
           { cssClass: '', displayText: `Total industries`, colSpan: 1 },
-          { cssClass: '', displayText: formatOneDecimal(row.NoYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatOneDecimal(row.NoYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {

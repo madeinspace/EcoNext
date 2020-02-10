@@ -64,9 +64,9 @@ const headline = ({ data, contentData }): string => {
   const prefix = data.HasPrefix ? 'the ' : '';
   const areaName = `${prefix}${data.currentAreaName}`;
   const largestEmployer = largest(contentData, 'NoYear1');
-  const jobs = `$${formatNumber(largestEmployer.NoYear1)} million`;
+  const millions = `$${formatNumber(largestEmployer.NoYear1)} million`;
   const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} most productive industry, generating ${jobs} local jobs in ${currentStartYear}.`;
+  return `In ${areaName}, ${largestEmployer.LabelName} most productive industry, generating ${millions} in ${currentStartYear}.`;
 };
 
 const pageContent = {
