@@ -104,7 +104,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Exports`,
+      renderString: (): string => `Imports`,
     },
     {
       Title: 'Headline',

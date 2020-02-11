@@ -220,7 +220,7 @@ const EmergingGroups = () => {
 
 // #region page
 const ImportsByIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const { clientAlias, LongName } = useContext(ClientContext);
   const { contentData, filterToggles, entityData } = useContext(PageContext);
 
   const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
@@ -249,10 +249,10 @@ const ImportsByIndustryPage = () => {
       <PageIntro>
         <div>
           <p>
-            Imports by industry are sales of goods and services from industries located outside the RDA
-            Barossa-Gawler-Light-Adelaide Plains boundaries to resident households, businesses and other organisations
-            within the area. Imports (domestic) includes all imports from other parts of Australia to the Region.Imports
-            (international) includes the value of all imports to the area from outside Australia.
+            Imports by industry are sales of goods and services from industries located outside {prefixedAreaName}{' '}
+            Plains boundaries to resident households, businesses and other organisations within the area. Imports
+            (domestic) includes all imports from other parts of Australia to the Region.Imports (international) includes
+            the value of all imports to the area from outside Australia.
           </p>
           <p>
             To get the full picture how each industry sector contributes to the regional or state economy, import data
