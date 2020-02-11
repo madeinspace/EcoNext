@@ -15,7 +15,7 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 const ValueOfBuildingApprovalsPage = () => {
   const { clientAlias, isLite } = useContext(ClientContext);
   const { contentData, entityData } = useContext(PageContext);
-  const defaultBenchmarkName = entityData.defaultBenchmarkName;
+  const defaultBenchmarkName = entityData.activeBenchmarkName;
   const pageName = 'Value of total building approvals';
   const chartData = chartBuilder(contentData);
   const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);
