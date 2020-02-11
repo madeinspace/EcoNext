@@ -66,8 +66,8 @@ const activeCustomToggles = ({ filterToggles }) => {
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
     currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
-    currentExportType: getActiveToggle(filterToggles, 'exptype'),
-    currentExportId: filterToggles.filter(t => t.key === 'exptype')[0]['value'],
+    currentExportType: getActiveToggle(filterToggles, 'imptype'),
+    currentExportId: filterToggles.filter(t => t.key === 'imptype')[0]['value'],
   };
   return activeCustomToggles;
 };
@@ -156,10 +156,10 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '1',
-      Label: 'Export type:',
+      Label: 'Import type:',
       Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_ExportType',
-      ParamName: 'exptype',
+      StoredProcedure: 'sp_Toggle_Econ_ImportType',
+      ParamName: 'imptype',
     },
   ],
 };

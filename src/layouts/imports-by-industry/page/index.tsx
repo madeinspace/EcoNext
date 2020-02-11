@@ -72,8 +72,8 @@ const TopThreeFields = ({ areaName }) => {
       </TopList>
       <p>
         In combination these three industries accounted for {formatCurrency(totalPeople)} million in total or {}
-        {formatPercent(totalPercent)}% of the total {entityData(currentExportId).entityTitle} by industry in the{' '}
-        {areaName}.
+        {formatPercent(totalPercent)}% of the {currentExportId != `1` && 'total '}
+        {entityData(currentExportId).entityTitle} by industry in the {areaName}.
       </p>
     </>
   );
