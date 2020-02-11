@@ -13,4 +13,8 @@ export default [
   'employment-census',
   'worker-productivity-by-industry',
   'value-add-by-industry',
+  'output-by-industry',
+  'local-sales-by-industry',
+  'exports-by-industry',
+  'imports-by-industry',
 ];
