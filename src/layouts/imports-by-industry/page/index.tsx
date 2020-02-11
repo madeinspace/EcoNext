@@ -91,8 +91,8 @@ const entityData = exportID => {
       break;
     case `2`:
       anchor = 'domestic-imports';
-      entityTitle = 'inter-regional imports';
-      yAxisTitle = 'inter-regional';
+      entityTitle = 'domestic imports';
+      yAxisTitle = 'domestic';
       break;
     case `3`:
       anchor = 'international-imports';
