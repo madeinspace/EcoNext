@@ -16,7 +16,7 @@ import { sqlConnection } from '../../utils/sql';
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Value_Added_1and2Digit](
+  `select * from CommData_Economy.[dbo].[fn_Output_1and2Digit](
     ${ClientID},
     ${WebID},
     ${BMID},
@@ -73,7 +73,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Value added`,
+      renderString: (): string => `Output`,
     },
     {
       Title: 'Headline',
