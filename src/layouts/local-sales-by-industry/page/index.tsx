@@ -9,6 +9,7 @@ import {
   formatChangeOneDecimal,
   formatChangeCurrency,
   absSort,
+  formatCurrency,
 } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
@@ -62,7 +63,7 @@ const TopThreeFields = ({ areaName }) => {
       <TopList>
         {topThree.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
+            {qual.LabelName} ({formatCurrency(qual.NoYear1)}million or {formatPercent(qual.PerYear1)}%)
           </li>
         ))}
       </TopList>

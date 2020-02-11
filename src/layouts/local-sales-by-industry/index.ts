@@ -64,7 +64,7 @@ const headline = ({ data, contentData }): string => {
   const largestEmployer = largest(contentData, 'NoYear1');
   const jobs = `$${formatNumber(largestEmployer.NoYear1)} million`;
   const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} had the highest local sales, generating ${jobs} million in ${currentStartYear}.`;
+  return `In ${areaName}, ${largestEmployer.LabelName} had the highest local sales, generating ${jobs} in ${currentStartYear}.`;
 };
 
 const pageContent = {

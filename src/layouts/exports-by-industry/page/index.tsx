@@ -252,9 +252,9 @@ const ExportsByIndustryPage = () => {
         <div>
           <p>
             Exports by industry are sales of goods and services to non-resident households, businesses and other
-            organisations, outside RDA BGLAP Region boundaries. Exports (domestic) include all exports from the area to
-            other parts of Australia. Exports (international) includes all exports from the Region to countries outside
-            Australia.
+            organisations, outside {prefixedAreaName} boundaries. Exports (domestic) include all exports from the area
+            to other parts of Australia. Exports (international) includes all exports from the Region to countries
+            outside Australia.
           </p>
           <p>
             To get the full picture how each industry sector contributes to the regional or state economy, export data
