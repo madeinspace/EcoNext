@@ -2,31 +2,45 @@ import { sqlConnection } from '../../utils/sql';
 
 /**
  * 
-  @ClientID int,
-  @WebID varchar(MAX),
-  @BMID varchar(MAX),
-  @sStartYear int,
-  @sEndYear int,
-  @TblType int,
-  @LblID varchar(max) = null,
-  @LoQo int = 0
+@ClientID int,
+@WebID varchar(MAX),
+@BMID varchar(MAX),
+@StartYear int,
+@EndYear int,
+@TblType int,
+@LblID varchar(max) = null
 
-  (102,10,40,2019,2014,1,null,1)
+(102,10,40,2019,2014,1,null)
  */
 
 /* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Value_Added_1and2Digit](
+const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, exptype }) => {
+  let exportFunc = ``;
+  switch (exptype) {
+    case '1':
+      exportFunc = `fn_Imports_1and2Digit`;
+      break;
+    case '2':
+      exportFunc = `fn_InternationalImports_1and2Digit`;
+      break;
+    case '3':
+      exportFunc = `fn_Domesticimports_1and2Digit`;
+      break;
+    default:
+      exportFunc = `fn_Exports_1and2Digit`;
+      break;
+  }
+  return `select * from CommData_Economy.[dbo].[${exportFunc}](
     ${ClientID},
     ${WebID},
     ${BMID},
     ${sStartYear},
     ${sEndYear},
     1,
-    null,
-    0
+    null 
     ) 
   `;
+};
 /* #endregion */
 
 const largest = (arr, key) => {
@@ -43,7 +57,6 @@ import { formatNumber, formatMillionsCurrency } from '../../utils';
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
   return contentData;
 };
 
@@ -53,6 +66,8 @@ const activeCustomToggles = ({ filterToggles }) => {
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
     currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
+    currentExportType: getActiveToggle(filterToggles, 'exptype'),
+    currentExportId: filterToggles.filter(t => t.key === 'exptype')[0]['value'],
   };
   return activeCustomToggles;
 };
@@ -61,19 +76,35 @@ const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
 
+  const { currentExportId } = data;
+  let exportsDisplayText = '';
+  switch (currentExportId) {
+    case '1':
+      exportsDisplayText = 'total';
+      break;
+    case '2':
+      exportsDisplayText = 'domestic';
+      break;
+    case '3':
+      exportsDisplayText = 'international';
+      break;
+    default:
+      exportsDisplayText = 'total';
+      break;
+  }
   const prefix = data.HasPrefix ? 'the ' : '';
   const areaName = `${prefix}${data.currentAreaName}`;
   const largestEmployer = largest(contentData, 'NoYear1');
-  const jobs = `$${formatNumber(largestEmployer.NoYear1)} million`;
+  const millions = `$${formatNumber(largestEmployer.NoYear1)} million`;
   const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} most productive industry, generating ${jobs} local jobs in ${currentStartYear}.`;
+  return `In ${areaName}, ${largestEmployer.LabelName} had the largest ${exportsDisplayText} imports by industry, generating ${millions} in ${currentStartYear}.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Value added`,
+      renderString: (): string => `Exports`,
     },
     {
       Title: 'Headline',
@@ -121,6 +152,14 @@ const pageContent = {
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
       ParamName: 'sEndYear',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '1',
+      Label: 'Export type:',
+      Params: null,
+      StoredProcedure: 'sp_Toggle_Econ_ExportType',
+      ParamName: 'exptype',
     },
   ],
 };
