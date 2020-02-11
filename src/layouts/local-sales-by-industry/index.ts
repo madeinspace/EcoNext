@@ -2,29 +2,27 @@ import { sqlConnection } from '../../utils/sql';
 
 /**
  * 
-  @ClientID int,
-  @WebID varchar(MAX),
-  @BMID varchar(MAX),
-  @sStartYear int,
-  @sEndYear int,
-  @TblType int,
-  @LblID varchar(max) = null,
-  @LoQo int = 0
+@ClientID int,
+@WebID varchar(MAX),
+@BMID varchar(MAX),
+@sStartYear int,
+@sEndYear int,
+@TblType int,
+@LblID varchar(max) = null
 
-  (102,10,40,2019,2014,1,null,1)
+  (102,10,40,2019,2014,1,null)
  */
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Value_Added_1and2Digit](
+  `select * from CommData_Economy.[dbo].[fn_LocalSales_1and2Digit](
     ${ClientID},
     ${WebID},
     ${BMID},
     ${sStartYear},
     ${sEndYear},
     1,
-    null,
-    0
+    null
     ) 
   `;
 /* #endregion */
@@ -66,14 +64,14 @@ const headline = ({ data, contentData }): string => {
   const largestEmployer = largest(contentData, 'NoYear1');
   const jobs = `$${formatNumber(largestEmployer.NoYear1)} million`;
   const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} most productive industry, generating ${jobs} local jobs in ${currentStartYear}.`;
+  return `In ${areaName}, ${largestEmployer.LabelName} had the highest local sales, generating ${jobs} million in ${currentStartYear}.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Value added`,
+      renderString: (): string => `Local sales`,
     },
     {
       Title: 'Headline',

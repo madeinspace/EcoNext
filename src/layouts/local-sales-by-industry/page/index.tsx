@@ -2,38 +2,26 @@
 import _ from 'lodash';
 import {
   formatNumber,
-  formatChangeNumber,
   formatShortDecimal,
   formatPercent,
   idlogo,
   formatChangeInt,
-  formatOneDecimal,
   formatChangeOneDecimal,
   formatChangeCurrency,
+  absSort,
 } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import {
-  PageIntro,
-  Note,
-  Highlight,
-  AnalysisContainer,
-  SourceBubble,
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-} from '../../../styles/MainContentStyles';
+import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
 import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
+import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import styled from 'styled-components';
-import Link from 'next/link';
-import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
@@ -79,8 +67,8 @@ const TopThreeFields = ({ areaName }) => {
         ))}
       </TopList>
       <p>
-        In combination these three industries accounted for {formatNumber(totalPeople)} million in total or {}
-        {formatPercent(totalPercent)}% of the total value added by industry in the {areaName}.
+        In combination these three industries accounted for ${formatNumber(totalPeople)} million in total or {}
+        {formatPercent(totalPercent)}% of the total local sales by total industry in the {areaName}.
       </p>
     </>
   );
@@ -113,7 +101,7 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName }) => {
   const { contentData, entityData } = useContext(PageContext);
   return (
     <Highlight>
-      The major differences between the value added by industries of {areaName} and {benchmarkName} were:
+      The major differences between local sales by industries of {areaName} and {benchmarkName} were:
     </Highlight>
   );
 };
@@ -135,7 +123,7 @@ const MajorDifferences = ({ areaName, benchmarkName }) => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of value added by{' '}
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local sales by{' '}
             {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
@@ -152,11 +140,11 @@ const EmergingGroupsHeading = ({ areaName, currentStartYear, currentComparaisonY
   return (
     <>
       <Highlight>
-        The total value added by industry in {areaName} ${diffText} million between {currentComparaisonYear} and{' '}
+        The total local sales by industry in {areaName} ${diffText} million between {currentComparaisonYear} and{' '}
         {currentStartYear}.
       </Highlight>
       <p>
-        The largest changes in the value added by industries between {currentComparaisonYear} and {currentStartYear} in{' '}
+        The largest changes in the local sales by industries between {currentComparaisonYear} and {currentStartYear} in{' '}
         {areaName} were for:
       </p>
     </>
@@ -168,7 +156,7 @@ const EmergingGroups = () => {
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
-  const topFour = TopFour(highestQuals);
+  const topFour = TopFour(absSort(highestQuals, 'Change12'));
 
   return (
     <TopList>
@@ -183,7 +171,7 @@ const EmergingGroups = () => {
 // #endregion
 
 // #region page
-const ValueAddByIndustryPage = () => {
+const LocalSalesByIndustryPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
   const { contentData, filterToggles, entityData } = useContext(PageContext);
 
@@ -206,49 +194,27 @@ const ValueAddByIndustryPage = () => {
   const chartData = chartBuilder(builderPayload);
   const chartChangeData = chartBuilderChange(builderPayload);
 
-  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
-
   return (
     <>
       <PageIntro>
         <div>
           <p>
-            Value added by industry is an indicator of business productivity in {prefixedAreaName}. It shows how
-            productive each industry sector is at increasing the value of its inputs. It is a more refined measure of
-            the productivity of an industry sector than output (total gross revenue), as some industries have high
-            levels of output but require large amounts of input expenditure to achieve that.
+            Local sales by industry measures the output of local industries that is sold locally. This includes sales to
+            local consumers, businesses and other organisations.
           </p>
           <p>
-            By comparing the value added of each industry sector to a regional benchmark, you can clearly see the
-            structure of {prefixedAreaName}’s economy. This can be done by directly comparing the percentage
-            contribution of each industry to the total output, relative to the benchmark, or by using a location
-            quotient, where a number greater than one indicates a high concentration of that industry and less than one
-            indicates a lower concentration.
-          </p>
-          <p>
-            To see what contribution each industry makes to the state or region, see the{' '}
+            To get the full picture how each industry sector contributes to the regional or state economy, local sales
+            data should be viewed alongside the other industry characteristics in the{' '}
             {LinkBuilder(
               `https://economy.id.com.au/${clientAlias}/industry-sector-analysis?`,
               `Industry sector analysis`,
-            )}
-            section. To understand the value of a worker in each industry, view this dataset in conjunction with{' '}
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry?`,
-              `Worker
-            productivity`,
-            )}{' '}
-            data, and to see the relationship of value added to the total size of the economy, go to the{' '}
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/gross-regional-product?`,
-              `Gross Regional
-            Product`,
             )}{' '}
             section.
           </p>
           <p>
             Detailed notes about how the figures are derived can be found in the{' '}
             {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/topic-notes?#value-add-by-industry`,
+              `https://economy.id.com.au/${clientAlias}/topic-notes?#local-sales-by-industry`,
               `specific topic notes`,
             )}{' '}
             section.
@@ -274,16 +240,6 @@ const ValueAddByIndustryPage = () => {
         <EntityTable data={tableParams} name={'Local sales'} />
       </ItemWrapper>
 
-      {hasProfile() && (
-        <CrossLink>
-          <ProfileProductIcon />
-          {LinkBuilder(
-            `https://profile.id.com.au/${clientAlias}/industries?WebId=10`,
-            `Residents employment by industry by small area`,
-          )}
-        </CrossLink>
-      )}
-
       <InfoBox>
         <span>
           <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
@@ -305,7 +261,7 @@ const ValueAddByIndustryPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the valued added by industry sectors in {prefixedAreaName} in 2018/19 shows the three largest
+          An analysis of the local sales by industry sectors in {prefixedAreaName} in 2018/19 shows the three largest
           industries were:
         </p>
         <TopThreeFields areaName={prefixedAreaName} />
@@ -335,7 +291,7 @@ const ValueAddByIndustryPage = () => {
   );
 };
 
-export default ValueAddByIndustryPage;
+export default LocalSalesByIndustryPage;
 
 // #endregion
 
@@ -344,10 +300,10 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id
-      by
-      <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
-      previous years’ figures.{' '}
+      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink /> NIEIR-ID data are adjusted each
+      year, using updated employment estimates.
+      <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
+      to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
     </p>
   );
@@ -372,7 +328,7 @@ const tableBuilder = ({
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Employment (total) by industry';
+  const tableTitle = 'Local sales by industry sector';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelName === 'Total Industries');
 
@@ -393,7 +349,7 @@ const tableBuilder = ({
     clientAlias: areaName,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'employment-by-industry-(total)',
+    anchorName: '',
     headRows: [
       {
         cssClass: '',
@@ -410,7 +366,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: '',
-            displayText: `${areaName}`,
+            displayText: `${areaName} - Constant prices`,
             colSpan: 1,
           },
           {
@@ -488,10 +444,10 @@ const tableBuilder = ({
       ],
       formattedData: [
         `${row.LabelName}`,
-        formatOneDecimal(row.NoYear1),
+        formatPercent(row.NoYear1),
         formatPercent(row.PerYear1),
         formatPercent(row.BMYear1),
-        formatOneDecimal(row.NoYear2),
+        formatPercent(row.NoYear2),
         formatPercent(row.PerYear2),
         formatPercent(row.BMYear2),
         formatChangeOneDecimal(row.Change12, '--'),
@@ -510,10 +466,10 @@ const tableBuilder = ({
         ],
         formattedData: [
           `${childRow.LabelName}`,
-          formatOneDecimal(childRow.NoYear1),
+          formatPercent(childRow.NoYear1),
           formatPercent(childRow.PerYear1),
           formatPercent(childRow.BMYear1),
-          formatOneDecimal(childRow.NoYear2),
+          formatPercent(childRow.NoYear2),
           formatPercent(childRow.PerYear2),
           formatPercent(childRow.BMYear2),
           formatChangeOneDecimal(childRow.Change12, '--'),
@@ -525,10 +481,10 @@ const tableBuilder = ({
         cssClass: 'total',
         cols: [
           { cssClass: '', displayText: `Total industries`, colSpan: 1 },
-          { cssClass: '', displayText: formatOneDecimal(row.NoYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatOneDecimal(row.NoYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {
@@ -557,6 +513,7 @@ const chartBuilder = ({
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
   );
+  // console.log('parents: ', parents);
   const children = data.filter(item => item.Hierarchy === 'C');
   parents.forEach(parent => {
     parent.children = children.filter(
@@ -598,10 +555,10 @@ const chartBuilder = ({
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
   const chartType = 'bar';
-  const chartTitle = `Value added by industry sector ${currentStartYear}`;
+  const chartTitle = `Local sales by industry sector ${currentStartYear}`;
   const chartSubtitle = ``;
   const xAxisTitle = 'Industry sector';
-  const yAxisTitle = `% of total value added`;
+  const yAxisTitle = `% of total local sales`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chart1';
@@ -682,11 +639,11 @@ const chartBuilderChange = ({
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = `Change in value added by industry sector, ${currentComparaisonYear} to ${currentStartYear}`;
+  const chartTitle = `Change in local sales by industry sector, ${currentComparaisonYear} to ${currentStartYear}`;
   const chartSubtitle = `${areaName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';
-  const yAxisTitle = `Change in value added ($millions)`;
+  const yAxisTitle = `Change in local sales ($ millions)`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chartwfoqChange';
@@ -695,7 +652,7 @@ const chartBuilderChange = ({
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
       this.category
-    }, ${areaName}: ${formatChangeInt(this.y)}`;
+    }, ${areaName}: ${formatChangeCurrency(this.y)} million`;
   };
 
   return {
