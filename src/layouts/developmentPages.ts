@@ -18,4 +18,9 @@ export default [
   'exports-by-industry',
   'imports-by-industry',
   'field-of-qualification',
+  'industry',
+  'age-structure',
+  'hours-worked',
+  'occupations',
+  'qualifications',
 ];

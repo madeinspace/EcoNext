@@ -21,6 +21,11 @@ import LocalSalesByIndustryPage from './local-sales-by-industry/page';
 import ExportsByIndustryPage from './exports-by-industry/page';
 import ImportsByIndustryPage from './imports-by-industry/page';
 import FieldOfQualification from './field-of-qualification/page';
+import Industry from './industry/page';
+import AgeStructure from './age-structure/page';
+import HoursWorked from './hours-worked/page';
+import Occupations from './occupations/page';
+import Qualifications from './qualifications/page';
 
 export const PageMappings = {
   home: HomePage,
@@ -42,6 +47,11 @@ export const PageMappings = {
   'exports-by-industry': ExportsByIndustryPage,
   'imports-by-industry': ImportsByIndustryPage,
   'field-of-qualification': FieldOfQualification,
+  industry: Industry,
+  'age-structure': AgeStructure,
+  'hours-worked': HoursWorked,
+  occupations: Occupations,
+  qualifications: Qualifications,
 };
 
 const fetchPageData = async (handle: string) => {

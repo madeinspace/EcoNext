@@ -34,7 +34,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Field of qualification - ${data.currentIndustryName}`,
+      renderString: ({ data }): string => `Resident workers - Occupations of employment`,
     },
     {
       Title: 'Headline',

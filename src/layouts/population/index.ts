@@ -5,7 +5,6 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
-  console.log('fetchData filters: ', filters);
   const { ClientID, WebID } = filters;
 
   const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID }));
