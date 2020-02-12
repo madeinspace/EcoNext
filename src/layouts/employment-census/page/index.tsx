@@ -589,9 +589,11 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
+  const chartHeight = 500;
 
   return {
     highchartOptions: {
+      height: chartHeight,
       chart: {
         type: chartType,
       },
@@ -619,7 +621,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
         },
       ],
       drilldown: {
-        allowPointDrilldown: false,
+        allowPointDrilldown: true,
         activeAxisLabelStyle: {
           textDecoration: 'none',
           fontStyle: 'italic',
@@ -676,6 +678,7 @@ const chartBuilderChange = ({ areaName, industryName: currentIndustry, TabularDa
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2011 and 2016 Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
+  const chartHeight = 500;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
@@ -686,6 +689,7 @@ const chartBuilderChange = ({ areaName, industryName: currentIndustry, TabularDa
   return {
     cssClass: '',
     highchartOptions: {
+      height: chartHeight,
       chart: {
         type: chartType,
       },

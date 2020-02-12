@@ -596,9 +596,11 @@ const chartBuilder = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
+  const chartHeight = 500;
 
   return {
     highchartOptions: {
+      height: chartHeight,
       chart: {
         type: chartType,
       },
@@ -681,6 +683,7 @@ const chartBuilderChange = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
+  const chartHeight = 500;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
@@ -691,6 +694,7 @@ const chartBuilderChange = ({
   return {
     cssClass: '',
     highchartOptions: {
+      height: chartHeight,
       chart: {
         type: chartType,
       },
