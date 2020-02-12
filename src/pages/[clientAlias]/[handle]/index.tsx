@@ -97,18 +97,30 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     [],
   );
 
-  const filters = {
-    IGBMID: 40,
-    Indkey: 23000,
-    Sex: 3,
-    WebID: 10,
+  /**
+   * the provided filters from the query string can be wrong
+   * but we don't know it yet at this stage and we'll have to update them later
+   * (see note in the fetchToggleOptions() method)
+   */
+  const tempfilters = {
     ...pageDefaultFilters,
     ...providedFilters,
     ClientID: client.ID,
     IsLite: client.isLite,
   };
 
-  const filterToggles = await fetchToggleOptions(filters, [...pageContent['filterToggles'], ...globalToggles] || []);
+  const filterToggles = await fetchToggleOptions(
+    tempfilters,
+    [...pageContent['filterToggles'], ...globalToggles] || [],
+  );
+
+  const activeFilters = filterToggles.map(({ key, value }) => {
+    return { [key]: value };
+  });
+
+  // let's update the filters with the active one
+  const filters = Object.assign(tempfilters, ...activeFilters);
+
   const contentData = await fetchData({ filters });
 
   // we pass that data to interpolate the entities

@@ -31,7 +31,16 @@ const fetchToggleOptions = async (filters, filterToggles) => {
 
       const list = listData.map(({ Label, Value }) => ({ Label, Value }));
 
-      const value = filters[ParamName] || DefaultValue;
+      /**
+       * Sometime it happens that the query string provided has the wrong param value either because
+       * the user has changed the client name, or page alias in the URL without removing the query string
+       * or because the query string is being ported from page to page.
+       * For example monash/population?WebID=20 has no toggle that can provide data with
+       * that WebID, therefore we need to check here if the provided param value in the filters matches one of the
+       * 'authorised' params in the paramList returned by the stored proc and set the default if it doesn't match.
+       */
+      const isMatch = list.filter(vendor => vendor.Value === filters[ParamName]);
+      const value = isMatch.length > 0 ? filters[ParamName] : DefaultValue;
 
       return {
         active: list.find(({ Value }) => Value === value),

@@ -5,14 +5,14 @@ import { formatNumber } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
-  const { ClientID, WebID, IsLite } = filters;
+  const { ClientID, WebID, IsLite, BMID } = filters;
   const SQL = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_LocalJobs_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
   `;
   const SQLite = ({ ClientID, WebID, BMID }) => `
   select * from CommData_Economy.[dbo].[fn_IN_LocalJobs](${+ClientID},${+WebID},${+BMID}) ORDER BY Yr DESC
   `;
-  const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID: 40 }) : SQL({ ClientID, WebID, BMID: 40 });
+  const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID }) : SQL({ ClientID, WebID, BMID });
   const contentData = await sqlConnection.raw(SQLQuery);
   return contentData;
 };

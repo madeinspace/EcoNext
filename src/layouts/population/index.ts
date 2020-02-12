@@ -5,9 +5,10 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
-  const { ClientID, WebID, IGBMID } = filters;
+  console.log('fetchData filters: ', filters);
+  const { ClientID, WebID } = filters;
 
-  const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID, IGBMID }));
+  const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID }));
 
   return contentData;
 };
@@ -59,6 +60,6 @@ const pageContent = {
 
 export { fetchData, activeCustomToggles, Page, pageContent };
 
-const PopulationDataSQL = ({ ClientID, WebID, IGBMID }) => `
-  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID},${+IGBMID}) ORDER BY Year DESC
+const PopulationDataSQL = ({ ClientID, WebID }) => `
+  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID}, 40) ORDER BY Year DESC
 `;
