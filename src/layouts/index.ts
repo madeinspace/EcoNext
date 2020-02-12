@@ -20,6 +20,7 @@ import OutputByIndustryPage from './output-by-industry/page';
 import LocalSalesByIndustryPage from './local-sales-by-industry/page';
 import ExportsByIndustryPage from './exports-by-industry/page';
 import ImportsByIndustryPage from './imports-by-industry/page';
+import FieldOfQualification from './field-of-qualification/page';
 
 export const PageMappings = {
   home: HomePage,
@@ -40,6 +41,7 @@ export const PageMappings = {
   'local-sales-by-industry': LocalSalesByIndustryPage,
   'exports-by-industry': ExportsByIndustryPage,
   'imports-by-industry': ImportsByIndustryPage,
+  'field-of-qualification': FieldOfQualification,
 };
 
 const fetchPageData = async (handle: string) => {

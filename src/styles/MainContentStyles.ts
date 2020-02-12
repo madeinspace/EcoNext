@@ -159,6 +159,7 @@ export const AnalysisContainer = styled.div`
     margin-bottom: 8px;
     border-bottom: 1px solid #999;
     font-size: 23px;
+    padding-bottom: 5px;
   }
 `;
 

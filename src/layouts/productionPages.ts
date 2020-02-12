@@ -16,4 +16,5 @@ export default [
   'local-sales-by-industry',
   'exports-by-industry',
   'imports-by-industry',
+  'field-of-qualification',
 ];
