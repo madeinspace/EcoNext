@@ -26,6 +26,7 @@ import AgeStructure from './age-structure/page';
 import HoursWorked from './hours-worked/page';
 import Occupations from './occupations/page';
 import Qualifications from './qualifications/page';
+import LabourforceKeyStatistics from './labourforce-key-statistics/page';
 
 export const PageMappings = {
   home: HomePage,
@@ -52,6 +53,7 @@ export const PageMappings = {
   'hours-worked': HoursWorked,
   occupations: Occupations,
   qualifications: Qualifications,
+  'labourforce-key-statistics': LabourforceKeyStatistics,
 };
 
 const fetchPageData = async (handle: string) => {

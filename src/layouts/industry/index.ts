@@ -1,8 +1,9 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
+const contentDataQuery = ({ ClientID, BMID, Sex, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry1and3Digit_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'UR', ${Sex}, 1, null) order by LabelKey DESC`;
 
 const largest = (arr, key) => {
   return arr
@@ -12,11 +13,15 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
+const genderLookup = {
+  Persons: 'resident',
+  Males: 'male resident',
+  Females: 'female resident',
+};
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
+  console.log('contentData: ', contentData);
 
   return contentData;
 };
@@ -24,7 +29,6 @@ const fetchData = async ({ filters }) => {
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
     activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
   return activeCustomToggles;
@@ -34,24 +38,19 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Industry`,
+      renderString: (): string => `Resident workers - Industry`,
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
         const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
+        const headline = `  ${mostCommonQual} employs more of ${prefixedAreaName}'s ${
           genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
+        } workforce than any other industry sector.`;
 
-        return headlineAlt;
+        return headline;
       },
     },
   ],
@@ -70,36 +69,15 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '23000',
-      Label: 'Current industry:',
-      Params: [
-        {
-          IGBMID: '0',
-        },
-        {
-          a: '0',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Industry',
-      ParamName: 'Indkey',
-    },
-    {
-      Database: 'CommApp',
       DefaultValue: '40',
       Label: 'Current benchmark:',
       Params: [
         {
-          ClientID: '0',
-        },
-        {
-          Indkey: '0',
-        },
-        {
-          a: '0',
+          ClientID: '9',
         },
       ],
-      StoredProcedure: 'sp_Toggle_Econ_BM_Area_Ind',
-      ParamName: 'IGBMID',
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
     },
     {
       Database: 'CommApp',
@@ -113,20 +91,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */

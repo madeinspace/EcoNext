@@ -1,8 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
-
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const largest = (arr, key) => {
   return arr
@@ -12,8 +10,10 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
+/* #region  contentDataQuery */
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`;
+/* #endregion */
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
@@ -113,20 +113,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */

@@ -22,4 +22,5 @@ export default [
   'hours-worked',
   'occupations',
   'qualifications',
+  'labourforce-key-statistics',
 ];
