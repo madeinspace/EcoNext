@@ -21,7 +21,6 @@ const genderLookup = {
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
-  console.log('contentData: ', contentData);
 
   return contentData;
 };

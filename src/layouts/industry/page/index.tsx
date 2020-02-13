@@ -223,7 +223,7 @@ const EmergingGroups = () => {
 // #endregion
 
 // #region page
-const ResidentWorkerFieldsOfQualificationPage = () => {
+const ResidentWorkerIndustryPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
   const {
     contentData,
@@ -377,7 +377,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   );
 };
 
-export default ResidentWorkerFieldsOfQualificationPage;
+export default ResidentWorkerIndustryPage;
 
 // #endregion
 
