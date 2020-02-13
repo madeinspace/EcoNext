@@ -57,7 +57,7 @@ const tableBuilder = (currentBenchmark, clientAlias, LongName, nodes) => {
         cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
+            cssClass: 'sub first',
             displayText: '',
             colSpan: 1,
           },

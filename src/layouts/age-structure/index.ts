@@ -1,8 +1,9 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
+const contentDataQuery = ({ ClientID, BMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 
 const largest = (arr, key) => {
   return arr
@@ -12,11 +13,9 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
+  console.log('contentData: ', contentData);
 
   return contentData;
 };
@@ -45,11 +44,18 @@ const pageContent = {
           Females: 'female resident',
         };
         const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
+        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
+        const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
+        const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
+        const youngest = withoutTotal.slice(0, 3);
+        const oldest = withoutTotal.slice(3);
+        const youngestTotal = total(youngest, 'NoYear1');
+        const oldestTotal = total(oldest, 'NoYear1');
+        const comparison = youngestTotal > oldestTotal ? `under` : `over`;
+
+        const headlineAlt = `In ${prefixedAreaName}, most ${genderLookup[data.currentGenderName]} workers in ${
+          data.currentIndustryName
+        } are ${comparison} 45 years old.`;
 
         return headlineAlt;
       },
@@ -71,7 +77,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Current industry:',
+      Label: 'Select industry:',
       Params: [
         {
           IGBMID: '0',
@@ -113,20 +119,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */

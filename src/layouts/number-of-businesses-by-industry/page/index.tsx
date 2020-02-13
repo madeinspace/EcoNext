@@ -182,7 +182,7 @@ const tableBuilder = (
         cssClass: 'heading',
         cols: [
           {
-            cssClass: 'sub',
+            cssClass: 'sub first',
             displayText: `${nodes[0].GeoName} - ${capitalise(currentBtype)}`,
             colSpan: 1,
           },

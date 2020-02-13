@@ -91,6 +91,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     contentData,
     filters,
     filterToggles: [],
+    providedFilters: [],
     pageData,
     entities,
     entityData: data,

@@ -465,7 +465,7 @@ const tableBuilder = ({
         cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
+            cssClass: 'sub first',
             displayText: `${areaName} - ${industry}`,
             colSpan: 1,
           },

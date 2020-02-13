@@ -80,10 +80,10 @@ const tableBuilder = (alias, nodes) => {
         key: 'hr0',
       },
       {
-        cssClass: '',
+        cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
+            cssClass: 'sub first',
             displayText: '',
             colSpan: 1,
             rowSpan: 0,

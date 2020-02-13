@@ -387,7 +387,7 @@ const tableBuilder = ({
         cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
+            cssClass: 'sub first',
             displayText: `${areaName}`,
             colSpan: 1,
           },

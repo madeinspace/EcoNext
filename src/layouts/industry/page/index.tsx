@@ -341,8 +341,8 @@ const ResidentWorkerIndustryPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the jobs held by the {genderLookup[currentGenderName]} workforce in {prefixedAreaName} shows the
-          three most popular industry sectors were:
+          Analysis of the jobs held by the {genderLookup[currentGenderName]} workforce in {prefixedAreaName} in 2016
+          shows the three most popular industry sectors were:
         </p>
         <TopThreeFields gender={currentGenderName} />
         <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={activeBenchmarkName} />
@@ -408,12 +408,12 @@ const tableBuilder = ({
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers industry of employment';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const firstColTitle = 'Industry (Click rows to view sub-categories)';
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
+  const totals = data.filter(row => row.Hierarchy === 'P' && row.LabelKey === 999999);
   const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
@@ -443,8 +443,8 @@ const tableBuilder = ({
         cssClass: 'heading',
         cols: [
           {
-            cssClass: '',
-            displayText: `${areaName} - ${industry}`,
+            cssClass: 'sub first',
+            displayText: `${areaName} - ${gender}`,
             colSpan: 1,
           },
           {
@@ -554,7 +554,7 @@ const tableBuilder = ({
         ],
       })),
     })),
-    footRows: footerRows.map(row => {
+    footRows: totals.map(row => {
       return {
         cssClass: '',
         cols: [

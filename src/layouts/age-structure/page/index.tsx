@@ -9,6 +9,7 @@ import {
   formatChangeInt,
   capitalise,
   absSort,
+  formatChangeOneDecimal,
 } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
@@ -50,7 +51,7 @@ const genderLookup = {
   Females: 'female resident',
 };
 
-const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
+const TopLevelQualifications = data => data.filter(qual => qual.LabelKey < 97000);
 
 const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
 
@@ -146,8 +147,8 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender
 
   return (
     <Highlight>
-      The major differences between the field of qualifications held by the {genderLookup[gender]} workers (
-      {industryText}) of {areaName} and {benchmarkText} were:
+      The major difference between the {genderLookup[gender]} workers age structure of {areaName} and {benchmarkText}{' '}
+      is:
     </Highlight>
   );
 };
@@ -155,8 +156,7 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender
 const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => {
   const { contentData } = useContext(PageContext);
 
-  const topquals = TopLevelQualifications(contentData);
-  const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
+  const qualsWithData = _.filter(_.filter(contentData, 'PerYear1'), 'BMYear1');
   const majorDifferences = _.sortBy(qualsWithData, qual => {
     const compare = [qual.PerYear1, qual.BMYear1];
     return _.max(compare) - _.min(compare);
@@ -175,8 +175,7 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
         {topFour.map((qual: any, i) => (
           <li key={i}>
             A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderLookup[gender]}{' '}
-            workers ({industryName}) qualified in the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}%
-            compared to {formatPercent(qual.BMYear1)}%)
+            workers aged {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
       </TopList>
@@ -184,28 +183,25 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
   );
 };
 
-const EmergingGroupsHeading = ({ areaName, industryName, total, gender }) => {
-  const {
-    filters: { Indkey },
-  } = useContext(PageContext);
-
+const EmergingGroupsHeading = ({ areaName, industryName, total, gender, perDiff, averageDiff }) => {
   const totalChangeText = `${Math.sign(total) === -1 ? 'decreased' : 'increased'}`;
 
   return (
     <>
-      <Highlight>
-        The number of {genderLookup[gender]} workers ({industryName}) in {areaName} {totalChangeText} by{' '}
-        {formatNumber(Math.abs(total))} between 2011 and 2016.
-      </Highlight>
       <p>
-        The largest change in the field of qualifications held by the {genderLookup[gender]} workers ({industryName})
-        between 2011 and 2016 in {areaName} was for those qualified in:
+        From 2011 to 2016, {areaName}'s {genderLookup[gender]} workers population increased by{' '}
+        {formatNumber(Math.abs(total))} people ({perDiff}%). This represents an average annual change of {averageDiff}%
+        per year over the period.
       </p>
+      <Highlight>
+        The largest changes in the {genderLookup[gender]} workers age structure in {areaName} between 2011 and 2016 were
+        in the age groups:
+      </Highlight>
     </>
   );
 };
 
-const EmergingGroups = () => {
+const EmergingGroups = ({ gender }) => {
   const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
@@ -217,7 +213,7 @@ const EmergingGroups = () => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
+            {qual.LabelName} ({formatChangeInt(qual.Change12)} {gender.toLowerCase()})
           </li>
         ))}
       </TopList>
@@ -238,11 +234,12 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
 
   const tableParams = tableBuilder({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
+    clientAlias,
+    contentData,
+    currentBenchmarkName,
+    LongName,
+    currentIndustryName,
+    currentGenderName,
   });
 
   const chartData = chartBuilder({
@@ -262,50 +259,50 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   });
 
   const total = _.sortBy(
-    contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName === 'Total'),
+    contentData.filter(item => item.LabelKey === 999999),
     item => item.LabelKey,
   );
 
-  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
+  const totalPersons = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
+  const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
+  const totalRow = contentData.filter(node => node.LabelKey === 999999)[0];
+  const perDiff = formatPercent((totalRow.NoYear1 / totalRow.NoYear2 - 1) * 100);
+  const averageDiff = formatShortDecimal((Math.pow(totalRow.NoYear1 / totalRow.NoYear2, 1 / 5) - 1) * 100);
+
+  const youngest = withoutTotal.slice(0, 3);
+  const oldest = withoutTotal.slice(3);
+  const youngestPercClient = formatPercent(totalPersons(youngest, 'PerYear1'));
+  const oldestPercClient = formatPercent(totalPersons(oldest, 'PerYear1'));
+  const youngestPercBM = formatPercent(totalPersons(youngest, 'BMYear1'));
+  const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
+  const comparisonClient = youngestPercClient > youngestPercBM ? `higher` : `lower`;
+
+  console.log(
+    `youngestPercClient: ${youngestPercClient},\n oldestPercClient:  ${oldestPercClient},\n youngestPercBM: ${youngestPercBM},\n oldestPercBM: ${oldestPercBM}`,
+  );
 
   return (
     <>
       <PageIntro>
         <div>
           <p>
-            Field of qualification presents the primary field of study for the highest qualification the person has
-            received. While this is likely to have some relationship to their current occupation, this is not
-            necessarily the case.
+            The Age Structure of {currentAreaName}'s resident workers is indicative of the residential role and function
+            of the local area. This includes factors such as when the area was settled; what types of households live
+            there; the level of access the area has to employment, services and facilities; the local dwelling stock
+            characteristics (including cost of housing); local amenity and a range of other factors that attract people
+            to an area.
           </p>
           <p>
-            The presence of specific qualifications among the {currentAreaName}'s resident workforce, which are not used
-            by local industry, may indicate an opportunity for a new industry to move into the area and access a ready
-            labour force.
+            The age structure of {currentAreaName}'s resident workers is indicative of the skill-levels and experience
+            that local businesses can draw upon. For example, younger resident workers, while less experienced, are
+            typically more mobile and have higher level skills in use of new technologies.
           </p>
-          <p>The field of study relates to a number of factors, such as:</p>
-          <TopList>
-            <li>The age of the population;</li>
-            <li>
-              The types of industries and occupations located in the {currentAreaName} or within commuting distance, and
-              their qualification requirements;
-            </li>
-            <li>The availability of educational institutions with those curricula nearby;</li>
-            <li>The socio-economic status of {currentAreaName}, and;</li>
-            <li>The mobility of the population to move where particular skills are required.</li>
-          </TopList>
-
           <p>
-            Field of Qualification should be looked at in conjunction with{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/qualifications?Sex=3&IGBMID=40&Indkey=23000`,
-              `Qualification`,
-            )}{' '}
-            and{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/occupations?Sex=3&IGBMID=40&Indkey=23000`,
-              `Occupations`,
-            )}{' '}
-            statistics for a clearer picture of the skills available in the resident worker population.
+            For a complete local resident workers analysis for Monash, Age Structure should be analysed in conjunction
+            with {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)},{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)},{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)} and{' '}
+            {LinkBuilder(`https://economy.id.com.au/monash/income`, `Income`)}.
           </p>
         </div>
         <SourceBubble>
@@ -318,29 +315,9 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
 
       <ControlPanel />
 
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
-        </span>
-      </InfoBox>
-
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Local workers - field of qualification'} />
+        <EntityTable data={tableParams} name={'Resident workers - Age structure'} />
       </ItemWrapper>
-
-      {hasProfile() && (
-        <CrossLink>
-          <ProfileProductIcon />
-          <a
-            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to profile"
-          >
-            Residents qualifications by small area
-          </a>
-        </CrossLink>
-      )}
 
       <InfoBox>
         <span>
@@ -363,11 +340,17 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the field of qualifications in {prefixedAreaName} shows that the three largest fields the{' '}
-          {genderLookup[currentGenderName]} resident workers (Agriculture, Forestry and Fishing) were qualified in were:
+          Analysis of the {genderLookup[currentGenderName]} workers age structure of {prefixedAreaName} in 2016 compared
+          to {currentBenchmarkName} shows that there was a {comparisonClient} proportion of{' '}
+          {currentGenderName.toLowerCase()} in the younger age groups (15 to 44 years) as well as a lower proportion of{' '}
+          {currentGenderName.toLowerCase()} in the older age groups (45 years and over).
         </p>
-        <TopThreeFields industryName={currentIndustryName} gender={currentGenderName} />
-        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
+        <p>
+          Overall, {youngestPercClient}% of the {genderLookup[currentGenderName]} workers was aged under 45 years,
+          compared to {youngestPercBM}% for Victoria. {oldestPercClient}% were aged 45 years and over, compared to{' '}
+          {oldestPercBM}% for Victoria.
+        </p>
+
         <MajorDifferences
           areaName={prefixedAreaName}
           benchmarkName={currentBenchmarkName}
@@ -382,8 +365,10 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
           areaName={prefixedAreaName}
           industryName={currentIndustryName}
           total={total[0]['Change12']}
+          perDiff={perDiff}
+          averageDiff={averageDiff}
         />
-        <EmergingGroups />
+        <EmergingGroups gender={currentGenderName} />
       </AnalysisContainer>
       {
         // #endregion
@@ -421,32 +406,66 @@ const ChartSource = () => (
 
 // #region table builders
 const tableBuilder = ({
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  genderName: gender,
-  TabularData: data,
+  clientAlias,
+  contentData,
+  currentBenchmarkName,
+  LongName,
+  currentIndustryName,
+  currentGenderName,
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Resident workers field of qualification';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
-  const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
-    item => item.LabelKey,
-  );
-  const children = data.filter(item => item.Hierarchy === 'C');
-
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
+  const tableTitle = 'Resident workers age structure';
+  const firstColTitle = `Ten year age groups (years)`;
+  const rows = contentData
+    .filter(node => node.LabelKey !== 999999)
+    .map(row => ({
+      id: row.LabelKey,
+      data: [
+        row.LabelName,
+        row.NoYear1,
+        row.PerYear1,
+        row.BMYear1,
+        row.NoYear2,
+        row.PerYear2,
+        row.BMYear2,
+        row.Change12,
+      ],
+      formattedData: [
+        `${row.LabelName}`,
+        formatNumber(row.NoYear1),
+        formatShortDecimal(row.PerYear1),
+        formatShortDecimal(row.BMYear1),
+        formatNumber(row.NoYear2),
+        formatShortDecimal(row.PerYear2),
+        formatShortDecimal(row.BMYear2),
+        formatChangeInt(row.Change12, '--'),
+      ],
+    }));
+  const total = contentData.filter(node => node.LabelKey === 999999);
+  const totalGender = total.map(row => {
+    return {
+      cssClass: 'total',
+      cols: [
+        { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
+        { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
+        {
+          cssClass: '',
+          displayText: formatChangeOneDecimal(row.Change12),
+          colSpan: 1,
+        },
+      ],
+    };
   });
 
   return {
     cssClass: '',
-    clientAlias: areaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
     anchorName: '',
@@ -462,11 +481,11 @@ const tableBuilder = ({
         ],
       },
       {
-        cssClass: 'heading',
+        cssClass: 'heading ',
         cols: [
           {
-            cssClass: '',
-            displayText: `${areaName} - ${industry}`,
+            cssClass: 'sub first',
+            displayText: `${LongName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -505,7 +524,7 @@ const tableBuilder = ({
       },
       {
         id: 3,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}%`,
         cssClass: 'even int',
       },
       {
@@ -520,7 +539,7 @@ const tableBuilder = ({
       },
       {
         id: 6,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}%`,
         cssClass: 'odd int',
       },
       {
@@ -529,72 +548,8 @@ const tableBuilder = ({
         cssClass: 'even int',
       },
     ],
-    rows: parents.map(row => ({
-      expandable: row.children.length > 0,
-      id: row.LabelKey,
-      data: [
-        row.LabelName,
-        row.NoYear1,
-        row.PerYear1,
-        row.BMYear1,
-        row.NoYear2,
-        row.PerYear2,
-        row.BMYear2,
-        row.Change12,
-      ],
-      formattedData: [
-        `${row.LabelName}`,
-        formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
-        formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
-        formatChangeInt(row.Change12, '--'),
-      ],
-      childRows: row.children.map(childRow => ({
-        id: childRow.LabelKey,
-        data: [
-          childRow.LabelName,
-          childRow.NoYear1,
-          childRow.PerYear1,
-          childRow.BMYear1,
-          childRow.NoYear2,
-          childRow.PerYear2,
-          childRow.BMYear2,
-          childRow.Change12,
-        ],
-        formattedData: [
-          `${childRow.LabelName}`,
-          formatNumber(childRow.NoYear1),
-          formatShortDecimal(childRow.PerYear1),
-          formatShortDecimal(childRow.BMYear1),
-          formatNumber(childRow.NoYear2),
-          formatShortDecimal(childRow.PerYear2),
-          formatShortDecimal(childRow.BMYear2),
-          formatChangeInt(childRow.Change12, '--'),
-        ],
-      })),
-    })),
-    footRows: footerRows.map(row => {
-      return {
-        cssClass: '',
-        cols: [
-          { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
-          {
-            cssClass: '',
-            displayText: formatChangeInt(row.Change12),
-            colSpan: 1,
-          },
-        ],
-      };
-    }),
+    rows,
+    footRows: totalGender,
     noOfRowsOnInit: 0,
   };
 };
@@ -609,15 +564,10 @@ const chartBuilder = ({
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
-  });
+
   const perYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
@@ -632,30 +582,11 @@ const chartBuilder = ({
       drilldown: `${item.LabelName}-change`,
     };
   });
-  const drilldownPerYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentIndustry}`,
-      id: `${parent.LabelName}-peryear`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.PerYear1];
-      }),
-    };
-  });
-  const drilldownChangeYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentBenchmark}`,
-      id: `${parent.LabelName}-change`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.BMYear1];
-      }),
-    };
-  });
-  drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
   const chartType = 'bar';
-  const chartTitle = `${capitalise(genderLookup[gender])} workers field of qualifications, 2016`;
+  const chartTitle = `${capitalise(genderLookup[gender])} workers age group, 2016`;
   const chartSubtitle = `${currentIndustry} - ${genderLookup[gender]}`;
-  const xAxisTitle = 'Field of qualification';
+  const xAxisTitle = 'Age group';
   const yAxisTitle = `Percentage of ${genderLookup[gender]} workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
@@ -690,18 +621,6 @@ const chartBuilder = ({
           data: BMYear1Serie,
         },
       ],
-      drilldown: {
-        allowPointDrilldown: false,
-        activeAxisLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        activeDataLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        series: drilldownPerYear1Serie,
-      },
       xAxis: {
         type: 'category',
         title: {
@@ -740,15 +659,15 @@ const chartBuilderChange = ({
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = `Change in ${genderLookup[gender]} workers field of qualifications, 2011 to 2016`;
+  const chartTitle = `Change in ${genderLookup[gender]} workers age structure, 2011 to 2016`;
   const chartSubtitle = `${areaName} - ${currentIndustry} `;
   const serie = _.map(parents, 'Change12');
-  const xAxisTitle = 'Field of qualification';
+  const xAxisTitle = 'Age group';
   const yAxisTitle = `Change in ${genderLookup[gender]} workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
