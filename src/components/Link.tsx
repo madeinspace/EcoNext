@@ -4,11 +4,13 @@ import { PageContext } from '../utils/context';
 import { pathParts } from '../utils';
 
 const MonolithOrNextLink = ({ href, ...props }) => {
-  const {
-    filters: { WebID },
-  } = useContext(PageContext);
+  const { providedFilters } = useContext(PageContext);
 
-  const queryString = WebID === '10' ? '' : `?WebID=${WebID}`;
+  const params = Object.keys(providedFilters)
+    .map(key => key + '=' + providedFilters[key])
+    .join('&');
+
+  const queryString = params != '' ? `?${params}` : '';
   const isNext = isNextPage(pathParts(href.split('?')[0]).pageAlias);
 
   return isNext ? (

@@ -19,6 +19,7 @@ type PageProps = {
   filters?: any;
   contentData?: any;
   filterToggles?: Array<any>;
+  providedFilters?: any;
   pageData?: any;
   entityData?: any;
 };
