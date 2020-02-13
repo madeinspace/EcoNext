@@ -277,10 +277,6 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
   const comparisonClient = youngestPercClient > youngestPercBM ? `higher` : `lower`;
 
-  console.log(
-    `youngestPercClient: ${youngestPercClient},\n oldestPercClient:  ${oldestPercClient},\n youngestPercBM: ${youngestPercBM},\n oldestPercBM: ${oldestPercBM}`,
-  );
-
   return (
     <>
       <PageIntro>
