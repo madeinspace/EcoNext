@@ -1,22 +1,12 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatChangeNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  capitalise,
-  absSort,
-} from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatChangeInt, capitalise, absSort } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
   PageIntro,
-  Note,
   Highlight,
   AnalysisContainer,
   SourceBubble,
@@ -33,7 +23,6 @@ import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/u
 import styled from 'styled-components';
 
 // #endregion
-
 // #region autotext / dynamic content
 
 const TopList = styled.ul`
@@ -221,7 +210,6 @@ const EmergingGroups = () => {
   );
 };
 // #endregion
-
 // #region page
 const ResidentWorkerIndustryPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
@@ -380,7 +368,6 @@ const ResidentWorkerIndustryPage = () => {
 export default ResidentWorkerIndustryPage;
 
 // #endregion
-
 // #region sources
 const TableSource = () => (
   <p>
@@ -396,7 +383,6 @@ const ChartSource = () => (
   </p>
 );
 // #endregion
-
 // #region table builders
 const tableBuilder = ({
   areaName,
@@ -413,7 +399,9 @@ const tableBuilder = ({
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
+  console.log('data: ', data);
   const totals = data.filter(row => row.Hierarchy === 'P' && row.LabelKey === 999999);
+  console.log('totals: ', totals);
   const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
@@ -523,11 +511,11 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
+        formatPercent(row.PerYear1),
+        formatPercent(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
+        formatPercent(row.PerYear2),
+        formatPercent(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
@@ -545,11 +533,11 @@ const tableBuilder = ({
         formattedData: [
           `${childRow.LabelName}`,
           formatNumber(childRow.NoYear1),
-          formatShortDecimal(childRow.PerYear1),
-          formatShortDecimal(childRow.BMYear1),
+          formatPercent(childRow.PerYear1),
+          formatPercent(childRow.BMYear1),
           formatNumber(childRow.NoYear2),
-          formatShortDecimal(childRow.PerYear2),
-          formatShortDecimal(childRow.BMYear2),
+          formatPercent(childRow.PerYear2),
+          formatPercent(childRow.BMYear2),
           formatChangeInt(childRow.Change12, '--'),
         ],
       })),
@@ -560,11 +548,11 @@ const tableBuilder = ({
         cols: [
           { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeInt(row.Change12),
@@ -577,7 +565,6 @@ const tableBuilder = ({
   };
 };
 // #endregion
-
 // #region chart builders
 const chartBuilder = ({ areaName, bmName: currentBenchmark, genderName: gender, TabularData: data }) => {
   const parents = _.sortBy(
@@ -606,7 +593,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, genderName: gender, 
   });
   const drilldownPerYear1Serie = _.map(parents, parent => {
     return {
-      name: `[TBD]`,
+      name: `${areaName}`,
       id: `${parent.LabelName}-peryear`,
       data: _.map(parent.children, child => {
         return [`${child.LabelName}`, child.PerYear1];
@@ -651,9 +638,9 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, genderName: gender, 
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+            this.y,
+          )}%`;
         },
       },
       series: [
@@ -706,7 +693,6 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, genderName: gender, 
   };
 };
 // #endregion
-
 // #region chart builder change
 const chartBuilderChange = ({ areaName, bmName: currentBenchmark, genderName: gender, TabularData: data }) => {
   const parents = _.sortBy(

@@ -189,7 +189,7 @@ const EmergingGroupsHeading = ({ areaName, industryName, total, gender, perDiff,
   return (
     <>
       <p>
-        From 2011 to 2016, {areaName}'s {genderLookup[gender]} workers population increased by{' '}
+        From 2011 to 2016, {areaName}'s {genderLookup[gender]} workers ({industryName}) population {totalChangeText} by{' '}
         {formatNumber(Math.abs(total))} people ({perDiff}%). This represents an average annual change of {averageDiff}%
         per year over the period.
       </p>
@@ -336,10 +336,10 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the {genderLookup[currentGenderName]} workers age structure of {prefixedAreaName} in 2016 compared
-          to {currentBenchmarkName} shows that there was a {comparisonClient} proportion of{' '}
-          {currentGenderName.toLowerCase()} in the younger age groups (15 to 44 years) as well as a lower proportion of{' '}
-          {currentGenderName.toLowerCase()} in the older age groups (45 years and over).
+          Analysis of the {genderLookup[currentGenderName]} workers ({currentIndustryName}) age structure of{' '}
+          {prefixedAreaName} in 2016 compared to {currentBenchmarkName} shows that there was a {comparisonClient}{' '}
+          proportion of {currentGenderName.toLowerCase()} in the younger age groups (15 to 44 years) as well as a lower
+          proportion of {currentGenderName.toLowerCase()} in the older age groups (45 years and over).
         </p>
         <p>
           Overall, {youngestPercClient}% of the {genderLookup[currentGenderName]} workers was aged under 45 years,
@@ -430,11 +430,11 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
+        formatPercent(row.PerYear1),
+        formatPercent(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
+        formatPercent(row.PerYear2),
+        formatPercent(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
     }));
@@ -444,15 +444,15 @@ const tableBuilder = ({
       cssClass: 'total',
       cols: [
         { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
-        { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
+        { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-        { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
+        { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
         {
           cssClass: '',
-          displayText: formatChangeOneDecimal(row.Change12),
+          displayText: formatNumber(row.Change12),
           colSpan: 1,
         },
       ],
@@ -602,9 +602,9 @@ const chartBuilder = ({
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+            this.y,
+          )}%`;
         },
       },
       series: [

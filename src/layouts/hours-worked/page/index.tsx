@@ -469,11 +469,11 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
+        formatPercent(row.PerYear1),
+        formatPercent(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
+        formatPercent(row.PerYear2),
+        formatPercent(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
     }));
@@ -483,15 +483,15 @@ const tableBuilder = ({
       cssClass: 'total',
       cols: [
         { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
-        { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
+        { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-        { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
+        { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
         { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
         {
           cssClass: '',
-          displayText: formatChangeOneDecimal(row.Change12),
+          displayText: formatNumber(row.Change12),
           colSpan: 1,
         },
       ],
@@ -638,9 +638,9 @@ const chartBuilder = ({
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+            this.y,
+          )}%`;
         },
       },
       series: [
