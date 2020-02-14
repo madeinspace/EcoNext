@@ -797,7 +797,7 @@ const pieClientBuilder = ({ areaName, industryName: currentIndustry, TabularData
       yAxis: [],
       series: [
         {
-          name: 'Client',
+          name: `${areaName}`,
           type: 'pie',
           data: TabularData,
         },
@@ -842,7 +842,7 @@ const pieBenchmarkBuilder = ({ bmName: currentBenchmark, TabularData }) => {
       yAxis: [],
       series: [
         {
-          name: 'Client',
+          name: `${currentBenchmark}`,
           type: 'pie',
           data: TabularData,
         },
