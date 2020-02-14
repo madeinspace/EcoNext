@@ -491,7 +491,7 @@ const tableBuilder = ({
         { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
         {
           cssClass: '',
-          displayText: formatNumber(row.Change12),
+          displayText: formatChangeInt(row.Change12),
           colSpan: 1,
         },
       ],
