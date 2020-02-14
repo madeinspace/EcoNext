@@ -3,7 +3,7 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const contentDataQuery = ({ ClientID, BMID, Sex, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry1and3Digit_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'UR', ${Sex}, 1, null) order by LabelKey DESC`;
+  `select * from CommData_Economy.[dbo].[fn_Industry1and3Digit_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'UR', ${Sex}, 2, null) order by LabelKey DESC`;
 
 const largest = (arr, key) => {
   return arr

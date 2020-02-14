@@ -2,8 +2,8 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
-const contentDataQuery = ({ ClientID, BMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 
 const largest = (arr, key) => {
   return arr

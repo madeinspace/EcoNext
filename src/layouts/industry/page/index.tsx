@@ -399,9 +399,11 @@ const tableBuilder = ({
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  console.log('data: ', data);
+  const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
   const totals = data.filter(row => row.Hierarchy === 'P' && row.LabelKey === 999999);
-  console.log('totals: ', totals);
+  const totalNoYear1 = total(parents, 'NoYear1');
+  const totalNoYear2 = total(parents, 'NoYear2');
+  const totalChange12 = total(parents, 'Change12');
   const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
@@ -547,15 +549,15 @@ const tableBuilder = ({
         cssClass: '',
         cols: [
           { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(totalNoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(totalNoYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
-            displayText: formatChangeInt(row.Change12),
+            displayText: formatChangeInt(totalChange12),
             colSpan: 1,
           },
         ],

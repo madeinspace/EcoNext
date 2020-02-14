@@ -4,7 +4,6 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { formatPercent } from '../../utils';
 
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) => {
-  console.log('IGBMID, Sex, Indkey: ', IGBMID, Sex, Indkey);
   return `select * from CommData_Economy.[dbo].[fn_Industry_HoursWorked_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 };
 
@@ -27,7 +26,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Age structure`,
+      renderString: ({ data }): string => `Resident workers - Hours worked`,
     },
     {
       Title: 'Headline',
