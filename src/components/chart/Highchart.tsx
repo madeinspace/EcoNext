@@ -84,12 +84,12 @@ class HighChart extends React.Component<IChartProps, IChartState> {
   };
 
   render(): any {
-    const { exportOptions, chartContainerID } = this.props;
+    const { exportOptions, chartContainerID, enableExport } = this.props;
     const { isLoaded } = this.state;
 
     return (
       <EntityContainer>
-        {exportOptions && exportOptions.enabled && isLoaded && (
+        {enableExport && exportOptions && exportOptions.enabled && isLoaded && (
           <Actions>
             <ExportDropdown exportOptions={exportOptions} handleExport={this.handleExport} />
           </Actions>

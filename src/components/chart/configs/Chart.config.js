@@ -85,31 +85,30 @@ export const ChartDefault = (...opts) => {
   };
 
   /* THIS CONDITION IS CATERING FOR DUAL YAXIS */
-  if (options.yAxis.length === 1) {
-    chartDefaults.yAxis = {
-      style: {
-        textOverflow: 'none',
+  chartDefaults.yAxis = {
+    style: {
+      textOverflow: 'none',
+    },
+    alignTicks: true,
+    allowDecimals: false,
+    softMin: 0,
+    title: {
+      text: 'yAxis title',
+      align: 'low',
+    },
+    labels: {
+      staggerLines: 0,
+      formatter: function () {
+        const formatedNumber = formatChangePercent(this.value);
+        return formatedNumber;
       },
-      alignTicks: true,
-      allowDecimals: false,
-      softMin: 0,
-      title: {
-        text: 'yAxis title',
-        align: 'low',
-      },
-      labels: {
-        staggerLines: 0,
-        formatter: function() {
-          const formatedNumber = formatChangePercent(this.value);
-          return formatedNumber;
-        },
-        ...options.yAxis.labels,
-      },
-      opposite: false,
-      plotBands: [],
-      croshair: false,
-    };
-  } else {
+      ...options.yAxis.labels,
+    },
+    opposite: false,
+    plotBands: [],
+    croshair: false,
+  };
+  if (options.yAxis.length === 2) {
     chartDefaults.series[0].yAxis = 0;
     chartDefaults.series[1].yAxis = 1;
     chartDefaults.yAxis = [
@@ -123,7 +122,7 @@ export const ChartDefault = (...opts) => {
           text: 'yAxis Primary title',
           align: 'low',
         },
-        tickPositioner: function() {
+        tickPositioner: function () {
           const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
           if (this.dataMin < 0 && this.dataMax >= 0) {
             return this.getLinearTickPositions(this.tickInterval, -maxDeviation, maxDeviation);
@@ -142,7 +141,7 @@ export const ChartDefault = (...opts) => {
           text: 'yAxis Secondary title',
           align: 'low',
         },
-        tickPositioner: function() {
+        tickPositioner: function () {
           const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
           const halfMaxDeviation = Math.ceil(maxDeviation / 2);
           if (this.dataMin < 0 && this.dataMax >= 0) {
@@ -154,7 +153,7 @@ export const ChartDefault = (...opts) => {
         labels: {
           ...options.yAxis[1].labels,
           staggerLines: 0,
-          formatter: function() {
+          formatter: function () {
             return formatNumber(this.value);
           },
         },

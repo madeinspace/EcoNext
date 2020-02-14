@@ -17,6 +17,7 @@ export interface IChartProps {
   sets?: any[];
   filterToggles?: any[];
   siblingsInfo?: any;
+  enableExport?: boolean;
 }
 
 export interface IChartState {

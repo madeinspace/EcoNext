@@ -268,7 +268,6 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   const totalRow = contentData.filter(node => node.LabelKey === 999999)[0];
   const perDiff = formatPercent((totalRow.NoYear1 / totalRow.NoYear2 - 1) * 100);
   const averageDiff = formatShortDecimal((Math.pow(totalRow.NoYear1 / totalRow.NoYear2, 1 / 5) - 1) * 100);
-
   const youngest = withoutTotal.slice(0, 3);
   const oldest = withoutTotal.slice(3);
   const youngestPercClient = formatPercent(totalPersons(youngest, 'PerYear1'));
@@ -301,6 +300,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
             {LinkBuilder(`https://economy.id.com.au/monash/income`, `Income`)}.
           </p>
         </div>
+        2
         <SourceBubble>
           <div>
             <h3>Data source</h3>

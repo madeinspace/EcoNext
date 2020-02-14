@@ -1,19 +1,12 @@
 import { sqlConnection } from '../../utils/sql';
-
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
-
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
-
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
+import { formatPercent } from '../../utils';
+
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) => {
+  console.log('IGBMID, Sex, Indkey: ', IGBMID, Sex, Indkey);
+  return `select * from CommData_Economy.[dbo].[fn_Industry_HoursWorked_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
+};
 
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
@@ -23,7 +16,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    activeBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -34,7 +27,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Hours worked`,
+      renderString: ({ data }): string => `Resident workers - Age structure`,
     },
     {
       Title: 'Headline',
@@ -45,11 +38,15 @@ const pageContent = {
           Females: 'female resident',
         };
         const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
+        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
+        const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
+        const without = contentData.filter(node => node.LabelKey != 999999 && node.LabelKey != 22009);
+        const over40 = without.slice(5);
+        const over40TotalClient = formatPercent(total(over40, 'PerYear1'));
+        const over40TotalBM = formatPercent(total(over40, 'BMYear1'));
+        const headlineAlt = `${over40TotalClient}% of the ${genderLookup[data.currentGenderName]} workers (${
+          data.currentIndustryName
+        }) in ${prefixedAreaName} work 40 or more hours, compared to ${over40TotalBM}% in Victoria.`;
 
         return headlineAlt;
       },
@@ -71,7 +68,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Current industry:',
+      Label: 'Select industry:',
       Params: [
         {
           IGBMID: '0',
@@ -113,20 +110,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */
