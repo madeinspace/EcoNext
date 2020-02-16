@@ -84,7 +84,7 @@ class HighChart extends React.Component<IChartProps, IChartState> {
   };
 
   render(): any {
-    const { exportOptions, chartContainerID, enableExport } = this.props;
+    const { exportOptions, chartContainerID, enableExport = true } = this.props;
     const { isLoaded } = this.state;
 
     return (
