@@ -34,12 +34,9 @@ const ControlPanel: React.SFC<{}> = () => {
   const { handle, filterToggles } = React.useContext(PageContext);
 
   React.useEffect(() => {
-    // only pass the layers that are active
     if (!_.isNull(localStorage.getItem('scrollTop'))) {
       const yPos = parseInt(localStorage.getItem('scrollTop'));
-      window.scrollTo({ left: 0, top: yPos, behavior: 'auto' });
-      // setTimeout(() => {
-      // }, 50);
+      window.scrollTo({ left: 0, top: yPos, behavior: 'smooth' });
     }
 
     localStorage.removeItem('scrollTop');

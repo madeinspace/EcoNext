@@ -34,16 +34,6 @@ const TopList = styled.ul`
   }
 `;
 
-const SideCHarts = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 20px 0;
-  > div {
-    width: 49%;
-  }
-`;
-
 const genderLookup = {
   Persons: 'resident',
   Males: 'male resident',
@@ -293,42 +283,6 @@ const ResidentWorkerHoursWorkedPage = () => {
     genderName: currentGenderName,
     TabularData: contentData,
   });
-  const pieClientData = pieClientBuilder({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    TabularData: [
-      {
-        name: 'Part time workers',
-        y: parseFloat(partTimerClient),
-      },
-      {
-        name: 'Full time workers',
-        y: parseFloat(fullTimerClient),
-      },
-      {
-        name: 'None or not stated',
-        y: parseFloat(noneOrNotStatedClient),
-      },
-    ],
-  });
-
-  const pieBenchmarkData = pieBenchmarkBuilder({
-    bmName: currentBenchmarkName,
-    TabularData: [
-      {
-        name: 'Part time workers',
-        y: parseFloat(partTimerBM),
-      },
-      {
-        name: 'Full time workers',
-        y: parseFloat(fullTimerBM),
-      },
-      {
-        name: 'None or not stated',
-        y: parseFloat(noneOrNotStatedBM),
-      },
-    ],
-  });
 
   // console.log(`
   // partTimerClient: ${partTimerClient}
@@ -393,10 +347,6 @@ const ResidentWorkerHoursWorkedPage = () => {
           part-time (34 hours or less), and {fullTimerClient}% worked full-time (35 hours or more), compared with{' '}
           {partTimerBM}% and {fullTimerBM}% respectively for {currentBenchmarkName}.
         </p>
-        <SideCHarts>
-          <EntityChart data={pieClientData} />
-          <EntityChart data={pieBenchmarkData} />
-        </SideCHarts>
         <MajorDifferences
           areaName={prefixedAreaName}
           benchmarkName={currentBenchmarkName}
@@ -763,97 +713,4 @@ const chartBuilderChange = ({
   };
 };
 
-// #endregion
-// #region pieClientBuilder builders
-const pieClientBuilder = ({ areaName, industryName: currentIndustry, TabularData }) => {
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-  const chartContainerID = 'pieClient';
-  const chartTemplate = 'Standard';
-
-  return {
-    highchartOptions: {
-      height: 230,
-      title: {
-        text: `${areaName}`,
-      },
-      subtitle: {
-        text: `${currentIndustry}`,
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-          },
-        },
-      },
-
-      yAxis: [],
-      series: [
-        {
-          name: `${areaName}`,
-          type: 'pie',
-          data: TabularData,
-        },
-      ],
-    },
-    rawDataSource,
-    dataSource: '',
-    chartContainerID,
-    logoUrl: null,
-    chartTemplate,
-    enableExport: false,
-  };
-};
-// #endregion
-// #region pieBenchmarkBuilder builders
-const pieBenchmarkBuilder = ({ bmName: currentBenchmark, TabularData }) => {
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-  const chartContainerID = 'pieBM';
-  const chartTemplate = 'Standard';
-
-  return {
-    highchartOptions: {
-      height: 230,
-      title: {
-        text: `${currentBenchmark}`,
-      },
-      tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-          },
-        },
-      },
-
-      yAxis: [],
-      series: [
-        {
-          name: `${currentBenchmark}`,
-          type: 'pie',
-          data: TabularData,
-        },
-      ],
-    },
-    rawDataSource,
-    dataSource: '',
-    chartContainerID,
-    logoUrl: null,
-    chartTemplate,
-    enableExport: false,
-  };
-};
 // #endregion
