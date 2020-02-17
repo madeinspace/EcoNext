@@ -6,6 +6,7 @@ import Sticky from '@wicked_query/react-sticky';
 import Router from 'next/router';
 import qs from 'qs';
 import { PageContext, ClientContext } from '../../utils/context';
+import _ from 'lodash';
 
 const StyledControlPanel = styled.div`
   align-items: end;
@@ -32,7 +33,24 @@ const ControlPanel: React.SFC<{}> = () => {
   const { clientAlias } = React.useContext(ClientContext);
   const { handle, filterToggles } = React.useContext(PageContext);
 
-  const setQuery = (key, value) => {
+  React.useEffect(() => {
+    // only pass the layers that are active
+    if (!_.isNull(localStorage.getItem('scrollTop'))) {
+      const yPos = parseInt(localStorage.getItem('scrollTop'));
+      window.scrollTo({ left: 0, top: yPos, behavior: 'auto' });
+      // setTimeout(() => {
+      // }, 50);
+    }
+
+    localStorage.removeItem('scrollTop');
+  });
+
+  const handleControlPanelChange = (key, value) => {
+    const yPos = document.documentElement.scrollTop || document.body.scrollTop;
+    if (typeof Storage !== 'undefined') {
+      localStorage.setItem('scrollTop', yPos.toString());
+    }
+
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     query[key] = value;
     Router.push({
@@ -70,7 +88,7 @@ const ControlPanel: React.SFC<{}> = () => {
                   key={key}
                   title={title}
                   value={value}
-                  handleChange={e => setQuery(key, e.target.value)}
+                  handleChange={e => handleControlPanelChange(key, e.target.value)}
                   list={list}
                 />
               )
@@ -81,7 +99,7 @@ const ControlPanel: React.SFC<{}> = () => {
           // this might mean it's an input field
           // this approach might need to change in future if we find more complex toggles
 
-          return <input key={key} onBlur={e => setQuery(key, e.target.value)} value={value} />;
+          return <input key={key} onBlur={e => handleControlPanelChange(key, e.target.value)} value={value} />;
         })}
         <ResetButton onClick={handleReset} />
       </StyledControlPanel>
