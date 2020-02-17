@@ -1,8 +1,23 @@
 import { sqlConnection } from '../../utils/sql';
 
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
+/* #region  contentDataQuery */
+/**
+ *  @ClientID int,
+    @WebID varchar(MAX),
+    @IGBMID varchar(MAX),
+    @StartYear int,
+    @EndYear int,
+    @DataType char(2),
+    @Sex int,
+    @TblType int,
+    @LblID varchar(max) = null,
+    @Indkey int = NULL
+    select * from [dbo].[fn_WP_Occupation_1and3Digit](102,10,20,2016,2011,'WP',3,1,null,23000) order by Hierarchy desc, LabelKey
+ */
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_Occupation1and3Digit_Sex](${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC
+  `;
+/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -47,9 +62,10 @@ const pageContent = {
         const prefix = data.HasPrefix ? 'the ' : '';
         const areaName = `${prefix}${data.currentAreaName}`;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
+        const headlineAlt = `There are more resident workers (${data.currentIndustryName}) ${mostCommonQual} in ${areaName} than any other occupation.`;
+        // const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
+        //   genderLookup[data.currentGenderName]
+        // } workers in ${areaName}.`;
 
         return headlineAlt;
       },
@@ -71,7 +87,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Current industry:',
+      Label: 'Select industry:',
       Params: [
         {
           IGBMID: '0',
@@ -113,20 +129,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */

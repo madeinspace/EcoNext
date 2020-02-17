@@ -273,14 +273,14 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <PageIntro>
         <div>
           <p>
-            Field of qualification presents the primary field of study for the highest qualification the person has
-            received. While this is likely to have some relationship to their current occupation, this is not
-            necessarily the case.
+            Occupations are a key component in evaluating the knowledge, experience and skill-levels that industry can
+            draw upon locally. It should be viewed with other indicators, such as Age structure, Qualifications, and
+            Income for a comprehensive analysis of Monash's local resident workers.
           </p>
           <p>
-            The presence of specific qualifications among the {currentAreaName}'s resident workforce, which are not used
-            by local industry, may indicate an opportunity for a new industry to move into the area and access a ready
-            labour force.
+            When comparing the occupations of local resident workers with local workers, Occupation data indicates
+            whether an economy draws on the skills offered by its own residents or relies on a different set of skills
+            imported from elsewhere in the region.
           </p>
           <p>The field of study relates to a number of factors, such as:</p>
           <TopList>
