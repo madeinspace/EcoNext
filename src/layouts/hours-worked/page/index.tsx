@@ -256,7 +256,7 @@ const ResidentWorkerHoursWorkedPage = () => {
       </PageIntro>
       <ControlPanel />
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Resident workers - Age structure'} />
+        <EntityTable data={tableParams} name={'Resident workers - Hours worked'} />
       </ItemWrapper>
       <ItemWrapper>
         <EntityChart data={chartData} />

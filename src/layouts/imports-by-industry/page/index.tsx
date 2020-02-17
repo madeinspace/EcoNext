@@ -376,15 +376,16 @@ const tableBuilder = ({
   TabularData: data,
   exportID,
 }) => {
+  console.log('data: ', data);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   let tableTitle = capitalise(entityData(exportID).entityTitle);
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
-  const footerRows = data.filter(item => item.LabelName === 'Total Industries');
+  const footerRows = data.filter(item => item.LabelKey === 999999);
 
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
   const children = data.filter(item => item.Hierarchy === 'C');
@@ -600,7 +601,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data, e
   const chartType = 'bar';
   let chartTitle = capitalise(entityData(exportID).entityTitle);
   const chartSubtitle = ``;
-  const xAxisTitle = 'Industry sector';
+  const xAxisTitle = 'Industry sector by industry sector 2018/19';
   const yAxisTitle = `% of ${entityData(exportID).yAxisTitle} imports`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
@@ -685,7 +686,9 @@ const chartBuilderChange = ({
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = `Change in ${entityData(exportID).entityTitle}, ${currentComparaisonYear} to ${currentStartYear}`;
+  const chartTitle = `Change in ${
+    entityData(exportID).entityTitle
+  } by industry sector, ${currentComparaisonYear} to ${currentStartYear}`;
   const chartSubtitle = `${areaName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';

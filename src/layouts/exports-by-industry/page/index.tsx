@@ -383,10 +383,10 @@ const tableBuilder = ({
   let tableTitle = `${capitalise(entityData(exportID).entityTitle)} by industry sector`;
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
-  const footerRows = data.filter(item => item.LabelName === 'Total Industries');
+  const footerRows = data.filter(item => item.LabelKey === 999999);
 
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
   const children = data.filter(item => item.Hierarchy === 'C');

@@ -568,14 +568,12 @@ const chartBuilder = ({
     return {
       name: item.LabelName,
       y: item.PerYear1,
-      drilldown: `${item.LabelName}-peryear`,
     };
   });
   const BMYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
       y: item.BMYear1,
-      drilldown: `${item.LabelName}-change`,
     };
   });
 
