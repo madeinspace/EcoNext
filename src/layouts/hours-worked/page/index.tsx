@@ -8,9 +8,7 @@ import {
   formatChangeInt,
   capitalise,
   absSort,
-  formatChangeOneDecimal,
 } from '../../../utils/';
-
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -21,9 +19,7 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
-
 // #endregion
-
 // #region autotext / dynamic content
 
 const TopList = styled.ul`
@@ -77,39 +73,6 @@ const TopThreeFields = ({ industryName, gender }) => {
         {formatPercent(totalPercent)}% of {genderLookup[gender]} ({industryName}).
       </p>
     </>
-  );
-};
-
-const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
-  const {
-    filters: { IGBMID },
-    contentData,
-  } = useContext(PageContext);
-
-  let currentBenchmarkName: any = benchmarkName;
-
-  const industryBenchmark = IGBMID > 1000;
-
-  if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
-  }
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree: any = TopThree(highestQuals);
-
-  if (!topThree.length) return null;
-
-  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)}% in ${LabelName}`);
-
-  const [lastItem, ...comparisons] = formatComparisons.reverse();
-
-  const and = comparisons.length > 0 ? 'and' : null;
-
-  return (
-    <p>
-      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
-    </p>
   );
 };
 
@@ -209,7 +172,6 @@ const EmergingGroups = ({ gender }) => {
   );
 };
 // #endregion
-
 // #region page
 const ResidentWorkerHoursWorkedPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
@@ -373,7 +335,6 @@ const ResidentWorkerHoursWorkedPage = () => {
 
 export default ResidentWorkerHoursWorkedPage;
 // #endregion
-
 // #region sources
 const TableSource = () => (
   <p>
