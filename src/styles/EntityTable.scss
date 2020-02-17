@@ -370,6 +370,13 @@ $even-row-color: $odd-color;
         td,
         th {
           background-color: #e6f4ec !important;
+          padding-left: 10px;
+          &:first-child {
+            &:before {
+              content: '-';
+              padding-right: 10px;
+            }
+          }
         }
 
         &:hover {
