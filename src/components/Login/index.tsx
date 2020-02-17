@@ -18,7 +18,7 @@ const Login = () => {
 
     const UserName = userData.username;
     const Password = userData.password;
-    const url = 'https://economy.id.com.au/monash/Account/Logon';
+    const url = 'https://economy.id.com.au/${clientAlias}/Account/Logon';
 
     const payload = {
       UserName,

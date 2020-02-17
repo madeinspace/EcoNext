@@ -222,8 +222,8 @@ const EmploymentCensusPage = () => {
             to a regional benchmark, you can clearly see local economic strengths and weaknesses. By looking at how the
             number of jobs in each industry is changing over time, you can track how the structure of the local economy
             is changing. Go to the{' '}
-            {LinkBuilder(`http://economy.idcommdev.idc.local/monash/employment-locations?`, `Employment locations`)}{' '}
-            page to see where employment is taking place across {prefixedAreaName}.
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations?`, `Employment locations`)} page
+            to see where employment is taking place across {prefixedAreaName}.
           </p>
           <p>
             <strong>Note: </strong>Census employment figures are known to undercount employment by varying amounts
@@ -231,7 +231,7 @@ const EmploymentCensusPage = () => {
             people don’t state their workforce status or industry. Also counts by place of work exclude those with no
             fixed workplace address. For this reason, it is recommended that for total job numbers, users look at the{' '}
             {LinkBuilder(
-              `http://economy.idcommdev.idc.local/monash/employment-by-industry?`,
+              `http://economy.id.com.au/${clientAlias}/employment-by-industry?`,
               `Employment by
             industry (Total)`,
             )}{' '}

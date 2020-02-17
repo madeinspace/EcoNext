@@ -49,33 +49,6 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const TopThreeFields = ({ industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree = TopThree(highestQuals);
-
-  const totalPeople = _.sumBy(topThree, 'NoYear1');
-  const totalPercent = _.sumBy(topThree, 'PerYear1');
-
-  return (
-    <>
-      <TopList>
-        {topThree.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
-          </li>
-        ))}
-      </TopList>
-      <p>
-        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of {genderLookup[gender]} ({industryName}).
-      </p>
-    </>
-  );
-};
-
 const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender }) => {
   const {
     filters: { IGBMID, Indkey },
@@ -183,11 +156,6 @@ const ResidentWorkerHoursWorkedPage = () => {
   const currentGenderName = getActiveToggle(filterToggles, 'Sex');
   const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
 
-  const total = _.sortBy(
-    contentData.filter(item => item.LabelKey === 999999),
-    item => item.LabelKey,
-  );
-
   const compare = (a, b) => (a > b ? 'higher' : 'lower');
 
   const totalHoursWorked = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
@@ -273,7 +241,7 @@ const ResidentWorkerHoursWorkedPage = () => {
 
           <p>
             Hours worked statistics should be viewed in conjunction with{' '}
-            {LinkBuilder(`http://economy.idcommstage.idc.local/${clientAlias}/age-structure?`, `Age structure`)}{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/age-structure?`, `Age structure`)}{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)}, and{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)} to provide more insight into the
             observations made.

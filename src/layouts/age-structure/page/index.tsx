@@ -297,7 +297,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
             with {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)},{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)},{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)} and{' '}
-            {LinkBuilder(`https://economy.id.com.au/monash/income`, `Income`)}.
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)}.
           </p>
         </div>
         2
