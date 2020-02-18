@@ -1,8 +1,24 @@
 import { sqlConnection } from '../../utils/sql';
 
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
+/* #region  contentDataQuery */
+
+/**
+ *
+ * select * from [dbo].[fn_Industry_Qualification_Sex] (102,10,40,2016,2011,'WP',3,1,NULL,23000)
+ @ClientID int,
+@WebID varchar(MAX),
+@IGBMID varchar(MAX),
+@StartYear int,
+@EndYear int,
+@DataType char(2),
+@Sex int,
+@TblType int,
+@LblID varchar(max) = null,
+@Indkey int = NULL
+ */
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_Qualification_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC`;
+/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -113,20 +129,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](
-    ${ClientID},
-    ${WebID},
-    ${IGBMID},
-    2016,
-    2011,
-    'UR',
-    ${Sex},
-    1,
-    null,
-    ${Indkey}
-    ) order by LabelKey DESC
-  `;
-/* #endregion */

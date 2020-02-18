@@ -185,10 +185,6 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
 };
 
 const EmergingGroupsHeading = ({ areaName, industryName, total, gender }) => {
-  const {
-    filters: { Indkey },
-  } = useContext(PageContext);
-
   const totalChangeText = `${Math.sign(total) === -1 ? 'decreased' : 'increased'}`;
 
   return (
@@ -262,7 +258,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   });
 
   const total = _.sortBy(
-    contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName === 'Total'),
+    contentData.filter(item => item.LabelKey === 999999),
     item => item.LabelKey,
   );
 
@@ -330,15 +326,11 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
 
       {hasProfile() && (
         <CrossLink>
-          <ProfileProductIcon />
-          <a
-            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to profile"
-          >
-            Residents qualifications by small area
-          </a>
+          <ProfileProductIcon />{' '}
+          {LinkBuilder(
+            `http://profile.id.com.au/${clientAlias}/qualifications`,
+            `Residents qualifications by small area`,
+          )}
         </CrossLink>
       )}
 
@@ -362,6 +354,13 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       }
       <AnalysisContainer>
         <h3>Dominant groups</h3>
+        <p>
+          Analysis of the qualifications of the male resident workers in {prefixedAreaName} in 2016 compared to{' '}
+          {currentBenchmarkName}
+          shows that there was a higher proportion of {currentGenderName.toLowerCase()} holding formal qualifications
+          (Bachelor or higher degree; Advanced Diploma or Diploma; or Vocational qualifications), and a lower proportion
+          of males with no formal qualifications.
+        </p>
         <p>
           Analysis of the field of qualifications in {prefixedAreaName} shows that the three largest fields the{' '}
           {genderLookup[currentGenderName]} resident workers (Agriculture, Forestry and Fishing) were qualified in were:
@@ -429,20 +428,13 @@ const tableBuilder = ({
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Resident workers field of qualification';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const tableTitle = 'Resident workers qualifications';
+  const firstColTitle = 'Qualification level';
+  const footerRows = data.filter(item => item.LabelKey === 999999);
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.LabelKey !== 999999),
     item => item.LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
-
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
-  });
 
   return {
     cssClass: '',
@@ -466,7 +458,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${areaName} - ${industry}`,
+            displayText: `${areaName} - ${gender}`,
             colSpan: 1,
           },
           {
@@ -530,7 +522,6 @@ const tableBuilder = ({
       },
     ],
     rows: parents.map(row => ({
-      expandable: row.children.length > 0,
       id: row.LabelKey,
       data: [
         row.LabelName,
@@ -545,36 +536,13 @@ const tableBuilder = ({
       formattedData: [
         `${row.LabelName}`,
         formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
+        formatPercent(row.PerYear1),
+        formatPercent(row.BMYear1),
         formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
+        formatPercent(row.PerYear2),
+        formatPercent(row.BMYear2),
         formatChangeInt(row.Change12, '--'),
       ],
-      childRows: row.children.map(childRow => ({
-        id: childRow.LabelKey,
-        data: [
-          childRow.LabelName,
-          childRow.NoYear1,
-          childRow.PerYear1,
-          childRow.BMYear1,
-          childRow.NoYear2,
-          childRow.PerYear2,
-          childRow.BMYear2,
-          childRow.Change12,
-        ],
-        formattedData: [
-          `${childRow.LabelName}`,
-          formatNumber(childRow.NoYear1),
-          formatShortDecimal(childRow.PerYear1),
-          formatShortDecimal(childRow.BMYear1),
-          formatNumber(childRow.NoYear2),
-          formatShortDecimal(childRow.PerYear2),
-          formatShortDecimal(childRow.BMYear2),
-          formatChangeInt(childRow.Change12, '--'),
-        ],
-      })),
     })),
     footRows: footerRows.map(row => {
       return {
@@ -582,11 +550,11 @@ const tableBuilder = ({
         cols: [
           { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeInt(row.Change12),
@@ -609,53 +577,27 @@ const chartBuilder = ({
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
-  });
+
   const perYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
       y: item.PerYear1,
-      drilldown: `${item.LabelName}-peryear`,
     };
   });
   const BMYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
       y: item.BMYear1,
-      drilldown: `${item.LabelName}-change`,
     };
   });
-  const drilldownPerYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentIndustry}`,
-      id: `${parent.LabelName}-peryear`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.PerYear1];
-      }),
-    };
-  });
-  const drilldownChangeYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentBenchmark}`,
-      id: `${parent.LabelName}-change`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.BMYear1];
-      }),
-    };
-  });
-  drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
   const chartType = 'bar';
-  const chartTitle = `${capitalise(genderLookup[gender])} workers field of qualifications, 2016`;
+  const chartTitle = `${capitalise(genderLookup[gender])} workers qualifications, 2016`;
   const chartSubtitle = `${currentIndustry} - ${genderLookup[gender]}`;
-  const xAxisTitle = 'Field of qualification';
+  const xAxisTitle = 'Qualifications';
   const yAxisTitle = `Percentage of ${genderLookup[gender]} workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
@@ -675,9 +617,9 @@ const chartBuilder = ({
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+            this.y,
+          )}%`;
         },
       },
       series: [
@@ -690,18 +632,6 @@ const chartBuilder = ({
           data: BMYear1Serie,
         },
       ],
-      drilldown: {
-        allowPointDrilldown: false,
-        activeAxisLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        activeDataLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        series: drilldownPerYear1Serie,
-      },
       xAxis: {
         type: 'category',
         title: {
@@ -740,15 +670,15 @@ const chartBuilderChange = ({
   TabularData: data,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = `Change in ${genderLookup[gender]} workers field of qualifications, 2011 to 2016`;
+  const chartTitle = `Change in ${genderLookup[gender]} workers qualifications, 2011 to 2016`;
   const chartSubtitle = `${areaName} - ${currentIndustry} `;
   const serie = _.map(parents, 'Change12');
-  const xAxisTitle = 'Field of qualification';
+  const xAxisTitle = 'Qualifications';
   const yAxisTitle = `Change in ${genderLookup[gender]} workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
