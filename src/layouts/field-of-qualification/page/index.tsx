@@ -10,13 +10,11 @@ import {
   capitalise,
   absSort,
 } from '../../../utils/';
-
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import {
   PageIntro,
-  Note,
   Highlight,
   AnalysisContainer,
   SourceBubble,
@@ -83,7 +81,7 @@ const TopThreeFields = ({ industryName, gender }) => {
       </TopList>
       <p>
         In combination these three fields accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of {genderLookup[gender]} ({industryName}).
+        {formatPercent(totalPercent)}% of the {genderLookup[gender]} workers ({industryName}).
       </p>
     </>
   );
@@ -174,8 +172,8 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
         {topFour.map((qual: any, i) => (
           <li key={i}>
             A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderLookup[gender]}{' '}
-            workers ({industryName}) qualified in the field of {qual.LabelName} ({formatPercent(qual.PerYear1)}%
-            compared to {formatPercent(qual.BMYear1)}%)
+            workers ({industryName}) qualified in {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
+            {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
       </TopList>
@@ -184,12 +182,7 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
 };
 
 const EmergingGroupsHeading = ({ areaName, industryName, total, gender }) => {
-  const {
-    filters: { Indkey },
-  } = useContext(PageContext);
-
   const totalChangeText = `${Math.sign(total) === -1 ? 'decreased' : 'increased'}`;
-
   return (
     <>
       <Highlight>
@@ -205,7 +198,10 @@ const EmergingGroupsHeading = ({ areaName, industryName, total, gender }) => {
 };
 
 const EmergingGroups = () => {
-  const { contentData } = useContext(PageContext);
+  const {
+    contentData,
+    entityData: { currentGenderName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
@@ -216,7 +212,7 @@ const EmergingGroups = () => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatChangeNumber(qual.Change12)} local workers)
+            {qual.LabelName} ({formatChangeInt(qual.Change12)} {genderLookup[currentGenderName]} workers)
           </li>
         ))}
       </TopList>
@@ -234,10 +230,11 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   } = useContext(PageContext);
 
   const tableParams = tableBuilder({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
+    clientAlias,
+    currentAreaName,
+    currentBenchmarkName,
+    currentIndustryName,
+    currentGenderName,
     TabularData: contentData,
   });
 
@@ -274,19 +271,19 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
             necessarily the case.
           </p>
           <p>
-            The presence of specific qualifications among the {currentAreaName}'s resident workforce, which are not used
-            by local industry, may indicate an opportunity for a new industry to move into the area and access a ready
-            labour force.
+            The presence of specific qualifications among the {prefixedAreaName}'s resident workforce, which are not
+            used by local industry, may indicate an opportunity for a new industry to move into the area and access a
+            ready labour force.
           </p>
           <p>The field of study relates to a number of factors, such as:</p>
           <TopList>
             <li>The age of the population;</li>
             <li>
-              The types of industries and occupations located in the {currentAreaName} or within commuting distance, and
-              their qualification requirements;
+              The types of industries and occupations located in the {prefixedAreaName} or within commuting distance,
+              and their qualification requirements;
             </li>
             <li>The availability of educational institutions with those curricula nearby;</li>
-            <li>The socio-economic status of {currentAreaName}, and;</li>
+            <li>The socio-economic status of {prefixedAreaName}, and;</li>
             <li>The mobility of the population to move where particular skills are required.</li>
           </TopList>
 
@@ -353,14 +350,11 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
         <EntityChart data={chartChangeData} />
       </ItemWrapper>
 
-      {
-        // #region dominant and emerging groups
-      }
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
           Analysis of the field of qualifications in {prefixedAreaName} shows that the three largest fields the{' '}
-          {genderLookup[currentGenderName]} resident workers (Agriculture, Forestry and Fishing) were qualified in were:
+          {genderLookup[currentGenderName]} workers ({currentIndustryName}) were qualified in were:
         </p>
         <TopThreeFields industryName={currentIndustryName} gender={currentGenderName} />
         <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
@@ -371,6 +365,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
           gender={currentGenderName}
         />
       </AnalysisContainer>
+
       <AnalysisContainer>
         <h3>Emerging groups</h3>
         <EmergingGroupsHeading
@@ -381,16 +376,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
         />
         <EmergingGroups />
       </AnalysisContainer>
-      {
-        // #endregion
-      }
-      {
-        // #region related pages
-      }
       <RelatedPagesCTA />
-      {
-        // #endregion
-      }
     </>
   );
 };
@@ -417,21 +403,23 @@ const ChartSource = () => (
 
 // #region table builders
 const tableBuilder = ({
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  genderName: gender,
+  clientAlias,
+  currentAreaName,
+  currentBenchmarkName,
+  currentIndustryName,
+  currentGenderName,
   TabularData: data,
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Resident workers field of qualification';
+  const tableTitle = `${capitalise(genderLookup[currentGenderName])} workers field of qualification`;
   const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
     item => item.LabelKey,
   );
+
   const children = data.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
@@ -439,13 +427,64 @@ const tableBuilder = ({
       child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
     );
   });
+  const parentRows = parents.map(
+    ({ children, LabelName, LabelKey, NoYear1, PerYear1, BMYear1, NoYear2, PerYear2, BMYear2, Change12 }) => ({
+      expandable: children.length > 0,
+      id: LabelKey,
+      data: [LabelName, NoYear1, PerYear1, BMYear1, NoYear2, PerYear2, BMYear2, Change12],
+      formattedData: [
+        `${LabelName}`,
+        formatNumber(NoYear1),
+        formatPercent(PerYear1),
+        formatPercent(BMYear1),
+        formatNumber(NoYear2),
+        formatPercent(PerYear2),
+        formatPercent(BMYear2),
+        formatChangeInt(Change12, '--'),
+      ],
+      childRows: children.map(
+        ({ LabelName, LabelKey, NoYear1, PerYear1, BMYear1, NoYear2, PerYear2, BMYear2, Change12 }) => ({
+          id: LabelKey,
+          data: [LabelName, NoYear1, PerYear1, BMYear1, NoYear2, PerYear2, BMYear2, Change12],
+          formattedData: [
+            `${LabelName}`,
+            formatNumber(NoYear1),
+            formatPercent(PerYear1),
+            formatPercent(BMYear1),
+            formatNumber(NoYear2),
+            formatPercent(PerYear2),
+            formatPercent(BMYear2),
+            formatChangeInt(Change12, '--'),
+          ],
+        }),
+      ),
+    }),
+  );
+
+  const footerRows = data
+    .filter(item => item.IndustryName === 'Total')
+    .map(({ NoYear1, PerYear1, BMYear1, NoYear2, PerYear2, BMYear2, Change12 }) => {
+      return {
+        cssClass: '',
+        cols: [
+          { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(NoYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(PerYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(NoYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(PerYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatChangeInt(Change12), colSpan: 1 },
+        ],
+      };
+    });
 
   return {
     cssClass: '',
-    clientAlias: areaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: '',
+    anchorName: 'resident-workers---field-of-qualification',
     headRows: [
       {
         cssClass: '',
@@ -462,7 +501,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${areaName} - ${industry}`,
+            displayText: `${currentAreaName} - ${currentGenderName}`,
             colSpan: 1,
           },
           {
@@ -501,7 +540,7 @@ const tableBuilder = ({
       },
       {
         id: 3,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'even int',
       },
       {
@@ -516,7 +555,7 @@ const tableBuilder = ({
       },
       {
         id: 6,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'odd int',
       },
       {
@@ -525,72 +564,8 @@ const tableBuilder = ({
         cssClass: 'even int',
       },
     ],
-    rows: parents.map(row => ({
-      expandable: row.children.length > 0,
-      id: row.LabelKey,
-      data: [
-        row.LabelName,
-        row.NoYear1,
-        row.PerYear1,
-        row.BMYear1,
-        row.NoYear2,
-        row.PerYear2,
-        row.BMYear2,
-        row.Change12,
-      ],
-      formattedData: [
-        `${row.LabelName}`,
-        formatNumber(row.NoYear1),
-        formatShortDecimal(row.PerYear1),
-        formatShortDecimal(row.BMYear1),
-        formatNumber(row.NoYear2),
-        formatShortDecimal(row.PerYear2),
-        formatShortDecimal(row.BMYear2),
-        formatChangeInt(row.Change12, '--'),
-      ],
-      childRows: row.children.map(childRow => ({
-        id: childRow.LabelKey,
-        data: [
-          childRow.LabelName,
-          childRow.NoYear1,
-          childRow.PerYear1,
-          childRow.BMYear1,
-          childRow.NoYear2,
-          childRow.PerYear2,
-          childRow.BMYear2,
-          childRow.Change12,
-        ],
-        formattedData: [
-          `${childRow.LabelName}`,
-          formatNumber(childRow.NoYear1),
-          formatShortDecimal(childRow.PerYear1),
-          formatShortDecimal(childRow.BMYear1),
-          formatNumber(childRow.NoYear2),
-          formatShortDecimal(childRow.PerYear2),
-          formatShortDecimal(childRow.BMYear2),
-          formatChangeInt(childRow.Change12, '--'),
-        ],
-      })),
-    })),
-    footRows: footerRows.map(row => {
-      return {
-        cssClass: '',
-        cols: [
-          { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatShortDecimal(row.BMYear2), colSpan: 1 },
-          {
-            cssClass: '',
-            displayText: formatChangeInt(row.Change12),
-            colSpan: 1,
-          },
-        ],
-      };
-    }),
+    rows: parentRows,
+    footRows: footerRows,
     noOfRowsOnInit: 0,
   };
 };
@@ -659,6 +634,11 @@ const chartBuilder = ({
   const chartTemplate = 'Standard';
 
   return {
+    rawDataSource,
+    dataSource: <ChartSource />,
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
     highchartOptions: {
       chart: {
         type: chartType,
@@ -718,11 +698,6 @@ const chartBuilder = ({
         },
       ],
     },
-    rawDataSource,
-    dataSource: <ChartSource />,
-    chartContainerID,
-    logoUrl: idlogo,
-    chartTemplate,
   };
 };
 // #endregion
