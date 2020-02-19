@@ -225,13 +225,10 @@ const EmergingGroups = () => {
 // #region page
 const ResidentWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const {
+    contentData,
+    entityData: { currentGenderName, currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName },
+  } = useContext(PageContext);
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
@@ -269,9 +266,9 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <PageIntro>
         <div>
           <p>
-            Field of qualification presents the primary field of study for the highest qualification the person has
-            received. While this is likely to have some relationship to their current occupation, this is not
-            necessarily the case.
+            Education is an essential means of building the knowledge and skill levels of the labour force, which is a
+            key factor in achieving future economic and social development. The level of educational attainment for{' '}
+            {currentAreaName}'s resident workforce relates to a number of factors including:
           </p>
           <p>
             The presence of specific qualifications among the {currentAreaName}'s resident workforce, which are not used

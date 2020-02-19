@@ -39,7 +39,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };

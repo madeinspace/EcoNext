@@ -254,12 +254,12 @@ const LocalWorkerFieldsOfQualificationPage = () => {
             the case.{' '}
           </p>
           <p>The field of study relates to a number of factors, such as:</p>
-          <ul>
+          <TopList>
             <li>The age of the workforce;</li>
             <li>The type of qualification required to enter an industry;</li>
             <li>The availability of jobs related to fields of qualification in {currentAreaName};</li>
             <li>The types of occupations which are available in an area or industry.</li>
-          </ul>
+          </TopList>
           <p>
             The fields of qualification held by local workers in a particular industry are likely to show the type of
             skills required in that industry. Large numbers of a particular field of qualification in an industry may
