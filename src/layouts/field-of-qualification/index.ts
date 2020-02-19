@@ -2,32 +2,23 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`;
+
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
+
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+  currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+});
+
 const largest = (arr, key) => {
   return arr
     .filter(a => a.LabelKey < 96000)
     .sort((a, b) => {
       return b[key] - a[key];
     })[0];
-};
-
-/* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`;
-/* #endregion */
-
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
-
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-  };
-  return activeCustomToggles;
 };
 
 const pageContent = {
@@ -44,11 +35,9 @@ const pageContent = {
           Males: 'male resident',
           Females: 'female resident',
         };
-        const { prefixedAreaName } = data;
+        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${prefixedAreaName}.`;
+        const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) qualified in ${mostCommonQual} in ${prefixedAreaName} than in any other field.`;
 
         return headlineAlt;
       },

@@ -23,4 +23,6 @@ export default [
   'occupations',
   'qualifications',
   'labourforce-key-statistics',
+  'income',
+  'income-quartiles',
 ];

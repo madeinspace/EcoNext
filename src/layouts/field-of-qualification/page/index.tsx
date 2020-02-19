@@ -2,7 +2,6 @@
 import _ from 'lodash';
 import {
   formatNumber,
-  formatChangeNumber,
   formatShortDecimal,
   formatPercent,
   idlogo,

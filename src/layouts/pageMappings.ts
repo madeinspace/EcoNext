@@ -24,6 +24,8 @@ import HoursWorked from './hours-worked/page';
 import Occupations from './occupations/page';
 import Qualifications from './qualifications/page';
 import LabourforceKeyStatistics from './labourforce-key-statistics/page';
+import IncomePage from './income/page';
+import IncomeQuartile from './income-quartiles/page';
 
 const PageMappings = {
   home: HomePage,
@@ -51,6 +53,8 @@ const PageMappings = {
   occupations: Occupations,
   qualifications: Qualifications,
   'labourforce-key-statistics': LabourforceKeyStatistics,
+  income: IncomePage,
+  'income-quartiles': IncomeQuartile,
 };
 
 export default PageMappings;
