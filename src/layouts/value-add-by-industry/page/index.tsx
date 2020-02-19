@@ -183,6 +183,7 @@ const ValueAddByIndustryPage = () => {
   } = useContext(PageContext);
 
   const builderPayload = {
+    clientAlias,
     areaName: currentAreaName,
     industryName: currentIndustryName,
     bmName: currentBenchmarkName,
@@ -342,6 +343,7 @@ const ChartSource = () => (
 
 // #region table builders
 const tableBuilder = ({
+  clientAlias,
   areaName,
   industryName: industry,
   bmName: benchmark,
@@ -369,7 +371,7 @@ const tableBuilder = ({
 
   return {
     cssClass: '',
-    clientAlias: areaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
     anchorName: dataNotesAnchor,

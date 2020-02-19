@@ -219,6 +219,7 @@ const ResidentWorkerIndustryPage = () => {
   } = useContext(PageContext);
 
   const tableParams = tableBuilder({
+    clientAlias,
     areaName: currentAreaName,
     bmName: currentBenchmarkName,
     genderName: currentGenderName,
@@ -379,7 +380,7 @@ const ChartSource = () => (
 );
 // #endregion
 // #region table builders
-const tableBuilder = ({ areaName, bmName: benchmark, genderName: gender, TabularData: data }) => {
+const tableBuilder = ({ clientAlias, areaName, bmName: benchmark, genderName: gender, TabularData: data }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers industry of employment';
@@ -403,7 +404,7 @@ const tableBuilder = ({ areaName, bmName: benchmark, genderName: gender, Tabular
 
   return {
     cssClass: '',
-    clientAlias: areaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
     anchorName: '',

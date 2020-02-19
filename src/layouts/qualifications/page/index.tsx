@@ -1,14 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatChangeNumber,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  capitalise,
-  absSort,
-} from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatChangeInt, capitalise, absSort } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -60,30 +52,13 @@ const TopFour = Top(4);
 
 const MajorDifferencesHeading = () => {
   const {
-    filters: { IGBMID, Indkey },
-    entityData: { currentGenderName, currentAreaName, currentBenchmarkName, currentIndustryName },
+    entityData: { currentGenderName, prefixedAreaName },
   } = useContext(PageContext);
-
-  let industryText = currentIndustryName;
-  if (Indkey == 23000) {
-    //All Industries === 23000
-    industryText = '';
-  }
-  industryText = `${industryText}`;
-
-  let benchmarkText = currentBenchmarkName;
-  const industryBenchmark = IGBMID > 1000;
-  if (industryBenchmark) {
-    if (IGBMID == 23000) {
-      benchmarkText = 'total';
-    }
-    benchmarkText = `the ${benchmarkText} workforce`;
-  }
 
   return (
     <Highlight>
       The major differences between qualifications held by the {genderLookup[currentGenderName]} workers of{' '}
-      {currentAreaName} and Victoria were:
+      {prefixedAreaName} and Victoria were:
     </Highlight>
   );
 };
@@ -165,6 +140,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   } = useContext(PageContext);
 
   const tableBuilderParams = {
+    clientAlias,
     currentAreaName,
     currentBenchmarkName,
     currentGenderName,
@@ -335,7 +311,7 @@ const ChartSource = () => (
 // #endregion
 
 // #region table builders
-const tableBuilder = ({ currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
+const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers qualifications';
@@ -381,7 +357,7 @@ const tableBuilder = ({ currentAreaName, currentBenchmarkName, currentGenderName
 
   return {
     cssClass: '',
-    clientAlias: currentAreaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
     anchorName: '',

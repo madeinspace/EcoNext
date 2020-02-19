@@ -186,6 +186,7 @@ const EmploymentCensusPage = () => {
   } = useContext(PageContext);
 
   const builderPayload = {
+    clientAlias,
     areaName: currentAreaName,
     bmName: currentBenchmarkName,
     TabularData: contentData,
@@ -337,7 +338,7 @@ const ChartSource = () => (
 // #endregion
 
 // #region table builders
-const tableBuilder = ({ areaName, bmName: benchmark, TabularData: data }) => {
+const tableBuilder = ({ clientAlias, areaName, bmName: benchmark, TabularData: data }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const tableTitle = 'Employment (Census) by industry sector';
@@ -358,7 +359,7 @@ const tableBuilder = ({ areaName, bmName: benchmark, TabularData: data }) => {
 
   return {
     cssClass: '',
-    clientAlias: areaName,
+    clientAlias,
     source: <TableSource />,
     rawDataSource,
     anchorName: 'employment-by-industry-(census)',

@@ -39,7 +39,7 @@ const tableBuilder = (currentBenchmark, clientAlias, LongName, nodes) => {
 
   return {
     cssClass: '',
-    clientAlias: clientAlias,
+    clientAlias,
     source: <TableSource />,
     anchorName,
     headRows: [
