@@ -173,18 +173,16 @@ const EmergingGroups = () => {
 
 // #region page
 const WorkerProductivityByIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
+  const { clientAlias } = useContext(ClientContext);
+  const { contentData, entityData } = useContext(PageContext);
   const {
     currentStartYear,
     currentComparaisonYear,
     currentAreaName,
-    activeBenchmarkName,
+    currentBenchmarkName,
     currentTableType,
+    prefixedAreaName,
   } = entityData;
-
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentBenchmarkName = activeBenchmarkName;
 
   const builderSettings = {
     clientAlias,

@@ -7,15 +7,11 @@ const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) => {
   return `select * from CommData_Economy.[dbo].[fn_Industry_HoursWorked_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 };
 
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -36,8 +32,7 @@ const pageContent = {
           Males: 'male resident',
           Females: 'female resident',
         };
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const without = contentData.filter(node => node.LabelKey != 999999 && node.LabelKey != 22009);
         const over40 = without.slice(5);

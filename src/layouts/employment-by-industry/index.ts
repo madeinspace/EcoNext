@@ -1,18 +1,12 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
+import { formatNumber } from '../../utils';
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_JTW_Employment_1and2Digit](
-    ${ClientID},
-    ${WebID},
-    ${BMID},
-    ${sStartYear},
-    ${sEndYear},
-    1,
-    null,
-    0
-    ) 
-  `;
+  `select * from CommData_Economy.[dbo].[fn_JTW_Employment_1and2Digit]( ${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null, 0 )`;
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 /* #endregion */
 
 const largest = (arr, key) => {
@@ -23,19 +17,9 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-import { formatNumber } from '../../utils';
-
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
-
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
     currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
@@ -46,13 +30,10 @@ const activeCustomToggles = ({ filterToggles }) => {
 const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
-
-  const prefix = data.HasPrefix ? 'the ' : '';
-  const areaName = `${prefix}${data.currentAreaName}`;
+  const { currentStartYear, prefixedAreaName } = data;
   const largestEmployer = largest(contentData, 'NoYear1');
   const jobs = formatNumber(largestEmployer.NoYear1);
-  const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} is the largest employer, generating ${jobs} local jobs in ${currentStartYear}.`;
+  return `In ${prefixedAreaName}, ${largestEmployer.LabelName} is the largest employer, generating ${jobs} local jobs in ${currentStartYear}.`;
 };
 
 const pageContent = {

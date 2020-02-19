@@ -24,7 +24,6 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -229,13 +228,10 @@ const EmergingGroups = () => {
 // #region page
 const ResidentWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const {
+    contentData,
+    entityData: { currentAreaName, currentGenderName, currentBenchmarkName, prefixedAreaName, currentIndustryName },
+  } = useContext(PageContext);
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,

@@ -5,23 +5,11 @@ import getActiveToggle from '../../utils/getActiveToggle';
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
-
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -37,13 +25,12 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
+        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
         const genderLookup = {
           Persons: 'resident',
           Males: 'male resident',
           Females: 'female resident',
         };
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
         const youngest = withoutTotal.slice(0, 3);
@@ -52,9 +39,7 @@ const pageContent = {
         const oldestTotal = total(oldest, 'NoYear1');
         const comparison = youngestTotal > oldestTotal ? `under` : `over`;
 
-        const headlineAlt = `In ${prefixedAreaName}, most ${genderLookup[data.currentGenderName]} workers in ${
-          data.currentIndustryName
-        } are ${comparison} 45 years old.`;
+        const headlineAlt = `In ${prefixedAreaName}, most ${genderLookup[currentGenderName]} workers in ${currentIndustryName} are ${comparison} 45 years old.`;
 
         return headlineAlt;
       },

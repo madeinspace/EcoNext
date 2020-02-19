@@ -1,72 +1,36 @@
 import { sqlConnection } from '../../utils/sql';
-
-/* #region  contentDataQuery */
-
-/**
- *
- * select * from [dbo].[fn_Industry_Qualification_Sex] (102,10,40,2016,2011,'WP',3,1,NULL,23000)
- @ClientID int,
-@WebID varchar(MAX),
-@IGBMID varchar(MAX),
-@StartYear int,
-@EndYear int,
-@DataType char(2),
-@Sex int,
-@TblType int,
-@LblID varchar(max) = null,
-@Indkey int = NULL
- */
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_Qualification_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC`;
-/* #endregion */
-
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
-
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
+import { formatPercent } from '../../utils';
+import _ from 'lodash';
 
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
+const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+  `select * from CommData_Economy.[dbo].[fn_Industry_Qualification_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC`;
 
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-  };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+  currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+});
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Qualifications`,
+      renderString: (): string => `Resident workers - Qualifications`,
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
-
+        const { prefixedAreaName } = data;
+        const PersonWithQualification = contentData.filter(
+          ({ LabelKey }) => LabelKey != 999999 && LabelKey != 25009 && LabelKey != 25008,
+        );
+        const percentagePersonWithQualificationClient = formatPercent(_.sumBy(PersonWithQualification, 'PerYear1'));
+        const percentagePersonWithQualificationBM = formatPercent(_.sumBy(PersonWithQualification, 'BMYear1'));
+        const headlineAlt = `${percentagePersonWithQualificationClient}% of the resident workers in ${prefixedAreaName} have qualifications, compared to ${percentagePersonWithQualificationBM}% for Victoria.`;
         return headlineAlt;
       },
     },

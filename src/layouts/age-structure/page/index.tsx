@@ -2,30 +2,18 @@
 import _ from 'lodash';
 import {
   formatNumber,
-  formatChangeNumber,
   formatShortDecimal,
   formatPercent,
   idlogo,
   formatChangeInt,
   capitalise,
   absSort,
-  formatChangeOneDecimal,
 } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import {
-  PageIntro,
-  Note,
-  Highlight,
-  AnalysisContainer,
-  SourceBubble,
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-} from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
+import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -61,68 +49,7 @@ const Top = n => quals =>
     .reverse()
     .value();
 
-const TopThree = Top(3);
 const TopFour = Top(4);
-
-const TopThreeFields = ({ industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree = TopThree(highestQuals);
-
-  const totalPeople = _.sumBy(topThree, 'NoYear1');
-  const totalPercent = _.sumBy(topThree, 'PerYear1');
-
-  return (
-    <>
-      <TopList>
-        {topThree.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
-          </li>
-        ))}
-      </TopList>
-      <p>
-        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of {genderLookup[gender]} ({industryName}).
-      </p>
-    </>
-  );
-};
-
-const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
-  const {
-    filters: { IGBMID },
-    contentData,
-  } = useContext(PageContext);
-
-  let currentBenchmarkName: any = benchmarkName;
-
-  const industryBenchmark = IGBMID > 1000;
-
-  if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
-  }
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree: any = TopThree(highestQuals);
-
-  if (!topThree.length) return null;
-
-  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)}% in ${LabelName}`);
-
-  const [lastItem, ...comparisons] = formatComparisons.reverse();
-
-  const and = comparisons.length > 0 ? 'and' : null;
-
-  return (
-    <p>
-      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
-    </p>
-  );
-};
 
 const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender }) => {
   const {
@@ -224,14 +151,11 @@ const EmergingGroups = ({ gender }) => {
 
 // #region page
 const ResidentWorkerFieldsOfQualificationPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentGenderName, currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName },
+  } = useContext(PageContext);
 
   const tableParams = tableBuilder({
     clientAlias,
@@ -281,26 +205,25 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <PageIntro>
         <div>
           <p>
-            The Age Structure of {currentAreaName}'s resident workers is indicative of the residential role and function
-            of the local area. This includes factors such as when the area was settled; what types of households live
-            there; the level of access the area has to employment, services and facilities; the local dwelling stock
-            characteristics (including cost of housing); local amenity and a range of other factors that attract people
-            to an area.
+            The Age Structure of {prefixedAreaName}'s resident workers is indicative of the residential role and
+            function of the local area. This includes factors such as when the area was settled; what types of
+            households live there; the level of access the area has to employment, services and facilities; the local
+            dwelling stock characteristics (including cost of housing); local amenity and a range of other factors that
+            attract people to an area.
           </p>
           <p>
-            The age structure of {currentAreaName}'s resident workers is indicative of the skill-levels and experience
+            The age structure of {prefixedAreaName}'s resident workers is indicative of the skill-levels and experience
             that local businesses can draw upon. For example, younger resident workers, while less experienced, are
             typically more mobile and have higher level skills in use of new technologies.
           </p>
           <p>
-            For a complete local resident workers analysis for Monash, Age Structure should be analysed in conjunction
-            with {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)},{' '}
+            For a complete local resident workers analysis for {prefixedAreaName}, Age Structure should be analysed in
+            conjunction with {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)},{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)},{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)} and{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)}.
           </p>
         </div>
-        2
         <SourceBubble>
           <div>
             <h3>Data source</h3>

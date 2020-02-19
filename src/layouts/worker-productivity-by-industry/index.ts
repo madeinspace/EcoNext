@@ -1,25 +1,12 @@
 import { sqlConnection } from '../../utils/sql';
-
-/* #region  contentDataQuery */
-/**
- * 
-@ClientID int,
-@WebID varchar(MAX),
-@BMID varchar(MAX),
-@sStartYear int,
-@sEndYear int,
-@TblType int,
-@LblID varchar(max) = null
-
-*(102,10,40,2017,2012,1,Null)
- */
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
+import { formatNumber, formatPercent } from '../../utils';
 
 const contentDataQuery = ({ ClientID, BMID, WebID, sStartYear, sEndYear, prodtype }) => {
   const fnc = prodtype === '2' ? 'fn_ValueAddedPerHour_1and2Digit' : 'fn_ValueAddedPerWorker_1and2Digit_or';
   return `select * from CommData_Economy.[dbo].[${fnc}]( ${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`;
 };
-
-/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -29,30 +16,19 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-import { formatNumber, formatPercent } from '../../utils';
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-  return contentData;
-};
-
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
-    currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
-    currentTableType: getActiveToggle(filterToggles, 'prodtype'),
-  };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
+  currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
+  currentTableType: getActiveToggle(filterToggles, 'prodtype'),
+});
 
 const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
-  const prefix = data.HasPrefix ? 'the ' : '';
-  const prefixedAreaName = `${prefix}${data.currentAreaName}`;
+  const { prefixedAreaName } = data;
   const largestEmployer = largest(
     contentData.filter(item => item.Hierarchy === `P`),
     'NoYear1',

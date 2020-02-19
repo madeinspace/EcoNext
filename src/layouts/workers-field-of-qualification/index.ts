@@ -1,4 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
 const without = (str, exclude) => {
   return str === exclude ? '' : str;
@@ -12,23 +14,13 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
-
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-  };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+  currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+});
 
 const pageContent = {
   entities: [
@@ -39,11 +31,10 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const selectedIndustry = without(data.currentIndustryName, 'All industries');
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `${mostCommonQual} is the most common qualification for ${selectedIndustry} workers in ${areaName}.`;
+        const headlineAlt = `${mostCommonQual} is the most common qualification for ${selectedIndustry} workers in ${prefixedAreaName}.`;
 
         return headlineAlt;
       },

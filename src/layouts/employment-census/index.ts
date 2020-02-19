@@ -1,22 +1,10 @@
 import { sqlConnection } from '../../utils/sql';
-
-/* #region  contentDataQuery */
-/**
- * 
-@ClientID int,
-@WebID varchar(MAX),
-@BMID varchar(MAX),
-@StartYear int,
-@EndYear int,
-@DataType char(2),
-@Sex int,
-@TblType int,
-@LblID varchar(max) = null
- */
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
+import { formatPercent } from '../../utils';
 
 const contentDataQuery = ({ ClientID, BMID, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry1and3Digit_Sex]( ${ClientID}, ${WebID}, ${BMID}, 2016, 2011, 'WP',3,1,null)`;
-/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -26,18 +14,11 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-import { formatNumber, formatPercent } from '../../utils';
-
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
     currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
@@ -48,13 +29,11 @@ const activeCustomToggles = ({ filterToggles }) => {
 const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
-
-  const prefix = data.HasPrefix ? 'the ' : '';
-  const areaName = `${prefix}${data.currentAreaName}`;
+  const { prefixedAreaName } = data;
   const largestEmployer = largest(contentData, 'NoYear1');
   const IndName = largestEmployer.LabelName;
   const TotalEmploymentPerc = `${formatPercent(largestEmployer.PerYear1)}%`;
-  return `${IndName} is the largest employer in ${areaName}, making up ${TotalEmploymentPerc} of total employment.`;
+  return `${IndName} is the largest employer in ${prefixedAreaName}, making up ${TotalEmploymentPerc} of total employment.`;
 };
 
 const pageContent = {

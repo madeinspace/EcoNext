@@ -1,13 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatChangeNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-} from '../../../utils/';
+import { formatNumber, formatShortDecimal, formatPercent, idlogo, formatChangeInt } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -22,15 +15,12 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
-import Link from 'next/link';
-import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
@@ -189,20 +179,15 @@ const EmergingGroups = () => {
 
 // #region page
 const EmploymentCensusPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
-  const { currentStartYear, currentComparaisonYear } = entityData;
+  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName },
+  } = useContext(PageContext);
 
   const builderPayload = {
     areaName: currentAreaName,
-    industryName: LongName,
     bmName: currentBenchmarkName,
-    currentStartYear,
-    currentComparaisonYear,
     TabularData: contentData,
   };
 
@@ -352,14 +337,7 @@ const ChartSource = () => (
 // #endregion
 
 // #region table builders
-const tableBuilder = ({
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  currentStartYear,
-  currentComparaisonYear,
-  TabularData: data,
-}) => {
+const tableBuilder = ({ areaName, bmName: benchmark, TabularData: data }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const tableTitle = 'Employment (Census) by industry sector';
@@ -662,7 +640,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = ({ areaName, industryName: currentIndustry, TabularData: data }) => {
+const chartBuilderChange = ({ areaName, TabularData: data }) => {
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total [genders]'),
     item => item.LabelKey,
@@ -707,7 +685,7 @@ const chartBuilderChange = ({ areaName, industryName: currentIndustry, TabularDa
       },
       series: [
         {
-          name: `${currentIndustry}`,
+          name: `${areaName}`,
           data: serie,
         },
       ],

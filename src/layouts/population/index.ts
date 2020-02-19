@@ -1,14 +1,15 @@
 import { sqlConnection } from '../../utils/sql';
 import { formatNumber } from '../../utils';
-
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
+const PopulationDataSQL = ({ ClientID, WebID }) => `
+  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID}, 40) ORDER BY Year DESC
+`;
+
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID } = filters;
-
   const contentData = await sqlConnection.raw(PopulationDataSQL({ ClientID, WebID }));
-
   return contentData;
 };
 
@@ -28,11 +29,11 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const areaName = data.HasPrefix ? `the ${data.currentAreaName}` : data.currentAreaName;
+        const { prefixedAreaName } = data;
         const ERP = formatNumber(contentData[0].Number);
         const currentYear = contentData[0].Year;
 
-        return `The Estimated Resident Population of ${areaName} was ${ERP} as of the 30th June ${currentYear}.`;
+        return `The Estimated Resident Population of ${prefixedAreaName} was ${ERP} as of the 30th June ${currentYear}.`;
       },
     },
     {
@@ -58,7 +59,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-const PopulationDataSQL = ({ ClientID, WebID }) => `
-  select * from CommData_Economy.[dbo].[fn_IN_ERPPivot](${+ClientID},${+WebID}, 40) ORDER BY Year DESC
-`;

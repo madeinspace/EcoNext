@@ -1,20 +1,8 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
+import { formatNumber } from '../../utils';
 
-/**
- * 
-  @ClientID int,
-  @WebID varchar(MAX),
-  @BMID varchar(MAX),
-  @sStartYear int,
-  @sEndYear int,
-  @TblType int,
-  @LblID varchar(max) = null,
-  @LoQo int = 0
-
-  (102,10,40,2019,2014,1,null,1)
- */
-
-/* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Value_Added_1and2Digit](
     ${ClientID},
@@ -27,7 +15,6 @@ const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
     0
     ) 
   `;
-/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -37,36 +24,22 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-import { formatNumber, formatMillionsCurrency } from '../../utils';
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
-
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
-    currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
-  };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+  currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
+  currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
+});
 
 const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
-
-  const prefix = data.HasPrefix ? 'the ' : '';
-  const areaName = `${prefix}${data.currentAreaName}`;
+  const { prefixedAreaName, currentStartYear } = data;
   const largestEmployer = largest(contentData, 'NoYear1');
   const millions = `$${formatNumber(largestEmployer.NoYear1)} million`;
-  const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} most productive industry, generating ${millions} in ${currentStartYear}.`;
+  return `In ${prefixedAreaName}, ${largestEmployer.LabelName} most productive industry, generating ${millions} in ${currentStartYear}.`;
 };
 
 const pageContent = {

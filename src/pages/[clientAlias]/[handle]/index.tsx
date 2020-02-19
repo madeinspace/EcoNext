@@ -1,25 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // #region imports
 import React, { useContext } from 'react';
-
-// #region imports api
 import fetchClientData from '../../../utils/fetchClientData';
-// #endregion
-
-import fetchLayout, { PageMappings } from '../../../layouts';
+import fetchLayout from '../../../layouts';
+import PageMappings from '../../../layouts/pageMappings';
 import MainLayout from '../../../layouts/main';
 import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
-
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
 import PageHeader from '../../../components/PageHeader';
 import Headline from '../../../components/Headline';
 import Description from '../../../components/Description';
 import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
-
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import SiblingsMenu from '../../../components/SiblingsMenu';
+// #endregion
 
 const ErrorPage = ({ status }): JSX.Element => {
   return <div>Oh no, this is a {status} page</div>;
@@ -71,10 +66,11 @@ const PageComponent = ({ client, page }): JSX.Element => (
 );
 
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
-  const { clientAlias: clientAlias, handle, ...providedFilters } = query;
+  const { clientAlias, handle, ...providedFilters } = query;
 
   const client: any = await fetchClientData({ clientAlias, containers });
   const { ID, isLite } = client;
+  //
   const layoutData = await fetchLayout(handle);
 
   if (!layoutData || !client) {
@@ -122,10 +118,15 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   // we pass that data to interpolate the entities
   const customToggles = await activeCustomToggles({ filterToggles });
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', client.LongName);
+  const HasPrefix = client.HasPrefix;
+  const prefix = HasPrefix ? 'the ' : '';
+  const prefixedAreaName = `${prefix}${currentAreaName}`;
   const data = {
-    currentAreaName: getActiveToggle(filterToggles, 'WebID', client.LongName),
+    HasPrefix,
+    currentAreaName,
+    prefixedAreaName,
     ...customToggles,
-    HasPrefix: client.HasPrefix,
   };
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 

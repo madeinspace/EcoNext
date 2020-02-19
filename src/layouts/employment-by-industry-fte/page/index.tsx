@@ -1,13 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatChangeNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-} from '../../../utils/';
+import { formatNumber, formatShortDecimal, formatPercent, idlogo, formatChangeInt } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -22,15 +15,12 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import styled from 'styled-components';
-import Link from 'next/link';
-import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
@@ -183,13 +173,17 @@ const EmergingGroups = () => {
 // #region page
 const EmploymentByIndustryFTETotalPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
-  const { currentStartYear, currentComparaisonYear } = entityData;
+  const {
+    contentData,
+    entityData: {
+      currentAreaName,
+      currentBenchmarkName,
+      currentIndustryName,
+      prefixedAreaName,
+      currentStartYear,
+      currentComparaisonYear,
+    },
+  } = useContext(PageContext);
 
   const builderPayload = {
     areaName: currentAreaName,

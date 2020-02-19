@@ -1,23 +1,10 @@
 import { sqlConnection } from '../../utils/sql';
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
 
-/* #region  contentDataQuery */
-/**
- *  @ClientID int,
-    @WebID varchar(MAX),
-    @IGBMID varchar(MAX),
-    @StartYear int,
-    @EndYear int,
-    @DataType char(2),
-    @Sex int,
-    @TblType int,
-    @LblID varchar(max) = null,
-    @Indkey int = NULL
-    select * from [dbo].[fn_WP_Occupation_1and3Digit](102,10,20,2016,2011,'WP',3,1,null,23000) order by Hierarchy desc, LabelKey
- */
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_Occupation1and3Digit_Sex](${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC
   `;
-/* #endregion */
 
 const largest = (arr, key) => {
   return arr
@@ -27,18 +14,11 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -49,24 +29,14 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Occupations of employment`,
+      renderString: (): string => `Resident workers - Occupations of employment`,
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName, currentIndustryName } = data;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `There are more resident workers (${data.currentIndustryName}) ${mostCommonQual} in ${areaName} than any other occupation.`;
-        // const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-        //   genderLookup[data.currentGenderName]
-        // } workers in ${areaName}.`;
-
+        const headlineAlt = `There are more resident workers (${currentIndustryName}) ${mostCommonQual} in ${prefixedAreaName} than any other occupation.`;
         return headlineAlt;
       },
     },

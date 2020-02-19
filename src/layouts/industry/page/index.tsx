@@ -212,34 +212,29 @@ const EmergingGroups = () => {
 // #endregion
 // #region page
 const ResidentWorkerIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
-    filterToggles,
-    entityData,
-    entityData: { currentAreaName, activeBenchmarkName, currentGenderName },
+    entityData: { currentAreaName, currentGenderName, currentBenchmarkName, prefixedAreaName },
   } = useContext(PageContext);
-
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
-    industryName: activeBenchmarkName,
-    bmName: activeBenchmarkName,
+    bmName: currentBenchmarkName,
     genderName: currentGenderName,
     TabularData: contentData,
   });
 
   const chartData = chartBuilder({
     areaName: currentAreaName,
-    bmName: activeBenchmarkName,
+    bmName: currentBenchmarkName,
     genderName: currentGenderName,
     TabularData: contentData,
   });
 
   const chartChangeData = chartBuilderChange({
     areaName: currentAreaName,
-    bmName: activeBenchmarkName,
+    bmName: currentBenchmarkName,
     genderName: currentGenderName,
     TabularData: contentData,
   });
@@ -333,10 +328,10 @@ const ResidentWorkerIndustryPage = () => {
           shows the three most popular industry sectors were:
         </p>
         <TopThreeFields gender={currentGenderName} />
-        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={activeBenchmarkName} />
+        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
         <MajorDifferences
           areaName={prefixedAreaName}
-          benchmarkName={activeBenchmarkName}
+          benchmarkName={currentBenchmarkName}
           industryName={'doweneed'}
           gender={currentGenderName}
         />
@@ -384,13 +379,7 @@ const ChartSource = () => (
 );
 // #endregion
 // #region table builders
-const tableBuilder = ({
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  genderName: gender,
-  TabularData: data,
-}) => {
+const tableBuilder = ({ areaName, bmName: benchmark, genderName: gender, TabularData: data }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers industry of employment';

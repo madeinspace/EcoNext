@@ -46,7 +46,6 @@ const Top = n => quals =>
     .reverse()
     .value();
 
-const TopThree = Top(3);
 const TopFour = Top(4);
 
 const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender }) => {
@@ -147,14 +146,11 @@ const EmergingGroups = ({ gender }) => {
 // #endregion
 // #region page
 const ResidentWorkerHoursWorkedPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName, currentGenderName },
+  } = useContext(PageContext);
 
   const compare = (a, b) => (a > b ? 'higher' : 'lower');
 
@@ -171,11 +167,8 @@ const ResidentWorkerHoursWorkedPage = () => {
   );
   const totalRow = contentData.filter(node => node.LabelKey === 999999)[0];
   const perDiff = formatPercent((totalRow.NoYear1 / totalRow.NoYear2 - 1) * 100);
-  const averageDiff = formatShortDecimal((Math.pow(totalRow.NoYear1 / totalRow.NoYear2, 1 / 5) - 1) * 100);
   const partTimers = working.slice(0, 3);
   const fulTimers = working.slice(3);
-  const noneOrNotStatedClient = formatPercent(totalHoursWorked(noneOrNotStated, 'PerYear1'));
-  const noneOrNotStatedBM = formatPercent(totalHoursWorked(noneOrNotStated, 'BMYear1'));
   const partTimerClient = formatPercent(totalHoursWorked(partTimers, 'PerYear1'));
   const partTimerBM = formatPercent(totalHoursWorked(partTimers, 'BMYear1'));
   const fullTimerClient = formatPercent(totalHoursWorked(fulTimers, 'PerYear1'));

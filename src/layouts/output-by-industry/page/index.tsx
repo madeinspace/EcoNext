@@ -2,12 +2,10 @@
 import _ from 'lodash';
 import {
   formatNumber,
-  formatChangeNumber,
   formatShortDecimal,
   formatPercent,
   idlogo,
   formatChangeInt,
-  formatOneDecimal,
   formatChangeOneDecimal,
   formatChangeCurrency,
   formatCurrency,
@@ -16,25 +14,13 @@ import {
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import {
-  PageIntro,
-  Note,
-  Highlight,
-  AnalysisContainer,
-  SourceBubble,
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-} from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
+import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import styled from 'styled-components';
-import Link from 'next/link';
-import MonolithOrNextLink from '../../../components/Link';
 
 // #endregion
 
@@ -185,14 +171,18 @@ const EmergingGroups = () => {
 
 // #region page
 const OutputByIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
-  const { currentStartYear, currentComparaisonYear } = entityData;
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: {
+      currentAreaName,
+      currentBenchmarkName,
+      currentIndustryName,
+      prefixedAreaName,
+      currentStartYear,
+      currentComparaisonYear,
+    },
+  } = useContext(PageContext);
 
   const builderPayload = {
     areaName: currentAreaName,
@@ -206,8 +196,6 @@ const OutputByIndustryPage = () => {
   const tableParams = tableBuilder(builderPayload);
   const chartData = chartBuilder(builderPayload);
   const chartChangeData = chartBuilderChange(builderPayload);
-
-  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
     <>

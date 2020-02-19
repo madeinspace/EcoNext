@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from 'react';
+import React from 'react';
 import fetchClientData from '../../utils/fetchClientData';
-import fetchLayout, { PageMappings } from '../../layouts';
+import fetchLayout from '../../layouts';
+import PageMappings from '../../layouts/pageMappings';
 import MainLayout from '../../layouts/main';
 import PageHeader from '../../components/PageHeader';
 import Headline from '../../components/Headline';
@@ -33,9 +34,10 @@ const HomePageComponent = ({ client, page }): JSX.Element => {
 };
 
 HomePageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
-  const { clientAlias: clientAlias, ...providedFilters } = query;
+  const { clientAlias, ...providedFilters } = query;
   const handle = 'home';
   const client: any = await fetchClientData({ clientAlias, containers });
+  const { ID, isLite } = client;
   const layoutData = await fetchLayout(handle);
 
   if (!layoutData || !client) {
@@ -52,15 +54,12 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
       ...acc,
       [ParamName]: DefaultValue,
     }),
-    [],
+    { ClientID: ID, IsLite: isLite, WebID: 10 },
   );
 
   const filters = {
-    WebID: 10,
     ...pageDefaultFilters,
     ...providedFilters,
-    ClientID: client.ID,
-    IsLite: client.isLite,
   };
 
   // we pass that data to interpolate the entities
@@ -83,7 +82,6 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   }
   const mapLayers = [...new Set(client.clientAreas.map(item => item.LayerID))].join(',');
   const contentData = await fetchData({ filters, clientAlias, mapLayers });
-
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {

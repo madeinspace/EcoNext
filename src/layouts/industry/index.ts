@@ -27,7 +27,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
   return activeCustomToggles;
@@ -42,8 +42,7 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const prefixedAreaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
         const headline = `  ${mostCommonQual} employs more of ${prefixedAreaName}'s ${
           genderLookup[data.currentGenderName]

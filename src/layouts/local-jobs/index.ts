@@ -1,5 +1,4 @@
 import { sqlConnection } from '../../utils/sql';
-
 import Page from './page';
 import { formatNumber } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
@@ -17,10 +16,7 @@ const fetchData = async ({ filters }) => {
   return contentData;
 };
 
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = { defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID') };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({ defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID') });
 
 const pageContent = {
   entities: [
@@ -31,11 +27,10 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const localJobs = formatNumber(contentData[0].LocalJobs);
         const yearEnding = contentData[0].Year_End;
-        return `There were ${localJobs} jobs located in ${areaName} in the year ending June ${yearEnding}.`;
+        return `There were ${localJobs} jobs located in ${prefixedAreaName} in the year ending June ${yearEnding}.`;
       },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [
@@ -48,11 +43,10 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const localJobs = formatNumber(contentData[0].ValWebID);
         const yearEnding = contentData[0].Yr;
-        return `There were ${localJobs} jobs located in ${areaName} in the year ending June ${yearEnding}.`;
+        return `There were ${localJobs} jobs located in ${prefixedAreaName} in the year ending June ${yearEnding}.`;
       },
       StoredProcedure: 'sp_Condition_IsLiteClient',
       Params: [

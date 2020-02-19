@@ -1,17 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
-
-/**
- * 
-@ClientID int,
-@WebID varchar(MAX),
-@BMID varchar(MAX),
-@StartYear int,
-@EndYear int,
-@TblType int,
-@LblID varchar(max) = null
-
-(102,10,40,2019,2014,1,null)
- */
+import Page from './page';
+import getActiveToggle from '../../utils/getActiveToggle';
+import { formatNumber } from '../../utils';
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, exptype }) => {
@@ -30,16 +20,7 @@ const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, exptype
       exportFunc = `fn_Exports_1and2Digit`;
       break;
   }
-  return `select * from CommData_Economy.[dbo].[${exportFunc}](
-    ${ClientID},
-    ${WebID},
-    ${BMID},
-    ${sStartYear},
-    ${sEndYear},
-    1,
-    null 
-    ) 
-  `;
+  return `select * from CommData_Economy.[dbo].[${exportFunc}]( ${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`;
 };
 /* #endregion */
 
@@ -51,10 +32,6 @@ const largest = (arr, key) => {
     })[0];
 };
 
-import Page from './page';
-import getActiveToggle from '../../utils/getActiveToggle';
-import { formatNumber, formatMillionsCurrency } from '../../utils';
-
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
   return contentData;
@@ -62,7 +39,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
     currentComparaisonYear: getActiveToggle(filterToggles, 'sEndYear'),
@@ -92,12 +69,10 @@ const headline = ({ data, contentData }): string => {
       exportsDisplayText = 'total';
       break;
   }
-  const prefix = data.HasPrefix ? 'the ' : '';
-  const areaName = `${prefix}${data.currentAreaName}`;
+  const { prefixedAreaName, currentStartYear } = data;
   const largestEmployer = largest(contentData, 'NoYear1');
   const millions = `$${formatNumber(largestEmployer.NoYear1)} million`;
-  const currentStartYear = data.currentStartYear;
-  return `In ${areaName}, ${largestEmployer.LabelName} had the largest ${exportsDisplayText} imports by industry, generating ${millions} in ${currentStartYear}.`;
+  return `In ${prefixedAreaName}, ${largestEmployer.LabelName} had the largest ${exportsDisplayText} imports by industry, generating ${millions} in ${currentStartYear}.`;
 };
 
 const pageContent = {

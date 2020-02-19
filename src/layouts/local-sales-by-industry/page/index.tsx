@@ -173,14 +173,18 @@ const EmergingGroups = () => {
 
 // #region page
 const LocalSalesByIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
-  const { currentStartYear, currentComparaisonYear } = entityData;
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: {
+      currentAreaName,
+      currentBenchmarkName,
+      prefixedAreaName,
+      currentIndustryName,
+      currentStartYear,
+      currentComparaisonYear,
+    },
+  } = useContext(PageContext);
 
   const builderPayload = {
     areaName: currentAreaName,

@@ -8,7 +8,6 @@ import {
   idlogo,
   formatChangeInt,
 } from '../../../utils/';
-
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -22,7 +21,6 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -211,12 +209,10 @@ const EmergingGroups = () => {
 // #region page
 const LocalWorkerFieldsOfQualificationPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
+  const {
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, currentGenderName, prefixedAreaName },
+  } = useContext(PageContext);
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
@@ -257,7 +253,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
           <TopList>
             <li>The age of the workforce;</li>
             <li>The type of qualification required to enter an industry;</li>
-            <li>The availability of jobs related to fields of qualification in {currentAreaName};</li>
+            <li>The availability of jobs related to fields of qualification in {prefixedAreaName};</li>
             <li>The types of occupations which are available in an area or industry.</li>
           </TopList>
           <p>
@@ -273,7 +269,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
               Level of qualification
             </MonolithOrNextLink>{' '}
             and <MonolithOrNextLink href={`/${clientAlias}/workers-occupations`}>Occupation</MonolithOrNextLink> data
-            for a clearer picture of the skills available for the local workers in {LongName}.
+            for a clearer picture of the skills available for the local workers in {prefixedAreaName}.
           </p>
         </div>
         <SourceBubble>
@@ -289,10 +285,10 @@ const LocalWorkerFieldsOfQualificationPage = () => {
         <strong>Please note</strong> – The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {LongName} in 2011 had to be constructed from a best
-        fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it is
-        considered close enough to allow some comparison. Users should treat this time series data with caution,
-        however, and not compare directly with 2011 data from any other source.
+        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
+        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
+        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
+        caution, however, and not compare directly with 2011 data from any other source.
       </Note>
 
       <ControlPanel />

@@ -16,7 +16,6 @@ import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -220,14 +219,19 @@ const EmergingGroups = () => {
 
 // #region page
 const ImportsByIndustryPage = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'BMID');
-  const { currentStartYear, currentComparaisonYear, currentExportId } = entityData;
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: {
+      currentAreaName,
+      currentBenchmarkName,
+      prefixedAreaName,
+      currentIndustryName,
+      currentStartYear,
+      currentComparaisonYear,
+      currentExportId,
+    },
+  } = useContext(PageContext);
 
   const builderPayload = {
     areaName: currentAreaName,
@@ -376,7 +380,6 @@ const tableBuilder = ({
   TabularData: data,
   exportID,
 }) => {
-  console.log('data: ', data);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   let tableTitle = capitalise(entityData(exportID).entityTitle);

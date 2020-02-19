@@ -23,7 +23,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -44,12 +44,11 @@ const pageContent = {
           Males: 'male resident',
           Females: 'female resident',
         };
-        const prefix = data.HasPrefix ? 'the ' : '';
-        const areaName = `${prefix}${data.currentAreaName}`;
+        const { prefixedAreaName } = data;
         const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
         const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
           genderLookup[data.currentGenderName]
-        } workers in ${areaName}.`;
+        } workers in ${prefixedAreaName}.`;
 
         return headlineAlt;
       },

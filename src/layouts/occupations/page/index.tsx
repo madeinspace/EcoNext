@@ -225,14 +225,11 @@ const EmergingGroups = ({ gender }) => {
 
 // #region page
 const ResidentWorkerFieldsOfQualificationPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles, entityData } = useContext(PageContext);
-
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
-  const currentIndustryName = getActiveToggle(filterToggles, 'Indkey');
-  const currentBenchmarkName = getActiveToggle(filterToggles, 'IGBMID');
-  const currentGenderName = getActiveToggle(filterToggles, 'Sex');
-  const prefixedAreaName = `${entityData.HasPrefix ? 'the ' : ''} ${getActiveToggle(filterToggles, 'WebID', LongName)}`;
+  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
+  } = useContext(PageContext);
 
   const tableParams = tableBuilder({
     areaName: currentAreaName,
