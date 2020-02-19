@@ -74,8 +74,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   const { clientAlias: clientAlias, handle, ...providedFilters } = query;
 
   const client: any = await fetchClientData({ clientAlias, containers });
-
-  //
+  const { ID, isLite } = client;
   const layoutData = await fetchLayout(handle);
 
   if (!layoutData || !client) {
@@ -94,7 +93,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
       ...acc,
       [ParamName]: DefaultValue,
     }),
-    [],
+    { ClientID: ID, IsLite: isLite },
   );
 
   /**
@@ -105,8 +104,6 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   const tempfilters = {
     ...pageDefaultFilters,
     ...providedFilters,
-    ClientID: client.ID,
-    IsLite: client.isLite,
   };
 
   const filterToggles = await fetchToggleOptions(
