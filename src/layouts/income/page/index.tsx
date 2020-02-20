@@ -1,14 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  capitalise,
-  absSort,
-} from '../../../utils';
+import { formatNumber, formatShortDecimal, formatPercent, idlogo, capitalise } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -24,14 +16,11 @@ import {
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import InfoBox from '../../../components/ui/infoBox';
 import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
-
 // #endregion
 
 // #region autotext / dynamic content
-
 const TopList = styled.ul`
   margin: 10px 0 10px 20px;
   li {
@@ -46,9 +35,7 @@ const genderLookup = {
   Females: 'female resident',
 };
 
-const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
-
-const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
+const TopLevelQualifications = data => data.filter(qual => qual.LabelKey < 97000);
 
 const Top = n => quals =>
   _(quals)
@@ -56,100 +43,34 @@ const Top = n => quals =>
     .reverse()
     .value();
 
-const TopThree = Top(3);
 const TopFour = Top(4);
 
-const TopThreeFields = ({ industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree = TopThree(highestQuals);
-
-  const totalPeople = _.sumBy(topThree, 'NoYear1');
-  const totalPercent = _.sumBy(topThree, 'PerYear1');
-
-  return (
-    <>
-      <TopList>
-        {topThree.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
-          </li>
-        ))}
-      </TopList>
-      <p>
-        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of the {genderLookup[gender]} workers ({industryName}).
-      </p>
-    </>
-  );
-};
-
-const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
+const MajorDifferencesHeading = () => {
   const {
-    filters: { IGBMID },
-    contentData,
+    filters: { Indkey },
+    entityData: { currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
-  let currentBenchmarkName: any = benchmarkName;
-
-  const industryBenchmark = IGBMID > 1000;
-
-  if (industryBenchmark) {
-    currentBenchmarkName = `the ${benchmarkName} workforce in ${areaName}`;
-  }
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree: any = TopThree(highestQuals);
-
-  if (!topThree.length) return null;
-
-  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)}% in ${LabelName}`);
-
-  const [lastItem, ...comparisons] = formatComparisons.reverse();
-
-  const and = comparisons.length > 0 ? 'and' : null;
-
-  return (
-    <p>
-      In comparison, {currentBenchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
-    </p>
-  );
-};
-
-const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender }) => {
-  const {
-    filters: { IGBMID, Indkey },
-  } = useContext(PageContext);
-
-  let industryText = industryName;
+  let industryText = currentIndustryName;
   if (Indkey == 23000) {
     //All Industries === 23000
     industryText = '';
   }
   industryText = `${industryText}`;
 
-  let benchmarkText = benchmarkName;
-  const industryBenchmark = IGBMID > 1000;
-  if (industryBenchmark) {
-    if (IGBMID == 23000) {
-      benchmarkText = 'total';
-    }
-    benchmarkText = `the ${benchmarkText} workforce`;
-  }
-
   return (
     <Highlight>
-      The major differences between the field of qualifications held by the {genderLookup[gender]} workers (
-      {industryText}) of {areaName} and {benchmarkText} were:
+      The major differences between the weekly income of the {genderLookup[currentGenderName]} workers ({industryText})
+      in {prefixedAreaName} and {currentBenchmarkName} were:
     </Highlight>
   );
 };
 
-const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
+const MajorDifferences = () => {
+  const {
+    contentData,
+    entityData: { currentIndustryName, currentGenderName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -161,18 +82,13 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
 
   return (
     <>
-      <MajorDifferencesHeading
-        areaName={areaName}
-        benchmarkName={benchmarkName}
-        industryName={industryName}
-        gender={gender}
-      />
+      <MajorDifferencesHeading />
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderLookup[gender]}{' '}
-            workers ({industryName}) qualified in {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
-            {formatPercent(qual.BMYear1)}%)
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of{' '}
+            {genderLookup[currentGenderName]} workers ({currentIndustryName}) earned {qual.LabelName} (
+            {formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
       </TopList>
@@ -180,49 +96,11 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
   );
 };
 
-const EmergingGroupsHeading = ({ areaName, industryName, total, gender }) => {
-  const totalChangeText = `${Math.sign(total) === -1 ? 'decreased' : 'increased'}`;
-  return (
-    <>
-      <Highlight>
-        The number of {genderLookup[gender]} workers ({industryName}) in {areaName} {totalChangeText} by{' '}
-        {formatNumber(Math.abs(total))} between 2011 and 2016.
-      </Highlight>
-      <p>
-        The largest change in the field of qualifications held by the {genderLookup[gender]} workers ({industryName})
-        between 2011 and 2016 in {areaName} was for those qualified in:
-      </p>
-    </>
-  );
-};
-
-const EmergingGroups = () => {
-  const {
-    contentData,
-    entityData: { currentGenderName },
-  } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'Change12');
-  const topFour = TopFour(absSort(highestQuals, 'Change12'));
-
-  return (
-    <>
-      <TopList>
-        {topFour.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatChangeInt(qual.Change12)} {genderLookup[currentGenderName]} workers)
-          </li>
-        ))}
-      </TopList>
-    </>
-  );
-};
 // #endregion
 
 // #region page
 const IncomePage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
@@ -232,32 +110,38 @@ const IncomePage = () => {
     clientAlias,
     currentAreaName,
     currentBenchmarkName,
-    currentIndustryName,
     currentGenderName,
-    TabularData: contentData,
+    contentData,
   });
 
   const chartData = chartBuilder({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
+    clientAlias,
+    currentAreaName,
+    currentBenchmarkName,
+    currentGenderName,
+    currentIndustryName,
+    contentData,
   });
 
-  const chartChangeData = chartBuilderChange({
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
-  });
-
-  const total = _.sortBy(
-    contentData.filter(({ LabelKey }) => LabelKey === 999999),
-    item => item.LabelKey,
-  );
-
+  const allIncomers = contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey != 3115);
+  const highIncomers = key =>
+    _.sumBy(
+      allIncomers.filter(({ LabelKey }) => LabelKey > 3111),
+      key,
+    );
+  const lowIncomers = key =>
+    _.sumBy(
+      allIncomers.filter(({ LabelKey }) => LabelKey < 3106),
+      key,
+    );
+  const highIncomerClient = formatPercent(highIncomers('PerYear1'));
+  const highIncomerBM = formatPercent(highIncomers('BMYear1'));
+  const lowIncomerClient = formatPercent(lowIncomers('PerYear1'));
+  const lowIncomerBM = formatPercent(lowIncomers('BMYear1'));
+  const diffHighClient = highIncomerClient - highIncomerBM;
+  const diffLowClient = lowIncomerClient - lowIncomerBM;
+  const diffHighIncomeText = diffHighClient < 1 ? 'similar' : highIncomerClient > highIncomerBM ? `higher` : 'lower';
+  const diffLowIncomeText = diffLowClient < 1 ? 'similar' : lowIncomerClient > lowIncomerBM ? `higher` : 'lower';
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
@@ -265,116 +149,63 @@ const IncomePage = () => {
       <PageIntro>
         <div>
           <p>
-            Field of qualification presents the primary field of study for the highest qualification the person has
-            received. While this is likely to have some relationship to their current occupation, this is not
-            necessarily the case.
+            The Individual Income levels of the local resident workers are directly linked to their knowledge,
+            experience, qualifications, occupation and skill levels.
           </p>
           <p>
-            The presence of specific qualifications among the {prefixedAreaName}'s resident workforce, which are not
-            used by local industry, may indicate an opportunity for a new industry to move into the area and access a
-            ready labour force.
-          </p>
-          <p>The field of study relates to a number of factors, such as:</p>
-          <TopList>
-            <li>The age of the population;</li>
-            <li>
-              The types of industries and occupations located in the {prefixedAreaName} or within commuting distance,
-              and their qualification requirements;
-            </li>
-            <li>The availability of educational institutions with those curricula nearby;</li>
-            <li>The socio-economic status of {prefixedAreaName}, and;</li>
-            <li>The mobility of the population to move where particular skills are required.</li>
-          </TopList>
-
-          <p>
-            Field of Qualification should be looked at in conjunction with{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/qualifications?Sex=3&IGBMID=40&Indkey=23000`,
-              `Qualification`,
-            )}{' '}
-            and{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/occupations?Sex=3&IGBMID=40&Indkey=23000`,
-              `Occupations`,
-            )}{' '}
-            statistics for a clearer picture of the skills available in the resident worker population.
+            Income statistics in Monash, when analysed with other data sources, such as{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/age-structure`, `Age structure`)},{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)} ,{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)} and{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)} , help to evaluate the
+            economic opportunities and socio-economic status of Monash. This also indicates what knowledge and skill
+            levels industry can draw upon locally.
           </p>
         </div>
         <SourceBubble>
           <div>
             <h3>Data source</h3>
-            <p>Australian Bureau of Statistics (ABS) – Census 2011 and 2016 – by usual residence</p>
+            <p>Australian Bureau of Statistics (ABS) – Census 2016 – by usual residence</p>
           </div>
         </SourceBubble>
       </PageIntro>
 
       <ControlPanel />
 
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
-        </span>
-      </InfoBox>
-
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Resident workers - field of qualification'} />
+        <EntityTable data={tableParams} name={'Resident workers - Individual income'} />
       </ItemWrapper>
 
       {hasProfile() && (
         <CrossLink>
           <ProfileProductIcon />
-          <a
-            href={`http://profile.id.com.au/${clientAlias}/qualifications?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to profile"
-          >
-            Residents qualifications by small area
-          </a>
+          {LinkBuilder(
+            `http://economy.id.com.au/${clientAlias}/individual-income`,
+            `Residents individual income by small area`,
+          )}
         </CrossLink>
       )}
-
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
-          the sub categories.
-        </span>
-      </InfoBox>
 
       <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
 
-      <ItemWrapper>
-        <EntityChart data={chartChangeData} />
-      </ItemWrapper>
-
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the field of qualifications in {prefixedAreaName} shows that the three largest fields the{' '}
-          {genderLookup[currentGenderName]} workers ({currentIndustryName}) were qualified in were:
+          Analysis of the male {genderLookup[currentGenderName]} workers individual income levels in {prefixedAreaName}{' '}
+          in 2016 compared to {currentBenchmarkName} shows that there was a {diffHighIncomeText} proportion earning a
+          high income (those earning $1,750 per week or more) as well as a {diffLowIncomeText} proportion of low income
+          persons (those earning less than $500 per week).
         </p>
-        <TopThreeFields industryName={currentIndustryName} gender={currentGenderName} />
-        <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
-        <MajorDifferences
-          areaName={prefixedAreaName}
-          benchmarkName={currentBenchmarkName}
-          industryName={currentIndustryName}
-          gender={currentGenderName}
-        />
+        <p>
+          Overall, {highIncomerClient}% of the {genderLookup[currentGenderName]} workers ({currentIndustryName}) earned
+          a high income, and {lowIncomerClient}% earned a low income, compared with {highIncomerBM}% and {lowIncomerBM}%
+          respectively for Victoria.
+        </p>
+        <MajorDifferences />
       </AnalysisContainer>
 
-      <AnalysisContainer>
-        <h3>Emerging groups</h3>
-        <EmergingGroupsHeading
-          gender={currentGenderName}
-          areaName={prefixedAreaName}
-          industryName={currentIndustryName}
-          total={total[0]['Change12']}
-        />
-        <EmergingGroups />
-      </AnalysisContainer>
       <RelatedPagesCTA />
     </>
   );
@@ -401,21 +232,14 @@ const ChartSource = () => (
 // #endregion
 
 // #region table builders
-const tableBuilder = ({
-  clientAlias,
-  currentAreaName,
-  currentBenchmarkName,
-  currentIndustryName,
-  currentGenderName,
-  TabularData: data,
-}) => {
+const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `${capitalise(genderLookup[currentGenderName])} individual income`;
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
+  const tableTitle = `${capitalise(genderLookup[currentGenderName])} workers individual income`;
+  const firstColTitle = 'Gross weekly individual income';
 
   const parents = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey !== 999999),
+    contentData.filter(({ LabelKey }) => LabelKey !== 999999),
     item => item.LabelKey,
   );
 
@@ -426,7 +250,7 @@ const tableBuilder = ({
     formattedData: [`${LabelName}`, formatNumber(NoYear1), formatPercent(PerYear1), formatPercent(BMYear1)],
   }));
 
-  const footerRows = data
+  const footerRows = contentData
     .filter(item => item.LabelKey === 999999)
     .map(({ NoYear1, PerYear1, BMYear1 }) => {
       return {
@@ -445,7 +269,7 @@ const tableBuilder = ({
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'resident-workers---field-of-qualification',
+    anchorName: 'resident-workers---income',
     headRows: [
       {
         cssClass: '',
@@ -482,17 +306,17 @@ const tableBuilder = ({
       {
         id: 1,
         displayText: 'Number',
-        cssClass: 'even int',
+        cssClass: 'even int lrg',
       },
       {
         id: 2,
         displayText: '%',
-        cssClass: 'even int',
+        cssClass: 'even int lrg',
       },
       {
         id: 3,
-        displayText: `${currentBenchmarkName}`,
-        cssClass: 'even int',
+        displayText: `${currentBenchmarkName}%`,
+        cssClass: 'even int lrg',
       },
     ],
     rows: parentRows,
@@ -504,61 +328,36 @@ const tableBuilder = ({
 
 // #region chart builders
 const chartBuilder = ({
-  areaName,
-  industryName: currentIndustry,
-  bmName: currentBenchmark,
-  genderName: gender,
-  TabularData: data,
+  clientAlias,
+  currentAreaName,
+  currentBenchmarkName,
+  currentGenderName,
+  currentIndustryName,
+  contentData,
 }) => {
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
-    item => item.LabelKey,
+    contentData.filter(({ LabelKey }) => LabelKey != 999999),
+    ({ LabelKey }) => LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
-  });
+
   const perYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
       y: item.PerYear1,
-      drilldown: `${item.LabelName}-peryear`,
     };
   });
   const BMYear1Serie = _.map(parents, item => {
     return {
       name: item.LabelName,
       y: item.BMYear1,
-      drilldown: `${item.LabelName}-change`,
     };
   });
-  const drilldownPerYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentIndustry}`,
-      id: `${parent.LabelName}-peryear`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.PerYear1];
-      }),
-    };
-  });
-  const drilldownChangeYear1Serie = _.map(parents, parent => {
-    return {
-      name: `${currentBenchmark}`,
-      id: `${parent.LabelName}-change`,
-      data: _.map(parent.children, child => {
-        return [`${child.LabelName}`, child.BMYear1];
-      }),
-    };
-  });
-  drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
-  const chartType = 'bar';
-  const chartTitle = `${capitalise(genderLookup[gender])} workers field of qualifications, 2016`;
-  const chartSubtitle = `${currentIndustry} - ${genderLookup[gender]}`;
-  const xAxisTitle = 'Field of qualification';
-  const yAxisTitle = `Percentage of ${genderLookup[gender]} workforce`;
+  const chartType = 'column';
+  const chartTitle = `${capitalise(genderLookup[currentGenderName])} workers field of qualifications, 2016`;
+  const chartSubtitle = `${currentIndustryName} - ${genderLookup[currentGenderName]}`;
+  const xAxisTitle = 'Gross weekly income';
+  const yAxisTitle = `% of ${genderLookup[currentGenderName]} workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
@@ -582,33 +381,23 @@ const chartBuilder = ({
       },
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
+            this.y,
+          )}%`;
         },
       },
       series: [
         {
-          name: `${areaName}`,
+          name: `${currentAreaName}`,
           data: perYear1Serie,
+          pointPadding: 0,
         },
         {
-          name: `${currentBenchmark}`,
+          name: `${currentBenchmarkName}`,
           data: BMYear1Serie,
+          pointPadding: 0,
         },
       ],
-      drilldown: {
-        allowPointDrilldown: false,
-        activeAxisLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        activeDataLabelStyle: {
-          textDecoration: 'none',
-          fontStyle: 'italic',
-        },
-        series: drilldownPerYear1Serie,
-      },
       xAxis: {
         type: 'category',
         title: {
@@ -631,88 +420,4 @@ const chartBuilder = ({
     },
   };
 };
-// #endregion
-
-// #region chart builder change
-const chartBuilderChange = ({
-  areaName,
-  industryName: currentIndustry,
-  bmName: currentBenchmark,
-  genderName: gender,
-  TabularData: data,
-}) => {
-  const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
-    item => item.LabelKey,
-  );
-  const categories = _.map(parents, 'LabelName');
-  const chartType = 'bar';
-  const chartTitle = `Change in ${genderLookup[gender]} workers field of qualifications, 2011 to 2016`;
-  const chartSubtitle = `${areaName} - ${currentIndustry} `;
-  const serie = _.map(parents, 'Change12');
-  const xAxisTitle = 'Field of qualification';
-  const yAxisTitle = `Change in ${genderLookup[gender]} workforce`;
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-  const chartContainerID = 'chartwfoqChange';
-  const chartTemplate = 'Standard';
-
-  const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${areaName} - ${
-      this.series.name
-    }: ${formatChangeInt(this.y)}`;
-  };
-
-  return {
-    cssClass: '',
-    highchartOptions: {
-      chart: {
-        type: chartType,
-      },
-      title: {
-        text: chartTitle,
-      },
-      subtitle: {
-        text: chartSubtitle,
-      },
-      tooltip: {
-        headerFormat: '',
-        pointFormatter: function() {
-          return tooltip.apply(this);
-        },
-      },
-      series: [
-        {
-          name: `${currentIndustry}`,
-          data: serie,
-        },
-      ],
-      xAxis: {
-        categories,
-        title: {
-          text: xAxisTitle,
-        },
-      },
-      yAxis: [
-        {
-          title: {
-            text: yAxisTitle,
-          },
-          labels: {
-            staggerLines: 0,
-            formatter: function() {
-              return formatChangeInt(this.value);
-            },
-          },
-        },
-      ],
-    },
-    rawDataSource,
-    dataSource: <ChartSource />,
-    chartContainerID,
-    logoUrl: idlogo,
-    chartTemplate,
-  };
-};
-
 // #endregion

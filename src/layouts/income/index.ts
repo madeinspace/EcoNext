@@ -15,42 +15,33 @@ const activeCustomToggles = ({ filterToggles }) => ({
   currentGenderName: getActiveToggle(filterToggles, 'Sex'),
 });
 
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
+const headline = ({ data, contentData }) => {
+  const { prefixedAreaName, currentBenchmarkName, currentGenderName, currentIndustryName } = data;
+  const allIncomers = contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey != 3115);
+  const highIncomers = key =>
+    _.sumBy(
+      allIncomers.filter(({ LabelKey }) => LabelKey > 3111),
+      key,
+    );
+  const highIncomerClient = highIncomers('PerYear1');
+  const highIncomerBM = highIncomers('BMYear1');
+  const diffClient = highIncomerClient - highIncomerBM;
+  const diffHighIncomeText = diffClient < 1 ? 'similar' : highIncomerClient > highIncomerBM ? `higher` : 'lower';
+
+  return `${capitalise(
+    prefixedAreaName,
+  )} labour force (${currentIndustryName}) have a ${diffHighIncomeText} proportion of ${currentGenderName.toLowerCase()} with high incomes ($1,750 or more per week) than ${currentBenchmarkName}.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Individual income`,
+      renderString: (): string => `Resident workers - Individual income`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        console.log('contentData: ', contentData);
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
-        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
-        const highIncomer = _.sumBy(
-          contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey > 3110),
-          'NoYear1',
-        );
-        console.log('highIncomer: ', highIncomer);
-        const headlineAlt = `${capitalise(
-          prefixedAreaName,
-        )} Region labour force have a lower proportion of people with high incomes ($1,750 or more per week) than South Australia.`;
-        // const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) qualified in ${mostCommonQual} in ${prefixedAreaName} than in any other field.`;
-
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [
@@ -69,7 +60,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Current industry:',
+      Label: 'Select industry:',
       Params: [
         {
           IGBMID: '0',
