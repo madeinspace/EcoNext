@@ -198,7 +198,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/income`, `Income`)} ,{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)} and{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/field-of-qualification`, `Field of qualification`)}{' '}
-            for a clearer picture of the knowledge and skill level of Monash's local resident workers.
+            for a clearer picture of the knowledge and skill level of {prefixedAreaName}'s local resident workers.
           </p>
           <p>
             When comparing the Qualifications of local resident worker with local workers, Qualifications statistics

@@ -354,8 +354,26 @@ $even-row-color: $odd-color;
         max-width: 70px;
         padding-right: 14px;
       }
-      &.lrg {
+      &.XS {
+        width: 70px;
+      }
+      &.S {
+        width: 80px;
+      }
+      &.M {
         width: 90px;
+      }
+      &.L {
+        width: 90px;
+      }
+      &.XL {
+        width: 100px;
+      }
+      &.XXL {
+        width: 110px;
+      }
+      &.XXXL {
+        width: 120px;
       }
     }
 

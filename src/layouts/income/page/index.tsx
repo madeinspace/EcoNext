@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatShortDecimal, formatPercent, idlogo, capitalise } from '../../../utils';
+import { formatNumber, formatPercent, idlogo, capitalise } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -51,17 +51,12 @@ const MajorDifferencesHeading = () => {
     entityData: { currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
-  let industryText = currentIndustryName;
-  if (Indkey == 23000) {
-    //All Industries === 23000
-    industryText = '';
-  }
-  industryText = `${industryText}`;
+  const industryText = Indkey == 23000 ? '' : `(${currentIndustryName})`;
 
   return (
     <Highlight>
-      The major differences between the weekly income of the {genderLookup[currentGenderName]} workers ({industryText})
-      in {prefixedAreaName} and {currentBenchmarkName} were:
+      The major differences between the weekly income of the {genderLookup[currentGenderName]} workers {industryText} in{' '}
+      {prefixedAreaName} and {currentBenchmarkName} were:
     </Highlight>
   );
 };
@@ -103,6 +98,7 @@ const IncomePage = () => {
   const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
+    filters: { Indkey },
     entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
@@ -142,6 +138,7 @@ const IncomePage = () => {
   const diffLowClient = lowIncomerClient - lowIncomerBM;
   const diffHighIncomeText = diffHighClient < 1 ? 'similar' : highIncomerClient > highIncomerBM ? `higher` : 'lower';
   const diffLowIncomeText = diffLowClient < 1 ? 'similar' : lowIncomerClient > lowIncomerBM ? `higher` : 'lower';
+  const industryText = Indkey == 23000 ? '' : `(${currentIndustryName})`;
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
@@ -153,13 +150,13 @@ const IncomePage = () => {
             experience, qualifications, occupation and skill levels.
           </p>
           <p>
-            Income statistics in Monash, when analysed with other data sources, such as{' '}
+            Income statistics {prefixedAreaName}, when analysed with other data sources, such as{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/age-structure`, `Age structure`)},{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/qualifications`, `Qualification`)} ,{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)} and{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/occupations`, `Occupations`)} , help to evaluate the
-            economic opportunities and socio-economic status of Monash. This also indicates what knowledge and skill
-            levels industry can draw upon locally.
+            economic opportunities and socio-economic status of {prefixedAreaName}. This also indicates what knowledge
+            and skill levels industry can draw upon locally.
           </p>
         </div>
         <SourceBubble>
@@ -199,8 +196,8 @@ const IncomePage = () => {
           persons (those earning less than $500 per week).
         </p>
         <p>
-          Overall, {highIncomerClient}% of the {genderLookup[currentGenderName]} workers ({currentIndustryName}) earned
-          a high income, and {lowIncomerClient}% earned a low income, compared with {highIncomerBM}% and {lowIncomerBM}%
+          Overall, {highIncomerClient}% of the {genderLookup[currentGenderName]} workers {industryText} earned a high
+          income, and {lowIncomerClient}% earned a low income, compared with {highIncomerBM}% and {lowIncomerBM}%
           respectively for Victoria.
         </p>
         <MajorDifferences />
@@ -223,18 +220,12 @@ const TableSource = () => (
   </p>
 );
 
-const ChartSource = () => (
-  <p>
-    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by <IdLink />.
-  </p>
-);
 // #endregion
 
 // #region table builders
 const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const tableTitle = `${capitalise(genderLookup[currentGenderName])} workers individual income`;
   const firstColTitle = 'Gross weekly individual income';
 
@@ -306,17 +297,17 @@ const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, curr
       {
         id: 1,
         displayText: 'Number',
-        cssClass: 'even int lrg',
+        cssClass: 'even int XXL',
       },
       {
         id: 2,
         displayText: '%',
-        cssClass: 'even int lrg',
+        cssClass: 'even int XXL',
       },
       {
         id: 3,
         displayText: `${currentBenchmarkName}%`,
-        cssClass: 'even int lrg',
+        cssClass: 'even int XXL',
       },
     ],
     rows: parentRows,
@@ -354,18 +345,18 @@ const chartBuilder = ({
   });
 
   const chartType = 'column';
-  const chartTitle = `${capitalise(genderLookup[currentGenderName])} workers field of qualifications, 2016`;
+  const chartTitle = `${capitalise(genderLookup[currentGenderName])} workers individual income, 2016`;
   const chartSubtitle = `${currentIndustryName} - ${genderLookup[currentGenderName]}`;
   const xAxisTitle = 'Gross weekly income';
   const yAxisTitle = `% of ${genderLookup[currentGenderName]} workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
   return {
     rawDataSource,
-    dataSource: <ChartSource />,
+    dataSource: <TableSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,

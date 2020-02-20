@@ -204,10 +204,10 @@ const EmploymentCensusPage = () => {
         <div>
           <p>
             Census employment data presents the number of persons employed in each industry sector (full-time and
-            part-time) in Monash regardless of where they live. By comparing the number of jobs in each industry sector
-            to a regional benchmark, you can clearly see local economic strengths and weaknesses. By looking at how the
-            number of jobs in each industry is changing over time, you can track how the structure of the local economy
-            is changing. Go to the{' '}
+            part-time) in {prefixedAreaName} regardless of where they live. By comparing the number of jobs in each
+            industry sector to a regional benchmark, you can clearly see local economic strengths and weaknesses. By
+            looking at how the number of jobs in each industry is changing over time, you can track how the structure of
+            the local economy is changing. Go to the{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations?`, `Employment locations`)} page
             to see where employment is taking place across {prefixedAreaName}.
           </p>
@@ -237,10 +237,10 @@ const EmploymentCensusPage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, City of Monash in 2011 had to be constructed from a
-        best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it
-        is considered close enough to allow some comparison. Users should treat this time series data with caution,
-        however, and not compare directly with 2011 data from any other source.
+        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
+        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
+        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
+        caution, however, and not compare directly with 2011 data from any other source.
       </Note>
 
       <ControlPanel />

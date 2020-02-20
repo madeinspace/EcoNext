@@ -9,13 +9,16 @@ const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
-const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-  currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-});
+const activeCustomToggles = ({ filterToggles }) => {
+  return {
+    currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
+    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
+  };
+};
 
 const headline = ({ data, contentData }) => {
+  console.log('data, contentData: ', data, contentData);
   const { prefixedAreaName, currentBenchmarkName, currentGenderName, currentIndustryName } = data;
   const allIncomers = contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey != 3115);
   const highIncomers = key =>
@@ -27,10 +30,11 @@ const headline = ({ data, contentData }) => {
   const highIncomerBM = highIncomers('BMYear1');
   const diffClient = highIncomerClient - highIncomerBM;
   const diffHighIncomeText = diffClient < 1 ? 'similar' : highIncomerClient > highIncomerBM ? `higher` : 'lower';
+  const indName = currentIndustryName === 'All industries' ? '' : `(${currentIndustryName})`;
 
   return `${capitalise(
     prefixedAreaName,
-  )} labour force (${currentIndustryName}) have a ${diffHighIncomeText} proportion of ${currentGenderName.toLowerCase()} with high incomes ($1,750 or more per week) than ${currentBenchmarkName}.`;
+  )} labour force ${indName} have a ${diffHighIncomeText} proportion of ${currentGenderName.toLowerCase()} with high incomes ($1,750 or more per week) than ${currentBenchmarkName}.`;
 };
 
 const pageContent = {
