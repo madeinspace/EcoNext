@@ -64,6 +64,7 @@ const MajorDifferencesHeading = () => {
 const MajorDifferences = () => {
   const {
     contentData,
+    filters: { Indkey },
     entityData: { currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
@@ -74,7 +75,7 @@ const MajorDifferences = () => {
     return _.max(compare) - _.min(compare);
   });
   const topFour = TopFour(majorDifferences);
-
+  const industryText = Indkey == 23000 ? '' : `(${currentIndustryName})`;
   return (
     <>
       <MajorDifferencesHeading />
@@ -82,7 +83,7 @@ const MajorDifferences = () => {
         {topFour.map((qual: any, i) => (
           <li key={i}>
             A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of{' '}
-            {genderLookup[currentGenderName]} workers ({currentIndustryName}) earned {qual.LabelName} (
+            {genderLookup[currentGenderName]} workers {industryText} earned {qual.LabelName} (
             {formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
@@ -190,9 +191,9 @@ const IncomePage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the male {genderLookup[currentGenderName]} workers individual income levels in {prefixedAreaName}{' '}
-          in 2016 compared to {currentBenchmarkName} shows that there was a {diffHighIncomeText} proportion earning a
-          high income (those earning $1,750 per week or more) as well as a {diffLowIncomeText} proportion of low income
+          Analysis of the {genderLookup[currentGenderName]} workers individual income levels in {prefixedAreaName} in
+          2016 compared to {currentBenchmarkName} shows that there was a {diffHighIncomeText} proportion earning a high
+          income (those earning $1,750 per week or more) as well as a {diffLowIncomeText} proportion of low income
           persons (those earning less than $500 per week).
         </p>
         <p>
