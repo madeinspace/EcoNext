@@ -52,13 +52,13 @@ const TopFour = Top(4);
 
 const MajorDifferencesHeading = () => {
   const {
-    entityData: { currentGenderName, prefixedAreaName },
+    entityData: { currentGenderName, prefixedAreaName, currentIndustryName, currentBenchmarkName },
   } = useContext(PageContext);
 
   return (
     <Highlight>
-      The major differences between qualifications held by the {genderLookup[currentGenderName]} workers of{' '}
-      {prefixedAreaName} and Victoria were:
+      The major differences between qualifications held by the {genderLookup[currentGenderName]} workers (
+      {currentIndustryName}) of {prefixedAreaName} and ({currentBenchmarkName}) were:
     </Highlight>
   );
 };
@@ -66,7 +66,7 @@ const MajorDifferencesHeading = () => {
 const MajorDifferences = () => {
   const {
     contentData,
-    entityData: { currentGenderName },
+    entityData: { currentGenderName, currentIndustryName },
   } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
@@ -84,8 +84,8 @@ const MajorDifferences = () => {
         {topThree.map((qual: any, i) => (
           <li key={i}>
             A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of{' '}
-            {genderLookup[currentGenderName]} workers with {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
-            {formatPercent(qual.BMYear1)}%)
+            {genderLookup[currentGenderName]} workers ({currentIndustryName}) with {qual.LabelName} (
+            {formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
       </TopList>
@@ -95,13 +95,13 @@ const MajorDifferences = () => {
 
 const EmergingGroupsHeading = ({ areaName }) => {
   const {
-    entityData: { currentGenderName },
+    entityData: { currentGenderName, currentIndustryName },
   } = useContext(PageContext);
   return (
     <>
       <p>
-        The largest changes in the qualifications held by the {genderLookup[currentGenderName]} workers in {areaName}{' '}
-        between 2011 and 2016 were:
+        The largest changes in the qualifications held by the {genderLookup[currentGenderName]} workers (
+        {currentIndustryName}) in {areaName} between 2011 and 2016 were:
       </p>
     </>
   );
@@ -257,17 +257,17 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the qualifications of the {genderLookup[currentGenderName]} workers in {prefixedAreaName} in 2016
-          compared to {currentBenchmarkName} shows that there was a {withQual} proportion of{' '}
+          Analysis of the qualifications of the {genderLookup[currentGenderName]} workers ({currentIndustryName}) in{' '}
+          {prefixedAreaName} in 2016 compared to {currentBenchmarkName} shows that there was a {withQual} proportion of{' '}
           {genderLookup[currentGenderName]} holding formal qualifications (Bachelor or higher degree; Advanced Diploma
           or Diploma; or Vocational qualifications), and a {withoutQual} proportion of males with no formal
           qualifications.
         </p>
         <p>
-          Overall, {percentagePersonWithQualificationClient}% of the {genderLookup[currentGenderName]} workers held
-          educational qualifications, and {percentagePersonsWithoutQualificationClient}% had no qualifications, compared
-          with {percentagePersonWithQualificationBM}% and {percentagePersonsWithoutQualificationBM}% respectively for
-          Victoria.
+          Overall, {percentagePersonWithQualificationClient}% of the {genderLookup[currentGenderName]} workers (
+          {currentIndustryName}) held educational qualifications, and {percentagePersonsWithoutQualificationClient}% had
+          no qualifications, compared with {percentagePersonWithQualificationBM}% and{' '}
+          {percentagePersonsWithoutQualificationBM}% respectively for {currentBenchmarkName}.
         </p>
         <MajorDifferences />
       </AnalysisContainer>

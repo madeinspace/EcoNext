@@ -10,10 +10,21 @@ const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
 const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   currentGenderName: getActiveToggle(filterToggles, 'Sex'),
 });
+
+const headline = ({ data, contentData }) => {
+  const { prefixedAreaName, currentBenchmarkName, currentIndustryName } = data;
+  const PersonWithQualification = contentData.filter(
+    ({ LabelKey }) => LabelKey != 999999 && LabelKey != 25009 && LabelKey != 25008,
+  );
+  const percentagePersonWithQualificationClient = formatPercent(_.sumBy(PersonWithQualification, 'PerYear1'));
+  const percentagePersonWithQualificationBM = formatPercent(_.sumBy(PersonWithQualification, 'BMYear1'));
+
+  return `${percentagePersonWithQualificationClient}% of the resident workers (${currentIndustryName}) in ${prefixedAreaName} have qualifications, compared to ${percentagePersonWithQualificationBM}% for ${currentBenchmarkName}.`;
+};
 
 const pageContent = {
   entities: [
@@ -23,16 +34,7 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const PersonWithQualification = contentData.filter(
-          ({ LabelKey }) => LabelKey != 999999 && LabelKey != 25009 && LabelKey != 25008,
-        );
-        const percentagePersonWithQualificationClient = formatPercent(_.sumBy(PersonWithQualification, 'PerYear1'));
-        const percentagePersonWithQualificationBM = formatPercent(_.sumBy(PersonWithQualification, 'BMYear1'));
-        const headlineAlt = `${percentagePersonWithQualificationClient}% of the resident workers in ${prefixedAreaName} have qualifications, compared to ${percentagePersonWithQualificationBM}% for Victoria.`;
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [
