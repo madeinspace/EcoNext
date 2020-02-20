@@ -2,8 +2,6 @@
 import _ from 'lodash';
 import {
   formatNumber,
-  formatChangeNumber,
-  formatShortDecimal,
   formatPercent,
   idlogo,
   formatChangeInt,
@@ -25,7 +23,6 @@ import {
   CrossLink,
   ProfileProductIcon,
 } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -64,8 +61,11 @@ const Top = n => quals =>
 const TopThree = Top(3);
 const TopFour = Top(4);
 
-const TopThreeFields = ({ industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
+const TopThreeFields = () => {
+  const {
+    contentData,
+    entityData: { currentGenderName, currentIndustryName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -85,7 +85,7 @@ const TopThreeFields = ({ industryName, gender }) => {
       </TopList>
       <p>
         In combination these three occupations accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of the {genderLookup[gender]} workers.
+        {formatPercent(totalPercent)}% of the {genderLookup[currentGenderName]} workers ({currentIndustryName}).
       </p>
     </>
   );
@@ -124,19 +124,20 @@ const ComparisonBenchmark = ({ areaName, benchmarkName }) => {
   );
 };
 
-const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender }) => {
+const MajorDifferencesHeading = () => {
   const {
     filters: { IGBMID, Indkey },
+    entityData: { currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
-  let industryText = industryName;
+  let industryText = currentIndustryName;
   if (Indkey == 23000) {
     //All Industries === 23000
     industryText = '';
   }
   industryText = `${industryText}`;
 
-  let benchmarkText = benchmarkName;
+  let benchmarkText = currentBenchmarkName;
   const industryBenchmark = IGBMID > 1000;
   if (industryBenchmark) {
     if (IGBMID == 23000) {
@@ -147,14 +148,17 @@ const MajorDifferencesHeading = ({ areaName, benchmarkName, industryName, gender
 
   return (
     <Highlight>
-      The major differences between the jobs held by the {genderLookup[gender]} workers of {areaName} and{' '}
-      {benchmarkText} were:
+      The major differences between the jobs held by the {genderLookup[currentGenderName]} workers (
+      {currentIndustryName}) of {prefixedAreaName} and {currentBenchmarkName} were:
     </Highlight>
   );
 };
 
-const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
+const MajorDifferences = () => {
+  const {
+    contentData,
+    entityData: { currentGenderName, currentIndustryName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -166,18 +170,13 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
 
   return (
     <>
-      <MajorDifferencesHeading
-        areaName={areaName}
-        benchmarkName={benchmarkName}
-        industryName={industryName}
-        gender={gender}
-      />
+      <MajorDifferencesHeading />
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderLookup[gender]}{' '}
-            workers employed as {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
-            {formatPercent(qual.BMYear1)}%)
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of{' '}
+            {genderLookup[currentGenderName]} workers ({currentIndustryName}) employed as {qual.LabelName} (
+            {formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
       </TopList>
@@ -185,25 +184,31 @@ const MajorDifferences = ({ areaName, benchmarkName, industryName, gender }) => 
   );
 };
 
-const EmergingGroupsHeading = ({ areaName, gender, total }) => {
+const EmergingGroupsHeading = ({ total }) => {
+  const {
+    entityData: { prefixedAreaName, currentGenderName, currentIndustryName },
+  } = useContext(PageContext);
   const totalChangeText = `${Math.sign(total) === -1 ? 'decreased' : 'increased'}`;
 
   return (
     <>
       <p>
-        The number of {genderLookup[gender]} workers in {areaName} {totalChangeText} by {formatNumber(Math.abs(total))}{' '}
-        between 2011 and 2016.
+        The number of {genderLookup[currentGenderName]} workers ({currentIndustryName}) in {prefixedAreaName}{' '}
+        {totalChangeText} by {formatNumber(Math.abs(total))} between 2011 and 2016.
       </p>
       <Highlight>
-        The largest change in the occupations of the {genderLookup[gender]} workers between 2011 and 2016 in {areaName}{' '}
-        were those employed as:
+        The largest change in the occupations of the {genderLookup[currentGenderName]} workers between 2011 and 2016 in{' '}
+        {prefixedAreaName} were those employed as:
       </Highlight>
     </>
   );
 };
 
-const EmergingGroups = ({ gender }) => {
+const EmergingGroups = () => {
   const { contentData } = useContext(PageContext);
+  const {
+    entityData: { currentGenderName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'Change12');
@@ -214,7 +219,7 @@ const EmergingGroups = ({ gender }) => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatChangeInt(qual.Change12)} {gender.toLowerCase()})
+            {qual.LabelName} ({formatChangeInt(qual.Change12)} {currentGenderName.toLowerCase()})
           </li>
         ))}
       </TopList>
@@ -233,11 +238,12 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
 
   const tableParams = tableBuilder({
     clientAlias,
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
+    currentAreaName,
+    currentBenchmarkName,
+    prefixedAreaName,
+    currentIndustryName,
+    currentGenderName,
+    contentData,
   });
 
   const chartData = chartBuilder({
@@ -257,7 +263,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   });
 
   const total = _.sortBy(
-    contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName === 'Total'),
+    contentData.filter(item => item.Hierarchy === 'P' && item.LabelKey === 999999),
     item => item.LabelKey,
   );
 
@@ -304,14 +310,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       {hasProfile() && (
         <CrossLink>
           <ProfileProductIcon />
-          <a
-            href={`http://profile.id.com.au/${clientAlias}/occupations?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to profile"
-          >
-            Residents qualifications by small area
-          </a>
+          {LinkBuilder(`http://profile.id.com.au/${clientAlias}/occupations`, `Residents occupation by small area`)}
         </CrossLink>
       )}
 
@@ -337,21 +336,16 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
         <h3>Dominant groups</h3>
         <p>
           An analysis of the jobs held by the {genderLookup[currentGenderName]} workers in {prefixedAreaName} in 2016
-          shows the three most popular occupations were::
+          shows the three most popular occupations were:
         </p>
-        <TopThreeFields industryName={currentIndustryName} gender={currentGenderName} />
+        <TopThreeFields />
         <ComparisonBenchmark areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
-        <MajorDifferences
-          areaName={prefixedAreaName}
-          benchmarkName={currentBenchmarkName}
-          industryName={currentIndustryName}
-          gender={currentGenderName}
-        />
+        <MajorDifferences />
       </AnalysisContainer>
       <AnalysisContainer>
         <h3>Emerging groups</h3>
-        <EmergingGroupsHeading gender={currentGenderName} areaName={prefixedAreaName} total={total[0]['Change12']} />
-        <EmergingGroups gender={currentGenderName} />
+        <EmergingGroupsHeading total={total[0]['Change12']} />
+        <EmergingGroups />
       </AnalysisContainer>
       {
         // #endregion
@@ -390,22 +384,23 @@ const ChartSource = () => (
 // #region table builders
 const tableBuilder = ({
   clientAlias,
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  genderName: gender,
-  TabularData: data,
+  currentAreaName,
+  currentBenchmarkName,
+  prefixedAreaName,
+  currentIndustryName,
+  currentGenderName,
+  contentData,
 }) => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers occupations';
   const firstColTitle = 'Occupations (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const footerRows = contentData.filter(item => item.IndustryName === 'Total');
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
-    item => item.LabelKey,
+    contentData.filter(({ Hierarchy, LabelKey }) => Hierarchy === 'P' && LabelKey != 999999),
+    ({ LabelKey }) => LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
+  const children = contentData.filter(({ Hierarchy }) => Hierarchy === 'C');
 
   parents.forEach(parent => {
     parent.children = children.filter(
@@ -435,7 +430,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${areaName} - ${industry}`,
+            displayText: `${currentAreaName}`,
             colSpan: 1,
           },
           {
@@ -474,7 +469,7 @@ const tableBuilder = ({
       },
       {
         id: 3,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'even int',
       },
       {
@@ -489,7 +484,7 @@ const tableBuilder = ({
       },
       {
         id: 6,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'odd int',
       },
       {
@@ -549,7 +544,7 @@ const tableBuilder = ({
       return {
         cssClass: '',
         cols: [
-          { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
+          { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },

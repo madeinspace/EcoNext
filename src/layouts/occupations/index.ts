@@ -18,11 +18,23 @@ const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuer
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
   return activeCustomToggles;
+};
+
+const headline = ({ data, contentData }) => {
+  const genderLookup = {
+    Persons: 'resident',
+    Males: 'male resident',
+    Females: 'female resident',
+  };
+  const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
+  const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
+  const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) ${mostCommonQual} in ${prefixedAreaName} than any other occupation.`;
+  return headlineAlt;
 };
 
 const pageContent = {
@@ -33,12 +45,7 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName, currentIndustryName } = data;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `There are more resident workers (${currentIndustryName}) ${mostCommonQual} in ${prefixedAreaName} than any other occupation.`;
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [
