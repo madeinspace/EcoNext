@@ -171,6 +171,8 @@ export const SourceBubble = styled.div`
   grid-area: bubble;
   div {
     h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
       color: ${variables.colorEconomyDark};
     }
     padding: 20px;
