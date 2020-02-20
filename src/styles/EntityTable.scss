@@ -354,6 +354,9 @@ $even-row-color: $odd-color;
         max-width: 70px;
         padding-right: 14px;
       }
+      &.lrg {
+        width: 90px;
+      }
     }
 
     tr {
