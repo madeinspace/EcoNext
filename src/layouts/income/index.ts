@@ -2,6 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 import { capitalise } from '../../utils';
+import _ from 'lodash';
 
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
   `select * from CommData_Economy.[dbo].[fn_Industry_Income_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`;
