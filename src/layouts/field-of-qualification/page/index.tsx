@@ -320,7 +320,7 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
       </InfoBox>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Resident workers - field of qualification'} />
+        <EntityTable data={tableParams} name={'Resident workers - Field of qualification'} />
       </ItemWrapper>
 
       {hasProfile() && (
