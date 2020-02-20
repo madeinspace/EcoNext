@@ -8,7 +8,7 @@ const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
 const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   currentGenderName: getActiveToggle(filterToggles, 'Sex'),
 });
@@ -21,26 +21,27 @@ const largest = (arr, key) => {
     })[0];
 };
 
+const headline = ({ data, contentData }) => {
+  const genderLookup = {
+    Persons: 'resident',
+    Males: 'male resident',
+    Females: 'female resident',
+  };
+  const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
+  const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
+
+  return `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) qualified in ${mostCommonQual} in ${prefixedAreaName} than in any other field.`;
+};
+
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Field of qualification - ${data.currentIndustryName}`,
+      renderString: ({ data }): string => `Resident workers - Field of qualification`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
-        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) qualified in ${mostCommonQual} in ${prefixedAreaName} than in any other field.`;
-
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [

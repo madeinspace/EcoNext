@@ -60,7 +60,10 @@ const TopThree = Top(3);
 const TopFour = Top(4);
 
 const TopThreeFields = ({ industryName, gender }) => {
-  const { contentData } = useContext(PageContext);
+  const {
+    contentData,
+    entityData: { currentGenderName },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'NoYear1');
@@ -270,16 +273,16 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
             necessarily the case.
           </p>
           <p>
-            The presence of specific qualifications among the {prefixedAreaName}'s resident workforce, which are not
-            used by local industry, may indicate an opportunity for a new industry to move into the area and access a
-            ready labour force.
+            The presence of specific qualifications among {prefixedAreaName}'s {genderLookup[currentGenderName]}{' '}
+            workforce, which are not used by local industry, may indicate an opportunity for a new industry to move into
+            the area and access a ready labour force.
           </p>
           <p>The field of study relates to a number of factors, such as:</p>
           <TopList>
             <li>The age of the population;</li>
             <li>
-              The types of industries and occupations located in the {prefixedAreaName} or within commuting distance,
-              and their qualification requirements;
+              The types of industries and occupations located in {prefixedAreaName} or within commuting distance, and
+              their qualification requirements;
             </li>
             <li>The availability of educational institutions with those curricula nearby;</li>
             <li>The socio-economic status of {prefixedAreaName}, and;</li>
