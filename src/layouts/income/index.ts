@@ -18,7 +18,6 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headline = ({ data, contentData }) => {
-  console.log('data, contentData: ', data, contentData);
   const { prefixedAreaName, currentBenchmarkName, currentGenderName, currentIndustryName } = data;
   const allIncomers = contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey != 3115);
   const highIncomers = key =>

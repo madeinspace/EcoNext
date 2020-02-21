@@ -18,6 +18,7 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
+import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region autotext / dynamic content
@@ -171,7 +172,7 @@ const IncomePage = () => {
       <ControlPanel />
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Resident workers - Individual income'} />
+        <EntityTable data={tableParams} name={useEntityText('SubTitle')} />
       </ItemWrapper>
 
       {hasProfile() && (
