@@ -232,7 +232,7 @@ $even-row-color: $odd-color;
           font-size: 21px;
           text-align: center;
           vertical-align: middle;
-          padding: 10px 0;
+          padding: 10px;
         }
       }
 
@@ -259,6 +259,9 @@ $even-row-color: $odd-color;
           min-width: 70px;
           max-width: 70px;
           padding-right: 14px;
+        }
+        &.left-align {
+          text-align: left;
         }
         &.first {
           text-align: left;
@@ -354,6 +357,9 @@ $even-row-color: $odd-color;
         max-width: 70px;
         padding-right: 14px;
       }
+      &.left-align {
+        text-align: left;
+      }
       &.XS {
         width: 70px;
       }
@@ -361,7 +367,7 @@ $even-row-color: $odd-color;
         width: 80px;
       }
       &.M {
-        width: 90px;
+        width: 85px;
       }
       &.L {
         width: 90px;

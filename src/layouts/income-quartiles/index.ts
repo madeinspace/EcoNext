@@ -1,14 +1,35 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
+import { formatPercent, formatNumber } from '../../utils';
 
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`;
+//SELECT * FROM dbo.fn_Industry_IncomeQuartiles (102,10,23001,2016,2011,'UR',3,1,null,23000)
+const incomeQuartilesQuery = {
+  id: 1,
+  name: `incomeQuartiles`,
+  query: ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_Industry_IncomeQuartiles]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey}) order by LabelKey DESC`,
+};
 
-const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
+// select * from CommData_Economy.[dbo].[fn_QuartileRanges](105, 40, 23000,'UR', 3, 31000)
+const QuartileRangesQuery = {
+  id: 2,
+  name: `quartileRange`,
+  query: ({ ClientID, IGBMID, Sex, Indkey }) =>
+    `select * from CommData_Economy.[dbo].[fn_QuartileRanges]( ${ClientID}, ${IGBMID}, ${Indkey}, 'UR', ${Sex}, 31000 ) order by LabelKey DESC`,
+};
+
+const queries = [incomeQuartilesQuery, QuartileRangesQuery];
+
+const fetchData = async ({ filters }) =>
+  await Promise.all(
+    queries.map(async ({ query, name, id }) => {
+      return { id, name, data: await sqlConnection.raw(query(filters)) };
+    }),
+  );
 
 const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   currentGenderName: getActiveToggle(filterToggles, 'Sex'),
 });
@@ -25,21 +46,25 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Individual income quartiles`,
+      renderString: (): string => `Resident workers - Individual income quartiles`,
+    },
+    {
+      Title: 'DataSource',
+      renderString: (): string => `Australian Bureau of Statistics (ABS) – Census 2011 and 2016 – by usual residence`,
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
+        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
         const genderLookup = {
           Persons: 'resident',
           Males: 'male resident',
           Females: 'female resident',
         };
-        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) qualified in ${mostCommonQual} in ${prefixedAreaName} than in any other field.`;
-
-        return headlineAlt;
+        const industryText = currentIndustryName == 'All industries' ? '' : ` (${currentIndustryName})`;
+        const largestQuartile = `'${largest(contentData[0].data, 'NoYear1').LabelName.toLowerCase()}'`;
+        const largestPercent = `${formatNumber(largest(contentData[0].data, 'NoYear1').PerYear1)}`;
+        return `In ${prefixedAreaName}, the ${largestQuartile} quartile is the largest group, comprising ${largestPercent}% of the ${genderLookup[currentGenderName]} workers${industryText}.`;
       },
     },
   ],
@@ -59,7 +84,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Current industry:',
+      Label: 'Select industry:',
       Params: [
         {
           IGBMID: '0',
