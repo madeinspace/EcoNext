@@ -1,37 +1,17 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  capitalise,
-  absSort,
-} from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatChangeInt, capitalise, absSort } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import {
-  PageIntro,
-  Highlight,
-  AnalysisContainer,
-  SourceBubble,
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-} from '../../../styles/MainContentStyles';
+import { PageIntro, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import InfoBox from '../../../components/ui/infoBox';
 import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
-import styled from 'styled-components';
-
 // #endregion
 
 // #region autotext / dynamic content
-
 const genderLookup = {
   Persons: 'resident',
   Males: 'male resident',
@@ -359,7 +339,6 @@ const tableIncomeQuartilesBuilder = ({
 
 // #region table builders
 const tableQuartileRangesBuilder = ({ clientAlias, contentData }) => {
-  console.log('tableQuartileRangesBuilder: ', contentData);
   const rawDataSource = ``;
   const tableTitle = `Quartile group dollar ranges (Individuals)`;
   const firstColTitle = 'Individual quartile ranges';
