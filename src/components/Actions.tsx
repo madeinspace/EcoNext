@@ -289,6 +289,8 @@ export const ExportPage = (): JSX.Element => {
   };
 
   const handleExportPDF = () => {
+    const payloadUrl = window.location.href;
+    console.log('payloadUrl: ', payloadUrl);
     setWaitingNote(true);
     timer = setTimeout(() => {
       setWaitingNote(false);
