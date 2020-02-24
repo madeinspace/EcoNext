@@ -25,7 +25,7 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName, currentGenderName } = data;
+        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
         const youngest = withoutTotal.slice(0, 3);
@@ -35,7 +35,7 @@ const pageContent = {
         const comparisonYoung = youngestTotal > oldestTotal ? `more` : `less`;
         const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
 
-        const headlineAlt = `In ${prefixedAreaName}, there are ${comparisonYoung} younger ${genderText} workers (15 to 44 years) than older ${genderText} workers (45 year and over) in the ${genderText} local worker population.`;
+        const headlineAlt = `In ${prefixedAreaName}, there are ${comparisonYoung} younger ${genderText} workers (15 to 44 years) than older ${genderText} workers (45 year and over) working in ${currentIndustryName}.`;
 
         return headlineAlt;
       },

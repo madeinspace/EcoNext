@@ -48,14 +48,9 @@ const MajorDifferencesHeading = () => {
     entityData: { currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
-  let industryText = currentIndustryName;
-  if (Indkey == 23000) {
-    industryText = '';
-  }
-  industryText = `${industryText}`;
-
   let benchmarkText = currentBenchmarkName;
   const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.replace(/s\b/gi, '');
+  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
   const industryBenchmark = IGBMID > 1000;
   if (industryBenchmark) {
     if (IGBMID == 23000) {
@@ -65,8 +60,8 @@ const MajorDifferencesHeading = () => {
   }
   return (
     <Highlight>
-      The major differences between the age structure of the {genderText.toLowerCase()} workforce in {prefixedAreaName}{' '}
-      and {benchmarkText} were:
+      The major differences between the age structure of {industryText} {genderText.toLowerCase()} workforce in{' '}
+      {prefixedAreaName} and {benchmarkText} were:
     </Highlight>
   );
 };
@@ -76,12 +71,7 @@ const MajorDifferences = () => {
     contentData,
     entityData: { currentGenderName },
   } = useContext(PageContext);
-
-  const qualsWithData = _.filter(
-    contentData.filter(({ LabelKey }) => LabelKey != 999999),
-    'PerYear1',
-  );
-
+  const qualsWithData = contentData.filter(({ LabelKey }) => LabelKey != 999999);
   const majorDifferences = _.sortBy(qualsWithData, qual => {
     const compare = [qual.PerYear1, qual.BMYear1];
     return _.max(compare) - _.min(compare);
@@ -107,14 +97,16 @@ const MajorDifferences = () => {
 
 const EmergingGroupsHeading = () => {
   const {
-    entityData: { prefixedAreaName, currentGenderName },
+    filters: { Sex, Indkey },
+    entityData: { prefixedAreaName, currentGenderName, currentIndustryName },
   } = useContext(PageContext);
   const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.replace(/s\b/gi, '');
+  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
 
   return (
     <Highlight>
-      The largest changes in the age structure of the {genderText.toLowerCase()} workforce in {prefixedAreaName} between
-      2011 and 2016 were:
+      The largest changes in the age structure of {industryText} {genderText.toLowerCase()} workforce in{' '}
+      {prefixedAreaName} between 2011 and 2016 were:
     </Highlight>
   );
 };
@@ -145,6 +137,7 @@ const WorkersAgeStructurePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData,
+    filters: { Sex, Indkey },
     entityData: { currentGenderName, currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
@@ -181,9 +174,18 @@ const WorkersAgeStructurePage = () => {
   const oldestPercClient = formatPercent(totalPersons(oldest, 'PerYear1'));
   const youngestPercBM = formatPercent(totalPersons(youngest, 'BMYear1'));
   const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
-  const comparisonYoung = youngestPercClient > youngestPercBM ? `higher` : `lower`;
-  const comparisonOld = oldestPercClient > oldestPercBM ? `higher` : `lower`;
+  const comparisonYoung =
+    Math.abs(youngestPercClient - youngestPercBM) <= 1
+      ? 'similar'
+      : youngestPercClient > youngestPercBM
+      ? `higher`
+      : `lower`;
+  const comparisonOld =
+    Math.abs(oldestPercClient - oldestPercBM) <= 1 ? 'similar' : oldestPercClient > oldestPercBM ? `higher` : `lower`;
   const genderText = currentGenderName === 'Persons' ? 'People' : currentGenderName.toLowerCase();
+  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
+  const genderTextAlt = +Sex === 3 ? '' : genderText.replace(/s\b/gi, '').toLowerCase();
+  console.log('genderTextAlt: ', genderTextAlt);
 
   return (
     <>
@@ -201,8 +203,8 @@ const WorkersAgeStructurePage = () => {
           </p>
           <p>
             For a complete local workers analysis for Monash, Age Structure should be viewed in conjunction with{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)}
-            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)}.
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)} and{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)}.
           </p>
         </div>
         <SourceBubble>
@@ -242,17 +244,16 @@ const WorkersAgeStructurePage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the age structure of the {currentIndustryName} workforce in {prefixedAreaName} in 2016 compared to{' '}
-          {currentBenchmarkName} shows that there was a {comparisonYoung} proportion of {genderText.toLowerCase()} in
-          the younger age groups (15 to 44 years) and a {comparisonOld} proportion of {genderText.toLowerCase()} in the
-          older age groups (45 years and over).
+          Analysis of the age structure of the {currentIndustryName}{' '}
+          {currentGenderName === 'Persons' ? '' : genderText.replace(/s\b/gi, '')} workforce in {prefixedAreaName} in
+          2016 compared to {currentBenchmarkName} shows that there was a {comparisonYoung} proportion of{' '}
+          {genderText.toLowerCase()} in the younger age groups (15 to 44 years) and a {comparisonOld} proportion of{' '}
+          {genderText.toLowerCase()} in the older age groups (45 years and over).
         </p>
         <p>
-          Overall, {youngestPercClient}% of the {currentIndustryName} {genderText} workforce was aged under 45 years,
-          compared to {youngestPercBM}% for the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')}{' '}
-          workforce within {prefixedAreaName}. {oldestPercClient}% were aged 45 years and over, compared to{' '}
-          {oldestPercBM}% for the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')} workforce
-          within City of Monash.
+          Overall, {youngestPercClient}% of {industryText} {genderTextAlt} workforce was aged under 45 years, compared
+          to {youngestPercBM}% for {currentBenchmarkName}. {oldestPercClient}% were aged 45 years and over, compared to{' '}
+          {oldestPercBM}% for {currentBenchmarkName}.
         </p>
 
         <MajorDifferences />
@@ -260,7 +261,7 @@ const WorkersAgeStructurePage = () => {
       <AnalysisContainer>
         <h3>Emerging groups</h3>
         <EmergingGroupsHeading />
-        <EmergingGroups gender={currentGenderName} />
+        <EmergingGroups gender={genderTextAlt} />
       </AnalysisContainer>
       {
         // #endregion
@@ -472,12 +473,13 @@ const chartBuilder = ({
       y: item.BMYear1,
     };
   });
-  const genderText = currentGenderName === 'Persons' ? '' : `- ${currentGenderName.toLowerCase()}`;
+  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName.replace(/s\b/gi, '').toLowerCase()}`;
+  const separator = currentGenderName === 'Persons' ? '' : '-';
   const chartType = 'bar';
   const chartTitle = `Local ${genderText} workers age structure, 2016`;
-  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${genderText}`;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${separator} ${currentGenderName}`;
   const xAxisTitle = 'Age structure';
-  const yAxisTitle = `Percentage of ${genderText} local workforce`;
+  const yAxisTitle = `% of ${genderText} local workforce`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
@@ -546,11 +548,12 @@ const chartBuilderChange = ({ currentGenderName, currentAreaName, currentIndustr
     contentData.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  const genderText = currentGenderName === 'Persons' ? '' : `- ${currentGenderName.toLowerCase()}`;
+  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName.replace(/s\b/gi, '').toLowerCase()}`;
+  const separator = currentGenderName === 'Persons' ? '' : '-';
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
   const chartTitle = `Change in ${genderText.toLowerCase()} local workers age structure, 2011 to 2016`;
-  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${genderText} `;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${separator} ${currentGenderName} `;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Age structure';
   const yAxisTitle = `Change in ${genderText.toLowerCase()} local workers`;
