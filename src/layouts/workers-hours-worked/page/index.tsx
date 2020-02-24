@@ -40,27 +40,14 @@ const MajorDifferencesHeading = () => {
     entityData: { currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
 
-  let industryText = currentIndustryName;
-  if (Indkey == 23000) {
-    //All Industries === 23000
-    industryText = '';
-  }
-  industryText = `${industryText}`;
-
-  let benchmarkText = currentBenchmarkName;
-  const industryBenchmark = IGBMID > 1000;
   const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
-  if (industryBenchmark) {
-    if (IGBMID == 23000) {
-      benchmarkText = 'total';
-    }
-    benchmarkText = `the ${benchmarkText} ${genderText} workforce`;
-  }
+  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
+  const benchmarkText = IGBMID < 23000 ? currentBenchmarkName : `the ${currentBenchmarkName} ${genderText} workforce`;
 
   return (
     <Highlight>
-      The major differences between the hours worked by the {currentIndustryName} {genderText} workforce in{' '}
-      {prefixedAreaName} and {benchmarkText} were:
+      The major differences between the hours worked by the {industryText} {genderText} workforce in {prefixedAreaName}{' '}
+      and {benchmarkText} were:
     </Highlight>
   );
 };
@@ -70,18 +57,10 @@ const MajorDifferences = () => {
     contentData,
     entityData: { currentGenderName },
   } = useContext(PageContext);
-  console.log('contentData: ', contentData);
-  const qualsWithData = _.filter(
-    _.filter(
-      contentData.filter(({ LabelKey }) => LabelKey != 999999),
-      'PerYear1',
-    ),
-  );
-  console.log('qualsWithData: ', qualsWithData);
+  const qualsWithData = contentData.filter(({ LabelKey }) => LabelKey != 999999);
   const majorDifferences = _.sortBy(qualsWithData, qual => {
     const compare = [qual.PerYear1, qual.BMYear1];
-    const res = _.max(compare) - _.min(compare);
-    return res;
+    return _.max(compare) - _.min(compare);
   });
   const topFour = _.orderBy(TopFour(majorDifferences), 'LabelKey');
   const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
@@ -143,6 +122,7 @@ const WorkersHoursWorkedPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData,
+    filters: { IGBMID, Indkey },
     entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName, currentGenderName },
   } = useContext(PageContext);
 
@@ -160,6 +140,9 @@ const WorkersHoursWorkedPage = () => {
   const fullTimerBM = formatPercent(totalHoursWorked(fulTimers, 'BMYear1'));
   const comparisonPartTime = compare(parseFloat(partTimerClient), parseFloat(partTimerBM));
   const comparisonFullTime = compare(parseFloat(fullTimerClient), parseFloat(fullTimerBM));
+  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
+  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
+  const benchmarkText = IGBMID < 23000 ? currentBenchmarkName : `the ${currentBenchmarkName} ${genderText} workforce`;
 
   const tableParams = tableBuilder({
     clientAlias,
@@ -184,7 +167,6 @@ const WorkersHoursWorkedPage = () => {
     currentGenderName,
     contentData,
   });
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
 
   return (
     <>
@@ -232,15 +214,15 @@ const WorkersHoursWorkedPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the hours worked by the {currentIndustryName} {genderText} workforce in {prefixedAreaName} in 2016
-          compared to the {currentBenchmarkName} {genderText} workforce within {prefixedAreaName} shows that there was a{' '}
-          {comparisonPartTime} proportion who worked part-time (34 hours or less) and a {comparisonFullTime} proportion
-          who worked full-time (35 hours or more).
+          Analysis of the hours worked by the {industryText} {genderText} workforce in {prefixedAreaName} in 2016
+          compared to {benchmarkText} within {prefixedAreaName} shows that there was a {comparisonPartTime} proportion
+          who worked part-time (34 hours or less) and a {comparisonFullTime} proportion who worked full-time (35 hours
+          or more).
         </p>
         <p>
-          Overall, {partTimerClient}% of the {currentIndustryName} {genderText} workforce worked part-time (34 hours or
-          less) , and {fullTimerClient}% worked full-time (35 hours or more), compared with {partTimerBM}% and{' '}
-          {fullTimerBM}% respectively for the {currentBenchmarkName} {genderText} workforce within City of Monash.
+          Overall, {partTimerClient}% of the {industryText} {genderText} workforce worked part-time (34 hours or less) ,
+          and {fullTimerClient}% worked full-time (35 hours or more), compared with {partTimerBM}% and {fullTimerBM}%
+          respectively for {benchmarkText} within City of Monash.
         </p>
         <MajorDifferences />
       </AnalysisContainer>

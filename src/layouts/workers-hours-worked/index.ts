@@ -32,30 +32,17 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
         const { prefixedAreaName, currentGenderName } = data;
         const notStatedID = 22009;
         const totalID = 999999;
-        console.log('contentData: ', contentData);
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const totalHours = contentData.filter(({ LabelKey }) => LabelKey != totalID && LabelKey != notStatedID);
-        console.log('totalHours: ', totalHours);
         const fullTime = totalHours.slice(4);
         const partTime = totalHours.slice(0, 4);
-        console.log('partTime: ', partTime);
         const totalPartTimeClient = formatPercent(total(partTime, 'PerYear1'));
         const totalFullTimeClient = formatPercent(total(fullTime, 'PerYear1'));
-        const totalFullTimeBM = formatPercent(total(fullTime, 'BMYear1'));
         const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
         const headlineAlt = `${totalPartTimeClient}% of ${data.currentIndustryName} ${genderText} local workers in ${prefixedAreaName} are employed part-time and ${totalFullTimeClient}% are employed full-time.`;
-        // const headlineAlt = `${totalPartTimeClient}% of the ${genderLookup[data.currentGenderName]} workers (${
-        //   data.currentIndustryName
-        // }) in ${prefixedAreaName} work 40 or more hours, compared to ${totalFullTimeBM}% in Victoria.`;
-
         return headlineAlt;
       },
     },
