@@ -164,7 +164,6 @@ const WorkersAgeStructurePage = () => {
     currentIndustryName,
     contentData,
   });
-  console.log('currentGenderName: ', currentGenderName);
 
   const totalPersons = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
   const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
@@ -185,7 +184,6 @@ const WorkersAgeStructurePage = () => {
   const genderText = currentGenderName === 'Persons' ? 'people' : currentGenderName.toLowerCase();
   const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
   const genderTextAlt = +Sex === 3 ? '' : genderText.replace(/s\b/gi, '').toLowerCase();
-  console.log('genderTextAlt: ', genderTextAlt);
 
   return (
     <>
