@@ -3,7 +3,7 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
+  `select * from CommData_Economy.[dbo].[fn_Industry_Age_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'WP', ${Sex}, 1, null, ${Indkey} ) order by LabelKey ASC`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
@@ -20,26 +20,22 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Resident workers - Age structure`,
+      renderString: ({ data }): string => `Local workers - Age structure - ${data.currentIndustryName}`,
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
+        const { prefixedAreaName, currentGenderName } = data;
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
         const youngest = withoutTotal.slice(0, 3);
         const oldest = withoutTotal.slice(3);
         const youngestTotal = total(youngest, 'NoYear1');
         const oldestTotal = total(oldest, 'NoYear1');
-        const comparison = youngestTotal > oldestTotal ? `under` : `over`;
+        const comparisonYoung = youngestTotal > oldestTotal ? `more` : `less`;
+        const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
 
-        const headlineAlt = `In ${prefixedAreaName}, most ${genderLookup[currentGenderName]} workers in ${currentIndustryName} are ${comparison} 45 years old.`;
+        const headlineAlt = `In ${prefixedAreaName}, there are ${comparisonYoung} younger ${genderText} workers (15 to 44 years) than older ${genderText} workers (45 year and over) in the ${genderText} local worker population.`;
 
         return headlineAlt;
       },
@@ -61,7 +57,7 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '23000',
-      Label: 'Select industry:',
+      Label: 'Current industry:',
       Params: [
         {
           IGBMID: '0',

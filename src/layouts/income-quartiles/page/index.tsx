@@ -20,12 +20,6 @@ const genderLookup = {
 
 const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
 
-const Top = n => quals =>
-  _(quals)
-    .takeRight(n)
-    .reverse()
-    .value();
-
 const EmergingGroupsHeading = () => {
   const {
     contentData,
@@ -53,7 +47,6 @@ const EmergingGroupsHeading = () => {
     </>
   );
 };
-
 // #endregion
 
 // #region page

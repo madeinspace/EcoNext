@@ -26,6 +26,7 @@ import Qualifications from './qualifications/page';
 import LabourforceKeyStatistics from './labourforce-key-statistics/page';
 import IncomePage from './income/page';
 import IncomeQuartile from './income-quartiles/page';
+import WorkersAgeStructurePage from './workers-age-structure/page';
 
 const PageMappings = {
   home: HomePage,
@@ -55,6 +56,7 @@ const PageMappings = {
   'labourforce-key-statistics': LabourforceKeyStatistics,
   income: IncomePage,
   'income-quartiles': IncomeQuartile,
+  'workers-age-structure': WorkersAgeStructurePage,
 };
 
 export default PageMappings;

@@ -25,4 +25,5 @@ export default [
   'labourforce-key-statistics',
   'income',
   'income-quartiles',
+  'workers-age-structure',
 ];
