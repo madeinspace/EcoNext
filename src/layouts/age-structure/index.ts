@@ -9,7 +9,7 @@ const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuer
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
     currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
     currentGenderName: getActiveToggle(filterToggles, 'Sex'),
   };
@@ -20,7 +20,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Resident workers - Age structure`,
+      renderString: (): string => `Resident workers - Age structure`,
     },
     {
       Title: 'Headline',

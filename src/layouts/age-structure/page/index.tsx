@@ -198,7 +198,8 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
   const oldestPercClient = formatPercent(totalPersons(oldest, 'PerYear1'));
   const youngestPercBM = formatPercent(totalPersons(youngest, 'BMYear1'));
   const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
-  const comparisonClient = youngestPercClient > youngestPercBM ? `higher` : `lower`;
+  const comparisonYoung = youngestPercClient > youngestPercBM ? `higher` : `lower`;
+  const comparisonOld = oldestPercClient > oldestPercBM ? `higher` : `lower`;
 
   return (
     <>
@@ -260,14 +261,14 @@ const ResidentWorkerFieldsOfQualificationPage = () => {
         <h3>Dominant groups</h3>
         <p>
           Analysis of the {genderLookup[currentGenderName]} workers ({currentIndustryName}) age structure of{' '}
-          {prefixedAreaName} in 2016 compared to {currentBenchmarkName} shows that there was a {comparisonClient}{' '}
-          proportion of {currentGenderName.toLowerCase()} in the younger age groups (15 to 44 years) as well as a lower
-          proportion of {currentGenderName.toLowerCase()} in the older age groups (45 years and over).
+          {prefixedAreaName} in 2016 compared to {currentBenchmarkName} shows that there was a {comparisonYoung}{' '}
+          proportion of {currentGenderName.toLowerCase()} in the younger age groups (15 to 44 years) as well as a{' '}
+          {comparisonOld} proportion of {currentGenderName.toLowerCase()} in the older age groups (45 years and over).
         </p>
         <p>
           Overall, {youngestPercClient}% of the {genderLookup[currentGenderName]} workers was aged under 45 years,
-          compared to {youngestPercBM}% for Victoria. {oldestPercClient}% were aged 45 years and over, compared to{' '}
-          {oldestPercBM}% for Victoria.
+          compared to {youngestPercBM}% for {currentBenchmarkName}. {oldestPercClient}% were aged 45 years and over,
+          compared to {oldestPercBM}% for {currentBenchmarkName}.
         </p>
 
         <MajorDifferences
