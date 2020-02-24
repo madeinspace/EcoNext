@@ -1,19 +1,10 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  capitalise,
-  absSort,
-} from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatChangeInt, capitalise, absSort } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
 import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -159,27 +150,17 @@ const ResidentWorkerHoursWorkedPage = () => {
   const LabelKeyNotStated = 22009;
   const LabelKeyTotal = 999999;
 
-  const working = contentData.filter(
-    node => node.LabelKey != LabelKeyTotal && node.LabelKey != LabelKeyNotStated && node.LabelKey != LabelKeyNone,
-  );
-  const noneOrNotStated = contentData.filter(
-    node => node.LabelKey === LabelKeyNone || node.LabelKey === LabelKeyNotStated,
-  );
-  const totalRow = contentData.filter(node => node.LabelKey === 999999)[0];
-  const perDiff = formatPercent((totalRow.NoYear1 / totalRow.NoYear2 - 1) * 100);
-  const partTimers = working.slice(0, 3);
-  const fulTimers = working.slice(3);
+  const working = contentData.filter(({ LabelKey }) => LabelKey != LabelKeyTotal && LabelKey != LabelKeyNotStated);
+  const partTimers = working.slice(0, 4);
+  const fulTimers = working.slice(4);
   const partTimerClient = formatPercent(totalHoursWorked(partTimers, 'PerYear1'));
   const partTimerBM = formatPercent(totalHoursWorked(partTimers, 'BMYear1'));
   const fullTimerClient = formatPercent(totalHoursWorked(fulTimers, 'PerYear1'));
   const fullTimerClientYear1 = totalHoursWorked(fulTimers, 'NoYear1');
   const fullTimerClientYear2 = totalHoursWorked(fulTimers, 'NoYear2');
   const fullTimerDiff = fullTimerClientYear1 - fullTimerClientYear2;
-  // console.log(
-  //   `fullTimerClientYear1: ${fullTimerClientYear1}\nfullTimerClientYear2: ${fullTimerClientYear2}\nfullTimerDiff: ${fullTimerDiff}`,
-  // );
+  const perDiff = formatPercent((fullTimerClientYear1 / fullTimerClientYear2 - 1) * 100);
   const fullTimerBM = formatPercent(totalHoursWorked(fulTimers, 'BMYear1'));
-
   const comparisonPartTime = compare(partTimerClient, partTimerBM);
   const comparisonFullTime = compare(fullTimerClient, fullTimerBM);
 
@@ -206,15 +187,6 @@ const ResidentWorkerHoursWorkedPage = () => {
     genderName: currentGenderName,
     TabularData: contentData,
   });
-
-  // console.log(`
-  // partTimerClient: ${partTimerClient}
-  // fullTimerClient: ${fullTimerClient}
-  //   noneOrNotStatedClient: ${noneOrNotStatedClient}
-  //   partTimerBM: ${partTimerBM}
-  //   fullTimerBM: ${fullTimerBM}
-  //   noneOrNotStatedBM: ${noneOrNotStatedBM}
-  //   `);
 
   return (
     <>
