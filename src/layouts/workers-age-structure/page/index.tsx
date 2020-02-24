@@ -171,6 +171,7 @@ const WorkersAgeStructurePage = () => {
     currentIndustryName,
     contentData,
   });
+  console.log('currentGenderName: ', currentGenderName);
 
   const totalPersons = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
   const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
@@ -182,7 +183,7 @@ const WorkersAgeStructurePage = () => {
   const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
   const comparisonYoung = youngestPercClient > youngestPercBM ? `higher` : `lower`;
   const comparisonOld = oldestPercClient > oldestPercBM ? `higher` : `lower`;
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase();
+  const genderText = currentGenderName === 'Persons' ? 'People' : currentGenderName.toLowerCase();
 
   return (
     <>
@@ -241,17 +242,17 @@ const WorkersAgeStructurePage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the age structure of the {genderText.replace(/s\b/gi, '')} workforce in {prefixedAreaName} in 2016
-          compared to the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')} workforce within{' '}
-          {prefixedAreaName} shows that there was a {comparisonYoung} proportion of {genderText} in the younger age
-          groups (15 to 44 years) and a {comparisonOld} proportion of {genderText} in the older age groups (45 years and
-          over).
+          Analysis of the age structure of the {currentIndustryName} workforce in {prefixedAreaName} in 2016 compared to{' '}
+          {currentBenchmarkName} shows that there was a {comparisonYoung} proportion of {genderText.toLowerCase()} in
+          the younger age groups (15 to 44 years) and a {comparisonOld} proportion of {genderText.toLowerCase()} in the
+          older age groups (45 years and over).
         </p>
         <p>
-          Overall, {youngestPercClient}% of the {genderText} workforce was aged under 45 years, compared to{' '}
-          {youngestPercBM}% for the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')} workforce
-          within {prefixedAreaName}. {oldestPercClient}% were aged 45 years and over, compared to {oldestPercBM}% for
-          the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')} workforce within City of Monash.
+          Overall, {youngestPercClient}% of the {currentIndustryName} {genderText} workforce was aged under 45 years,
+          compared to {youngestPercBM}% for the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')}{' '}
+          workforce within {prefixedAreaName}. {oldestPercClient}% were aged 45 years and over, compared to{' '}
+          {oldestPercBM}% for the {currentBenchmarkName.toLowerCase()} {genderText.replace(/s\b/gi, '')} workforce
+          within City of Monash.
         </p>
 
         <MajorDifferences />
@@ -471,10 +472,10 @@ const chartBuilder = ({
       y: item.BMYear1,
     };
   });
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase();
+  const genderText = currentGenderName === 'Persons' ? '' : `- ${currentGenderName.toLowerCase()}`;
   const chartType = 'bar';
   const chartTitle = `Local ${genderText} workers age structure, 2016`;
-  const chartSubtitle = `${currentAreaName}`;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${genderText}`;
   const xAxisTitle = 'Age structure';
   const yAxisTitle = `Percentage of ${genderText} local workforce`;
   const rawDataSource =
@@ -545,11 +546,11 @@ const chartBuilderChange = ({ currentGenderName, currentAreaName, currentIndustr
     contentData.filter(item => item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName;
+  const genderText = currentGenderName === 'Persons' ? '' : `- ${currentGenderName.toLowerCase()}`;
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
   const chartTitle = `Change in ${genderText.toLowerCase()} local workers age structure, 2011 to 2016`;
-  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} `;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${genderText} `;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Age structure';
   const yAxisTitle = `Change in ${genderText.toLowerCase()} local workers`;
