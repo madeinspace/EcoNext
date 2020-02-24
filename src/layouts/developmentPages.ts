@@ -27,4 +27,5 @@ export default [
   'income',
   'income-quartiles',
   'workers-age-structure',
+  'workers-hours-worked',
 ];
