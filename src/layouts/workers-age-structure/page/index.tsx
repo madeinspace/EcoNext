@@ -50,7 +50,7 @@ const MajorDifferencesHeading = () => {
 
   let benchmarkText = currentBenchmarkName;
   const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.replace(/s\b/gi, '');
-  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
+  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
   const industryBenchmark = IGBMID > 1000;
   if (industryBenchmark) {
     if (IGBMID == 23000) {
@@ -60,7 +60,7 @@ const MajorDifferencesHeading = () => {
   }
   return (
     <Highlight>
-      The major differences between the age structure of {industryText} {genderText.toLowerCase()} workforce in{' '}
+      The major differences between the age structure of the {industryText} {genderText.toLowerCase()} workforce in{' '}
       {prefixedAreaName} and {benchmarkText} were:
     </Highlight>
   );
@@ -100,13 +100,13 @@ const EmergingGroupsHeading = () => {
     filters: { Sex, Indkey },
     entityData: { prefixedAreaName, currentGenderName, currentIndustryName },
   } = useContext(PageContext);
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.replace(/s\b/gi, '');
-  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
+  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
+  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
 
   return (
     <Highlight>
-      The largest changes in the age structure of {industryText} {genderText.toLowerCase()} workforce in{' '}
-      {prefixedAreaName} between 2011 and 2016 were:
+      The largest changes in the age structure of the {industryText} {genderText} workforce in {prefixedAreaName}{' '}
+      between 2011 and 2016 were:
     </Highlight>
   );
 };
@@ -175,15 +175,15 @@ const WorkersAgeStructurePage = () => {
   const youngestPercBM = formatPercent(totalPersons(youngest, 'BMYear1'));
   const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
   const comparisonYoung =
-    Math.abs(youngestPercClient - youngestPercBM) <= 1
+    Math.abs(youngestPercClient - youngestPercBM) <= 0.5
       ? 'similar'
       : youngestPercClient > youngestPercBM
       ? `higher`
       : `lower`;
   const comparisonOld =
-    Math.abs(oldestPercClient - oldestPercBM) <= 1 ? 'similar' : oldestPercClient > oldestPercBM ? `higher` : `lower`;
-  const genderText = currentGenderName === 'Persons' ? 'People' : currentGenderName.toLowerCase();
-  const industryText = +Indkey === 23000 ? '' : `the ${currentIndustryName}`;
+    Math.abs(oldestPercClient - oldestPercBM) <= 0.5 ? 'similar' : oldestPercClient > oldestPercBM ? `higher` : `lower`;
+  const genderText = currentGenderName === 'Persons' ? 'people' : currentGenderName.toLowerCase();
+  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
   const genderTextAlt = +Sex === 3 ? '' : genderText.replace(/s\b/gi, '').toLowerCase();
   console.log('genderTextAlt: ', genderTextAlt);
 
@@ -244,16 +244,15 @@ const WorkersAgeStructurePage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          Analysis of the age structure of the {currentIndustryName}{' '}
-          {currentGenderName === 'Persons' ? '' : genderText.replace(/s\b/gi, '')} workforce in {prefixedAreaName} in
-          2016 compared to {currentBenchmarkName} shows that there was a {comparisonYoung} proportion of{' '}
-          {genderText.toLowerCase()} in the younger age groups (15 to 44 years) and a {comparisonOld} proportion of{' '}
-          {genderText.toLowerCase()} in the older age groups (45 years and over).
+          Analysis of the age structure of the {industryText} {genderTextAlt} workforce in {prefixedAreaName} in 2016
+          compared to {currentBenchmarkName} shows that there was a {comparisonYoung} proportion of {genderText} in the
+          younger age groups (15 to 44 years) and a {comparisonOld} proportion of {genderText} in the older age groups
+          (45 years and over).
         </p>
         <p>
-          Overall, {youngestPercClient}% of {industryText} {genderTextAlt} workforce was aged under 45 years, compared
-          to {youngestPercBM}% for {currentBenchmarkName}. {oldestPercClient}% were aged 45 years and over, compared to{' '}
-          {oldestPercBM}% for {currentBenchmarkName}.
+          Overall, {youngestPercClient}% of the {industryText} {genderTextAlt} workforce was aged under 45 years,
+          compared to {youngestPercBM}% for {currentBenchmarkName}. {oldestPercClient}% were aged 45 years and over,
+          compared to {oldestPercBM}% for {currentBenchmarkName}.
         </p>
 
         <MajorDifferences />
