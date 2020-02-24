@@ -290,14 +290,14 @@ export const ExportPage = (): JSX.Element => {
 
   const handleExportPDF = () => {
     const payloadUrl = window.location.href;
-    console.log('payloadUrl: ', payloadUrl);
+    const encodedUrl = encodeURIComponent(payloadUrl);
     setWaitingNote(true);
     timer = setTimeout(() => {
       setWaitingNote(false);
       clearTimeout(timer);
     }, 5000);
     axios
-      .get(`https://pdfmyurl.com/api?license=H2oRd9Ih6vnA&url=${window.location.href}`, {
+      .get(`https://pdfmyurl.com/api?license=H2oRd9Ih6vnA&url=${encodedUrl}`, {
         responseType: 'arraybuffer',
       })
       .then(res => {
