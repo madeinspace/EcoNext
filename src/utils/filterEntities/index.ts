@@ -7,7 +7,7 @@ const filterEntities = async (filters, content, args) => {
 
   return Promise.all(
     content.map(async ({ StoredProcedure, Params, Value, Title, renderString }) => {
-      if (!StoredProcedure) return { Text: renderString(args), Title };
+      if (!StoredProcedure) return { Text: renderString({ ...args, filters }), Title };
 
       const paramList = (Params || []).reduce((acc, cur) => [...acc, filters[Object.keys(cur)[0]]], []);
 
@@ -19,7 +19,7 @@ const filterEntities = async (filters, content, args) => {
 
       const { Result } = data[0];
 
-      return Result === Value ? { Text: renderString(args), Title } : {};
+      return Result === Value ? { Text: renderString({ ...args, filters }), Title } : {};
     }),
   );
 };
