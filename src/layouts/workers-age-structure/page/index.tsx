@@ -224,7 +224,7 @@ const WorkersAgeStructurePage = () => {
       <ControlPanel />
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={useEntityText('DataSource')} />
+        <EntityTable data={tableParams} name={useEntityText('SubTitle')} />
       </ItemWrapper>
 
       <ItemWrapper>
