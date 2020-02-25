@@ -140,15 +140,15 @@ const MajorDifferences = () => {
   });
   const topFour = TopFour(majorDifferences);
   const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
-  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
+  const industryText = +Indkey === 23000 ? '' : `(${currentIndustryName})`;
   return (
     <>
       <MajorDifferencesHeading />
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderText} local workers (
-            {industryText}) employed as {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of {genderText} local workers
+            {industryText} employed as {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to{' '}
             {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
@@ -216,13 +216,7 @@ const WorkersOccupationsPage = () => {
     contentData,
   });
 
-  const chartData = chartBuilder({
-    currentAreaName,
-    currentBenchmarkName,
-    currentIndustryName,
-    currentGenderName,
-    contentData,
-  });
+  const chartData = chartBuilder();
 
   const chartChangeData = chartBuilderChange({
     currentAreaName,
@@ -548,13 +542,13 @@ const tableBuilder = ({
 // #endregion
 
 // #region chart builders
-const chartBuilder = ({
-  currentAreaName,
-  currentBenchmarkName,
-  currentIndustryName,
-  currentGenderName,
-  contentData,
-}) => {
+const chartBuilder = () => {
+  const {
+    filters: { IGBMID },
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, currentGenderName },
+  } = useContext(PageContext);
+
   const parents = _.sortBy(
     contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
     item => item.LabelKey,
@@ -602,9 +596,10 @@ const chartBuilder = ({
   const separator = currentGenderName === 'Persons' ? '' : '-';
   const chartType = 'bar';
   const chartTitle = `Local workers occupations, 2016`;
-  const chartSubtitle = `${currentIndustryName} ${separator} ${genderText}`;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${separator} ${genderText}`;
   const xAxisTitle = 'Occupations';
   const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/, '')} local workers`;
+  const serieTitle = +IGBMID < 23000 ? `${currentAreaName}` : `${currentIndustryName}`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chart1';
@@ -632,7 +627,7 @@ const chartBuilder = ({
       },
       series: [
         {
-          name: `${currentAreaName}`,
+          name: serieTitle,
           data: perYear1Serie,
         },
         {

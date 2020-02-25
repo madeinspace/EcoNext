@@ -33,10 +33,10 @@ const headline = ({ data, contentData, filters }) => {
     ({ LabelKey, Hierarchy }) => Hierarchy === 'P' && LabelKey != 999999 && LabelKey != 33000,
   );
   const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
-  const industryText = +Indkey === 23000 ? '' : `(${currentIndustryName})`;
+  const industryText = +Indkey === 23000 ? '' : ` (${currentIndustryName})`;
   const highestOccupationPer = largest(withoutTotal, 'PerYear1');
   const highestOccupationBMPer = largest(withoutTotal, 'BMYear1');
-  const headlineAlt = `In ${prefixedAreaName} ${industryText}, ${formatPercent(
+  const headlineAlt = `In ${prefixedAreaName}${industryText}, ${formatPercent(
     highestOccupationPer.PerYear1,
   )}% of ${genderText} workers were ${highestOccupationPer.LabelName}, compared to ${formatPercent(
     highestOccupationBMPer.BMYear1,
