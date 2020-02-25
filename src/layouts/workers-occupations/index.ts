@@ -9,7 +9,7 @@ const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
 
 const largest = (arr, key) => {
   return arr
-    .filter(a => a.LabelKey < 96000)
+    .filter(a => a.LabelKey != 999999)
     .sort((a, b) => {
       return b[key] - a[key];
     })[0];
@@ -27,37 +27,35 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headline = ({ data, contentData, filters }) => {
-  console.log('data, contentData: ', data, filters);
-  const { currentAreaName, currentBenchmarkName, currentIndustryName, prefixedAreaName, currentGenderName } = data;
-  const { IGBMID, Indkey } = filters;
-  const totalPersons = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
-  const withoutTotal = contentData.filter(node => node.LabelKey != 999999);
-  const youngest = withoutTotal.slice(0, 3);
-  const oldest = withoutTotal.slice(3);
-  const youngestPercClient = formatPercent(totalPersons(youngest, 'PerYear1'));
-  const oldestPercClient = formatPercent(totalPersons(oldest, 'PerYear1'));
-  const youngestPercBM = formatPercent(totalPersons(youngest, 'BMYear1'));
-  const oldestPercBM = formatPercent(totalPersons(oldest, 'BMYear1'));
-  const comparisonYoung =
-    Math.abs(youngestPercClient - youngestPercBM) <= 0.5
-      ? 'similar'
-      : youngestPercClient > youngestPercBM
-      ? `higher`
-      : `lower`;
-  const genderText = currentGenderName === 'Persons' ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
-  const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
-  const benchmarkText = IGBMID < 23000 ? currentBenchmarkName : `the ${currentBenchmarkName} ${genderText} workforce`;
-  const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-  const headlineAlt = `Within ${prefixedAreaName}, the ${industryText} ${genderText} workforce has a {comparisonYoung} proportion of ${mostCommonQual} compared to ${benchmarkText}.
-`; // const headlineAlt = `There are more ${genderLookup[currentGenderName]} workers (${currentIndustryName}) ${mostCommonQual} in ${prefixedAreaName} than any other occupation.`;
+  const { currentBenchmarkName, currentIndustryName, prefixedAreaName, currentGenderName } = data;
+  const { Sex, Indkey } = filters;
+  const withoutTotal = contentData.filter(
+    ({ LabelKey, Hierarchy }) => Hierarchy === 'P' && LabelKey != 999999 && LabelKey != 33000,
+  );
+  const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
+  const industryText = +Indkey === 23000 ? '' : `(${currentIndustryName})`;
+  const highestOccupationPer = largest(withoutTotal, 'PerYear1');
+  const highestOccupationBMPer = largest(withoutTotal, 'BMYear1');
+  const headlineAlt = `In ${prefixedAreaName}${industryText}, ${formatPercent(
+    highestOccupationPer.PerYear1,
+  )}% of ${genderText} workers were ${highestOccupationPer.LabelName}, compared to ${formatPercent(
+    highestOccupationBMPer.BMYear1,
+  )}% in ${currentBenchmarkName}.`;
   return headlineAlt;
+};
+
+const Subtitle = ({ data, filters }) => {
+  const { Sex } = filters;
+  const { currentGenderName } = data;
+  const genderText = Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
+  return `Local ${genderText} workers - Occupations - ${data.currentIndustryName}`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Local workers - Occupations - ${data.currentIndustryName}`,
+      renderString: ({ data, filters }): string => Subtitle({ data, filters }),
     },
     {
       Title: 'Headline',

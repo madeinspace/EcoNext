@@ -149,7 +149,6 @@ const WorkersHoursWorkedPage = () => {
     currentAreaName,
     currentBenchmarkName,
     currentIndustryName,
-    prefixedAreaName,
     currentGenderName,
     contentData,
   });
@@ -260,7 +259,6 @@ const tableBuilder = ({
   currentAreaName,
   currentBenchmarkName,
   currentIndustryName,
-  prefixedAreaName,
   currentGenderName,
   contentData,
 }) => {
