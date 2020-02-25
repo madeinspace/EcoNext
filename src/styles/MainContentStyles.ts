@@ -48,38 +48,6 @@ export const Headline = styled.p`
   font-size: 23px;
   line-height: 26px;
   margin-bottom: 50px;
-  @media screen and (min-width: 1200px) {
-    padding-left: 40px;
-  }
-
-  &::before,
-  &::after {
-    position: absolute;
-    font-size: 6rem;
-    line-height: 1;
-    font-family: 'Arial', sans-serif;
-    visibility: hidden;
-
-    @media screen and (min-width: 1200px) {
-      visibility: visible;
-    }
-  }
-
-  &::before {
-    top: -1rem;
-    transform: translateX(-100%);
-    content: '\\201C';
-    @media screen and (min-width: 1200px) {
-      visibility: visible;
-      left: 2rem;
-    }
-  }
-
-  &::after {
-    bottom: -5rem;
-    right: 0rem;
-    content: '\\201D';
-  }
 `;
 
 export const PageIntro = styled.div`
