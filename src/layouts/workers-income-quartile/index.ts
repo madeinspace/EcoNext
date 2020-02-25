@@ -61,7 +61,7 @@ const pageContent = {
         const industryText = +Indkey == 23000 ? '' : ` (${currentIndustryName})`;
         const largestQuartile = `'${largest(contentData[0].data, 'NoYear1').LabelName.toLowerCase()}'`;
         const largestPercent = `${formatNumber(largest(contentData[0].data, 'NoYear1').PerYear1)}`;
-        return `In ${prefixedAreaName}, the ${largestQuartile} quartile is the largest group, comprising ${largestPercent}% of the ${genderText} local workers ${industryText}.`;
+        return `In ${prefixedAreaName}, the ${largestQuartile} quartile is the largest group, comprising ${largestPercent}% of the ${genderText} local workers${industryText}.`;
       },
     },
   ],
