@@ -70,7 +70,7 @@ const TopThreeFields = () => {
       </TopList>
       <p>
         In combination these three occupations accounted for {formatNumber(totalPeople)} people in total or{' '}
-        {formatPercent(totalPercent)}% of the {currentIndustryName} local {genderText} workers.
+        {formatPercent(totalPercent)}% of the {currentIndustryName} {genderText} local workers.
       </p>
     </>
   );
@@ -384,7 +384,7 @@ const tableBuilder = ({
   const tableTitle = 'Local workers occupations';
   const firstColTitle = 'Occupations (Click rows to view sub-categories)';
   const footerRows = contentData.filter(item => item.IndustryName === 'Total');
-  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName.replace(/s\b/gi, '')}`;
+  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName}`;
   const separator = currentGenderName === 'Persons' ? '' : '-';
   const tableSubtitle = `${currentAreaName} - ${currentIndustryName} ${separator} ${genderText}`;
   const parents = _.sortBy(
@@ -404,7 +404,7 @@ const tableBuilder = ({
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: '',
+    anchorName: 'local-workers---occupations',
     headRows: [
       {
         cssClass: '',
@@ -461,7 +461,7 @@ const tableBuilder = ({
       {
         id: 3,
         displayText: `${currentBenchmarkName}`,
-        cssClass: 'even int',
+        cssClass: 'even int L',
       },
       {
         id: 4,
@@ -476,7 +476,7 @@ const tableBuilder = ({
       {
         id: 6,
         displayText: `${currentBenchmarkName}`,
-        cssClass: 'odd int',
+        cssClass: 'odd int L',
       },
       {
         id: 7,
@@ -606,12 +606,13 @@ const chartBuilder = ({
     };
   });
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
-  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName.toLowerCase().replace(/s\b/gi, '')}`;
+  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName}`;
+  const separator = currentGenderName === 'Persons' ? '' : '-';
   const chartType = 'bar';
-  const chartTitle = `Local ${genderText} workers occupations, 2016`;
-  const chartSubtitle = `${currentIndustryName}`;
+  const chartTitle = `Local workers occupations, 2016`;
+  const chartSubtitle = `${currentIndustryName} ${separator} ${genderText}`;
   const xAxisTitle = 'Occupations';
-  const yAxisTitle = `% of ${genderText} local workers`;
+  const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/, '')} local workers`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'chart1';
@@ -702,14 +703,15 @@ const chartBuilderChange = ({
     contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
     item => item.LabelKey,
   );
-  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName.toLowerCase().replace(/s\b/gi, '')}`;
+  const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName}`;
+  const separator = currentGenderName === 'Persons' ? '' : '-';
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = `Change in local ${genderText} workers occupations, 2011 to 2016`;
-  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} `;
+  const chartTitle = `Change in local workers occupations, 2011 to 2016`;
+  const chartSubtitle = `${currentAreaName} - ${currentIndustryName} ${separator} ${genderText}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Occupations';
-  const yAxisTitle = `Change in local ${genderText} workers`;
+  const yAxisTitle = `Change in ${genderText.toLowerCase().replace(/s\b/, '')} local workers`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chartwfoqChange';

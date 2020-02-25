@@ -36,7 +36,7 @@ const headline = ({ data, contentData, filters }) => {
   const industryText = +Indkey === 23000 ? '' : `(${currentIndustryName})`;
   const highestOccupationPer = largest(withoutTotal, 'PerYear1');
   const highestOccupationBMPer = largest(withoutTotal, 'BMYear1');
-  const headlineAlt = `In ${prefixedAreaName}${industryText}, ${formatPercent(
+  const headlineAlt = `In ${prefixedAreaName} ${industryText}, ${formatPercent(
     highestOccupationPer.PerYear1,
   )}% of ${genderText} workers were ${highestOccupationPer.LabelName}, compared to ${formatPercent(
     highestOccupationBMPer.BMYear1,
@@ -47,7 +47,7 @@ const headline = ({ data, contentData, filters }) => {
 const Subtitle = ({ data, filters }) => {
   const { Sex } = filters;
   const { currentGenderName } = data;
-  const genderText = Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
+  const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
   return `Local ${genderText} workers - Occupations - ${data.currentIndustryName}`;
 };
 
