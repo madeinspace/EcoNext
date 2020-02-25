@@ -202,15 +202,15 @@ const WorkersOccupationsPage = () => {
   const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
-    filters: { Sex, Indkey },
+    filters: { Sex },
     entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
+  console.log('contentData: ', contentData);
 
   const tableParams = tableBuilder({
     clientAlias,
     currentAreaName,
     currentBenchmarkName,
-    prefixedAreaName,
     currentIndustryName,
     currentGenderName,
     contentData,
@@ -225,19 +225,12 @@ const WorkersOccupationsPage = () => {
   });
 
   const chartChangeData = chartBuilderChange({
-    clientAlias,
     currentAreaName,
-    currentBenchmarkName,
-    prefixedAreaName,
     currentIndustryName,
     currentGenderName,
     contentData,
   });
 
-  const total = _.sortBy(
-    contentData.filter(item => item.Hierarchy === 'P' && item.LabelKey === 999999),
-    item => item.LabelKey,
-  );
   const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/, '');
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
@@ -374,7 +367,6 @@ const tableBuilder = ({
   clientAlias,
   currentAreaName,
   currentBenchmarkName,
-  prefixedAreaName,
   currentIndustryName,
   currentGenderName,
   contentData,
@@ -690,15 +682,7 @@ const chartBuilder = ({
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = ({
-  clientAlias,
-  currentAreaName,
-  currentBenchmarkName,
-  prefixedAreaName,
-  currentIndustryName,
-  currentGenderName,
-  contentData,
-}) => {
+const chartBuilderChange = ({ currentAreaName, currentIndustryName, currentGenderName, contentData }) => {
   const parents = _.sortBy(
     contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
     item => item.LabelKey,
