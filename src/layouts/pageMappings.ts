@@ -29,6 +29,7 @@ import IncomeQuartile from './income-quartiles/page';
 import WorkersAgeStructurePage from './workers-age-structure/page';
 import WorkersHoursWorkedPage from './workers-hours-worked/page';
 import WorkersOccupationsPage from './workers-occupations/page';
+import WorkerLevelOfQualificationPage from './workers-level-of-qualifications/page';
 
 const PageMappings = {
   home: HomePage,
@@ -61,6 +62,7 @@ const PageMappings = {
   'workers-age-structure': WorkersAgeStructurePage,
   'workers-hours-worked': WorkersHoursWorkedPage,
   'workers-occupations': WorkersOccupationsPage,
+  'workers-level-of-qualifications': WorkerLevelOfQualificationPage,
 };
 
 export default PageMappings;

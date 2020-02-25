@@ -28,4 +28,5 @@ export default [
   'workers-age-structure',
   'workers-hours-worked',
   'workers-occupations',
+  'workers-level-of-qualifications',
 ];
