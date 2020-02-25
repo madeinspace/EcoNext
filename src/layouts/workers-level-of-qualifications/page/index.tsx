@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatPercent, idlogo, formatChangeInt, capitalise, absSort } from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatChangeInt, absSort } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -32,12 +32,6 @@ const TopList = styled.ul`
     line-height: 20px;
   }
 `;
-
-const genderLookup = {
-  Persons: 'resident',
-  Males: 'male resident',
-  Females: 'female resident',
-};
 
 const TopLevelQualifications = data => data.filter(({ LabelKey }) => LabelKey < 97000);
 

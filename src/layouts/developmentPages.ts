@@ -30,4 +30,6 @@ export default [
   'workers-hours-worked',
   'workers-occupations',
   'workers-level-of-qualifications',
+  'workers-income',
+  'workers-income-quartile',
 ];
