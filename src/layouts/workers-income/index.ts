@@ -18,17 +18,18 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headline = ({ data, contentData, filters }) => {
-  const { prefixedAreaName, currentGenderName } = data;
-  const { Sex } = filters;
+  const { prefixedAreaName, currentGenderName, currentIndustryName } = data;
+  const { Sex, Indkey } = filters;
   const allIncomers = contentData.filter(({ LabelKey }) => LabelKey < 999999 && LabelKey != 3115);
   const highIncomers = key =>
     _.sumBy(
       allIncomers.filter(({ LabelKey }) => LabelKey > 3111),
       key,
     );
+  const industryText = Indkey == 23000 ? '' : `${currentIndustryName}`;
   const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
   const highIncomerClient = formatPercent(highIncomers('PerYear1'));
-  const headlineText = `In ${prefixedAreaName}, ${highIncomerClient}% of the ${genderText} local workers earned $1,750 or more per week.`;
+  const headlineText = `In ${prefixedAreaName}, ${highIncomerClient}% of the ${industryText} ${genderText} local workers earned $1,750 or more per week.`;
   return headlineText;
 };
 

@@ -70,8 +70,7 @@ const MajorDifferences = () => {
   } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
-  const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
-  const majorDifferences = _.sortBy(qualsWithData, qual => {
+  const majorDifferences = _.sortBy(topquals, qual => {
     const compare = [qual.PerYear1, qual.BMYear1];
     return _.max(compare) - _.min(compare);
   });
@@ -208,8 +207,8 @@ const WorkersIncomePage = () => {
 
         <p>
           Overall, {highIncomerClient}% of the {genderText} local workers {industryText} earned a high income, and{' '}
-          {lowIncomerClient}% earned a low income, compared with {highIncomerBM}% and {lowIncomerBM}% respectively for
-          Victoria.
+          {lowIncomerClient}% earned a low income, compared with {highIncomerBM}% and {lowIncomerBM}% respectively for{' '}
+          {currentBenchmarkName}.
         </p>
         <MajorDifferences />
       </AnalysisContainer>
