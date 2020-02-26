@@ -4,37 +4,6 @@ import Link from './Link';
 import { ClientContext, PageContext } from '../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
-
-const ChildrenMenu = () => {
-  const { clientAlias, clientPages } = useContext(ClientContext);
-  const { handle } = useContext(PageContext);
-  const currentPageNode = clientPages.find(node => node.Alias === handle);
-  const currentParentPageID = (currentPageNode && currentPageNode.PageID) || 0;
-
-  const children = clientPages
-    .filter(node => node.ParentPageID === currentParentPageID)
-    .map(({ Disabled, MenuTitle, Alias }) => (
-      <li key={Alias}>
-        {Disabled ? (
-          <DisabledLink>{MenuTitle}</DisabledLink>
-        ) : (
-          <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
-            {MenuTitle}
-          </StyledLink>
-        )}
-      </li>
-    ));
-
-  return (
-    <ChildrenMenuContainer>
-      <Heading>Select a topic</Heading>
-      <ul>{children}</ul>
-    </ChildrenMenuContainer>
-  );
-};
-
-export default ChildrenMenu;
-
 const Heading = styled.h2`
   width: 100%;
 `;
@@ -69,3 +38,32 @@ const DisabledLink = styled.a`
     border-bottom: 2px solid ${variables.colorEconomy};
   }
 `;
+
+const ChildrenMenu = () => {
+  const { clientAlias, clientPages } = useContext(ClientContext);
+  const { handle } = useContext(PageContext);
+  const currentPageNode = clientPages.find(node => node.Alias === handle);
+  const currentParentPageID = (currentPageNode && currentPageNode.PageID) || 0;
+  const childrenPages = clientPages.filter(node => node.ParentPageID === currentParentPageID);
+
+  const children = childrenPages.map(({ Disabled, MenuTitle, Alias }) => (
+    <li key={Alias}>
+      {Disabled ? (
+        <DisabledLink>{MenuTitle}</DisabledLink>
+      ) : (
+        <StyledLink href={`/${clientAlias}/${Alias}`} prefetch="false" className={handle === Alias && 'active'}>
+          {MenuTitle}
+        </StyledLink>
+      )}
+    </li>
+  ));
+
+  return (
+    <ChildrenMenuContainer>
+      <Heading>Select a topic</Heading>
+      <ul>{children}</ul>
+    </ChildrenMenuContainer>
+  );
+};
+
+export default ChildrenMenu;
