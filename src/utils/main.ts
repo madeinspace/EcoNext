@@ -151,3 +151,9 @@ export const absSort = (arr, sortKey) => {
   //call comparison function as callback in array sort
   return arr.sort(absoluteValueComparison);
 };
+
+export const getSerieByKey = (data, key) =>
+  data.map(item => ({
+    name: item.LabelName,
+    y: item[key],
+  }));

@@ -379,7 +379,10 @@ $even-row-color: $odd-color;
         width: 110px;
       }
       &.XXXL {
-        width: 120px;
+        width: 130px;
+      }
+      &.XXXXL {
+        min-width: 150px;
       }
     }
 
