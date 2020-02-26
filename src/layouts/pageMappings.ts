@@ -34,6 +34,8 @@ import WorkersIncomePage from './workers-income/page';
 import WorkersIncomeQuartilePage from './workers-income-quartile/page';
 import WorkerMethodOfTravelToWorkPage from './workers-travel-to-work/page';
 import ResidentWorkerMethodOfTravelToWorkPage from './travel-to-work/page';
+import WorkersKeyStatisticsPage from './workers-key-statistics/page';
+import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
 
 const PageMappings = {
   home: HomePage,
@@ -71,6 +73,8 @@ const PageMappings = {
   'workers-income-quartile': WorkersIncomeQuartilePage,
   'workers-travel-to-work': WorkerMethodOfTravelToWorkPage,
   'travel-to-work': ResidentWorkerMethodOfTravelToWorkPage,
+  'workers-key-statistics': WorkersKeyStatisticsPage,
+  'workers-key-statistics-lite': WorkersKeyStatisticsLitePage,
 };
 
 export default PageMappings;
