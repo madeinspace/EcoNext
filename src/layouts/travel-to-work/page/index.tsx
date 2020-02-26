@@ -15,7 +15,6 @@ import {
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import InfoBox from '../../../components/ui/infoBox';
 import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
 import useEntityText from '../../../utils/useEntityText';
@@ -165,7 +164,7 @@ const ResidentWorkerMethodOfTravelToWorkPage = () => {
         <div>
           <p>
             Maximising access to employment is a key objective in any economic development strategy. Understanding the
-            modes of transport the {prefixedAreaName}'s local resident workers use (either within or outside the local
+            modes of transport {prefixedAreaName}'s local resident workers use (either within or outside the local
             area), informs decision-makers about the effectiveness of transport modes, routes and availability of local
             public transport.
           </p>
@@ -185,7 +184,7 @@ const ResidentWorkerMethodOfTravelToWorkPage = () => {
             Method of Travel to Work data should be viewed in conjunction with{' '}
             {LinkBuilder(
               `http://economy.id.com.au/${clientAlias}/residents-place-of-work-industry`,
-              `resident place of residence`,
+              `resident place of work`,
             )}{' '}
             for a clearer picture of where working residents are employed.
           </p>
@@ -203,13 +202,6 @@ const ResidentWorkerMethodOfTravelToWorkPage = () => {
       <ItemWrapper>
         <EntityTable data={tableParams} name={useEntityText('SubTitle')} />
       </ItemWrapper>
-
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
-          the sub categories.
-        </span>
-      </InfoBox>
 
       <ItemWrapper>
         <EntityChart data={chartData} />
@@ -269,7 +261,7 @@ const tableBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData,
-    entityData: { currentBenchmarkName, currentIndustryName },
+    entityData: { currentBenchmarkName, currentAreaName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
@@ -343,7 +335,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentIndustryName}`,
+            displayText: `${currentAreaName}`,
             colSpan: 1,
           },
           {

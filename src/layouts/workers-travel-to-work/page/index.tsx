@@ -191,7 +191,7 @@ const WorkerMethodOfTravelToWorkPage = () => {
             and{' '}
             {LinkBuilder(
               `http://economy.id.com.au/${clientAlias}/residents-place-of-work-industry`,
-              `resident place of residence`,
+              `resident place of work`,
             )}{' '}
             for a clearer picture of where people come from to work in {prefixedAreaName}, and{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations`, `Employment locations`)} for
@@ -285,10 +285,10 @@ const ChartSource = () => (
 
 // #region table builders
 const tableBuilder = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { clientAlias } = useContext(ClientContext);
   const {
     contentData,
-    entityData: { currentBenchmarkName, currentIndustryName },
+    entityData: { currentBenchmarkName, currentAreaName, currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
@@ -362,7 +362,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentIndustryName}`,
+            displayText: `${currentAreaName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {

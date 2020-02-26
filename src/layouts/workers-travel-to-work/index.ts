@@ -25,9 +25,9 @@ const Headline = ({ toggles, data }) => {
   const { prefixedAreaName, currentBenchmarkName, currentIndustryName } = toggles;
   const PTLabelKeys = [2003, 2007, 2011, 2012];
   const PT = data.filter(({ LabelKey }) => PTLabelKeys.includes(LabelKey));
-  const PTtotalArea = total(PT, 'NoYear1');
+  const PTtotalArea = total(PT, 'PerYear1');
   const PTtotalBM = total(PT, 'BMYear1');
-  const comparison = Math.abs(PTtotalArea - PTtotalBM) < 5 ? 'similar' : PTtotalArea > PTtotalBM ? `higher` : `lower`;
+  const comparison = Math.abs(PTtotalArea - PTtotalBM) < 1 ? 'similar' : PTtotalArea > PTtotalBM ? `higher` : `lower`;
   const headlineAlt = `Within ${prefixedAreaName}, there is a ${comparison} proportion of local ${currentIndustryName} workers using public transport to get to work than the ${currentBenchmarkName} workforce.`;
 
   return headlineAlt;
