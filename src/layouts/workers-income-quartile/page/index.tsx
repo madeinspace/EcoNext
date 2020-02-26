@@ -31,14 +31,15 @@ const EmergingGroupsHeading = () => {
   const HighestQuartileName = absHighests[0]['LabelName'].toLowerCase();
   const changeText = Math.sign(absHighests[0]['Change12']) === -1 ? 'decrease' : 'increase';
   const HighestQuartileFigure = formatNumber(Math.abs(absHighests[0]['Change12']));
-  const genderText = +Sex === 3 ? 'people' : currentGenderName.toLowerCase();
+  const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase();
+  const genderTextAlt = +Sex === 3 ? 'people' : genderText;
   const industryText = +Indkey == 23000 ? '' : ` ${currentIndustryName}`;
 
   return (
     <p>
       The most significant change for the {industryText} {genderText.replace(/s\b/gi, '')} local workers between 2011
       and 2016 was in the "{HighestQuartileName}" quartile which showed an {changeText} of {HighestQuartileFigure}{' '}
-      {genderText}.
+      {genderTextAlt}.
     </p>
   );
 };
@@ -124,7 +125,7 @@ const WorkersIncomeQuartilePage = () => {
         <SourceBubble>
           <div>
             <h3>Data source</h3>
-            <p>Australian Bureau of Statistics (ABS) – Census 2011 and 2016 – by usual residence</p>
+            <p>{useEntityText('DataSource')}</p>
           </div>
         </SourceBubble>
       </PageIntro>
