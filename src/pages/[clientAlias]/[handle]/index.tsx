@@ -14,6 +14,8 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import SiblingsMenu from '../../../components/SiblingsMenu';
+import Error from 'next/error';
+
 // #endregion
 
 const ErrorPage = ({ status }): JSX.Element => {
@@ -24,7 +26,7 @@ const PageTemplate = (): JSX.Element => {
   const { pageData, handle } = useContext(PageContext);
 
   if (!pageData) {
-    return <MainLayout Template={() => <ErrorPage status={404} />}>404</MainLayout>;
+    return <Error statusCode={404} />;
   }
 
   const { ParentPageID } = pageData;
@@ -56,34 +58,36 @@ const PageTemplate = (): JSX.Element => {
   );
 };
 
-const PageComponent = ({ client, page }): JSX.Element => (
+const PageComponent = ({ client, page }): JSX.Element => {
+  console.log('client, page: ', client, page);
   // we set the value of Page and Client context here
-  <PageContext.Provider value={page}>
-    <ClientContext.Provider value={client}>
-      <PageTemplate />
-    </ClientContext.Provider>
-  </PageContext.Provider>
-);
+  return (
+    <PageContext.Provider value={page}>
+      <ClientContext.Provider value={client}>
+        <PageTemplate />
+      </ClientContext.Provider>
+    </PageContext.Provider>
+  );
+};
 
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
 
   const client: any = await fetchClientData({ clientAlias, containers });
-  const { ID, isLite } = client;
-  //
+
+  // no client? => 404
+  if (!client) return { client, page: { pageData: null, filters: [], handle } };
+
+  const isClientPage = client.clientPages.find(({ Alias }) => Alias === handle);
+
+  // no page? => 404 TODO:
+  if (!isClientPage) return { client, page: { pageData: null, filters: [], handle } };
+
   const layoutData = await fetchLayout(handle);
-
-  if (!layoutData || !client) {
-    // 404
-    return { client, page: { pageData: null, filters: [], handle } };
-  }
-
+  const { ID, isLite } = client;
   const { fetchData, pageContent, activeCustomToggles } = layoutData;
-
   const { AllPages } = containers;
-
   const pageData = AllPages[handle];
-
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
@@ -107,9 +111,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     [...pageContent['filterToggles'], ...globalToggles] || [],
   );
 
-  const activeFilters = filterToggles.map(({ key, value }) => {
-    return { [key]: value };
-  });
+  const activeFilters = filterToggles.map(({ key, value }) => ({ [key]: value }));
 
   // let's update the filters with the active one
   const filters = Object.assign(tempfilters, ...activeFilters);
