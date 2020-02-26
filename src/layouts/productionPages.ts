@@ -32,4 +32,5 @@ export default [
   'workers-income',
   'workers-income-quartile',
   'workers-travel-to-work',
+  'travel-to-work'
 ];

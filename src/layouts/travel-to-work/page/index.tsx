@@ -47,8 +47,8 @@ const MajorDifferencesHeading = () => {
 
   return (
     <Highlight>
-      The major differences between the method of travel to work of the {industryText} workforce in {prefixedAreaName}{' '}
-      and the {currentBenchmarkName} workforce were:
+      The major differences between the method of travel to work of the {industryText} resident workers in{' '}
+      {prefixedAreaName} and the {currentBenchmarkName} workforce were:
     </Highlight>
   );
 };
@@ -85,7 +85,7 @@ const MajorDifferences = () => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local workers who{' '}
+            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of resident workers who{' '}
             {transportText(qual)} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
           </li>
         ))}
@@ -102,8 +102,8 @@ const EmergingGroupsHeading = () => {
   const industryText = +Indkey === 23000 ? '' : `${currentIndustryName}`;
   return (
     <Highlight>
-      The largest changes in the method of travel to work of the {industryText} workforce in {prefixedAreaName} between
-      2011 and 2016 were:
+      The largest changes in the method of travel to work of the {industryText} resident workers in {prefixedAreaName}{' '}
+      between 2011 and 2016 were:
     </Highlight>
   );
 };
@@ -120,7 +120,7 @@ const EmergingGroups = () => {
       <TopList>
         {topFour.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatChangeInt(qual.Change12)} local workers)
+            {qual.LabelName} ({formatChangeInt(qual.Change12)} resident workers)
           </li>
         ))}
       </TopList>
@@ -132,7 +132,7 @@ const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
 // #endregion
 
 // #region page
-const WorkerMethodOfTravelToWorkPage = () => {
+const ResidentWorkerMethodOfTravelToWorkPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: data,
@@ -140,10 +140,9 @@ const WorkerMethodOfTravelToWorkPage = () => {
     entityData: { currentBenchmarkName, currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
-  const industryText = +Indkey === 23000 ? '' : `of the ${currentIndustryName} workforce`;
+  const industryText = +Indkey === 23000 ? '' : `of the ${currentIndustryName} resident workers`;
   const industryTextAlt = +Indkey === 23000 ? '' : `in ${currentIndustryName}`;
-  const benchmarkText =
-    IGBMID < 23000 ? currentBenchmarkName : `the ${currentBenchmarkName} workforce within ${prefixedAreaName}`;
+  const benchmarkText = IGBMID < 23000 ? currentBenchmarkName : ` ${currentBenchmarkName} within ${prefixedAreaName}`;
   const tableParams = tableBuilder();
   const chartData = chartBuilder();
   const chartChangeData = chartBuilderChange();
@@ -165,37 +164,30 @@ const WorkerMethodOfTravelToWorkPage = () => {
       <PageIntro>
         <div>
           <p>
-            This data reveals the main modes of transport used by local workers in a particular industry to get to work.
-            Workforce transport data for {prefixedAreaName} is very useful in transport planning as it informs
-            decision-makers about the effectiveness and availability of public transport.
+            Maximising access to employment is a key objective in any economic development strategy. Understanding the
+            modes of transport the {prefixedAreaName}'s local resident workers use (either within or outside the local
+            area), informs decision-makers about the effectiveness of transport modes, routes and availability of local
+            public transport.
           </p>
           <p>There are a number of reasons why people use different Modes of Transport to get to work including:</p>
           <TopList>
             <li>
               The availability of affordable and effective public transport options between place of residence and place
-              of work (For instance, industries located near railway stations are likely to have higher public transport
-              use than those located away from main public transport routes);
+              of work;
             </li>
-            <li>The number of motor vehicles available from within a household; and</li>
+            <li>The number of motor vehicles available within a household; and</li>
             <li>
               The travel distance to work, which for example, can allow people to walk or bicycle to their place of
               employment.
             </li>
           </TopList>
           <p>
-            Method of Travel to Work data should be viewed in conjunction with Workers{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/workers-place-of-residence-industry`,
-              `place of residence`,
-            )}{' '}
-            and{' '}
+            Method of Travel to Work data should be viewed in conjunction with{' '}
             {LinkBuilder(
               `http://economy.id.com.au/${clientAlias}/residents-place-of-work-industry`,
               `resident place of residence`,
             )}{' '}
-            for a clearer picture of where people come from to work in {prefixedAreaName}, and{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations`, `Employment locations`)} for
-            the Destination Zones they work in and how they arrive there.
+            for a clearer picture of where working residents are employed.
           </p>
         </div>
         <SourceBubble>
@@ -205,15 +197,6 @@ const WorkerMethodOfTravelToWorkPage = () => {
           </div>
         </SourceBubble>
       </PageIntro>
-      <Note>
-        <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
-        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
-        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
-        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
-        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
-        caution, however, and not compare directly with 2011 data from any other source.
-      </Note>
 
       <ControlPanel />
 
@@ -239,16 +222,14 @@ const WorkerMethodOfTravelToWorkPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          In 2016, there were {numberPublicTransportArea} people {industryTextAlt} who caught public transport to work
-          (train, bus, tram or ferry) in {prefixedAreaName}, compared with {numberPrivateTransportArea} who drove in
-          private vehicles (car – as driver, car – as passenger, motorbike, or truck).
+          In 2016, there were {numberPublicTransportArea} resident workers {industryTextAlt} who caught public transport
+          to work (train, bus, tram or ferry) in {prefixedAreaName}, compared with {numberPrivateTransportArea} who
+          drove in private vehicles (car – as driver, car – as passenger, motorbike, or truck).
         </p>
-
         <p>
-          Analysis of the method of travel to work {industryText} in {prefixedAreaName} in 2016 compared to the{' '}
-          {currentBenchmarkName} workforce within {prefixedAreaName} shows that {percPublicTransportArea}% used public
-          transport, while {percPrivateTransportArea}% used a private vehicle, compared with {percPublicTransportBM}%
-          and {percPrivateTransportBM}% respectively in {benchmarkText}.
+          Analysis of the method of travel to work of the resident workers in {prefixedAreaName} shows that{' '}
+          {percPublicTransportArea}% used public transport, while {percPrivateTransportArea}% used a private vehicle,
+          compared with {percPublicTransportBM}% and {percPrivateTransportBM}% respectively in {benchmarkText}.
         </p>
 
         <MajorDifferences />
@@ -263,7 +244,7 @@ const WorkerMethodOfTravelToWorkPage = () => {
   );
 };
 
-export default WorkerMethodOfTravelToWorkPage;
+export default ResidentWorkerMethodOfTravelToWorkPage;
 
 // #endregion
 
@@ -292,7 +273,7 @@ const tableBuilder = () => {
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Local workers method of travel to work';
+  const tableTitle = 'Resident workers method of travel to work';
   const firstColTitle = `Main method of travel`;
   const rows = contentData
     .filter(node => node.LabelKey !== 999999)
@@ -345,7 +326,7 @@ const tableBuilder = () => {
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'local-workers---method-of-travel-to-work',
+    anchorName: 'resident-workers---method-of-travel-to-work',
     headRows: [
       {
         cssClass: '',
@@ -449,11 +430,11 @@ const chartBuilder = () => {
   const BMYear1Serie = getSerieByKey(parents, 'BMYear1');
 
   const chartType = 'bar';
-  const chartTitle = `Local workers method of travel to work, 2016`;
+  const chartTitle = `Resident workers method of travel to work, 2016`;
   const chartSubtitle = `${currentAreaName} - ${currentIndustryName} `;
   const serieTitle = +IGBMID < 23000 ? `${currentAreaName}` : `${currentIndustryName}`;
   const xAxisTitle = 'Main method used';
-  const yAxisTitle = `% of local workers`;
+  const yAxisTitle = `% of resident workers`;
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const rawDataSource = useEntityText('ChartRawDataSource');
@@ -529,11 +510,11 @@ const chartBuilderChange = () => {
 
   const categories = parents.map(({ LabelName }) => LabelName);
   const chartType = 'bar';
-  const chartTitle = `Change in local workers method of travel to work, 2011 to 2016`;
+  const chartTitle = `Change in resident workers method of travel to work, 2011 to 2016`;
   const chartSubtitle = `${currentAreaName} - ${currentIndustryName} `;
   const serie = getSerieByKey(parents, 'Change12');
   const xAxisTitle = 'Main method used';
-  const yAxisTitle = `Change in local workers`;
+  const yAxisTitle = `Change in resident workers`;
   const rawDataSource = useEntityText('ChartRawDataSource');
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
