@@ -32,4 +32,5 @@ export default [
   'workers-level-of-qualifications',
   'workers-income',
   'workers-income-quartile',
+  'workers-travel-to-work',
 ];
