@@ -520,7 +520,6 @@ const chartBuilder = ({
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
   );
-  // console.log('parents: ', parents);
   const children = data.filter(item => item.Hierarchy === 'C');
   parents.forEach(parent => {
     parent.children = children.filter(
