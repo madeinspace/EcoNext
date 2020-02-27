@@ -59,7 +59,6 @@ const PageTemplate = (): JSX.Element => {
 };
 
 const PageComponent = ({ client, page }): JSX.Element => {
-  console.log('client, page: ', client, page);
   // we set the value of Page and Client context here
   return (
     <PageContext.Provider value={page}>
