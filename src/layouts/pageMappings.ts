@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import GrossProduct from './gross-product/page';
-import Indicator from './indicator/page';
+import Parent from './parent-landing/page';
 import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
@@ -37,10 +37,15 @@ import ResidentWorkerMethodOfTravelToWorkPage from './travel-to-work/page';
 import WorkersKeyStatisticsPage from './workers-key-statistics/page';
 import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
 
+const parentPageMappings = {
+  indicator: Parent,
+  structure: Parent,
+  'spatial-economy': Parent,
+};
+
 const PageMappings = {
   home: HomePage,
   'gross-product': GrossProduct,
-  indicator: Indicator,
   population: Population,
   'local-jobs': LocalJobs,
   'value-of-building-approvals': ValueOfBuildingApprovals,
@@ -77,4 +82,4 @@ const PageMappings = {
   'workers-key-statistics-lite': WorkersKeyStatisticsLitePage,
 };
 
-export default PageMappings;
+export default { ...PageMappings, ...parentPageMappings };

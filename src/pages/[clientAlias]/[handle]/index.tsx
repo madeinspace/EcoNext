@@ -74,7 +74,6 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   const client: any = await fetchClientData({ clientAlias, containers });
 
-  // no client? => 404
   if (!client) return { client, page: { pageData: null, filters: [], handle } };
 
   const isClientPage = client.clientPages.find(({ Alias }) => Alias === handle);
