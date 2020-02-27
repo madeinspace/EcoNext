@@ -1,4 +1,19 @@
-const parentPages = ['indicator', 'structure', 'spatial-economy'];
+const parentPages = [
+  'size',
+  'indicator',
+  'structure',
+  'spatial-economy',
+  'industry-focus',
+  'journey-to-work',
+  'workforce-profiles',
+  'labour-force',
+  'local-market',
+  'housing-market',
+  'tourism',
+  'reports-root',
+  'about-economy-parent',
+  'explanatory-notes',
+];
 
 export default [
   ...parentPages,

@@ -39,8 +39,19 @@ import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
 
 const parentPageMappings = {
   indicator: Parent,
+  size: Parent,
   structure: Parent,
   'spatial-economy': Parent,
+  'industry-focus': Parent,
+  'journey-to-work': Parent,
+  'workforce-profiles': Parent,
+  'labour-force': Parent,
+  'local-market': Parent,
+  'housing-market': Parent,
+  tourism: Parent,
+  'reports-root': Parent,
+  'about-economy-parent': Parent,
+  'explanatory-notes': Parent,
 };
 
 const PageMappings = {
