@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import GrossProduct from './gross-product/page';
-import Indicator from './indicator/page';
+import ParentPage from './parent-landing/page';
 import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
@@ -37,10 +37,25 @@ import ResidentWorkerMethodOfTravelToWorkPage from './travel-to-work/page';
 import WorkersKeyStatisticsPage from './workers-key-statistics/page';
 import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
 
+const ParentPageMappings = {
+  indicator: ParentPage,
+  size: ParentPage,
+  structure: ParentPage,
+  'spatial-economy': ParentPage,
+  'industry-focus': ParentPage,
+  'journey-to-work': ParentPage,
+  'workforce-profiles': ParentPage,
+  'labour-force': ParentPage,
+  'local-market': ParentPage,
+  'housing-market': ParentPage,
+  tourism: ParentPage,
+  'reports-root': ParentPage,
+  'about-economy-parent': ParentPage,
+  'explanatory-notes': ParentPage,
+};
 const PageMappings = {
   home: HomePage,
   'gross-product': GrossProduct,
-  indicator: Indicator,
   population: Population,
   'local-jobs': LocalJobs,
   'value-of-building-approvals': ValueOfBuildingApprovals,
@@ -77,4 +92,4 @@ const PageMappings = {
   'workers-key-statistics-lite': WorkersKeyStatisticsLitePage,
 };
 
-export default PageMappings;
+export default { ...PageMappings, ...ParentPageMappings };
