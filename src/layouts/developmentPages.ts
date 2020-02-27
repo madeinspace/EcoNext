@@ -1,6 +1,8 @@
+const parentPages = ['indicator', 'structure', 'spatial-economy'];
+
 export default [
+  ...parentPages,
   'home',
-  'indicator',
   'population',
   'gross-product',
   'local-jobs',
