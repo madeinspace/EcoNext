@@ -1,1 +1,5 @@
-export default () => <></>;
+const IndicatorPage = () => {
+  return <></>;
+};
+
+export default IndicatorPage;
