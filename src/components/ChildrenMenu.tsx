@@ -4,9 +4,9 @@ import Link from './Link';
 import { ClientContext, PageContext } from '../utils/context';
 
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
-const Heading = styled.h2`
+const Heading = styled.h1`
   width: 100%;
-  font-size: 22px;
+  font-size: 23px;
   margin-bottom: 20px;
 `;
 
@@ -18,28 +18,33 @@ const ChildrenMenuContainer = styled.div`
   padding-bottom: 10px;
 `;
 
-const ChildrenList = styled.ul`
-  li {
-    width: 100%;
-  }
-`;
-
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
   padding: 0px;
-  line-height: 22px;
   margin-bottom: 10px;
   border-bottom: 2px solid transparent;
+  line-height: 20px;
   &.active,
   :hover {
     border-bottom: 2px solid ${variables.colorEconomy};
   }
 `;
 
-const DisabledLink = styled(StyledLink)`
+const ChildrenList = styled.ul`
+  list-style: none;
+`;
+
+const DisabledLink = styled.a`
+  padding: 0px;
+  margin-bottom: 10px;
   color: ${variables.grayLight};
+  text-decoration: none;
+  line-height: 20px;
   cursor: default;
+  :hover {
+    border-bottom: 2px solid ${variables.colorEconomy};
+  }
 `;
 
 const ChildrenMenu = () => {
