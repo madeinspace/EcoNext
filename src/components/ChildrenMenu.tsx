@@ -6,6 +6,8 @@ import { ClientContext, PageContext } from '../utils/context';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const Heading = styled.h2`
   width: 100%;
+  font-size: 22px;
+  margin-bottom: 20px;
 `;
 
 const ChildrenMenuContainer = styled.div`
@@ -16,10 +18,17 @@ const ChildrenMenuContainer = styled.div`
   padding-bottom: 10px;
 `;
 
+const ChildrenList = styled.ul`
+  li {
+    width: 100%;
+  }
+`;
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${variables.gray};
-  padding: 0px 12px 0 12px;
+  padding: 0px;
+  line-height: 22px;
   margin-bottom: 10px;
   border-bottom: 2px solid transparent;
   &.active,
@@ -28,15 +37,9 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const DisabledLink = styled.a`
-  padding: 0px 12px 0 12px;
-  margin-bottom: 10px;
+const DisabledLink = styled(StyledLink)`
   color: ${variables.grayLight};
-  text-decoration: none;
   cursor: default;
-  :hover {
-    border-bottom: 2px solid ${variables.colorEconomy};
-  }
 `;
 
 const ChildrenMenu = () => {
@@ -61,7 +64,7 @@ const ChildrenMenu = () => {
   return (
     <ChildrenMenuContainer>
       <Heading>Select a topic</Heading>
-      <ul>{children}</ul>
+      <ChildrenList>{children}</ChildrenList>
     </ChildrenMenuContainer>
   );
 };
