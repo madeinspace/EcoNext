@@ -1,14 +1,12 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatPercent, idlogo, formatChangeInt } from '../../../utils/';
+import { formatNumber, formatPercent } from '../../../utils/';
 import { ItemWrapper, SourceBubble, PageIntro, Note } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
-import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
-import { IdLink, ABSLinkBuilder, ABSLink, LinkBuilder } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import getActiveToggle from '../../../utils/getActiveToggle';
 import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
@@ -26,17 +24,15 @@ const WorkersKeyStatisticsPage = () => {
       <PageIntro>
         <div>
           <p>
-            Individual Income is an indicator of socio-economic status, skills and occupations required in a particular
-            industry. With other data sources, such as Qualifications and Occupation, it helps to evaluate the economic
-            opportunities of people in an industry.
+            The workforce is made up of all the people who are employed in the local area, regardless of where they
+            live. Workforce statistics reveal how the characteristics of the workforce in {prefixedAreaName} vary
+            between each industry sector and indicates specific industry sector workforce requirements and employment
+            opportunities.
           </p>
+          <p>Access the detailed tables for further exploration of each characteristic.</p>
           <p>
-            Income quartiles are used to condense income categories into manageable units, adjust for the effects of
-            inflation, and allow areas to be compared over time relative to a benchmark. The incomes for a specified
-            industry for the state are split into four equal groups, each containing 25% of the workers in that
-            industry, and the quartiles allow users to compare changes in that industry in the local area to changes
-            statewide, or against another benchmark. For more information on how quartiles are calculated please refer
-            to the data notes.
+            <strong>NOTE:</strong> All tables in the workers section are based on Census employment data which differ
+            from the NIEIR employment estimates. See data notes for more details.
           </p>
         </div>
         <SourceBubble>
@@ -50,10 +46,9 @@ const WorkersKeyStatisticsPage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
-        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
-        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
-        caution, however, and not compare directly with 2011 data from any other source.
+        imputed using the same methodology. {prefixedAreaName} currently subscribe to the “LITE” version of economy.id,
+        which does not feature this extended dataset. In order to directly compare worker numbers between 2011 and 2016,
+        it is recommended that {prefixedAreaName} subscribe to the FULL version of economy.id.
       </Note>
       <ControlPanel />
       <ItemWrapper>
