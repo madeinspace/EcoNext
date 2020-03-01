@@ -73,7 +73,7 @@ export const ChartDefault = (...opts) => {
     },
     croshair: false,
     title: {
-      align: 'low',
+      align: 'middle',
       text: 'xAxis title',
     },
     labels: {
@@ -84,7 +84,6 @@ export const ChartDefault = (...opts) => {
     plotBands: [],
   };
 
-  /* THIS CONDITION IS CATERING FOR DUAL YAXIS */
   chartDefaults.yAxis = {
     style: {
       textOverflow: 'none',
@@ -94,7 +93,6 @@ export const ChartDefault = (...opts) => {
     softMin: 0,
     title: {
       text: 'yAxis title',
-      align: 'low',
     },
     labels: {
       staggerLines: 0,
@@ -108,59 +106,6 @@ export const ChartDefault = (...opts) => {
     plotBands: [],
     croshair: false,
   };
-  if (options.yAxis.length === 2) {
-    chartDefaults.series[0].yAxis = 0;
-    chartDefaults.series[1].yAxis = 1;
-    chartDefaults.yAxis = [
-      {
-        style: {
-          textOverflow: 'none',
-        },
-        alignTicks: false,
-        allowDecimals: false,
-        title: {
-          text: 'yAxis Primary title',
-          align: 'low',
-        },
-        tickPositioner: function () {
-          const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
-          if (this.dataMin < 0 && this.dataMax >= 0) {
-            return this.getLinearTickPositions(this.tickInterval, -maxDeviation, maxDeviation);
-          }
-        },
-        labels: options.yAxis[0].labels,
-      },
-      {
-        style: {
-          textOverflow: 'none',
-        },
-        className: 'yAxisSecondary',
-        alignTicks: true,
-        allowDecimals: false,
-        title: {
-          text: 'yAxis Secondary title',
-          align: 'low',
-        },
-        tickPositioner: function () {
-          const maxDeviation = Math.ceil(Math.max(Math.abs(this.dataMax), Math.abs(this.dataMin)));
-          const halfMaxDeviation = Math.ceil(maxDeviation / 2);
-          if (this.dataMin < 0 && this.dataMax >= 0) {
-            return [-maxDeviation, -halfMaxDeviation, 0, halfMaxDeviation, maxDeviation];
-          } else if (this.dataMax <= 0) {
-            return [-maxDeviation, -halfMaxDeviation, 0];
-          }
-        },
-        labels: {
-          ...options.yAxis[1].labels,
-          staggerLines: 0,
-          formatter: function () {
-            return formatNumber(this.value);
-          },
-        },
-        opposite: true,
-      },
-    ];
-  }
 
   chartDefaults.plotOptions = {
     series: {

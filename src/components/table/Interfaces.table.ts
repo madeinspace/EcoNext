@@ -100,10 +100,11 @@ export interface ICrossLink {
 }
 
 export interface IRow {
+  alreadyExpanded?: boolean;
   childRows: any[];
   childrenAPI: string;
   crossLink?: ICrossLink;
-  cssClass: string;
+  cssClass?: string;
   data: any[];
   format: string;
   formattedData: any[];

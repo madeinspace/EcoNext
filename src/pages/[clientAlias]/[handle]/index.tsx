@@ -71,15 +71,12 @@ const PageComponent = ({ client, page }): JSX.Element => {
 
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
-
   const client: any = await fetchClientData({ clientAlias, containers });
+  const isClientPage = await client.clientPages.find(({ Alias }) => Alias === handle);
+  const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
 
-  if (!client) return { client, page: { pageData: null, filters: [], handle } };
-
-  const isClientPage = client.clientPages.find(({ Alias }) => Alias === handle);
-
-  // no page? => 404 TODO:
-  if (!isClientPage) return { client, page: { pageData: null, filters: [], handle } };
+  // no page or client? => 404
+  if (!isClientPage || !client) return fourOfourData;
 
   const layoutData = await fetchLayout(handle);
   const { ID, isLite } = client;

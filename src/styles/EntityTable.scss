@@ -394,6 +394,21 @@ $even-row-color: $odd-color;
           }
         }
       }
+      &.plain {
+        td {
+          background-color: rgba(0, 0, 0, 0.4) !important;
+          color: #ffffff;
+        }
+        &.expanded {
+          background-color: rgba(0, 255, 105, 0.29) !important;
+          td {
+            color: #ffffff !important;
+          }
+        }
+        &:hover {
+          background-color: $hover-color !important;
+        }
+      }
 
       &.child {
         border-bottom: 1px solid #fff;
