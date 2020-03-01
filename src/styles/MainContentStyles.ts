@@ -47,7 +47,7 @@ export const Headline = styled.p`
   color: ${variables.colorEconomyDark};
   font-size: 23px;
   line-height: 26px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 export const PageIntro = styled.div`
