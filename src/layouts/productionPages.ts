@@ -54,5 +54,6 @@ export default [
   // 'workers-key-statistics-lite',
   // 'labourforce-key-statistics',
   // 'labourforce-key-statistics-lite',
-  // 'unemployed-keystats'
+  // 'unemployed-keystats',
+  // gross-regional-product
 ];

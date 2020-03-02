@@ -39,6 +39,7 @@ import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
 import ResidentWorkersKeyStatisticsPage from './labourforce-key-statistics/page';
 import ResidentWorkersKeyStatisticsLitePage from './labourforce-key-statistics-lite/page';
 import UnemployedKeyStatisticsPage from './unemployed-keystats/page';
+import GrossRegionalProductPage from './gross-regional-product/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -96,6 +97,7 @@ const PageMappings = {
   'labourforce-key-statistics': ResidentWorkersKeyStatisticsPage,
   'labourforce-key-statistics-lite': ResidentWorkersKeyStatisticsLitePage,
   'unemployed-keystats': UnemployedKeyStatisticsPage,
+  'gross-regional-product': GrossRegionalProductPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

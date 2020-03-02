@@ -56,4 +56,5 @@ export default [
   'labourforce-key-statistics',
   'labourforce-key-statistics-lite',
   'unemployed-keystats',
+  'gross-regional-product',
 ];
