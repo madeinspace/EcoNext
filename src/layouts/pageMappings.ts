@@ -36,6 +36,8 @@ import WorkerMethodOfTravelToWorkPage from './workers-travel-to-work/page';
 import ResidentWorkerMethodOfTravelToWorkPage from './travel-to-work/page';
 import WorkersKeyStatisticsPage from './workers-key-statistics/page';
 import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
+import ResidentWorkersKeyStatisticsPage from './labourforce-key-statistics/page';
+import ResidentWorkersKeyStatisticsLitePage from './labourforce-key-statistics-lite/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -78,7 +80,6 @@ const PageMappings = {
   'hours-worked': HoursWorked,
   occupations: Occupations,
   qualifications: Qualifications,
-  'labourforce-key-statistics': LabourforceKeyStatistics,
   income: IncomePage,
   'income-quartiles': IncomeQuartile,
   'workers-age-structure': WorkersAgeStructurePage,
@@ -91,6 +92,8 @@ const PageMappings = {
   'travel-to-work': ResidentWorkerMethodOfTravelToWorkPage,
   'workers-key-statistics': WorkersKeyStatisticsPage,
   'workers-key-statistics-lite': WorkersKeyStatisticsLitePage,
+  'labourforce-key-statistics': ResidentWorkersKeyStatisticsPage,
+  'labourforce-key-statistics-lite': ResidentWorkersKeyStatisticsLitePage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };
