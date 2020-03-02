@@ -53,5 +53,6 @@ export default [
   // 'workers-key-statistics',
   // 'workers-key-statistics-lite',
   // 'labourforce-key-statistics',
-  // 'labourforce-key-statistics-lite'
+  // 'labourforce-key-statistics-lite',
+  // 'unemployed-keystats'
 ];
