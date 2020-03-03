@@ -59,6 +59,7 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area_BM',
       ParamName: 'BMID',
+      Hidden: true,
     },
   ],
 };
