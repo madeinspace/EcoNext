@@ -41,6 +41,11 @@ export const _SubTitle = styled.h3`
   line-height: 27px;
   margin-bottom: 1.45em;
 `;
+export const SubTitleAlt = styled(_SubTitle)`
+  margin-top: 1.45em;
+  margin-bottom: 1.2em;
+  color: ${variables.colorEconomyDark};
+`;
 
 export const Headline = styled.p`
   position: relative;

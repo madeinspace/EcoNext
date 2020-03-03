@@ -58,4 +58,5 @@ export default [
   'unemployed-keystats',
   'gross-regional-product',
   'unemployment',
+  'about-economy-id',
 ];

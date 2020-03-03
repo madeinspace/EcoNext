@@ -40,6 +40,7 @@ import ResidentWorkersKeyStatisticsLitePage from './labourforce-key-statistics-l
 import UnemployedKeyStatisticsPage from './unemployed-keystats/page';
 import GrossRegionalProductPage from './gross-regional-product/page';
 import UnemploymentPage from './unemployment/page';
+import AboutEconomyId from './about-economy-id/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -99,6 +100,7 @@ const PageMappings = {
   'unemployed-keystats': UnemployedKeyStatisticsPage,
   'gross-regional-product': GrossRegionalProductPage,
   unemployment: UnemploymentPage,
+  'about-economy-id': AboutEconomyId,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

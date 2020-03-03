@@ -58,4 +58,5 @@ export default [
   // gross-regional-product,
   // 'unemployment'
   // 'industry-sector-analysis'
+  // 'about-economy-id'
 ];
