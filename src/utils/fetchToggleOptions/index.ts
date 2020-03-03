@@ -21,7 +21,10 @@ const fetchToggleOptions = async (filters, filterToggles) => {
     filterToggles.map(async ({ Database, Params, StoredProcedure, ParamName, Label, DefaultValue, Hidden }) => {
       if (!StoredProcedure) return {};
 
-      const paramList = (Params || []).reduce((acc, cur) => [...acc, filters[Object.keys(cur)[0]]], []);
+      const paramList = (Params || []).reduce((acc, cur) => {
+        const defaultParams = filters[Object.keys(cur)[0]] || Object.values(cur)[0];
+        return [...acc, defaultParams];
+      }, []);
 
       const connectionString = `exec ${Database}.[dbo].${StoredProcedure} ${paramList
         .join(', ')
@@ -29,7 +32,7 @@ const fetchToggleOptions = async (filters, filterToggles) => {
 
       const listData = await sqlConnection.raw(connectionString);
 
-      const list = listData.map(({ Label, Value }) => ({ Label, Value }));
+      const list = listData.map(({ Label, Value, ParentValue, HasInfo }) => ({ Label, Value, ParentValue, HasInfo }));
 
       /**
        * Sometime it happens that the query string provided has the wrong param value either because
