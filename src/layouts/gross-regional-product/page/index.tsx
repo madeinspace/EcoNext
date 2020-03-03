@@ -80,8 +80,7 @@ const Source = () => {
 };
 const ChartSource = () => (
   <p>
-    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by .id, the population experts.
+    Source: <NierLink /> ©2019 Compiled and presented in economy.id by
     <IdLink />.
   </p>
 );
@@ -89,7 +88,7 @@ const ChartSource = () => (
 const chartBuilder = () => {
   const {
     contentData: nodes,
-    entityData: { currentBenchmarkName, currentIndustryName, currentAreaName },
+    entityData: { currentAreaName },
   } = useContext(PageContext);
   const chartTitle = `${currentAreaName} - Gross Regional Product`;
   const chartType = 'column';
@@ -170,10 +169,13 @@ const chartBuilder = () => {
 };
 // #region tableBuilder
 const tableBuilder = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
-  const { contentData: data } = useContext(PageContext);
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    contentData: data,
+    entityData: { currentAreaName },
+  } = useContext(PageContext);
   const anchorName = 'gross-regional-product-(grp)';
-  const tableTitle = `${LongName} - Gross Regional Product measures`;
+  const tableTitle = `${currentAreaName} - Gross Regional Product measures`;
 
   const rows = data.map(({ Year_End, HeadLineGRP, ChangePer, IndustryGRP, ResidentGRP, ResGRPperIndGRP }) => ({
     id: Year_End,
