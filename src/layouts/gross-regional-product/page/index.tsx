@@ -9,6 +9,7 @@ import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
 import EntityChart from '../../../components/chart/EntityChart';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 // #endregion
 
 // #region population page
@@ -57,6 +58,7 @@ const GrossRegionalProductPage = () => {
       <ItemWrapper>
         <EntityChart data={chartBuilder()} />
       </ItemWrapper>
+      <RelatedPagesCTA />
     </>
   );
 };
