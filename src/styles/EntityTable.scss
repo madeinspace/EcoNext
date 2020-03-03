@@ -240,6 +240,8 @@ $even-row-color: $odd-color;
         line-height: normal;
         vertical-align: bottom;
         text-align: right;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &.subheading {
           background-color: $even-color;
@@ -361,28 +363,28 @@ $even-row-color: $odd-color;
         text-align: left;
       }
       &.XS {
-        width: 70px;
+        width: 70px !important;
       }
       &.S {
-        width: 80px;
+        width: 80px !important;
       }
       &.M {
-        width: 85px;
+        width: 85px !important;
       }
       &.L {
-        width: 90px;
+        width: 90px !important;
       }
       &.XL {
-        width: 100px;
+        width: 100px !important;
       }
       &.XXL {
-        width: 110px;
+        width: 110px !important;
       }
       &.XXXL {
-        width: 130px;
+        width: 130px !important;
       }
       &.XXXXL {
-        min-width: 150px;
+        min-width: 150px !important;
       }
     }
 
