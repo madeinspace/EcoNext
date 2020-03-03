@@ -23,7 +23,6 @@ import AgeStructure from './age-structure/page';
 import HoursWorked from './hours-worked/page';
 import Occupations from './occupations/page';
 import Qualifications from './qualifications/page';
-import LabourforceKeyStatistics from './labourforce-key-statistics/page';
 import IncomePage from './income/page';
 import IncomeQuartile from './income-quartiles/page';
 import WorkersAgeStructurePage from './workers-age-structure/page';
@@ -40,6 +39,7 @@ import ResidentWorkersKeyStatisticsPage from './labourforce-key-statistics/page'
 import ResidentWorkersKeyStatisticsLitePage from './labourforce-key-statistics-lite/page';
 import UnemployedKeyStatisticsPage from './unemployed-keystats/page';
 import GrossRegionalProductPage from './gross-regional-product/page';
+import UnemploymentPage from './unemployment/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -98,6 +98,7 @@ const PageMappings = {
   'labourforce-key-statistics-lite': ResidentWorkersKeyStatisticsLitePage,
   'unemployed-keystats': UnemployedKeyStatisticsPage,
   'gross-regional-product': GrossRegionalProductPage,
+  unemployment: UnemploymentPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

@@ -1,42 +1,32 @@
 import { sqlConnection } from '../../utils/sql';
-
 import Page from './page';
-import { formatMillionsCurrency, formatPercent, formatNumber } from '../../utils';
+import { formatPercent } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
-import _ from 'lodash';
 
-//select * from [dbo].[fn_Unemployment_Keystats](102,10,20,2016,2011,0) order by labelkey
+// select * from [dbo].[fn_IN_UnemploymentPivot](102,10,40)
 const SQLQuery = ({ ClientID, WebID, BMID }) =>
-  `SELECT * from CommData_Economy.[dbo].[fn_Unemployment_Keystats](${ClientID},${WebID},${BMID},2016,2011,0)`;
+  `SELECT * from CommData_Economy.[dbo].[fn_In_UnemploymentPivot](${ClientID},${WebID},${BMID}) ORDER BY Year DESC, Month DESC`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => ({
   currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
 });
 
-const headline = ({ data, contentData, filters }) => {
-  console.log('contentData: ', contentData);
-  const unemploymentRate = contentData.filter(({ LabelKey }) => LabelKey === 10004)[0];
-  const unemployedArea = formatPercent(unemploymentRate.PerYear1);
-  const unemployedBM = formatPercent(unemploymentRate.BMYear1);
-  return `${unemployedArea}% of the resident workforce of ${data.prefixedAreaName} were unemployed in 2011, compared to ${unemployedBM}% in Victoria.`;
+const headline = ({ data, contentData }) => {
+  const unemploymentRate = formatPercent(contentData[0]['NumberUnempRate']);
+  return `In the 2019 June quarter, the unemployment rate in ${data.prefixedAreaName} was ${unemploymentRate}%.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Unemployed - Key statistics`,
+      renderString: (): string => `Unemployment`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData, filters }): string => headline({ data, contentData, filters }),
-    },
-    {
-      Title: 'DataSource',
-      renderString: (): string => `Australian Bureau of Statistics (ABS) – Census 2016 and 2011 – by usual residence`,
+      renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
   ],
   filterToggles: [
@@ -51,18 +41,6 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '9',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
-      ParamName: 'BMID',
     },
   ],
 };

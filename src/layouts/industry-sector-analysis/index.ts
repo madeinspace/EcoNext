@@ -3,9 +3,12 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
+// select * from [dbo].[fn_WP_Contribution_Stats](102,10,40,2010,2019,23000,1)
+const contentDataQuery = ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
+  return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) `;
+};
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
-
   return contentData;
 };
 
@@ -55,7 +58,7 @@ const pageContent = {
       Label: 'Industry:',
       Params: [
         {
-          a: '1',
+          a: '2',
         },
       ],
       StoredProcedure: 'sp_Toggle_Econ_IndustryNieir86',
@@ -82,38 +85,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-// @ClientID int,
-// @WebID varchar(MAX),
-// @IGBMID varchar(MAX),
-// @StartYear int,
-// @EndYear int,
-// @DataType char(2),
-// @Sex int,
-// @TblType int,
-// @LblID varchar(max) = null,
-// @Indkey int = NULL
-
-const contentDataQuery = ({
-  ClientID,
-  WebID,
-  IGBMID,
-  sStartYear,
-  sEndYear,
-  DataType = 'UR',
-  Sex,
-  TblType = null,
-  LblID = null,
-  Indkey,
-}) => {
-  return `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex](${ClientID}, 
-    ${WebID}, 
-    ${IGBMID}, 
-    ${sStartYear}, 
-    ${sEndYear}, 
-    '${DataType}', 
-    ${Sex}, 
-    ${TblType}, 
-    ${LblID}, 
-    ${Indkey}) order by LabelKey ASC`;
-};
