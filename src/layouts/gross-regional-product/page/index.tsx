@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatChangeOneDecimal, formatShortDecimal } from '../../../utils/';
+import { formatNumber, formatChangeOneDecimal, formatShortDecimal, idlogo } from '../../../utils/';
 import { ItemWrapper, SourceBubble, PageIntro } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import { useContext } from 'react';
@@ -8,6 +8,7 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
+import EntityChart from '../../../components/chart/EntityChart';
 // #endregion
 
 // #region population page
@@ -53,6 +54,9 @@ const GrossRegionalProductPage = () => {
       <ItemWrapper>
         <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
       </ItemWrapper>
+      <ItemWrapper>
+        <EntityChart data={chartBuilder()} />
+      </ItemWrapper>
     </>
   );
 };
@@ -72,8 +76,96 @@ const Source = () => {
     </p>
   );
 };
+const ChartSource = () => (
+  <p>
+    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
+    by .id, the population experts.
+    <IdLink />.
+  </p>
+);
 // #endregion
-
+const chartBuilder = () => {
+  const {
+    contentData: nodes,
+    entityData: { currentBenchmarkName, currentIndustryName, currentAreaName },
+  } = useContext(PageContext);
+  const chartTitle = `${currentAreaName} - Gross Regional Product`;
+  const chartType = 'column';
+  const geoName = nodes[0].GeoName;
+  const xAxisTitle = 'Year ending June';
+  const yAxisTitle = 'GRP $million';
+  const rawDataSource =
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+  const chartContainerID = 'grp-chart';
+  const categories = _.map(nodes, 'Year_End').reverse();
+  const HeadLineGRP = _.map(nodes, 'HeadLineGRP').reverse();
+  const IndustryGRP = _.map(nodes, 'IndustryGRP').reverse();
+  const ResidentGRP = _.map(nodes, 'ResidentGRP').reverse();
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${geoName}: $${formatNumber(
+      this.y,
+    )} millions`;
+  };
+  return {
+    cssClass: '',
+    highchartOptions: {
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      series: [
+        {
+          name: 'HeadLine GRP',
+          data: HeadLineGRP,
+        },
+        {
+          name: 'Industry GRP',
+          data: IndustryGRP,
+        },
+        {
+          name: 'Resident GRP',
+          data: ResidentGRP,
+        },
+      ],
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          borderWidth: 0,
+        },
+      },
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          title: {
+            text: yAxisTitle,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return formatNumber(this.value);
+            },
+          },
+        },
+      ],
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+    },
+    rawDataSource,
+    dataSource: <ChartSource />,
+    chartContainerID,
+    logoUrl: idlogo,
+  };
+};
 // #region tableBuilder
 const tableBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
