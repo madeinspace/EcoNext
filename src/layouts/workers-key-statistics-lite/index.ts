@@ -32,8 +32,7 @@ const pageContent = {
     },
     {
       Title: 'DataSource',
-      renderString: (): string =>
-        `Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) & 2016 – by place of work`,
+      renderString: (): string => `Australian Bureau of Statistics (ABS) – Census 2016 – by place of work`,
     },
   ],
   filterToggles: [

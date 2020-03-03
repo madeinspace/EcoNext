@@ -1,7 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
-import { formatMillionsCurrency, formatPercent } from '../../utils';
+import { formatMillionsCurrency, formatPercent, formatNumber } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const BuildingApprovalsSQL = ({ ClientID, WebID, BMID, Indkey }) =>
@@ -11,13 +11,14 @@ const fetchData = async ({ filters }) => await sqlConnection.raw(BuildingApprova
 
 const activeCustomToggles = ({ filterToggles }) => ({
   currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
 });
 
 const headline = ({ data, contentData }) => {
-  const males = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10002)[0].PerYear1);
-  const females = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10003)[0].PerYear1);
-  return `In ${data.prefixedAreaName} ${males}% of the local workers are males and ${females}% are female.`;
+  const bachelors = contentData.filter(({ LabelKey }) => LabelKey === 70001)[0];
+  const advancedDiplomas = contentData.filter(({ LabelKey }) => LabelKey === 70002)[0];
+  const sumNo = formatNumber(bachelors.NoYear1 + advancedDiplomas.NoYear1);
+  const sumPer = formatPercent(bachelors.PerYear1 + advancedDiplomas.PerYear1);
+  return `${sumNo} people or ${sumPer}% of ${data.prefixedAreaName}'s resident workers have a tertiary qualification.`;
 };
 
 const pageContent = {
@@ -32,8 +33,7 @@ const pageContent = {
     },
     {
       Title: 'DataSource',
-      renderString: (): string =>
-        `Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) & 2016 – by place of work`,
+      renderString: (): string => `Australian Bureau of Statistics (ABS) – Census 2011 and 2016 – by usual residence`,
     },
   ],
   filterToggles: [

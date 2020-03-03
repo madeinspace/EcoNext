@@ -11,39 +11,31 @@ import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region population page
-const ResidentWorkersKeyStatisticsLitePage = () => {
-  const {
-    entityData: { prefixedAreaName },
-  } = useContext(PageContext);
-
-  const tableParams = tableBuilder();
-
-  return (
-    <>
-      <PageIntro>
+const ResidentWorkersKeyStatisticsLitePage = () => (
+  <>
+    <PageIntro>
+      <div>
+        <p>
+          The local resident workers include all employed people who are resident in the local area regardless of where
+          they work. In other words, it is the people who live locally and therefore have the potential to work locally
+          and is an important resource for the local economy. Their characteristics inform us about the skills that are
+          available locally, even if they are not currently employed in the local economy.
+        </p>
+        <p>Access the detailed tables for further exploration of each characteristic.</p>
+      </div>
+      <SourceBubble>
         <div>
-          <p>
-            The local resident workers include all employed people who are resident in the local area regardless of
-            where they work. In other words, it is the people who live locally and therefore have the potential to work
-            locally and is an important resource for the local economy. Their characteristics inform us about the skills
-            that are available locally, even if they are not currently employed in the local economy.
-          </p>
-          <p>Access the detailed tables for further exploration of each characteristic.</p>
+          <h3>Data source</h3>
+          <p>{useEntityText('DataSource')}</p>
         </div>
-        <SourceBubble>
-          <div>
-            <h3>Data source</h3>
-            <p>{useEntityText('DataSource')}</p>
-          </div>
-        </SourceBubble>
-      </PageIntro>
-      <ControlPanel />
-      <ItemWrapper>
-        <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
-      </ItemWrapper>
-    </>
-  );
-};
+      </SourceBubble>
+    </PageIntro>
+    <ControlPanel />
+    <ItemWrapper>
+      <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
+    </ItemWrapper>
+  </>
+);
 
 export default ResidentWorkersKeyStatisticsLitePage;
 // #endregion

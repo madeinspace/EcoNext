@@ -14,10 +14,12 @@ const activeCustomToggles = ({ filterToggles }) => ({
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
 });
 
-const headline = ({ data, contentData }) => {
+const headline = ({ data, contentData, filters }) => {
+  const { IndKey } = filters;
   const males = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10002)[0].PerYear1);
   const females = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10003)[0].PerYear1);
-  return `In ${data.prefixedAreaName} ${males}% of the local workers are males and ${females}% are female.`;
+  const industryText = IndKey === 23000 ? '' : `(${data.currentIndustryName})`;
+  return `In ${data.prefixedAreaName} ${males}% of the local workers ${industryText} are males and ${females}% are female.`;
 };
 
 const pageContent = {
@@ -28,7 +30,7 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => headline({ data, contentData }),
+      renderString: ({ data, contentData, filters }): string => headline({ data, contentData, filters }),
     },
     {
       Title: 'DataSource',

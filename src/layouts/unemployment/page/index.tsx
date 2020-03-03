@@ -1,12 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatPercent,
-  formatChangeInt,
-  formatChangePercent,
-  formatChangeOneDecimal,
-} from '../../../utils/';
+import { formatNumber, formatPercent, formatChangeInt } from '../../../utils/';
 import { ItemWrapper, SourceBubble, PageIntro, Note } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import { useContext } from 'react';
@@ -75,7 +69,7 @@ const tableBuilder = () => {
     entityData: { currentBenchmarkName, currentAreaName, currentIndustryName },
   } = useContext(PageContext);
   const anchorName = 'resident-workers---unemployed-key-statistics';
-  const tableTitle = `Resident workers key statistics`;
+  const tableTitle = `Resident workers key statistics - ${currentIndustryName}`;
   const parents = _.sortBy(
     data.filter(({ DataType }) => DataType === null),
     item => item.LabelKey,
@@ -109,7 +103,7 @@ const tableBuilder = () => {
           formatNumber(NoYear2),
           formatPercent(PerYear2, '--'),
           formatPercent(BMYear2, '--'),
-          LabelKey === 10004 ? `${formatChangeOneDecimal(Change12)}%` : formatChangeInt(Change12, '--'),
+          formatChangeInt(Change12, '--'),
         ],
       }),
     ),

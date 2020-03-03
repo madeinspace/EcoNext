@@ -1,7 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
-import { formatPercent } from '../../utils';
+import { formatMillionsCurrency, formatPercent, formatNumber } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
@@ -16,23 +16,23 @@ const activeCustomToggles = ({ filterToggles }) => ({
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
 });
 
-const headline = ({ data, contentData }) => {
+const headline = ({ data, contentData, filters }) => {
   console.log('contentData: ', contentData);
   const unemploymentRate = contentData.filter(({ LabelKey }) => LabelKey === 10004)[0];
   const unemployedArea = formatPercent(unemploymentRate.PerYear1);
   const unemployedBM = formatPercent(unemploymentRate.BMYear1);
-  return `${unemployedArea}% of the resident workforce of ${data.prefixedAreaName} were unemployed in 2011, compared to ${unemployedBM}% in ${data.currentBenchmarkName}.`;
+  return `${unemployedArea}% of the resident workforce of ${data.prefixedAreaName} were unemployed in 2011, compared to ${unemployedBM}% in Victoria.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Characteristics of the unemployed`,
+      renderString: ({ data }): string => `Unemployed - Key statistics`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => headline({ data, contentData }),
+      renderString: ({ data, contentData, filters }): string => headline({ data, contentData, filters }),
     },
     {
       Title: 'DataSource',

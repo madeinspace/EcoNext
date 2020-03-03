@@ -88,7 +88,9 @@ const tableBuilder = () => {
   const children = data.filter(({ DataType }) => DataType != null);
 
   parents.forEach(parent => {
-    parent.children = children.filter(({ TableId }) => TableId === parent.TableId);
+    parent.children = children.filter(
+      ({ LabelKey }) => LabelKey > parent.LabelKey && LabelKey < parent.LabelKey + 1000,
+    );
   });
 
   const rows = parents.map(({ LabelKey, LabelName, children }, id) => ({

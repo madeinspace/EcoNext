@@ -21,10 +21,10 @@ const WorkersKeyStatisticsPage = () => {
       <PageIntro>
         <div>
           <p>
-            The workforce is made up of all the people who are employed in the local area, regardless of where they
-            live. Workforce statistics reveal how the characteristics of the workforce in {prefixedAreaName} vary
-            between each industry sector and indicates specific industry sector workforce requirements and employment
-            opportunities.
+            The local workers is made up of all the people who are employed in the local area, regardless of where they
+            live. Local workers statistics reveal how the characteristics of the local workers in {prefixedAreaName}{' '}
+            vary between each industry sector and indicates specific industry sector local workers requirements and
+            employment opportunities.
           </p>
           <p>Access the detailed tables for further exploration of each characteristic.</p>
           <p>
@@ -43,9 +43,10 @@ const WorkersKeyStatisticsPage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. {prefixedAreaName} currently subscribe to the “LITE” version of economy.id,
-        which does not feature this extended dataset. In order to directly compare worker numbers between 2011 and 2016,
-        it is recommended that {prefixedAreaName} subscribe to the FULL version of economy.id.
+        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
+        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
+        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
+        caution, however, and not compare directly with 2011 data from any other source.
       </Note>
       <ControlPanel />
       <ItemWrapper>
@@ -85,7 +86,9 @@ const tableBuilder = () => {
   const children = data.filter(({ DataType }) => DataType != null);
 
   parents.forEach(parent => {
-    parent.children = children.filter(({ TableId }) => TableId === parent.TableId);
+    parent.children = children.filter(
+      ({ LabelKey }) => LabelKey > parent.LabelKey && LabelKey < parent.LabelKey + 1000,
+    );
   });
 
   const rows = parents.map(({ LabelKey, LabelName, children }, id) => ({
@@ -165,41 +168,49 @@ const tableBuilder = () => {
     cols: [
       {
         id: 0,
+        sortable: false,
         displayText: 'Name',
         cssClass: 'odd first ',
       },
       {
         id: 1,
+        sortable: false,
         displayText: 'number',
         cssClass: 'even int S',
       },
       {
         id: 2,
+        sortable: false,
         displayText: '%',
         cssClass: 'even int S',
       },
       {
         id: 3,
+        sortable: false,
         displayText: `${currentBenchmarkName}`,
         cssClass: 'even int L',
       },
       {
         id: 4,
+        sortable: false,
         displayText: 'number',
         cssClass: 'odd int S',
       },
       {
         id: 5,
+        sortable: false,
         displayText: '%',
         cssClass: ' odd int S',
       },
       {
         id: 6,
+        sortable: false,
         displayText: `${currentBenchmarkName}`,
         cssClass: 'odd int L',
       },
       {
         id: 7,
+        sortable: false,
         displayText: `2011 to 2016`,
         cssClass: 'even int XL',
       },
