@@ -224,7 +224,7 @@ const chartBuilder = nodes => {
       yAxis: [
         {
           title: {
-            text: 'value S("000")',
+            text: 'value $("000")',
           },
           labels: {
             staggerLines: 0,
