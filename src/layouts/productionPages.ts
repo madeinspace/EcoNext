@@ -59,4 +59,5 @@ export default [
   // 'unemployment'
   // 'industry-sector-analysis'
   // 'about-economy-id'
+  // 'industry-sector-definitions'
 ];

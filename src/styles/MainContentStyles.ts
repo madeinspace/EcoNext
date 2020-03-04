@@ -36,6 +36,14 @@ export const MainTitle = styled.h1`
   border-bottom: none;
 `;
 
+export const TopList = styled.ul`
+  margin: 10px 0 10px 20px;
+  li {
+    list-style: disc;
+    line-height: 20px;
+  }
+`;
+
 export const _SubTitle = styled.h3`
   font-size: 23px;
   line-height: 27px;

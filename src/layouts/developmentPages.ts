@@ -59,4 +59,5 @@ export default [
   'gross-regional-product',
   'unemployment',
   'about-economy-id',
+  'industry-sector-definitions',
 ];
