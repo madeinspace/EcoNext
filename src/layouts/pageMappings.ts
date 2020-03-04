@@ -23,7 +23,6 @@ import AgeStructure from './age-structure/page';
 import HoursWorked from './hours-worked/page';
 import Occupations from './occupations/page';
 import Qualifications from './qualifications/page';
-import LabourforceKeyStatistics from './labourforce-key-statistics/page';
 import IncomePage from './income/page';
 import IncomeQuartile from './income-quartiles/page';
 import WorkersAgeStructurePage from './workers-age-structure/page';
@@ -36,6 +35,15 @@ import WorkerMethodOfTravelToWorkPage from './workers-travel-to-work/page';
 import ResidentWorkerMethodOfTravelToWorkPage from './travel-to-work/page';
 import WorkersKeyStatisticsPage from './workers-key-statistics/page';
 import WorkersKeyStatisticsLitePage from './workers-key-statistics-lite/page';
+import ResidentWorkersKeyStatisticsPage from './labourforce-key-statistics/page';
+import ResidentWorkersKeyStatisticsLitePage from './labourforce-key-statistics-lite/page';
+import UnemployedKeyStatisticsPage from './unemployed-keystats/page';
+import GrossRegionalProductPage from './gross-regional-product/page';
+import UnemploymentPage from './unemployment/page';
+import AboutEconomyId from './about-economy-id/page';
+import IndustrySectorDefinitionsPage from './industry-sector-definitions/page';
+import DataSourcesPage from './data-sources/page';
+import PopulationTypesPage from './population-types/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -78,7 +86,6 @@ const PageMappings = {
   'hours-worked': HoursWorked,
   occupations: Occupations,
   qualifications: Qualifications,
-  'labourforce-key-statistics': LabourforceKeyStatistics,
   income: IncomePage,
   'income-quartiles': IncomeQuartile,
   'workers-age-structure': WorkersAgeStructurePage,
@@ -91,6 +98,15 @@ const PageMappings = {
   'travel-to-work': ResidentWorkerMethodOfTravelToWorkPage,
   'workers-key-statistics': WorkersKeyStatisticsPage,
   'workers-key-statistics-lite': WorkersKeyStatisticsLitePage,
+  'labourforce-key-statistics': ResidentWorkersKeyStatisticsPage,
+  'labourforce-key-statistics-lite': ResidentWorkersKeyStatisticsLitePage,
+  'unemployed-keystats': UnemployedKeyStatisticsPage,
+  'gross-regional-product': GrossRegionalProductPage,
+  unemployment: UnemploymentPage,
+  'about-economy-id': AboutEconomyId,
+  'industry-sector-definitions': IndustrySectorDefinitionsPage,
+  'data-sources': DataSourcesPage,
+  'population-types': PopulationTypesPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

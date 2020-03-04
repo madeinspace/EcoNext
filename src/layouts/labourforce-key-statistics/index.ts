@@ -1,51 +1,43 @@
 import { sqlConnection } from '../../utils/sql';
+
 import Page from './page';
+import { formatMillionsCurrency, formatPercent, formatNumber } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
+import _ from 'lodash';
 
-const contentDataQuery = ({ ClientID, IGBMID, Sex, Indkey, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_Industry_StudyField1and3Digit_Sex]( ${ClientID}, ${WebID}, ${IGBMID}, 2016, 2011, 'UR', ${Sex}, 1, null, ${Indkey} ) order by LabelKey DESC `;
+const BuildingApprovalsSQL = ({ ClientID, WebID, IGBMID, Indkey }) =>
+  `SELECT * from CommData_Economy.[dbo].[fn_Industry_KeyStats](${ClientID},${WebID},${IGBMID},2016,2011,${Indkey},'UR')`;
 
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(BuildingApprovalsSQL(filters));
 
-const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+});
 
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = {
-    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
-    currentGenderName: getActiveToggle(filterToggles, 'Sex'),
-  };
-  return activeCustomToggles;
+const headline = ({ data, contentData, filters }) => {
+  const { IndKey } = filters;
+  const industryText = IndKey === 23000 ? '' : `(${data.currentIndustryName})`;
+  const bachelors = contentData.filter(({ LabelKey }) => LabelKey === 70001)[0];
+  const advancedDiplomas = contentData.filter(({ LabelKey }) => LabelKey === 70002)[0];
+  const sumNo = formatNumber(bachelors.NoYear1 + advancedDiplomas.NoYear1);
+  const sumPer = formatPercent(bachelors.PerYear1 + advancedDiplomas.PerYear1);
+  return `${sumNo} people or ${sumPer}% of ${data.prefixedAreaName}'s resident workers ${industryText} have a tertiary qualification.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Industry Key stats`,
+      renderString: ({ data }): string => `Resident workers - Key statistics - ${data.currentIndustryName}`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const genderLookup = {
-          Persons: 'resident',
-          Males: 'male resident',
-          Females: 'female resident',
-        };
-        const { prefixedAreaName } = data;
-        const mostCommonQual = largest(contentData, 'NoYear1').LabelName;
-        const headlineAlt = `  ${mostCommonQual} is the most common qualification for ${
-          genderLookup[data.currentGenderName]
-        } workers in ${prefixedAreaName}.`;
-
-        return headlineAlt;
-      },
+      renderString: ({ data, contentData, filters }): string => headline({ data, contentData, filters }),
+    },
+    {
+      Title: 'DataSource',
+      renderString: (): string => `Australian Bureau of Statistics (ABS) – Census 2011 and 2016 – by usual residence`,
     },
   ],
   filterToggles: [
@@ -93,14 +85,6 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_BM_Area_Ind',
       ParamName: 'IGBMID',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '3',
-      Label: 'Gender:',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Gender',
-      ParamName: 'Sex',
     },
   ],
 };

@@ -1,7 +1,7 @@
 // #region imports
 import _ from 'lodash';
 import { formatNumber, formatPercent } from '../../../utils/';
-import { ItemWrapper, SourceBubble, PageIntro, Note } from '../../../styles/MainContentStyles';
+import { ItemWrapper, SourceBubble, PageIntro } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
@@ -11,54 +11,33 @@ import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region population page
-const WorkersKeyStatisticsPage = () => {
-  const {
-    entityData: { prefixedAreaName },
-  } = useContext(PageContext);
-
-  const tableParams = tableBuilder();
-
-  return (
-    <>
-      {' '}
-      <PageIntro>
+const ResidentWorkersKeyStatisticsLitePage = () => (
+  <>
+    <PageIntro>
+      <div>
+        <p>
+          The local resident workers include all employed people who are resident in the local area regardless of where
+          they work. In other words, it is the people who live locally and therefore have the potential to work locally
+          and is an important resource for the local economy. Their characteristics inform us about the skills that are
+          available locally, even if they are not currently employed in the local economy.
+        </p>
+        <p>Access the detailed tables for further exploration of each characteristic.</p>
+      </div>
+      <SourceBubble>
         <div>
-          <p>
-            The workforce is made up of all the people who are employed in the local area, regardless of where they
-            live. Workforce statistics reveal how the characteristics of the workforce in {prefixedAreaName} vary
-            between each industry sector and indicates specific industry sector workforce requirements and employment
-            opportunities.
-          </p>
-          <p>Access the detailed tables for further exploration of each characteristic.</p>
-          <p>
-            <strong>NOTE:</strong> All tables in the workers section are based on Census employment data which differ
-            from the NIEIR employment estimates. See data notes for more details.
-          </p>
+          <h3>Data source</h3>
+          <p>{useEntityText('DataSource')}</p>
         </div>
-        <SourceBubble>
-          <div>
-            <h3>Data source</h3>
-            <p>{useEntityText('DataSource')}</p>
-          </div>
-        </SourceBubble>
-      </PageIntro>
-      <Note>
-        <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
-        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
-        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. {prefixedAreaName} currently subscribe to the “LITE” version of economy.id,
-        which does not feature this extended dataset. In order to directly compare worker numbers between 2011 and 2016,
-        it is recommended that {prefixedAreaName} subscribe to the FULL version of economy.id.
-      </Note>
-      <ControlPanel />
-      <ItemWrapper>
-        <EntityTable data={tableParams} name={useEntityText('SubTitle')} />
-      </ItemWrapper>
-    </>
-  );
-};
+      </SourceBubble>
+    </PageIntro>
+    <ControlPanel />
+    <ItemWrapper>
+      <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
+    </ItemWrapper>
+  </>
+);
 
-export default WorkersKeyStatisticsPage;
+export default ResidentWorkersKeyStatisticsLitePage;
 // #endregion
 
 // #region Source
@@ -154,18 +133,21 @@ const tableBuilder = () => {
       },
       {
         id: 1,
+        sortable: false,
         displayText: 'number',
-        cssClass: 'even int S',
+        cssClass: 'even int XL',
       },
       {
         id: 2,
+        sortable: false,
         displayText: '%',
-        cssClass: 'even int S',
+        cssClass: 'even int XL',
       },
       {
         id: 3,
-        displayText: `${currentBenchmarkName}`,
-        cssClass: 'even int L',
+        sortable: false,
+        displayText: `% ${currentBenchmarkName}`,
+        cssClass: 'even int XXL',
       },
     ],
     footRows: [],

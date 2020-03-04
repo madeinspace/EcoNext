@@ -36,10 +36,30 @@ export const MainTitle = styled.h1`
   border-bottom: none;
 `;
 
+export const TopList = styled.ul`
+  margin: 10px 0 10px 20px;
+  li {
+    list-style: disc;
+    line-height: 20px;
+  }
+`;
+
+export const TopOrderedList = styled.ol`
+  margin: 10px 0 10px 20px;
+  li {
+    line-height: 20px;
+  }
+`;
+
 export const _SubTitle = styled.h3`
   font-size: 23px;
   line-height: 27px;
   margin-bottom: 1.45em;
+`;
+export const SubTitleAlt = styled(_SubTitle)`
+  margin-top: 1.45em;
+  margin-bottom: 1.2em;
+  color: ${variables.colorEconomyDark};
 `;
 
 export const Headline = styled.p`
@@ -47,7 +67,7 @@ export const Headline = styled.p`
   color: ${variables.colorEconomyDark};
   font-size: 23px;
   line-height: 26px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 export const PageIntro = styled.div`

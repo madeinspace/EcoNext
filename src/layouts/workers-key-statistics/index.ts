@@ -1,36 +1,41 @@
 import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
-import { formatMillionsCurrency } from '../../utils';
+import { formatMillionsCurrency, formatPercent } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
 
-const BuildingApprovalsSQL = ({ ClientID, WebID }) =>
-  `SELECT * from CommData_Economy.[dbo].[fn_IN_BuildingApprovals](${ClientID}, ${WebID}, 40 ) ORDER BY Yr DESC`;
+const BuildingApprovalsSQL = ({ ClientID, WebID, IGBMID, Indkey }) =>
+  `SELECT * from CommData_Economy.[dbo].[fn_Industry_KeyStats](${ClientID},${WebID},${IGBMID},2016,2011,${Indkey},'WP')`;
 
-const fetchData = async ({ filters }) => {
-  const { ClientID, WebID } = filters;
-  const contentData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
+const fetchData = async ({ filters }) => await sqlConnection.raw(BuildingApprovalsSQL(filters));
 
-  return contentData;
-};
+const activeCustomToggles = ({ filterToggles }) => ({
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
+  currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
+});
 
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = { activeBenchmarkName: getActiveToggle(filterToggles, 'BMID') };
-  return activeCustomToggles;
+const headline = ({ data, contentData, filters }) => {
+  const { IndKey } = filters;
+  const males = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10002)[0].PerYear1);
+  const females = formatPercent(contentData.filter(({ LabelKey }) => LabelKey === 10003)[0].PerYear1);
+  const industryText = IndKey === 23000 ? '' : `(${data.currentIndustryName})`;
+  return `In ${data.prefixedAreaName} ${males}% of the local workers ${industryText} are males and ${females}% are female.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Local workers - Key statistics - {industry}`,
+      renderString: ({ data }): string => `Local workers - Key statistics - ${data.currentIndustryName}`,
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string =>
-        `The value of building approvals in ${data.currentAreaName} was ${formatMillionsCurrency(
-          contentData[0].Total * 1000,
-        )} in the ${contentData[0].LabelName} financial year.`,
+      renderString: ({ data, contentData, filters }): string => headline({ data, contentData, filters }),
+    },
+    {
+      Title: 'DataSource',
+      renderString: (): string =>
+        `Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) & 2016 – by place of work`,
     },
   ],
   filterToggles: [

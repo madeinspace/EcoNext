@@ -1,6 +1,12 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatPercent, formatChangeInt } from '../../../utils/';
+import {
+  formatNumber,
+  formatPercent,
+  formatChangeInt,
+  formatChangePercent,
+  formatChangeOneDecimal,
+} from '../../../utils/';
 import { ItemWrapper, SourceBubble, PageIntro, Note } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import { useContext } from 'react';
@@ -11,7 +17,8 @@ import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region population page
-const ResidentWorkersKeyStatisticsPage = () => {
+const UnemployedKeyStatisticsPage = () => {
+  const { clientAlias } = useContext(ClientContext);
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
@@ -21,12 +28,15 @@ const ResidentWorkersKeyStatisticsPage = () => {
       <PageIntro>
         <div>
           <p>
-            The local resident workers include all employed people who are resident in the local area regardless of
-            where they work. In other words, it is the people who live locally and therefore have the potential to work
-            locally and is an important resource for the local economy. Their characteristics inform us about the skills
-            that are available locally, even if they are not currently employed in the local economy.
+            The local unemployed resident includes all people who are residents in the local area who are looking for
+            part-time or full-time work. This is an important resource for the local economy, their characteristics
+            inform us about the skills that are available locally, even if they are not currently employed in the local
+            economy.{' '}
           </p>
-          <p>Access the detailed tables for further exploration of each characteristic.</p>
+          <p>
+            For an overview of unemployment levels and trends in {prefixedAreaName} go to the{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/unemployment`, 'Unemployment')} page.
+          </p>
         </div>
         <SourceBubble>
           <div>
@@ -43,7 +53,7 @@ const ResidentWorkersKeyStatisticsPage = () => {
   );
 };
 
-export default ResidentWorkersKeyStatisticsPage;
+export default UnemployedKeyStatisticsPage;
 // #endregion
 
 // #region Source
@@ -64,8 +74,8 @@ const tableBuilder = () => {
     contentData: data,
     entityData: { currentBenchmarkName, currentAreaName, currentIndustryName },
   } = useContext(PageContext);
-  const anchorName = 'resident-workers---key-statistics';
-  const tableTitle = `Resident workers key statistics - ${currentIndustryName}`;
+  const anchorName = 'resident-workers---unemployed-key-statistics';
+  const tableTitle = `Resident workers key statistics`;
   const parents = _.sortBy(
     data.filter(({ DataType }) => DataType === null),
     item => item.LabelKey,
@@ -74,7 +84,7 @@ const tableBuilder = () => {
 
   parents.forEach(parent => {
     parent.children = children.filter(
-      ({ LabelKey }) => LabelKey > parent.LabelKey && LabelKey < parent.LabelKey + 1000,
+      ({ LabelKey }) => LabelKey > parent.LabelKey && LabelKey < parent.LabelKey + 10000,
     );
   });
 
@@ -97,7 +107,7 @@ const tableBuilder = () => {
           formatNumber(NoYear2),
           formatPercent(PerYear2, '--'),
           formatPercent(BMYear2, '--'),
-          formatChangeInt(Change12, '--'),
+          LabelKey === 10004 ? `${formatChangeOneDecimal(Change12)}%` : formatChangeInt(Change12, '--'),
         ],
       }),
     ),

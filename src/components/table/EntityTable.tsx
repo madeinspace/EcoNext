@@ -43,8 +43,8 @@ const DataRow = ({ onExpand, formattedData, crossLink, cssClass, colClass, i }) 
   return <TableRow {...{ onExpand }} key={i} cells={rowCells} cssClass={cssClassName} />;
 };
 
-const ParentRow = ({ expandable, childRows, i, formattedData, colClass }) => {
-  const [expanded, setExpanded] = React.useState(false);
+const ParentRow = ({ alreadyExpanded, expandable, childRows, i, formattedData, colClass, cssClass }) => {
+  const [expanded, setExpanded] = React.useState(alreadyExpanded);
   const clickHandler = () => {
     setExpanded(!expanded);
   };
@@ -56,7 +56,7 @@ const ParentRow = ({ expandable, childRows, i, formattedData, colClass }) => {
       <DataRow
         formattedData={formattedData}
         crossLink={null}
-        cssClass="parent"
+        cssClass={`parent ${cssClass} ${expanded ? 'expanded' : ''}`}
         colClass={colClass}
         onExpand={expandable && clickHandler}
         key={i}
@@ -171,10 +171,12 @@ class EntityTable extends React.Component<any, any> {
 
     return (
       <ParentRow
+        alreadyExpanded={row.alreadyExpanded}
         formattedData={row.formattedData}
         childRows={row.childRows}
         expandable={expandable}
         colClass={this.colClass}
+        cssClass={row.cssClass || ''}
         key={i}
         i={i}
       />
@@ -378,6 +380,7 @@ class EntityTable extends React.Component<any, any> {
     // the sticky function listens to that event to recalculate the dimensions of the window
     $(window).trigger('resize');
   };
+
   render(): JSX.Element {
     const { headRows, cols, rows, footRows, showMore, showMoreButton } = this.state;
     const { data } = this.props;
