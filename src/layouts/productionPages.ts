@@ -61,4 +61,5 @@ export default [
   // 'about-economy-id'
   // 'industry-sector-definitions'
   // 'data-sources'
+  // 'population-types',
 ];
