@@ -60,4 +60,5 @@ export default [
   'unemployment',
   'about-economy-id',
   'industry-sector-definitions',
+  'data-sources',
 ];

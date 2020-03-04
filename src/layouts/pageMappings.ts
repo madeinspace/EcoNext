@@ -42,6 +42,7 @@ import GrossRegionalProductPage from './gross-regional-product/page';
 import UnemploymentPage from './unemployment/page';
 import AboutEconomyId from './about-economy-id/page';
 import IndustrySectorDefinitionsPage from './industry-sector-definitions/page';
+import DataSourcesPage from './data-sources/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -103,6 +104,7 @@ const PageMappings = {
   unemployment: UnemploymentPage,
   'about-economy-id': AboutEconomyId,
   'industry-sector-definitions': IndustrySectorDefinitionsPage,
+  'data-sources': DataSourcesPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

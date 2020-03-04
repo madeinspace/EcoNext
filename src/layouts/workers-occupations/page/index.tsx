@@ -205,7 +205,6 @@ const WorkersOccupationsPage = () => {
     filters: { Sex },
     entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentIndustryName, currentGenderName },
   } = useContext(PageContext);
-  console.log('contentData: ', contentData);
 
   const tableParams = tableBuilder({
     clientAlias,

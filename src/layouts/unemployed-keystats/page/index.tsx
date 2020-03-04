@@ -81,14 +81,12 @@ const tableBuilder = () => {
     item => item.LabelKey,
   );
   const children = data.filter(({ DataType }) => DataType != null);
-  console.log('children: ', children);
 
   parents.forEach(parent => {
     parent.children = children.filter(
       ({ LabelKey }) => LabelKey > parent.LabelKey && LabelKey < parent.LabelKey + 10000,
     );
   });
-  console.log('parents: ', parents);
 
   const rows = parents.map(({ LabelKey, LabelName, children }, id) => ({
     alreadyExpanded: true,

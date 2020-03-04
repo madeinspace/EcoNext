@@ -17,7 +17,6 @@ const activeCustomToggles = ({ filterToggles }) => ({
 });
 
 const headline = ({ data, contentData }) => {
-  console.log('contentData: ', contentData);
   const unemploymentRate = contentData.filter(({ LabelKey }) => LabelKey === 10004)[0];
   const unemployedArea = formatPercent(unemploymentRate.PerYear1);
   const unemployedBM = formatPercent(unemploymentRate.BMYear1);

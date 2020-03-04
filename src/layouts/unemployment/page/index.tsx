@@ -251,7 +251,6 @@ const lineChartBuilder = () => {
     entityData: { currentAreaName },
   } = useContext(PageContext);
   const distinctYears = [...new Set(data.map(({ Year }) => Year))];
-  console.log('distinctYears: ', distinctYears);
 
   const parents: any = distinctYears.reduce(
     (acc: any, cur: any) => [
@@ -263,7 +262,6 @@ const lineChartBuilder = () => {
     ],
     [],
   );
-  console.log('parents: ', parents);
   const STE = data[0].GeonameSTE;
   const GCCSA = data[0].GeonameGCCSA;
   const chartTitle = 'Quarterly unemployment rate';
@@ -281,7 +279,6 @@ const lineChartBuilder = () => {
       }),
     ];
   }, []); //_.map(nodes, 'ChangePer3').reverse();
-  console.log('serie0: ', serie0);
   const serie1 = []; //_.map(nodes, 'BMChangePer3').reverse();
   const serie2 = []; //_.map(nodes, 'BMChangePer3').reverse();
   const serie3 = []; //_.map(nodes, 'BMChangePer3').reverse();

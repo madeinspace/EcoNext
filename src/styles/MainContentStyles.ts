@@ -44,6 +44,13 @@ export const TopList = styled.ul`
   }
 `;
 
+export const TopOrderedList = styled.ol`
+  margin: 10px 0 10px 20px;
+  li {
+    line-height: 20px;
+  }
+`;
+
 export const _SubTitle = styled.h3`
   font-size: 23px;
   line-height: 27px;

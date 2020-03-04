@@ -60,4 +60,5 @@ export default [
   // 'industry-sector-analysis'
   // 'about-economy-id'
   // 'industry-sector-definitions'
+  // 'data-sources'
 ];
