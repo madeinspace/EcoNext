@@ -2,17 +2,20 @@ import { LinkBuilder } from '../../../components/ui/links';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import { SubTitleAlt } from '../../../styles/MainContentStyles';
+import { capitalise } from '../../../utils';
 
 const AboutEconomyId = () => {
   const { LongName } = useContext(ClientContext);
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
+
   return (
     <>
       <p>
-        {LongName} Economic Profile provides economic analysis for {prefixedAreaName} by combining 11 different datasets
-        to build a cohesive story of a local economy,how it is changing and how it compares to other areas.
+        {capitalise(prefixedAreaName)} Economic Profile provides economic analysis for {prefixedAreaName} by combining
+        11 different datasets to build a cohesive story of a local economy,how it is changing and how it compares to
+        other areas.
       </p>
       <p>
         It is a public resource designed to be used by council staff, community groups, investors, business people,

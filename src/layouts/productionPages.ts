@@ -50,16 +50,16 @@ export default [
   'workers-income-quartile',
   'workers-travel-to-work',
   'travel-to-work',
-  // 'workers-key-statistics',
-  // 'workers-key-statistics-lite',
-  // 'labourforce-key-statistics',
-  // 'labourforce-key-statistics-lite',
-  // 'unemployed-keystats',
-  // gross-regional-product,
+  'about-economy-id',
+  'industry-sector-definitions',
+  'population-types',
+  'data-sources',
+  'gross-regional-product',
+  'workers-key-statistics',
+  'workers-key-statistics-lite',
+  'labourforce-key-statistics',
+  'labourforce-key-statistics-lite',
+  'unemployed-keystats',
   // 'unemployment'
   // 'industry-sector-analysis'
-  // 'about-economy-id'
-  // 'industry-sector-definitions'
-  // 'data-sources'
-  // 'population-types',
 ];
