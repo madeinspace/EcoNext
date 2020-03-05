@@ -4,9 +4,10 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { formatNumber } from '../../utils';
 
 /* #region  contentDataQuery */
-const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, exptype }) => {
+const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, imptype }) => {
+  console.log('exptype: ', imptype);
   let exportFunc = ``;
-  switch (exptype) {
+  switch (imptype) {
     case '1':
       exportFunc = `fn_Imports_1and2Digit`;
       break;

@@ -6,18 +6,18 @@ import FullContent from './Full';
 import { SubTitleAlt, TopList, TopOrderedList, ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import styled from 'styled-components';
+import { LinkBuilder } from '../../../components/ui/links';
 
 // #endregion
 
 const TopicNotesPage = () => {
-  const { isLite } = useContext(ClientContext);
+  const { isLite, clientAlias } = useContext(ClientContext);
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
+  console.log('isLite: ', isLite);
   const content = () => (!isLite ? <FullContent /> : <LiteContent />);
-  const Lite = styled.div`
-    display: ${isLite ? 'block' : 'none'};
-  `;
+  const Lite = styled.div``;
   const Full = styled.div`
     display: ${isLite ? 'none' : 'block'};
   `;
@@ -44,20 +44,9 @@ const TopicNotesPage = () => {
           overseas migration. In addition, after every Census, ERP figures for the five previous years are "backcast",
           using information from the current Census, to ensure the most accurate figures are available.{' '}
         </p>
-        <p>
-          See the ABS demographic publications,{' '}
-          <a href="" target="_blank">
-            3101.0
-          </a>{' '}
-          and{' '}
-          <a href="" target="_blank">
-            3218.0<span>(opens a new window)</span>
-          </a>{' '}
-          for further details.
-        </p>
+        {LinkBuilder('', '3101.0')} and {LinkBuilder('', '3218.0')}
       </Lite>
       <Lite>
-        {' '}
         <a id="indicators---gross-regional-product-(grp)"></a>
         <SubTitleAlt>Indicators - Gross Regional Product (GRP)</SubTitleAlt>
         <p>
@@ -66,9 +55,7 @@ const TopicNotesPage = () => {
           Regional Product of the local economy. GRP is the equivalent of GDP at the local level for a Local Government
           Area or region, and the calculation method simulates that used for the nation, but is influenced by local
           characteristics such as types of employment and worker productivity. For more information see{' '}
-          <a target="_blank" href="http://www.nieir.com.au/" title="National Economics website">
-            National Institute of Economic and Industry Research (NIEIR) <span>(opens a new window)</span>
-          </a>
+          {LinkBuilder('http://www.nieir.com.au/', 'National Institute of Economic and Industry Research (NIEIR)')}
         </p>
         <p>
           To enable direct comparison between areas of varying size (eg. local, state, national), each year of data is
@@ -82,11 +69,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Lite>
       <Full>
@@ -109,9 +92,7 @@ const TopicNotesPage = () => {
         </TopList>
         <p>
           Industry composition is calculated on Employment (Total) figures, please refer to{' '}
-          <a href="topic-notes?#fte-employment-by-industry" target="_blank" title="Data note">
-            this link<span>(opens a new window)</span>
-          </a>{' '}
+          {LinkBuilder(`http://economy.id.com.au/${clientAlias}/topic-notes?#fte-employment-by-industry`, 'this link')}
           for more information.
         </p>
         <p>
@@ -120,11 +101,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Lite>
@@ -134,27 +111,20 @@ const TopicNotesPage = () => {
           Please note that the local unemployment data are sourced from Small Area Labour Markets, a quarterly
           publication by the Department of Employment and Workplace Relations. State and National figures are sourced
           from the{' '}
-          <a
-            href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0"
-            target="_blank"
-            title="ABS Labour Force Survey (Catalogue number 6202.0)"
-          >
-            ABS Labour Force Survey (Catalogue number 6202.0)<span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0`,
+            'ABS Labour Force Survey (Catalogue number 6202.0)',
+          )}
           . The Department of Employment data uses the labour force survey as a base and models it to local level using
           Centrelink data. Local unemployment is updated quarterly in this collection, and while state and national
           figures are available monthly, these are also updated on the site quarterly to match the time period of the
           local numbers. These benchmark figures are those widely published by government and media sites but are not
           directly comparable to the LGA estimates as they are not annual averages. For comparison purposes, LGA
           estimates should be compared with data in Table 16b of the publication{' '}
-          <a
-            href="https://www.abs.gov.au/ausstats/abs@.nsf/mf/6291.0.55.001"
-            target="_blank"
-            title="ABS Labour Force, Detailed - Electronic Delivery publication (catalogue number 6291.0.55.001)"
-          >
-            ABS Labour Force, Detailed - Electronic Delivery publication (catalogue number 6291.0.55.001)
-            <span>(opens a new window)</span>
-          </a>{' '}
+          {LinkBuilder(
+            `https://www.abs.gov.au/ausstats/abs@.nsf/mf/6291.0.55.001`,
+            'ABS Labour Force, Detailed - Electronic Delivery publication (catalogue number 6291.0.55.001)',
+          )}
           which presents 12-month averages of the benchmark regions.
         </p>
         <p>
@@ -182,10 +152,10 @@ const TopicNotesPage = () => {
         <SubTitleAlt>Indicators - Building approvals</SubTitleAlt>
         <p>
           Value of building approval data are sourced from the{' '}
-          <a href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8731.0" target="_blank" title="ABS link">
-            Australian Bureau of Statistics, Catalogue number 8731.0 – Building Approvals
-            <span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/8731.0`,
+            'Australian Bureau of Statistics, Catalogue number 8731.0 – Building Approvals',
+          )}
           , Australia. This is a monthly publication, with the data here presented quarterly. Data may be revised up to
           a year after publication.{' '}
         </p>
@@ -213,16 +183,12 @@ const TopicNotesPage = () => {
           Retail Trade trends are based on estimates of turnover compiled from the monthly Retail Business Survey (RBS)
           undertaken by the ABS. It estimates of the value of turnover of retail businesses classified by industry, and
           by state and territory. It is not available for local areas. See{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8501.0">
-            ABS Retail Trade catalogue number 8501.0
-          </a>{' '}
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/8501.0`, 'ABS Retail Trade catalogue number 8501.0')}
           for more details.
         </p>
         <p>
           Data source: Australian Bureau of Statistics.{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8501.0" title="Retail Trade link">
-            Retail Trade <span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/8501.0`, 'ABS Retail Trade catalogue number 8501.0')}
           , (catalogue number 8501.0)
         </p>
       </Lite>
@@ -257,21 +223,16 @@ const TopicNotesPage = () => {
         </p>
         <p>
           CPI is an index designed to measure change over time. See{' '}
-          <a
-            target="_blank"
-            title="ABS link (this link opens a new window)"
-            href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/6401.0"
-          >
-            ABS Consumer Price Index, (catalogue number 6401.0)
-          </a>{' '}
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/6401.0`,
+            'ABS Consumer Price Index, (catalogue number 6401.0)',
+          )}
           for more details.
         </p>
         <p>
           Data source: Australian Bureau of Statistics,{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/6401.0" title="Consumer Price Index">
-            Consumer Price Index <span>(opens a new window)</span>
-          </a>
-          , (catalogue number 6401.0)
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/6401.0`, 'Consumer Price Index')}, (catalogue number
+          6401.0)
         </p>
       </Lite>
       <Full>
@@ -1460,7 +1421,7 @@ const TopicNotesPage = () => {
         <p>
           Please note that the quality of Journey to Work coding has varied from Census to Census. The 2011 coding was
           particularly poor, with a large percentage of employed people being coded to "Place of Work undefined" and
-          "Not Stated' categories. The 2016 Census used a different methodology to impute workplace location where it
+          “Not Stated” categories. The 2016 Census used a different methodology to impute workplace location where it
           was not provided by the respondent. For this reason, care should be taken when comparing 2016 to earlier years
           – when using raw 2011 data, there will be an apparent increase which may not reflect reality, but simply the
           coding methods. .id have sourced 2011 data which reduces this issue, but users should still be aware that
@@ -1470,8 +1431,8 @@ const TopicNotesPage = () => {
           <i>ALTERNATE DEFINITION:</i> Some state governments, for example, Western Australia, mandate a different (and
           equally valid) definition of self-sufficiency. This is the total number of jobs in the area divided by the
           total number of employed residents, regardless of where those residents work. This definition is equivalent in
-          economy.id to our definition of "Jobs to Workers ratio', so Western Australian users looking for
-          "self-sufficiency' should see this topic instead.
+          economy.id to our definition of “Jobs to Workers ratio”, so Western Australian users looking for
+          “self-sufficiency” should see this topic instead.
         </p>
         <p>
           Data source:{' '}
@@ -1514,46 +1475,6 @@ const TopicNotesPage = () => {
           total number of employed residents, regardless of where those residents work. This definition is equivalent in
           economy.id to our definition of "Jobs to Workers ratio', so Western Australian users looking for
           "self-sufficiency' should see this topic instead.
-        </p>
-        <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2011 and 2016.
-        </p>
-        <p></p>
-        <SubTitleAlt>Self-sufficiency - Industry</SubTitleAlt>
-        <p>
-          This dataset describes the residential location (LGA) of people who work in the local area. It differs from
-          the main journey to work dataset in that it shows simply the number and proportion of workers in each broad
-          industry category who also live within the local area.
-        </p>
-        <p>
-          Journey to Work data is created by cross-tabulating a person’s main workplace address (Place of Work Data)
-          with their place of usual residence to create a matrix of home to work. This information is generally not
-          available at the small area (suburb/locality) level due to geographic limitations when being coded or
-          processed.
-        </p>
-        <p>
-          Self-sufficiency in economy.id is defined as the percentage of the local workers employed in the area who also
-          live within the local LGA or region.
-        </p>
-        <p>
-          Please note that the quality of Journey to Work coding has varied from Census to Census. The 2011 coding was
-          particularly poor, with a large percentage of employed people being coded to "Place of Work undefined" and
-          “Not Stated” categories. The 2016 Census used a different methodology to impute workplace location where it
-          was not provided by the respondent. For this reason, care should be taken when comparing 2016 to earlier years
-          – when using raw 2011 data, there will be an apparent increase which may not reflect reality, but simply the
-          coding methods. .id have sourced 2011 data which reduces this issue, but users should still be aware that
-          these are different datasets with different methodologies.
-        </p>
-        <p>
-          <i>ALTERNATE DEFINITION:</i> Some state governments, for example, Western Australia, mandate a different (and
-          equally valid) definition of self-sufficiency. This is the total number of jobs in the area divided by the
-          total number of employed residents, regardless of where those residents work. This definition is equivalent in
-          economy.id to our definition of “Jobs to Workers ratio”, so Western Australian users looking for
-          “self-sufficiency” should see this topic instead.
         </p>
         <p>
           Data source:{' '}
@@ -1779,7 +1700,8 @@ const TopicNotesPage = () => {
           >
             Australian Qualifications Network<span>(opens a new window)</span>
           </a>
-          .
+          .<p>Australian Bureau of Statistics, Census of Population and Housing 2016 and 2011. </p>
+          <p>Data source: Australian Bureau of Statistics, Census of Population and Housing 2006 and 2011.</p>
         </p>
       </Full>
       <Full>
@@ -3017,7 +2939,7 @@ const tableData2 = [
   },
   {
     term: 'Road transport',
-    definition: 'Road freight transport',
+    definition: 'Interurban and rural bus transport',
   },
   {
     term: 'Road transport',
