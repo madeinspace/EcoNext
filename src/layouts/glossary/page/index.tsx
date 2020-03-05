@@ -1,7 +1,6 @@
-import styled from 'styled-components';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
-import { ABSCensusHousingLink, IdLink } from '../../../components/ui/links';
+import { IdLink } from '../../../components/ui/links';
 
 const tableData = [
   {
