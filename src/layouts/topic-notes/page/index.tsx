@@ -1,8 +1,6 @@
 // #region imports
 import { ClientContext, PageContext } from '../../../utils/context';
 import { useContext } from 'react';
-import LiteContent from './Lite';
-import FullContent from './Full';
 import { SubTitleAlt, TopList, TopOrderedList, ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import styled from 'styled-components';
@@ -15,8 +13,6 @@ const TopicNotesPage = () => {
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
-  console.log('isLite: ', isLite);
-  const content = () => (!isLite ? <FullContent /> : <LiteContent />);
   const Lite = styled.div``;
   const Full = styled.div`
     display: ${isLite ? 'none' : 'block'};
@@ -240,12 +236,10 @@ const TopicNotesPage = () => {
         <SubTitleAlt>Gross Regional Product (GRP)</SubTitleAlt>
         <p>
           Headline Gross Regional Product is the sum of all industries' estimated{' '}
-          <a href="value-add-by-industry?" title="Industry value-added link">
-            value added
-          </a>
-          , plus a factor for ownership of dwellings. The value of accommodation is a part of the economy, but it is not
-          part of any industry, so it is included separately. Ownership of dwellings includes actual rents received by
-          landlords, and imputed rents representing the ongoing value of owner-occupied housing.
+          {LinkBuilder(`http://economy.id.com.au/${clientAlias}/value-add-by-industry`, 'value added')}, plus a factor
+          for ownership of dwellings. The value of accommodation is a part of the economy, but it is not part of any
+          industry, so it is included separately. Ownership of dwellings includes actual rents received by landlords,
+          and imputed rents representing the ongoing value of owner-occupied housing.
         </p>
         <p>
           Local GRP gives the value of economic activity which accrues to the local area after taxes and dividends are
@@ -278,11 +272,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -348,11 +338,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -417,11 +403,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Lite>
@@ -524,13 +506,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           For more information please refer to the{' '}
-          <a
-            href=" http://www.abs.gov.au/websitedbs/censushome.nsf/home/statementspersonpowp?opendocument&navpos=430"
-            target="_blank"
-            title="ABS"
-          >
-            data quality statement for Place of Work
-          </a>{' '}
+          {LinkBuilder(
+            `http://www.abs.gov.au/websitedbs/censushome.nsf/home/statementspersonpowp?opendocument&navpos=430`,
+            'data quality statement for Place of Work',
+          )}
           on the ABS website.{' '}
         </p>
       </Lite>
@@ -581,11 +560,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
         <a id="output"></a>
         <SubTitleAlt>Output</SubTitleAlt>
@@ -630,11 +605,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -660,11 +631,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -693,11 +660,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -726,11 +689,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -764,11 +723,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -801,11 +756,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -838,11 +789,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -879,11 +826,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -921,11 +864,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -978,9 +917,10 @@ const TopicNotesPage = () => {
         <p>
           Detailed information about this data set, including summary findings from the national dataset by industry
           sector, can be found in{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0">
-            Counts of Australian Businesses, including Entries and Exits<span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0`,
+            'Counts of Australian Businesses, including Entries and Exits',
+          )}
           .
         </p>
         <p>
@@ -989,10 +929,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0" title="ABS">
-            Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2015 to 2017{' '}
-            <span>(opens a new window)</span>
-          </a>{' '}
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0`,
+            'Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2015 to 2017',
+          )}
           Cat. No. 8165.0
         </p>
         <p>
@@ -1070,11 +1010,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -1107,9 +1043,10 @@ const TopicNotesPage = () => {
         <p>
           This imputation was done by the ABS, in consultation with the Bureau of Transport Statistics, NSW (but the
           work was done for the whole country). For more information, please see the{' '}
-          <a href="http://www.bts.nsw.gov.au/Statistics/Journey-to-Work/default.aspx?FolderID=217" title="'NSW">
-            Journey to Work methodology on the BTS page
-          </a>
+          {LinkBuilder(
+            `http://www.bts.nsw.gov.au/Statistics/Journey-to-Work/default.aspx?FolderID=217`,
+            'Journey to Work methodology on the BTS page',
+          )}
           .
         </p>
         <p>
@@ -1154,13 +1091,10 @@ const TopicNotesPage = () => {
         <p>
           Individual ABN lookup is available to the public. Detailed unit record information is available for Local
           Government users in pursuit of legitimate local government activities. More information is available from the{' '}
-          <a
-            target="_blank"
-            href="https://abr.gov.au/For-Government-agencies/Accessing-ABR-data/ABR-data-explained/ABR-data/"
-            title="Australian Business Register"
-          >
-            Australian Business Register<span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `https://abr.gov.au/For-Government-agencies/Accessing-ABR-data/ABR-data-explained/ABR-data/`,
+            'Australian Business Register',
+          )}
           .
         </p>
         <p>
@@ -1211,11 +1145,8 @@ const TopicNotesPage = () => {
           entities such as schools and hospitals from the dataset, whereas it is included here. The ABS also examine
           each business to determine if it is actively trading, rather than relying purely on a categorical filter as is
           used here. .id's filtering mechanism may exclude some legitimate finance businesses which the ABS includes.
-          For more information on the ABS Business Register dataset, please see the ABS{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0" title="ABS">
-            website<span>(opens a new window)</span>
-          </a>
-          .
+          For more information on the ABS Business Register dataset, please see the{' '}
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0`, 'ABS website')}.
         </p>
       </Full>
       <Full>
@@ -1235,11 +1166,8 @@ const TopicNotesPage = () => {
           less than that found in the modelled dataset from National Economics.
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2016.
         </p>
       </Full>
       <Lite>
@@ -1257,11 +1185,8 @@ const TopicNotesPage = () => {
           level due to geographic limitations when being coded or processed.
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2016.
         </p>
       </Lite>
       <Full>
@@ -1299,11 +1224,8 @@ const TopicNotesPage = () => {
           "self-sufficiency' should see this topic instead.{' '}
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2011 and 2006.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2011 and 2006.
         </p>
         <p>
           <strong>Changes to historical data</strong>
@@ -1311,11 +1233,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
-          .
+          see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
       <Full>
@@ -1352,11 +1270,8 @@ const TopicNotesPage = () => {
           of all employed residents.
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>{' '}
-          , Journey to work data 2011 and 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2011 and 2016.
         </p>
       </Full>
       <Full>
@@ -1393,11 +1308,8 @@ const TopicNotesPage = () => {
           of all employed residents.
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>{' '}
-          , Journey to work data 2011 and 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2011 and 2016.
         </p>
       </Full>
       <Full>
@@ -1435,11 +1347,8 @@ const TopicNotesPage = () => {
           “self-sufficiency” should see this topic instead.
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2011 and 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2011 and 2016.
         </p>
       </Full>
       <Full>
@@ -1477,11 +1386,8 @@ const TopicNotesPage = () => {
           "self-sufficiency' should see this topic instead.
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au" target="_blank" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>
-          , Journey to work data 2011 and 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
+          2011 and 2016.
         </p>
       </Full>
       <Lite>
@@ -1498,11 +1404,8 @@ const TopicNotesPage = () => {
           <li>Individual income – Median income is the midpoint of incomes for all employed people.</li>
         </TopList>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2006 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Census of Population
+          and Housing 2006 and 2011.
         </p>
       </Lite>
       <Full>
@@ -1517,22 +1420,12 @@ const TopicNotesPage = () => {
           traditional retirement age of 65, but some industries (eg. Agriculture) have a high proportion in this cohort.
         </p>
         <p>
-          Data source:{' '}
-          <a
-            target="_blank"
-            href="http://www.abs.gov.au/"
-            title="Australian Bureau of Statistics website (this link opens a new window)"
-          >
-            Australian Bureau of Statistics
-          </a>
-          , Census of Population and Housing 2016 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Census of Population
+          and Housing 2016 and 2011.
         </p>
         <p>
           For more information please refer to the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0">
-            Census Dictionary 2016
-          </a>
-          .
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0`, 'Census Dictionary 2016')}.
         </p>
       </Full>
       <Full>
@@ -1556,17 +1449,11 @@ const TopicNotesPage = () => {
         </p>
         <p>
           For more information please refer to the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0">
-            Census Dictionary 2011
-          </a>
-          .
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0`, 'Census Dictionary 2011')}.
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2016 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Census of Population
+          and Housing 2016 and 2011.
         </p>
       </Full>
       <Full>
@@ -1585,17 +1472,15 @@ const TopicNotesPage = () => {
         </p>
         <p>
           For more information please refer to the 2011 Census Dictionary, and the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1220.0">
-            2006 Australian and New Zealand Standard Classification of Occupations (ANZSCO)
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1220.0`,
+            '2006 Australian and New Zealand Standard Classification of Occupations (ANZSCO)',
+          )}
           .
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2016 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Census of Population
+          and Housing 2016 and 2011.
         </p>
       </Full>
       <Full>
@@ -1607,13 +1492,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           Qualifications are broken down by skill level, according to the{' '}
-          <a
-            href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0"
-            title="Australian Standard Classification of Education (ASCED)"
-            target="_blank"
-          >
-            Australian Standard Classification of Education (ASCED)<span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0`,
+            'Australian Standard Classification of Education (ASCED)',
+          )}
           , (catalogue number 1272.0). Bachelor degree and higher level qualifications are generally provided by
           universities, while diploma level qualifications can be gained through universities or TAFE colleges.
           Certificate level qualifications are vocational based qualifications usually gained through TAFE and
@@ -1686,21 +1568,12 @@ const TopicNotesPage = () => {
         </TopList>
         <p>
           For a complete listing of the occupations and qualifications available, please refer to the{' '}
-          <a target="_blank" href="http://www.ntis.gov.au/" title="National Training Information Serive">
-            National Training Information Service
-          </a>
-          .
+          {LinkBuilder(`http://www.ntis.gov.au/`, 'National Training Information Serive')}.
         </p>
         <p>
           For more information about Australian qualifications please refer to the{' '}
-          <a
-            target="_blank"
-            title="Australian Qualifications Network (this link opens a new window)"
-            href="http://www.aqf.edu.au/cert.htm"
-          >
-            Australian Qualifications Network<span>(opens a new window)</span>
-          </a>
-          .<p>Australian Bureau of Statistics, Census of Population and Housing 2016 and 2011. </p>
+          {LinkBuilder(`http://www.aqf.edu.au/cert.htm`, 'Australian Qualifications Network')}.
+          <p>Australian Bureau of Statistics, Census of Population and Housing 2016 and 2011. </p>
           <p>Data source: Australian Bureau of Statistics, Census of Population and Housing 2006 and 2011.</p>
         </p>
       </Full>
@@ -1713,10 +1586,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           Qualifications are broken down by skill level, according to the{' '}
-          <a href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0" target="_blank" title="ABS">
-            Australian Standard Classification of Education (ASCED), (catalogue number 1272.0)
-            <span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0`,
+            'Australian Standard Classification of Education (ASCED), (catalogue number 1272.0)',
+          )}
           . Field of education is defined as the subject matter of an educational activity. Field of education is
           measured in terms of:
         </p>
@@ -1744,24 +1617,15 @@ const TopicNotesPage = () => {
         </p>
         <p>
           For a complete listing of the occupations and qualifications available, please refer to the{' '}
-          <a href="http://training.gov.au/" target="_blank">
-            training.gov.au<span>(opens a new window)</span>
-          </a>
-          .
+          {LinkBuilder(`http://training.gov.au/`, 'training.gov.au')}.
         </p>
         <p>
           For more information about Australian qualifications please refer to the{' '}
-          <a href="http://www.aqf.edu.au/" target="_blank" title="Australian Qualifications Framework">
-            Australian Qualifications Framework
-          </a>
-          .
+          {LinkBuilder(`http://www.aqf.edu.au/`, 'Australian Qualifications Framework')}.
         </p>
         <p>
-          Data source:{' '}
-          <a href="http://www.abs.gov.au/census" target="_blank">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2016 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2016 and 2011.
         </p>
       </Full>
       <Full>
@@ -1774,11 +1638,8 @@ const TopicNotesPage = () => {
         </p>
         <p>Individual incomes are collected as ranges in the Census.</p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2016.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2016.
         </p>
       </Full>
       <Full>
@@ -1847,11 +1708,8 @@ const TopicNotesPage = () => {
           </li>
         </TopList>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics
-          </a>
-          , Census of Population and Housing 2011 and 2006<span>(opens a new window)</span>
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011 and 2006<span>(opens a new window)</span>
         </p>
       </Lite>
       <Full>
@@ -1875,22 +1733,16 @@ const TopicNotesPage = () => {
         <p>The industry classification was last updated in 2006 (ANZSIC06).</p>
         <p>
           For more information please refer to the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0" title="ABS">
-            2006 Census Dictionary<span>(opens a new window)</span>
-          </a>{' '}
-          and the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1292.0" title="ABS">
-            Australian and New Zealand Standard Industrial Classification, 2006
-            <span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0`, '2006 Census Dictionary')} and the{' '}
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1292.0`,
+            'Australian and New Zealand Standard Industrial Classification, 2006',
+          )}
           .
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2011 and 2006.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011 and 2006.
         </p>
       </Full>
       <Full>
@@ -1902,11 +1754,8 @@ const TopicNotesPage = () => {
           force who usually reside in the local area regardless of where they work.
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics <span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2016 and 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2016 and 2011.
         </p>
       </Full>
       <Full>
@@ -1928,11 +1777,8 @@ const TopicNotesPage = () => {
         </p>
         <p>For more information please refer to the Census Dictionary 2011.</p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2011 and 2006.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011 and 2006.
         </p>
       </Full>
       <Full>
@@ -1954,17 +1800,15 @@ const TopicNotesPage = () => {
         </p>
         <p>
           For more information please refer to the 2006 Census Dictionary, and the{' '}
-          <a target="_blank" href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1220.0">
-            2006 Australian and New Zealand Standard Classification of Occupations (ANZSCO)
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1220.0`,
+            '2006 Australian and New Zealand Standard Classification of Occupations (ANZSCO)',
+          )}
           .
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2011 and 2006.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011 and 2006.
         </p>
       </Full>
       <Full>
@@ -1977,13 +1821,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           Qualifications are broken down by skill level, according to the{' '}
-          <a
-            href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0"
-            title="Australian Standard Classification of Education"
-            target="_blank"
-          >
-            Australian Standard Classification of Education (ASCED)<span>(opens a new window)</span>
-          </a>
+          {LinkBuilder(
+            `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0`,
+            'Australian Standard Classification of Education (ASCED)',
+          )}
           , (catalogue number 1272.0). Bachelor degree and higher level qualifications are generally provided by
           universities, while diploma level qualifications can be gained through universities or TAFE colleges.
           Certificate level qualifications are vocational based qualifications usually gained through TAFE and
@@ -2056,24 +1897,15 @@ const TopicNotesPage = () => {
         </TopList>
         <p>
           For a complete listing of the occupations and qualifications available, please refer to{' '}
-          <a target="_blank" title="Training" href="http://training.gov.au/">
-            training.gov.au<span>(opens a new window)</span>
-          </a>
-          .
+          {LinkBuilder(`http://training.gov.au/`, 'training.gov.au')}.
         </p>
         <p>
           For more information about Australian qualifications please refer to the{' '}
-          <a target="_blank" href="http://www.aqf.edu.au/cert.htm">
-            Australian Qualifications Network<span>(opens a new window)</span>
-          </a>
-          .
+          {LinkBuilder(`http://www.aqf.edu.au/cert.htm`, 'Australian Qualifications Network')}.
         </p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics website">
-            Australian Bureau of Statistics<span>(opens a new window)</span>
-          </a>
-          , Census of Population and Housing 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011.
         </p>
       </Full>
       <Full>
@@ -2082,14 +1914,10 @@ const TopicNotesPage = () => {
         <div>
           <p>
             Qualifications are broken down by skill level, according to the{' '}
-            <a
-              href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0"
-              target="_blank"
-              title="Australian Standard Classification of Education (ASCED), (catalogue number 1272.0)"
-            >
-              Australian Standard Classification of Education (ASCED), (catalogue number 1272.0){' '}
-              <span>(opens a new window)</span>
-            </a>
+            {LinkBuilder(
+              `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0`,
+              'Australian Standard Classification of Education (ASCED), (catalogue number 1272.0)',
+            )}
             . Field of education is defined as the subject matter of an educational activity. Field of education is
             measured in terms of:
           </p>
@@ -2117,24 +1945,15 @@ const TopicNotesPage = () => {
           </p>
           <p>
             For a complete listing of the occupations and qualifications available, please refer to{' '}
-            <a href="http://training.gov.au/" target="_blank">
-              training.gov.au <span>(opens a new window)</span>
-            </a>
-            .
+            {LinkBuilder(`http://training.gov.au/`, 'training.gov.au')}.
           </p>
           <p>
             For more information about Australian qualifications please refer to the{' '}
-            <a href="http://www.aqf.edu.au/" target="_blank" title="Australian Qualifications Network">
-              Australian Qualifications Network <span>(opens a new window)</span>
-            </a>
-            .
+            {LinkBuilder(`http://www.aqf.edu.au/`, 'training.gov.au')}.
           </p>
           <p>
-            Data source:{' '}
-            <a href="http://www.abs.gov.au/" target="_blank">
-              Australian Bureau of Statistics <span>(opens a new window)</span>
-            </a>
-            , Census of Population and Housing 2011 and 2006.
+            Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+            Population and Housing 2011 and 2006.
           </p>
         </div>
       </Full>
@@ -2150,11 +1969,8 @@ const TopicNotesPage = () => {
         </p>
         <p>Individual incomes are collected as ranges in the Census.</p>
         <p>
-          Data source:{' '}
-          <a target="_blank" href="http://www.abs.gov.au/census" title="Australian Bureau of Statistics">
-            Australian Bureau of Statistics
-          </a>
-          , Census of Population and Housing 2011.
+          Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+          Population and Housing 2011.
         </p>
         <p>
           Incomes of employed people are not comparable over time because of the influences of economic change such as
@@ -2301,13 +2117,10 @@ const TopicNotesPage = () => {
           <p>
             'No qualifications' refers to persons still studying for their first qualification, persons who do not have
             a qualification, and persons who have a qualification out of the scope of the Census version of the{' '}
-            <a
-              target="_blank"
-              href="http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0"
-              title="ABS link (this link opens a new window)"
-            >
-              Census version of the Australian Standard Classification of Education (ASCED), 2001
-            </a>
+            {LinkBuilder(
+              `http://www.abs.gov.au/ausstats/abs@.nsf/mf/1272.0`,
+              'Census version of the Australian Standard Classification of Education (ASCED), 2001',
+            )}
             .
           </p>
           <strong>Household income</strong>
@@ -2356,11 +2169,8 @@ const TopicNotesPage = () => {
           </TopList>
 
           <p>
-            Data source:{' '}
-            <a target="_blank" href="http://www.abs.gov.au/" title="Australian Bureau of Statistics">
-              Australian Bureau of Statistics
-            </a>
-            , Census of Population and Housing 2011.
+            Data source: {LinkBuilder(`http://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of
+            Population and Housing 2011.
           </p>
         </div>
       </Lite>
@@ -2376,14 +2186,10 @@ const TopicNotesPage = () => {
           </p>
           <p>
             For more information, please see the{' '}
-            <a
-              href="http://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/6530.0Explanatory%20Notes12009-10?OpenDocument"
-              target="_blank"
-              title="ABS Household Expenditure Survey"
-            >
-              {' '}
-              ABS Household Expenditure Survey
-            </a>
+            {LinkBuilder(
+              `http://www.abs.gov.au/AUSSTATS/abs@.nsf/Lookup/6530.0Explanatory%20Notes12009-10?OpenDocument`,
+              'ABS Household Expenditure Survey',
+            )}
             .
           </p>
           <p>
@@ -2399,10 +2205,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
+          see {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}
           .
         </p>
       </Full>
@@ -2464,10 +2267,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
+          see {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}
           .
         </p>
       </Full>
@@ -2504,10 +2304,7 @@ const TopicNotesPage = () => {
           </p>
           <p>
             For more information, or more detailed housing cost data, please contact{' '}
-            <a href="http://www.hometrack.com.au/" title="Hometrack" target="_blank">
-              Hometrack
-            </a>
-            .
+            {LinkBuilder(`http://www.hometrack.com.au/`, 'Hometrack')}.
           </p>
           <p>
             For some small local government areas, there may not be enough sales in a month, or enough rental listings
@@ -2690,10 +2487,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
+          see {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}
           .
         </p>
       </Full>
@@ -2804,10 +2598,7 @@ const TopicNotesPage = () => {
         <p>
           This dataset is underpinned by the NIEIR-ID economic model which is updated each financial year. In the
           2016-17 update you can expect to see differences in some of the numbers to previous updates. For more details,
-          see{' '}
-          <a href="economic-model-updates" title="Economic model updates">
-            Economic model updates
-          </a>
+          see {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}
           .
         </p>
       </Full>
@@ -2827,13 +2618,10 @@ const TopicNotesPage = () => {
         </p>
         <p>
           Details of sampling errors and confidence intervals are found on the Tourism Research Australia{' '}
-          <a
-            href="http://www.tra.gov.au/research/international-visitor-survey.html/"
-            title="Tourism Research Australia link"
-            target="_blank"
-          >
-            International Visitor Survey Methodology
-          </a>{' '}
+          {LinkBuilder(
+            `http://www.tra.gov.au/research/international-visitor-survey.html/`,
+            'International Visitor Survey Methodology',
+          )}
           page.
         </p>
         <p>
@@ -2843,13 +2631,10 @@ const TopicNotesPage = () => {
           This survey outputs data on overnight trips (including length of trip) and day trips by destination. Selected
           data from this survey are shown here. Details on the level of sampling error and further information on the
           methodology from the survey can be found the Tourism Research Australia{' '}
-          <a
-            href="http://www.tra.gov.au/research/national-visitor-survey.html"
-            title="Tourism Research Australia link"
-            target="_blank"
-          >
-            National Visitor Survey Methodology
-          </a>{' '}
+          {LinkBuilder(
+            `http://www.tra.gov.au/research/national-visitor-survey.html`,
+            'National Visitor Survey Methodology',
+          )}
           page.
         </p>
         <p>
