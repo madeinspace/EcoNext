@@ -64,5 +64,6 @@ export default [
   // 'industry-sector-analysis',
   // 'site-map',
   // 'accessibility-economy',
-  // 'economic-model-updates,
+  // 'economic-model-updates',
+  // 'glossary',
 ];

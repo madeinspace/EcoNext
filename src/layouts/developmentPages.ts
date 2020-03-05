@@ -64,5 +64,6 @@ export default [
   'population-types',
   'site-map',
   'accessibility-economy',
-  'economic-model-updates'
+  'economic-model-updates',
+  'glossary',
 ];
