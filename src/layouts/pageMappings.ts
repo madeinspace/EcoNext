@@ -44,6 +44,7 @@ import AboutEconomyId from './about-economy-id/page';
 import IndustrySectorDefinitionsPage from './industry-sector-definitions/page';
 import DataSourcesPage from './data-sources/page';
 import PopulationTypesPage from './population-types/page';
+import SiteMapPage from './site-map/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -107,6 +108,7 @@ const PageMappings = {
   'industry-sector-definitions': IndustrySectorDefinitionsPage,
   'data-sources': DataSourcesPage,
   'population-types': PopulationTypesPage,
+  'site-map': SiteMapPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

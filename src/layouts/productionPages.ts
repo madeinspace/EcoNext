@@ -60,6 +60,7 @@ export default [
   'labourforce-key-statistics',
   'labourforce-key-statistics-lite',
   'unemployed-keystats',
+  // 'site-map'
   // 'unemployment'
   // 'industry-sector-analysis'
 ];
