@@ -62,5 +62,6 @@ export default [
   'industry-sector-definitions',
   'data-sources',
   'population-types',
-  'site-map'
+  'site-map',
+  'accessibility-economy',
 ];

@@ -6,7 +6,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Site map`,
+      renderString: (): string => `Accessibility`,
     },
   ],
   filterToggles: [],
