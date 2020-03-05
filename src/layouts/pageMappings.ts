@@ -48,6 +48,7 @@ import SiteMapPage from './site-map/page';
 import AccessibilityPage from './accessibility-economy/page';
 import EconomicModelUpdatesPage from './economic-model-updates/page';
 import GlossaryPage from './glossary/page';
+import TopicNotesPage from './topic-notes/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -115,6 +116,7 @@ const PageMappings = {
   'accessibility-economy': AccessibilityPage,
   'economic-model-updates': EconomicModelUpdatesPage,
   glossary: GlossaryPage,
+  'topic-notes': TopicNotesPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };
