@@ -1,5 +1,6 @@
-import { TopList, SubTitleAlt } from '../../../styles/MainContentStyles';
+import { TopList, SubTitleAlt, ItemWrapper } from '../../../styles/MainContentStyles';
 import styled from 'styled-components';
+import EntityTable from '../../../components/table/EntityTable';
 
 const Lead = styled.p`
   font-weight: 600;
@@ -123,7 +124,9 @@ const EconomicModelUpdatesPage = () => {
         Table 1 illustrates the case of the impact of the change in the CVM price year on the growth rate of gross
         regional product for an LGA.
       </p>
-
+      <ItemWrapper>
+        <EntityTable data={tableBuilder()} />
+      </ItemWrapper>
       <p>
         The cumulative impact over four to five years of a change in the price base year could result in a 10 to 12 per
         cent growth-rate difference, compared to the previous year data base, based on a different CVM year. This is
@@ -267,3 +270,80 @@ const EconomicModelUpdatesPage = () => {
 };
 
 export default EconomicModelUpdatesPage;
+
+const tableData = [
+  { name: '2014-15 CVM base year gross product ($ million)' },
+  { name: 'Mining', year1: 100, year2: 120, growth: 20.0 },
+  { name: 'Services', year1: 150, year2: 157, growth: 4.7 },
+  { name: 'GRP', year1: 250, year2: 277, growth: 10.8 },
+  { name: '2014-15 CVM base year gross product ($ million)' },
+  { name: 'Mining', year1: 50, year2: 60, growth: 20.0 },
+  { name: 'Services', year1: 150, year2: 157, growth: 4.7 },
+  { name: 'GRP', year1: 200, year2: 217, growth: 8.5 },
+];
+
+const tableBuilder = () => {
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const tableTitle = 'Table 1. Growth rate in composite series and change in the CVM price year';
+  const rows = tableData.map(({ name, year1, year2, growth }) => ({
+    id: name,
+    data: [name, year1, year2, growth],
+    formattedData: [`${name}`, year1, year2, growth],
+  }));
+
+  return {
+    allowExport: false,
+    allowSortReset: false,
+    cssClass: '',
+    clientAlias: '',
+    source: '',
+    rawDataSource,
+    anchorName: '',
+    headRows: [
+      {
+        cssClass: '',
+        cols: [
+          {
+            cssClass: 'table-area-name',
+            displayText: tableTitle,
+            colSpan: 10,
+          },
+        ],
+      },
+      {
+        cssClass: 'heading ',
+        cols: [],
+      },
+    ],
+    cols: [
+      {
+        id: 0,
+        sortable: false,
+        displayText: '',
+        cssClass: 'odd first',
+      },
+      {
+        id: 1,
+        sortable: false,
+        displayText: '2013-14	',
+        cssClass: 'even int XL',
+      },
+      {
+        id: 2,
+        sortable: false,
+        displayText: '2014-15',
+        cssClass: 'even int XL',
+      },
+      {
+        id: 3,
+        sortable: false,
+        displayText: `Growth rate (%)`,
+        cssClass: 'even int XXXXL',
+      },
+    ],
+    rows,
+    footRows: [],
+    noOfRowsOnInit: 0,
+  };
+};

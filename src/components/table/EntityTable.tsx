@@ -88,7 +88,6 @@ class EntityTable extends React.Component<any, any> {
       allowExport = true,
       allowSortReset = true,
     } = props.data;
-    console.log('props.data: ', props.data);
 
     this.initialRows = rows;
     const renderedHeadRows = headRows.map(this.renderHeaders);
