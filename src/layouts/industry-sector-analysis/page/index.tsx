@@ -59,9 +59,7 @@ const Source = () => (
 const tableBuilder = (alias, nodes) => {
   return {
     cssClass: '',
-    allowExport: false,
     allowSort: true,
-    allowSortReset: true,
     groupOn: '',
     ClientAlias: alias,
     source: <Source />,

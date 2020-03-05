@@ -6,9 +6,9 @@ export interface TableProps {
   noOfRowsOnInit: any;
 }
 export interface IPropsData {
-  allowExport: boolean;
-  allowSort: boolean;
-  allowSortReset: boolean;
+  allowExport?: boolean;
+  allowSort?: boolean;
+  allowSortReset?: boolean;
   anchorName: string;
   cols: IColumn[];
   crossLinks: any[];

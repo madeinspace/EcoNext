@@ -78,7 +78,17 @@ class EntityTable extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    const { headRows, cols, rows, footRows, noOfRowsOnInit, source } = props.data;
+    const {
+      headRows,
+      cols,
+      rows,
+      footRows,
+      noOfRowsOnInit,
+      source,
+      allowExport = true,
+      allowSortReset = true,
+    } = props.data;
+    console.log('props.data: ', props.data);
 
     this.initialRows = rows;
     const renderedHeadRows = headRows.map(this.renderHeaders);
@@ -91,6 +101,8 @@ class EntityTable extends React.Component<any, any> {
     this.state = {
       showMore: true,
       showMoreButton: noOfRowsOnInit != 0 ? true : false,
+      allowExport,
+      allowSortReset,
       noOfRowsOnInit,
       headRows: renderedHeadRows,
       cols: renderedColumn,
@@ -382,7 +394,7 @@ class EntityTable extends React.Component<any, any> {
   };
 
   render(): JSX.Element {
-    const { headRows, cols, rows, footRows, showMore, showMoreButton } = this.state;
+    const { headRows, cols, rows, footRows, showMore, showMoreButton, allowExport, allowSortReset } = this.state;
     const { data } = this.props;
     const SourceAndTopicNotesProps: ISourceAndTopicNotesProps = {
       source: data.source,
@@ -393,8 +405,8 @@ class EntityTable extends React.Component<any, any> {
       return (
         <EntityContainer>
           <Actions>
-            <ResetButton onClick={this.resetSort} />
-            <ExportDropdown exportOptions={this.exportOptions()} handleExport={this.export} />
+            {allowSortReset && <ResetButton onClick={this.resetSort} />}
+            {allowExport && <ExportDropdown exportOptions={this.exportOptions()} handleExport={this.export} />}
           </Actions>
           <table ref={this.tableRef} className="e-shad entity-table">
             <thead>

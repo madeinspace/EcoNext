@@ -159,9 +159,7 @@ const tableBuilder = (
 ) => {
   return {
     cssClass: '',
-    allowExport: false,
     allowSort: true,
-    allowSortReset: true,
     groupOn: '',
     clientAlias,
     source: <TableSource />,

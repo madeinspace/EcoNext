@@ -55,9 +55,7 @@ const tableBuilder = (bm, alias, nodes) => {
 
   return {
     cssClass: '',
-    allowExport: false,
     allowSort: true,
-    allowSortReset: true,
     groupOn: '',
     clientAlias: alias,
     source: <Source />,
