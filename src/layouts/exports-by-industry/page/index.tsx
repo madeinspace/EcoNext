@@ -380,8 +380,7 @@ const tableBuilder = ({
   TabularData: data,
   exportID,
 }) => {
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const rawDataSource = 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019.';
   let tableTitle = `${capitalise(entityData(exportID).entityTitle)} by industry sector`;
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
