@@ -272,7 +272,7 @@ const EconomicModelUpdatesPage = () => {
 export default EconomicModelUpdatesPage;
 
 const tableData = [
-  { name: '2014-15 CVM base year gross product ($ million)' },
+  { name: '2013-14 CVM base year gross product ($ million)' },
   { name: 'Mining', year1: 100, year2: 120, growth: 20.0 },
   { name: 'Services', year1: 150, year2: 157, growth: 4.7 },
   { name: 'GRP', year1: 250, year2: 277, growth: 10.8 },
