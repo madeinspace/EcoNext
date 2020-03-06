@@ -1,12 +1,21 @@
 // #region imports
 import _ from 'lodash';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
+import {
+  formatShortDecimal,
+  formatNumber,
+  formatChangeNumber,
+  formatChangePercent,
+  formatPercent,
+  formatChangeOneDecimal,
+  formatChangeInt,
+} from '../../../utils';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region population page
@@ -15,7 +24,7 @@ const TemplatePage = () => {
   const { contentData } = useContext(PageContext);
   const chartData = chartBuilder(contentData);
   const chartLineData = chartLineBuilder(contentData);
-  const tableParams = tableBuilder(clientAlias, contentData);
+  const tableParams = tableBuilder();
 
   return (
     <>
@@ -24,16 +33,16 @@ const TemplatePage = () => {
       </ItemWrapper>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Industry sector analysis'} />
+        <EntityTable data={tableParams} name={useEntityText('Subtitle')} />
       </ItemWrapper>
 
-      <ItemWrapper>
+      {/* <ItemWrapper>
         <EntityChart data={chartData} />
       </ItemWrapper>
 
       <ItemWrapper>
         <EntityChart data={chartLineData} />
-      </ItemWrapper>
+      </ItemWrapper> */}
     </>
   );
 };
@@ -56,12 +65,81 @@ const Source = () => (
 // #endregion
 
 // #region tableBuilder
-const tableBuilder = (alias, nodes) => {
+const tableBuilder = () => {
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData: data,
+    entityData,
+    entityData: {
+      currentAreaName,
+      prefixedAreaName,
+      currentBenchmarkName,
+      currentComparisonYear,
+      currentStartYear,
+      currentIndustryName,
+    },
+  } = useContext(PageContext);
+  console.log('data: ', data);
+  console.log('prefixedAreaName: ', prefixedAreaName);
+  console.log('currentBenchmarkName: ', currentBenchmarkName);
+  console.log('currentComparisonYear: ', currentComparisonYear);
+  console.log('currentStartYear: ', currentStartYear);
+  console.log('currentIndustryName: ', currentIndustryName);
+  const separator = {
+    cssClass: 'plain',
+    data: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    formattedData: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+  };
+
+  const pluckFromRange = (arr, start, end) => arr.filter((item, i) => i >= start && i <= end);
+
+  const measure1 = pluckFromRange(data, 0, 2).map(
+    ({ LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12 }, i) => {
+      const row = {
+        data: [LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12],
+        formattedData: [
+          LabelName,
+          LabelName === 'FTE to total employment ratio' ? formatShortDecimal(NoYear1) : formatNumber(NoYear1),
+          LabelName === 'FTE to total employment ratio' ? formatShortDecimal(BMYear1) : formatNumber(BMYear1),
+          formatPercent(PerYear1) === '0' ? '--' : `${formatPercent(PerYear1)}%`,
+          LabelName === 'FTE to total employment ratio' ? formatShortDecimal(NoYear2) : formatNumber(NoYear2),
+          LabelName === 'FTE to total employment ratio' ? formatShortDecimal(BMYear2) : formatNumber(BMYear2),
+          formatPercent(PerYear2) === '0' ? '--' : `${formatPercent(PerYear2)}%`,
+          LabelName === 'FTE to total employment ratio' ? formatChangeNumber(Change12) : formatChangeInt(Change12),
+        ],
+        id: i,
+      };
+      return row;
+    },
+  );
+
+  const measure2 = pluckFromRange(data, 3, 11).map(
+    ({ LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12 }, i) => {
+      const row = {
+        data: [LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12],
+        formattedData: [LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12],
+        id: i,
+      };
+      return row;
+    },
+  );
+  const measure3 = [data[12]].map(
+    ({ LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12 }, i) => {
+      const row = {
+        data: [LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12],
+        formattedData: [LabelName, NoYear1, BMYear1, PerYear1, NoYear2, BMYear2, PerYear2, Change12],
+        id: i,
+      };
+      return row;
+    },
+  );
+  const rows = [...measure1, separator, ...measure2, separator, ...measure3];
+
   return {
     cssClass: '',
     allowSort: true,
     groupOn: '',
-    ClientAlias: alias,
+    ClientAlias: clientAlias,
     source: <Source />,
     anchorName: 'service-age-groups',
     headRows: [
@@ -70,9 +148,8 @@ const tableBuilder = (alias, nodes) => {
         cols: [
           {
             cssClass: 'table-area-name',
-            displayText: 'Annual change in Estimated Resident Population (ERP)',
+            displayText: 'Industry sector analysis',
             colSpan: 10,
-            rowSpan: 0,
           },
         ],
         key: 'hr0',
@@ -82,27 +159,23 @@ const tableBuilder = (alias, nodes) => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: '',
+            displayText: '{RDA BGLAP Region} - {All industries} - Constant prices',
             colSpan: 1,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
-            displayText: nodes[0].Geoname,
+            cssClass: 'even',
+            displayText: `2018/19`,
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'odd end-year',
-            displayText: nodes[0].GeonameSTE,
+            cssClass: 'odd',
+            displayText: `2017/18`,
             colSpan: 3,
-            rowSpan: 0,
           },
           {
-            cssClass: 'even start-year',
-            displayText: nodes[0].GeonameAUS,
-            colSpan: 3,
-            rowSpan: 0,
+            cssClass: 'even sub',
+            displayText: `Change`,
+            colSpan: 1,
           },
         ],
         key: 'hr1',
@@ -111,130 +184,52 @@ const tableBuilder = (alias, nodes) => {
     cols: [
       {
         id: 0,
-        displayText: 'Year (ending June 30)',
+        displayText: 'Economic measure',
         dataType: 'int',
-        sortable: true,
         cssClass: 'odd first',
       },
       {
         id: 1,
-        displayText: 'Number',
+        displayText: `${currentAreaName}`,
         dataType: 'int',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:#,0}',
+        cssClass: 'even int',
       },
       {
         id: 2,
-        displayText: 'Change in number',
+        displayText: `${currentBenchmarkName}`,
         dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        cssClass: 'even int',
       },
       {
         id: 3,
-        displayText: 'Change in percent',
+        displayText: `${currentAreaName} as a % of ${currentBenchmarkName}`,
         dataType: 'money',
-        sortable: true,
-        cssClass: 'even latest',
-        format: '{0:+#,0;-#,0;0}',
+        cssClass: 'even int int ',
       },
       {
         id: 4,
-        displayText: 'Number',
+        displayText: `${currentAreaName}`,
         title: '',
-        dataType: 'int',
-        sortable: true,
         cssClass: 'odd',
-        format: '{0:#,0}',
       },
       {
         id: 5,
-        displayText: 'Change in number',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'per odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: `${currentBenchmarkName}`,
+        cssClass: 'odd int',
       },
       {
         id: 6,
-        displayText: 'Change in percent',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'odd',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: `${currentAreaName} as a % of ${currentBenchmarkName}`,
+        cssClass: 'odd int',
       },
       {
         id: 7,
-        displayText: 'Number',
-        title: '',
-        dataType: 'int',
-        sortable: true,
-        cssClass: 'even',
-        format: '{0:#,0}',
-      },
-      {
-        id: 8,
-        displayText: 'Change in number',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'per even',
-        format: '{0:+#,0;-#,0;0}',
-      },
-      {
-        id: 9,
-        displayText: 'Change in percent',
-        dataType: 'money',
-        sortable: true,
-        cssClass: 'even',
-        format: '{0:+#,0;-#,0;0}',
+        displayText: 'change',
+        cssClass: 'even int',
       },
     ],
     footRows: [],
-    rows: nodes.map(
-      (
-        {
-          Year,
-          Number,
-          ChangeYear1Year2,
-          Changeper,
-          NumberSTE,
-          ChangeYear1Year2STE,
-          ChangeperSTE,
-          NumberAUS,
-          ChangeYear1Year2AUS,
-          ChangeperAUS,
-        },
-        i: number,
-      ) => ({
-        data: [
-          Year,
-          Number,
-          ChangeYear1Year2,
-          Changeper,
-          NumberSTE,
-          ChangeYear1Year2STE,
-          ChangeperSTE,
-          NumberAUS,
-          ChangeYear1Year2AUS,
-          ChangeperAUS,
-        ],
-        formattedData: [
-          Year,
-          formatNumber(Number),
-          formatChangeNumber(ChangeYear1Year2, '--'),
-          formatChangePercent(Changeper, '--'),
-          formatNumber(NumberSTE),
-          formatChangeNumber(ChangeYear1Year2STE, '--'),
-          formatChangePercent(ChangeperSTE, '--'),
-          formatNumber(NumberAUS),
-          formatChangeNumber(ChangeYear1Year2AUS, '--'),
-          formatChangePercent(ChangeperAUS, '--'),
-        ],
-        id: i,
-      }),
-    ),
+    rows,
     noOfRowsOnInit: 0,
   };
 };

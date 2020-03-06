@@ -2,10 +2,11 @@ import { sqlConnection } from '../../utils/sql';
 
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
+import { formatPercent } from '../../utils';
 
 // select * from [dbo].[fn_WP_Contribution_Stats](102,10,40,2010,2019,23000,1)
 const contentDataQuery = ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
-  return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) `;
+  return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) ORDER BY SortOrder`;
 };
 const fetchData = async ({ filters }) => {
   const contentData = await sqlConnection.raw(contentDataQuery(filters));
@@ -14,17 +15,32 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    activeBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+    currentComparisonYear: getActiveToggle(filterToggles, 'sEndYear'),
+    currentStartYear: getActiveToggle(filterToggles, 'sStartYear'),
+    currentIndustryName: getActiveToggle(filterToggles, 'IndkeyNieir'),
   };
   return activeCustomToggles;
+};
+
+const headLine = ({ data, contentData, filters }) => {
+  const totalEmployment = contentData.filter(({ LabelName }) => LabelName === 'Employment (total)')[0];
+  const valueAdd = contentData.filter(({ LabelName }) => LabelName === 'Value add ($m)')[0];
+  const { prefixedAreaName, currentBenchmarkName } = data;
+  return `In 2018/19, ${prefixedAreaName} contributed ${formatPercent(
+    totalEmployment.PerYear1,
+  )}% of ${currentBenchmarkName}’s employment and ${formatPercent(valueAdd.PerYear1)}% of its value added.`;
 };
 
 const pageContent = {
   entities: [
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string =>
-        `In [Parameter].[sStartYearLabel], ${data.currentAreaName} contributed [Econ_IndustryAnalysis].[EmploymentPer].{0:0.0}% of [BM]’s [IndkeyNieirAlt1] employment and [Econ_IndustryAnalysis].[ValueAddedPer].{0:0.0}% of its value added.`,
+      renderString: ({ data, contentData, filters }): string => headLine({ data, contentData, filters }),
+    },
+    {
+      Title: 'Subtitle',
+      renderString: (): string => `Industry sector analysis - All industries`,
     },
   ],
   filterToggles: [
@@ -66,7 +82,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2018',
+      DefaultValue: '2019',
       Label: 'Year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
@@ -75,7 +91,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2013',
+      DefaultValue: '2014',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
