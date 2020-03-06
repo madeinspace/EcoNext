@@ -51,7 +51,7 @@ const tableData = [
   {
     term: 'Consumer Price Index (CPI)	',
     definition:
-      'Measures quarterly changes in the price of a "@"basket" of goods and services on which the population group spend a high proportion of their income.    ',
+      'Measures quarterly changes in the price of a "basket" of goods and services on which the population group spend a high proportion of their income.    ',
   },
   {
     term: 'DEEWR Small Area Labour Markets	',
