@@ -40,7 +40,6 @@ const TopicNotesPage = () => {
           overseas migration. In addition, after every Census, ERP figures for the five previous years are "backcast",
           using information from the current Census, to ensure the most accurate figures are available.{' '}
         </p>
-        {LinkBuilder('', '3101.0')} and {LinkBuilder('', '3218.0')}
       </Lite>
       <Lite>
         <a id="indicators---gross-regional-product-(grp)"></a>
@@ -1034,10 +1033,10 @@ const TopicNotesPage = () => {
         <p>The data presented here shows, by industry, the work destination of workers in by destination zone.</p>
         <p>
           Please note that a new, experimental dataset has been used for this section of economy.id. This dataset
-          eliminates all "Not stated', "Zone undefined', and "Place of work undefined' categories in the Census, and
+          eliminates all "Not stated", "Zone undefined", and "Place of work undefined" categories in the Census, and
           allocates all workers to a zone. This is done by imputing records to a zone even where workers did not state
           an address. The methodology involves looking at the work destinations of similar combinations of detailed
-          industry, occupation and method of travel and making an "educated guess' (via an algorithm) at the likely work
+          industry, occupation and method of travel and making an "educated guess" (via an algorithm) at the likely work
           locations of populations where the exact address couldn’t be coded from the response.
         </p>
         <p>
@@ -1221,7 +1220,7 @@ const TopicNotesPage = () => {
           (and equally valid) definition of self-sufficiency. This is the total number of jobs in the area divided by
           the total number of employed residents, regardless of where those residents work. This definition is
           equivalent in economy.id to our definition of "Employment Capacity', so Western Australian users looking for
-          "self-sufficiency' should see this topic instead.{' '}
+          "self-sufficiency" should see this topic instead.{' '}
         </p>
         <p>
           Data source: {LinkBuilder(`http://www.abs.gov.au/`, 'Australian Bureau of Statistics')}, Journey to work data
@@ -1256,15 +1255,15 @@ const TopicNotesPage = () => {
         <p>
           Please note that the quality of Journey to Work coding has varied from Census to Census. The 2011 coding was
           particularly poor, with a large percentage of employed people being coded to "Place of Work undefined" and
-          "Not Stated' categories. The 2016 Census used a different methodology to impute workplace location where it
+          "Not Stated" categories. The 2016 Census used a different methodology to impute workplace location where it
           was not provided by the respondent. For this reason, care should be taken when comparing 2016 to earlier years
           – when using raw 2011 data, there will be an apparent increase which may not reflect reality, but simply the
           coding methods. .id have sourced 2011 data which reduces this issue, but users should still be aware that
           these are different datasets with different methodologies.
         </p>
         <p>
-          Even with this updated methodology, although you will find no workers with "Not stated' place of work, there
-          are still some who genuinely have "No fixed place of work' but travel around to work. These are NOT regarded
+          Even with this updated methodology, although you will find no workers with "Not stated" place of work, there
+          are still some who genuinely have "No fixed place of work" but travel around to work. These are NOT regarded
           as self-contained and so don’t form part of the self-containment percentage. Even a fully self-contained
           economy would therefore not show 100% self-containment due to this category, which often numbers around 4-5%
           of all employed residents.
@@ -1294,15 +1293,15 @@ const TopicNotesPage = () => {
         <p>
           Please note that the quality of Journey to Work coding has varied from Census to Census. The 2011 coding was
           particularly poor, with a large percentage of employed people being coded to "Place of Work undefined" and
-          "Not Stated' categories. The 2016 Census used a different methodology to impute workplace location where it
+          "Not Stated" categories. The 2016 Census used a different methodology to impute workplace location where it
           was not provided by the respondent. For this reason, care should be taken when comparing 2016 to earlier years
           – when using raw 2011 data, there will be an apparent increase which may not reflect reality, but simply the
           coding methods. .id have sourced 2011 data which reduces this issue, but users should still be aware that
           these are different datasets with different methodologies.
         </p>
         <p>
-          Even with this updated methodology, although you will find no workers with "Not stated' place of work, there
-          are still some who genuinely have "No fixed place of work' but travel around to work. These are NOT regarded
+          Even with this updated methodology, although you will find no workers with "Not stated" place of work, there
+          are still some who genuinely have "No fixed place of work" but travel around to work. These are NOT regarded
           as self-contained and so don’t form part of the self-containment percentage. Even a fully self-contained
           economy would therefore not show 100% self-containment due to this category, which often numbers around 4-5%
           of all employed residents.
@@ -1372,7 +1371,7 @@ const TopicNotesPage = () => {
         <p>
           Please note that the quality of Journey to Work coding has varied from Census to Census. The 2011 coding was
           particularly poor, with a large percentage of employed people being coded to "Place of Work undefined" and
-          "Not Stated' categories. The 2016 Census used a different methodology to impute workplace location where it
+          "Not Stated" categories. The 2016 Census used a different methodology to impute workplace location where it
           was not provided by the respondent. For this reason, care should be taken when comparing 2016 to earlier years
           – when using raw 2011 data, there will be an apparent increase which may not reflect reality, but simply the
           coding methods. .id have sourced 2011 data which reduces this issue, but users should still be aware that
@@ -1382,7 +1381,7 @@ const TopicNotesPage = () => {
           <i>ALTERNATE DEFINITION:</i> Some state governments, for example, Western Australia, mandate a different (and
           equally valid) definition of self-sufficiency. This is the total number of jobs in the area divided by the
           total number of employed residents, regardless of where those residents work. This definition is equivalent in
-          economy.id to our definition of "Jobs to Workers ratio', so Western Australian users looking for
+          economy.id to our definition of "Jobs to Workers ratio", so Western Australian users looking for
           "self-sufficiency' should see this topic instead.
         </p>
         <p>
@@ -1568,7 +1567,7 @@ const TopicNotesPage = () => {
         </TopList>
         <p>
           For a complete listing of the occupations and qualifications available, please refer to the{' '}
-          {LinkBuilder(`http://www.ntis.gov.au/`, 'National Training Information Serive')}.
+          {LinkBuilder(`http://www.ntis.gov.au/`, 'National Training Information Service')}.
         </p>
         <p>
           For more information about Australian qualifications please refer to the{' '}
