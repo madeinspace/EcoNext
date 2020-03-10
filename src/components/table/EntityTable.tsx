@@ -87,6 +87,7 @@ class EntityTable extends React.Component<any, any> {
       source,
       allowExport = true,
       allowSortReset = true,
+      allowSort = true,
     } = props.data;
 
     this.initialRows = rows;
@@ -101,6 +102,7 @@ class EntityTable extends React.Component<any, any> {
       showMore: true,
       showMoreButton: noOfRowsOnInit != 0 ? true : false,
       allowExport,
+      allowSort,
       allowSortReset,
       noOfRowsOnInit,
       headRows: renderedHeadRows,
@@ -198,6 +200,8 @@ class EntityTable extends React.Component<any, any> {
   }
 
   private handleSort = (colIndex: number, e: any): void => {
+    const { allowSort } = this.state;
+    if (!allowSort) return;
     // figure out sort direction
     const sortDirection: string = this.state.sortDir === 'asc' || '' ? 'desc' : 'asc';
     // sort the rows
