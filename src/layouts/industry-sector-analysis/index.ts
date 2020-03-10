@@ -5,13 +5,31 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { formatPercent } from '../../utils';
 
 // select * from [dbo].[fn_WP_Contribution_Stats](102,10,40,2010,2019,23000,1)
-const contentDataQuery = ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
-  return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) ORDER BY SortOrder`;
+const contentDataQuery = {
+  id: 1,
+  name: 'main',
+  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
+    return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) ORDER BY SortOrder`;
+  },
 };
-const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
-  return contentData;
+
+//select * from [dbo].[fn_LQSS_Analysis_1and2Digit_chart](102,10,40,2019,2018,1,22000,1)
+const LQSSDataQuery = {
+  id: 2,
+  name: 'sharedAnalysis',
+  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
+    return `select * from CommData_Economy.[dbo].[fn_LQSS_Analysis_1and2Digit_chart](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, ${IndkeyNieir}, ${DataType})`;
+  },
 };
+
+const queries = [contentDataQuery, LQSSDataQuery];
+
+const fetchData = async ({ filters }) =>
+  await Promise.all(
+    queries.map(async ({ query, name, id }) => {
+      return { id, name, data: await sqlConnection.raw(query(filters)) };
+    }),
+  );
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
@@ -24,10 +42,11 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headLine = ({ data, contentData, filters }) => {
-  const totalEmployment = contentData.filter(({ LabelName }) => LabelName === 'Employment (total)')[0];
-  const valueAdd = contentData.filter(({ LabelName }) => LabelName === 'Value add ($m)')[0];
-  const { prefixedAreaName, currentBenchmarkName } = data;
-  return `In 2018/19, ${prefixedAreaName} contributed ${formatPercent(
+  const { data: contentdata } = contentData[0];
+  const { prefixedAreaName, currentBenchmarkName, currentStartYear } = data;
+  const totalEmployment = contentdata.filter(({ LabelName }) => LabelName === 'Employment (total)')[0];
+  const valueAdd = contentdata.filter(({ LabelName }) => LabelName === 'Value add ($m)')[0];
+  return `In ${currentStartYear}, ${prefixedAreaName} contributed ${formatPercent(
     totalEmployment.PerYear1,
   )}% of ${currentBenchmarkName}’s employment and ${formatPercent(valueAdd.PerYear1)}% of its value added.`;
 };
@@ -41,6 +60,10 @@ const pageContent = {
     {
       Title: 'Subtitle',
       renderString: (): string => `Industry sector analysis - All industries`,
+    },
+    {
+      Title: 'DataSource',
+      renderString: (): string => `National Economics (NIEIR) - Modelled series`,
     },
   ],
   filterToggles: [

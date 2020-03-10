@@ -1,5 +1,6 @@
 import productionPages from './productionPages';
 import developmentPages from './developmentPages';
+// Lazy loading and code splitting here
 const fetchPageData = async (handle: string) => await import(`./${handle}`);
 
 export const isNextPage = (handle: string) => {

@@ -67,4 +67,5 @@ export default [
   // 'economic-model-updates',
   // 'glossary',
   // 'topic-notes',
+  // 'shift-share'
 ];
