@@ -29,11 +29,11 @@ const PageTemplate = (): JSX.Element => {
     return <Error statusCode={404} />;
   }
 
-  const { ParentPageID } = pageData;
+  const { ParentPageID, IsParent } = pageData;
 
   const MainContent = PageMappings[handle];
 
-  if (!ParentPageID) {
+  if (IsParent) {
     return (
       <ParentLandingPageLayout>
         <PageHeader />
@@ -44,7 +44,7 @@ const PageTemplate = (): JSX.Element => {
 
   return (
     <MainLayout>
-      <SiblingsMenu />
+      {ParentPageID > 0 && <SiblingsMenu />}
       <PageHeader>
         <Actions>
           <Share />
@@ -72,17 +72,15 @@ const PageComponent = ({ client, page }): JSX.Element => {
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
   const client: any = await fetchClientData({ clientAlias, containers });
-  const isClientPage = await client.clientPages.find(({ Alias }) => Alias === handle);
+  const clientPage = await client.clientPages.find(page => page.Alias === handle);
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
 
   // no page or client? => 404
-  if (!isClientPage || !client) return fourOfourData;
+  if (!clientPage || !client) return fourOfourData;
 
   const layoutData = await fetchLayout(handle);
   const { ID, isLite } = client;
   const { fetchData, pageContent, activeCustomToggles } = layoutData;
-  const { AllPages } = containers;
-  const pageData = AllPages[handle];
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
@@ -133,7 +131,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     filters,
     filterToggles,
     providedFilters,
-    pageData,
+    pageData: clientPage,
     entities,
     entityData: data,
   };

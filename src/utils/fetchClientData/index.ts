@@ -26,16 +26,23 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
   }
 
   const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix } = clientData[0];
-
+  const allPagesArray = Object.keys(AllPages).map(key => AllPages[key]);
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);
 
-  const clientPages = filteredPages.map(nav => ({
-    ...nav,
-    GroupName: AllPages[nav.Alias]['GroupDetails']['Name'],
-    MenuTitle: AllPages[nav.Alias]['MenuTitle'],
-    ParentPageID: AllPages[nav.Alias]['ParentPageID'],
-  }));
+  const clientPages = filteredPages.map(page => {
+    const IsParent = allPagesArray.some(item => item.ParentPageID === page.PageID);
+    return {
+      ...page,
+      GroupName: AllPages[page.Alias]['GroupDetails']['Name'],
+      MenuTitle: AllPages[page.Alias]['MenuTitle'],
+      MetaTitle: AllPages[page.Alias]['MetaTitle'],
+      MetaDescription: AllPages[page.Alias]['MetaDescription'],
+      MetaKeywords: AllPages[page.Alias]['MetaKeywords'],
+      ParentPageID: AllPages[page.Alias]['ParentPageID'],
+      IsParent,
+    };
+  });
 
   const isLite = await checkIfLite(id);
   const cdnBaseUrl = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';

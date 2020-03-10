@@ -40,8 +40,9 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   const { clientAlias, ...providedFilters } = query;
   const handle = 'home';
   const client: any = await fetchClientData({ clientAlias, containers });
+  const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
   // no client? => 404
-  if (client === null) return { client, page: { pageData: null, filters: [], handle } };
+  if (client === null) return fourOfourData;
 
   const { ID, isLite } = client;
   const layoutData = await fetchLayout(handle);
