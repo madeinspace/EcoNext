@@ -27,14 +27,10 @@ const activeCustomToggles = ({ filterToggles }) => ({
 });
 
 const headline = ({ data, contentData }): string => {
-  const { prefixedAreaName } = data;
-  const largestEmployer = largest(contentData, 'NoYear1');
+  const { prefixedAreaName, currentComparisonYear, currentStartYear } = data;
+  const largestEmployer = largest(contentData, 'RegComp');
   const IndName = largestEmployer.LabelName;
-  const TotalEmploymentPerc = `${formatPercent(largestEmployer.PerYear1)}%`;
-  const headline = `In ${prefixedAreaName}, the strongest regional competitive effect between {2017/18} and {2018/19} was {experienced in Retail Trade}.`;
-  console.log('headline: ', headline);
-  return headline;
-  // return `${IndName} is the largest employer in ${prefixedAreaName}, making up ${TotalEmploymentPerc} of total employment.`;
+  return `In ${prefixedAreaName}, the strongest regional competitive effect between ${currentComparisonYear} and ${currentStartYear} was experienced in ${IndName}.`;
 };
 
 const pageContent = {
@@ -42,6 +38,10 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: (): string => `Shift-share analysis`,
+    },
+    {
+      Title: 'DataSource',
+      renderString: (): string => `National Economics (NIEIR) - Modelled series`,
     },
     {
       Title: 'Headline',
@@ -92,7 +92,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2013',
+      DefaultValue: '2014',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',

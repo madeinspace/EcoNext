@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatShortDecimal, formatPercent, idlogo, formatChangeInt } from '../../../utils/';
+import { formatNumber, idlogo, formatChangeInt, formatChangeNumber, formatChangeOneDecimal } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -8,32 +8,22 @@ import EntityChart from '../../../components/chart/EntityChart';
 import Headline from '../../../components/Headline';
 import {
   PageIntro,
-  Note,
   Highlight,
   AnalysisContainer,
   SourceBubble,
   ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
+  TopList,
 } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { IdLink, LinkBuilder } from '../../../components/ui/links';
+import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
 import styled from 'styled-components';
-import PageHeader from '../../../components/PageHeader';
-import { Actions, Share, ExportPage } from '../../../components/Actions';
+import useEntityText from '../../../utils/useEntityText';
 
 // #endregion
 
-const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
-  li {
-    list-style: disc;
-    line-height: 20px;
-  }
-`;
 // #region autotext / dynamic content
 
 const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
@@ -46,107 +36,52 @@ const Top = n => quals =>
     .reverse()
     .value();
 
-const TopThree = Top(3);
-const TopFour = Top(4);
+const Bottom = n => quals =>
+  _(quals)
+    .take(n)
+    .reverse()
+    .value();
 
-const absSort = (arr, sortKey) => {
-  //build comparison function
-  function absoluteValueComparison(a, b) {
-    //sort by absolute value
-    if (Math.abs(a[sortKey]) < Math.abs(b[sortKey])) {
-      return -1;
-    } else if (Math.abs(a[sortKey]) > Math.abs(b[sortKey])) {
-      return 1;
-      //sort identical absolute values in numerical order
-    } else if (a[sortKey] < b[sortKey]) {
-      return -1;
-    } else if (a[sortKey] > b[sortKey]) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-  //call comparison function as callback in array sort
-  return arr.sort(absoluteValueComparison);
-};
+const TopThree = Top(3);
+const BottomThree = Bottom(3);
 
 const TopThreeFields = () => {
-  const { contentData } = useContext(PageContext);
+  const {
+    contentData,
+    entityData: {
+      currentAreaName,
+      currentBenchmarkName,
+      currentComparisonYear,
+      currentStartYear,
+      currentMeasure,
+      prefixedAreaName,
+    },
+  } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
+  const highestQuals = HighestQualifications(topquals, 'RegComp');
   const topThree = TopThree(highestQuals);
-
-  const totalPeople = _.sumBy(topThree, 'NoYear1');
-  const totalPercent = _.sumBy(topThree, 'PerYear1');
+  const bottomThree = BottomThree(highestQuals);
 
   return (
     <>
+      <Highlight>
+        An analysis of employment (Total) change between {currentComparisonYear} and 2018/19 in {prefixedAreaName} in{' '}
+        {currentStartYear} shows the three industries with the highest regional competitive effect in {prefixedAreaName}{' '}
+        relative to {currentBenchmarkName} were:
+      </Highlight>
       <TopList>
         {topThree.map((qual: any, i) => (
           <li key={i}>
-            {qual.LabelName} ({formatNumber(qual.NoYear1)} people or {formatPercent(qual.PerYear1)}%)
+            {qual.LabelName} ({formatChangeInt(qual.RegComp)} )
           </li>
         ))}
       </TopList>
-      <p>
-        In combination these three fields accounted for {formatNumber(totalPeople)} people in total or {}
-        {formatPercent(totalPercent)}% of the local workers.
-      </p>
-    </>
-  );
-};
-
-const ComparisonBenchmark = ({ benchmarkName }) => {
-  const { contentData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'NoYear1');
-  const topThree: any = TopThree(highestQuals);
-
-  if (!topThree.length) return null;
-
-  const formatComparisons = topThree.map(({ BMYear1, LabelName }) => `${formatPercent(BMYear1)}% in ${LabelName}`);
-
-  const [lastItem, ...comparisons] = formatComparisons.reverse();
-
-  const and = comparisons.length > 0 ? 'and' : null;
-
-  return (
-    <p>
-      In comparison, {benchmarkName} employed {comparisons.reverse().join('; ')} {and} {lastItem}.
-    </p>
-  );
-};
-
-const MajorDifferencesHeading = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
-  return (
-    <Highlight>
-      The major differences between the jobs held by local workers of {areaName} and {benchmarkName} were:
-    </Highlight>
-  );
-};
-
-const MajorDifferences = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
-  const majorDifferences = _.sortBy(qualsWithData, qual => {
-    const compare = [qual.PerYear1, qual.BMYear1];
-    return _.max(compare) - _.min(compare);
-  });
-  const topFour = TopFour(majorDifferences);
-
-  return (
-    <>
-      <MajorDifferencesHeading areaName={areaName} benchmarkName={benchmarkName} />
+      <Highlight>The three industries with the lowest regional competitive effect were:</Highlight>
       <TopList>
-        {topFour.map((qual: any, i) => (
+        {bottomThree.map((qual: any, i) => (
           <li key={i}>
-            A <em>{qual.PerYear1 > qual.BMYear1 ? 'larger' : 'smaller'}</em> percentage of local workers employed in the
-            field of {qual.LabelName} ({formatPercent(qual.PerYear1)}% compared to {formatPercent(qual.BMYear1)}%)
+            {qual.LabelName} ({formatChangeInt(qual.RegComp)} )
           </li>
         ))}
       </TopList>
@@ -154,89 +89,55 @@ const MajorDifferences = ({ areaName, benchmarkName }) => {
   );
 };
 
-const EmergingGroupsHeading = ({ areaName }) => {
-  return (
-    <Highlight>
-      The largest changes in the jobs held by local workers between 2011 and 2016 in {areaName} were for those employed
-      in:
-    </Highlight>
-  );
-};
-
-const EmergingGroups = () => {
-  const { contentData } = useContext(PageContext);
-  const topquals = TopLevelQualifications(contentData);
-  const topFour = TopFour(absSort(topquals, 'Change12'));
-
-  return (
-    <TopList>
-      {topFour.map((qual: any, i) => (
-        <li key={i}>
-          {qual.LabelName} ({formatChangeInt(qual.Change12)} local workers)
-        </li>
-      ))}
-    </TopList>
-  );
-};
 // #endregion
 
 // #region page
 const ShiftShareAnalysisPage = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
-  const {
-    contentData,
-    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName },
-  } = useContext(PageContext);
-
-  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
-
   return (
     <>
       <PageIntro>
         <div>
           <p>
-            Census employment data presents the number of persons employed in each industry sector (full-time and
-            part-time) in {prefixedAreaName} regardless of where they live. By comparing the number of jobs in each
-            industry sector to a regional benchmark, you can clearly see local economic strengths and weaknesses. By
-            looking at how the number of jobs in each industry is changing over time, you can track how the structure of
-            the local economy is changing. Go to the{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations?`, `Employment locations`)} page
-            to see where employment is taking place across {prefixedAreaName}.
+            Shift Share Analysis provides a useful mechanism for better interpreting changes in economic variables
+            between different time periods. It is a way of breaking the growth or decline in an industry into three
+            components to help understand what is driving the change. These three change components are commonly known
+            as:
           </p>
           <p>
-            <strong>Note: </strong>Census employment figures are known to undercount employment by varying amounts
-            depending on the Census year. All Census counts are an undercount of total population, and in addition, some
-            people don’t state their workforce status or industry. Also counts by place of work exclude those with no
-            fixed workplace address. For this reason, it is recommended that for total job numbers, users look at the{' '}
-            {LinkBuilder(
-              `http://economy.id.com.au/${clientAlias}/employment-by-industry?`,
-              `Employment by
-            industry (Total)`,
-            )}{' '}
-            modelled estimates which are updated on an annual basis, and based on the ABS Labour Force survey, less
-            prone to undercount. The Census counts by industry are included here for a greater level of industry detail
-            (3-digit ANZSIC).
-          </p>{' '}
+            <strong>National/State growth effect</strong> - the amount of growth or decline in an industry that could be
+            attributed to the overall growth of a larger area that encompasses the region's economy, usually state or
+            national.
+          </p>
+          <p>
+            <strong>Industry mix effect</strong> - the amount of growth or decline in an industry that could be
+            attributed to the performance of the specific industry at the national/state level.
+          </p>
+          <p>
+            <strong>Regional competitive effect</strong> - the amount of growth or decline in a specific industry that
+            could be attributed to a local advantage or disadvantage. This is generally the most interesting component
+            as it clearly quantifies the level of advantage or disadvantage an industry has in the local area.
+          </p>
+          <p>
+            The regional competitive effect for an industry generally indicates how the local industry performed against
+            benchmark trends. An industry with a positive regional competitive effect suggests local characteristics
+            supported above trend growth in that period. For example, if Retail Trade in a region grew by 3% but at a
+            state/national level it only grew by 2%, some regional specific factors (e.g. new shopping centre,
+            population growth) must have contributed to this above trend growth. A negative effect suggests the
+            opposite.
+          </p>
+          <p>
+            An industry with a positive regional competitive effect may still have experienced decline, but by less than
+            the state/national trends.
+          </p>
         </div>
         <SourceBubble>
           <div>
             <h3>Data source</h3>
-            <p>Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) & 2016 – by place of work</p>
+            <p>{useEntityText('DataSource')}</p>
           </div>
         </SourceBubble>
       </PageIntro>
-      <Note>
-        <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
-        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
-        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
-        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
-        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
-        caution, however, and not compare directly with 2011 data from any other source.
-      </Note>
-
       <ControlPanel />
-
       <InfoBox>
         <span>
           <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
@@ -246,16 +147,6 @@ const ShiftShareAnalysisPage = () => {
       <ItemWrapper>
         <EntityTable data={tableBuilder()} name={'Employment by Industry (Census)'} />
       </ItemWrapper>
-
-      {hasProfile() && (
-        <CrossLink>
-          <ProfileProductIcon />
-          {LinkBuilder(
-            `https://profile.id.com.au/${clientAlias}/industries`,
-            `Residents employment by industry by small area`,
-          )}
-        </CrossLink>
-      )}
 
       <InfoBox>
         <span>
@@ -274,28 +165,12 @@ const ShiftShareAnalysisPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the jobs held by the local workers in {prefixedAreaName} in 2016 shows the three most popular
-          industry sectors were:
+          An industry with a positive regional competitive effect suggests local characteristics supported above trend
+          growth in that period. A negative effect suggests local characteristics inhibited growth in that period.
         </p>
         <TopThreeFields />
-        <ComparisonBenchmark benchmarkName={currentBenchmarkName} />
-        <MajorDifferences areaName={prefixedAreaName} benchmarkName={currentBenchmarkName} />
       </AnalysisContainer>
-      <AnalysisContainer>
-        <h3>Emerging groups</h3>
-        <EmergingGroupsHeading areaName={prefixedAreaName} />
-        <EmergingGroups />
-      </AnalysisContainer>
-      {
-        // #endregion
-      }
-      {
-        // #region related pages
-      }
       <RelatedPagesCTA />
-      {
-        // #endregion
-      }
     </>
   );
 };
@@ -309,9 +184,10 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: Australian Bureau of Statistics,{' '}
-      {LinkBuilder(`http://www.abs.gov.au/census`, `Census of Population and Housing`)} 2011 and 2016. Compiled and
-      presented by <IdLink />.
+      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
+      releases adjust previous years’ figures to a new base year.
+      {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
     </p>
   );
 };
@@ -327,26 +203,14 @@ const ChartSource = () => (
 
 // #region table builders
 const tableBuilder = () => {
-  // ,NoYear1
-  // ,NoYear2
-  // ,NetChange
-  // ,BMGrowth
-  // ,IndMix
-  // ,RegComp
   const { clientAlias } = useContext(ClientContext);
   const {
-    filters,
     contentData: data,
     entityData: { currentAreaName, currentBenchmarkName, currentComparisonYear, currentStartYear, currentMeasure },
   } = useContext(PageContext);
-  console.log('currentAreaName: ', currentAreaName);
-  console.log('currentBenchmarkName: ', currentBenchmarkName);
-  console.log('currentComparisonYear: ', currentComparisonYear);
-  console.log('currentStartYear: ', currentStartYear);
-  console.log('currentMeasure: ', currentMeasure);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
-  const tableTitle = 'Shift-share analysis to Victoria';
+  const tableTitle = `Shift-share analysis to ${currentBenchmarkName}`;
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelKey === 999999);
 
@@ -354,9 +218,7 @@ const tableBuilder = () => {
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
     item => item.LabelKey,
   );
-  console.log('parents: ', parents);
   const children = data.filter(item => item.Hierarchy === 'C');
-  console.log('children: ', children);
 
   parents.forEach(parent => {
     parent.children = children.filter(
@@ -369,7 +231,7 @@ const tableBuilder = () => {
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'employment-by-industry-(census)',
+    anchorName: 'shift-share-analysis',
     headRows: [
       {
         cssClass: '',
@@ -453,9 +315,9 @@ const tableBuilder = () => {
         formatNumber(row.NoYear1),
         formatNumber(row.NoYear2),
         formatChangeInt(row.NetChange),
-        formatChangeInt(row.BMGrowth),
-        formatChangeInt(row.IndMix),
-        formatChangeInt(row.RegComp),
+        formatChangeOneDecimal(row.BMGrowth),
+        formatChangeOneDecimal(row.IndMix),
+        formatChangeOneDecimal(row.RegComp),
       ],
       childRows: row.children.map(childRow => ({
         id: childRow.LabelKey,
@@ -473,9 +335,9 @@ const tableBuilder = () => {
           formatNumber(childRow.NoYear1),
           formatNumber(childRow.NoYear2),
           formatChangeInt(childRow.NetChange),
-          formatChangeInt(childRow.BMGrowth),
-          formatChangeInt(childRow.IndMix),
-          formatChangeInt(childRow.RegComp),
+          formatChangeOneDecimal(childRow.BMGrowth),
+          formatChangeOneDecimal(childRow.IndMix),
+          formatChangeOneDecimal(childRow.RegComp),
         ],
       })),
     })),
@@ -487,9 +349,9 @@ const tableBuilder = () => {
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear2), colSpan: 1 },
           { cssClass: '', displayText: formatChangeInt(row.NetChange), colSpan: 1 },
-          { cssClass: '', displayText: formatChangeInt(row.BMGrowth), colSpan: 1 },
-          { cssClass: '', displayText: formatChangeInt(row.IndMix, '--'), colSpan: 1 },
-          { cssClass: '', displayText: formatChangeInt(row.RegComp), colSpan: 1 },
+          { cssClass: '', displayText: formatChangeOneDecimal(row.BMGrowth), colSpan: 1 },
+          { cssClass: '', displayText: formatChangeOneDecimal(row.IndMix, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatChangeOneDecimal(row.RegComp), colSpan: 1 },
         ],
       };
     }),
@@ -500,11 +362,9 @@ const tableBuilder = () => {
 
 // #region chart builders
 const chartBuilder = () => {
-  const { clientAlias } = useContext(ClientContext);
   const {
-    filters,
     contentData: data,
-    entityData: { currentAreaName, currentBenchmarkName, currentComparisonYear, currentStartYear, currentMeasure },
+    entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
 
   const parents = _.sortBy(
@@ -534,9 +394,9 @@ const chartBuilder = () => {
 
   const chartType = 'bar';
   const chartTitle = `Employment (Census) by industry sector, 2016`;
-  const chartSubtitle = ``;
-  const xAxisTitle = 'Industry';
-  const yAxisTitle = `% of workforce`;
+  const chartSubtitle = `Employment (total)`;
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `Regional Competitive Effect - Change in number of employment (Total estimate)`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
@@ -556,15 +416,20 @@ const chartBuilder = () => {
         text: chartSubtitle,
       },
       tooltip: {
+        headerFormat: '',
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+          console.log(this);
+          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> Net change in ${this.name}, ${
             this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
+          } relative to ${currentBenchmarkName}: ${formatNumber(this.y)}`;
         },
+      },
+      legend: {
+        enabled: true,
       },
       series: [
         {
-          name: `${currentAreaName}`,
+          name: `${currentAreaName} relative to ${currentBenchmarkName}`,
           data: perYear1Serie,
         },
       ],
@@ -594,7 +459,7 @@ const chartBuilder = () => {
           labels: {
             staggerLines: 0,
             formatter: function() {
-              return `${this.value}%`;
+              return `${formatNumber(this.value)}`;
             },
           },
         },
