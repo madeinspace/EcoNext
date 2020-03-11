@@ -127,7 +127,7 @@ const tableBuilder = () => {
     allowSort: false,
     allowSortReset: false,
     groupOn: '',
-    ClientAlias: clientAlias,
+    clientAlias,
     source: <Source />,
     anchorName: 'sources-of-income',
     headRows: [
@@ -242,7 +242,7 @@ const chartBuilder = () => {
         type: 'bar',
       },
       title: {
-        text: 'Economic output by destination',
+        text: 'Sources of income per household',
       },
       subtitle: {
         text: `${currentAreaName} `,

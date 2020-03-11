@@ -209,7 +209,7 @@ const tableBuilder = () => {
     allowSort: true,
     allowSortReset: true,
     groupOn: '',
-    ClientAlias: clientAlias,
+    clientAlias,
     source: <Source />,
     anchorName: 'industry-composition',
     headRows: [

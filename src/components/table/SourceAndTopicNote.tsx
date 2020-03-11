@@ -48,23 +48,27 @@ const DataNote = styled.a`
   }
 `;
 
-export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) =>
-  !_.isEmpty(source) && (
-    <DataTableSource>
-      <div>
-        {source}
-        {anchorName && (
-          <DataNote
-            target="_blank"
-            rel="noopener"
-            title="Click for more information"
-            href={`https://economy.id.com.au/${clientAlias}/topic-notes#${anchorName}`}
-          >
-            Please refer to specific data notes for more information
-          </DataNote>
-        )}
-      </div>
-    </DataTableSource>
+export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) => {
+  console.log('source, anchorName, clientAlias: ', source, anchorName, clientAlias);
+  return (
+    !_.isEmpty(source) && (
+      <DataTableSource>
+        <div>
+          {source}
+          {anchorName && (
+            <DataNote
+              target="_blank"
+              rel="noopener"
+              title="Click for more information"
+              href={`https://economy.id.com.au/${clientAlias}/topic-notes#${anchorName}`}
+            >
+              Please refer to specific data notes for more information
+            </DataNote>
+          )}
+        </div>
+      </DataTableSource>
+    )
   );
+};
 
 export default SourceAndTopicNotes;

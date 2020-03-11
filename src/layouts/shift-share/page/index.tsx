@@ -364,7 +364,7 @@ const tableBuilder = () => {
 const chartBuilder = () => {
   const {
     contentData: data,
-    entityData: { currentAreaName, currentBenchmarkName },
+    entityData: { currentAreaName, currentBenchmarkName, currentStartYear, currentComparisonYear },
   } = useContext(PageContext);
 
   const parents = _.sortBy(
@@ -393,7 +393,7 @@ const chartBuilder = () => {
   }));
 
   const chartType = 'bar';
-  const chartTitle = `Employment (Census) by industry sector, 2016`;
+  const chartTitle = `Regional competitive effect by industry sector ${currentComparisonYear} to ${currentStartYear}`;
   const chartSubtitle = `Employment (total)`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Regional Competitive Effect - Change in number of employment (Total estimate)`;
