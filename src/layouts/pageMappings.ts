@@ -51,6 +51,7 @@ import GlossaryPage from './glossary/page';
 import TopicNotesPage from './topic-notes/page';
 import ShiftShareAnalysisPage from './shift-share/page';
 import IncomeSourcesPage from './income-sources/page';
+import IndustryCompositionPage from './industry-composition/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -121,6 +122,7 @@ const PageMappings = {
   'topic-notes': TopicNotesPage,
   'shift-share': ShiftShareAnalysisPage,
   'income-sources': IncomeSourcesPage,
+  'industry-composition': IndustryCompositionPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

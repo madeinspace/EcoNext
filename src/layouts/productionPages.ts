@@ -69,4 +69,5 @@ export default [
   // 'topic-notes',
   // 'shift-share',
   // 'income-sources'
+  // 'industry-composition'
 ];

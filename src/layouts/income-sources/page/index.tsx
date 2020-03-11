@@ -47,11 +47,8 @@ const IncomeSourcesPage = () => {
               `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry`,
               `Worker productivity`,
             )}
-            , {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, `Local workers income`)} data, and
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/gross-regional-product`,
-              `Gross Regional Product`,
-            )}{' '}
+            , {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, `Local workers income`)} data, and{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/gross-regional-product`, `Gross Regional Product`)}{' '}
             data on the size of the residential economy.
           </p>
         </div>
@@ -107,12 +104,6 @@ const tableBuilder = () => {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName, currentComparisonYear, currentStartYear },
   } = useContext(PageContext);
-
-  console.log('data: ', contentData);
-  console.log('currentStartYear: ', currentStartYear);
-  console.log('currentComparisonYear: ', currentComparisonYear);
-  console.log('currentBenchmarkName: ', currentBenchmarkName);
-  console.log('currentAreaName: ', currentAreaName);
 
   const rows = contentData[0].data.map(({ LabelKey, LabelName, NoYear1, BMYear1, NoYear2, BMYear2, Change12 }, i) => {
     const row = {
@@ -238,7 +229,6 @@ const chartBuilder = () => {
     const data = [bmPerYear1, PerYear1];
     return { name: LabelName, data };
   });
-  console.log('series: ', series);
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, - ${

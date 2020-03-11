@@ -5,7 +5,6 @@ import { formatNumber } from '../../utils';
 
 /* #region  contentDataQuery */
 const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID, imptype }) => {
-  console.log('exptype: ', imptype);
   let exportFunc = ``;
   switch (imptype) {
     case '1':

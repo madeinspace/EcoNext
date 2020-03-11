@@ -4,9 +4,7 @@ import {
   formatShortDecimal,
   formatNumber,
   formatChangeNumber,
-  formatChangePercent,
   formatPercent,
-  formatChangeOneDecimal,
   formatChangeInt,
   idlogo,
   formatLongNumber,
@@ -300,87 +298,6 @@ const tableBuilder = () => {
     footRows: [],
     rows,
     noOfRowsOnInit: 0,
-  };
-};
-// #endregion
-
-// #region chartLineBuilder
-const chartLineBuilder = nodes => {
-  return {
-    cssClass: '',
-    highchartOptions: {
-      chart: {
-        type: 'line',
-      },
-      title: {
-        text: 'Estimated Resident Population (ERP)',
-        align: 'left',
-      },
-      tooltip: {
-        pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
-        },
-      },
-      series: [
-        {
-          color: '',
-          yAxis: 0,
-          name: nodes[0].Geoname,
-          data: _.map(nodes, 'Changeper').reverse(),
-        },
-        {
-          color: '',
-          yAxis: 0,
-          name: nodes[0].GeonameSTE,
-          data: _.map(nodes, 'ChangeperSTE').reverse(),
-        },
-        {
-          color: '',
-          yAxis: 0,
-          name: nodes[0].GeonameAUS,
-          data: _.map(nodes, 'ChangeperAUS').reverse(),
-        },
-      ],
-      xAxis: {
-        categories: _.map(nodes, 'Year').reverse(),
-        croshair: false,
-        title: {
-          text: 'Year ending June',
-          align: 'low',
-        },
-
-        labels: {
-          staggerLines: 0,
-          format: '',
-        },
-        opposite: false,
-        plotBands: [],
-      },
-      yAxis: [
-        {
-          croshair: false,
-          title: {
-            text: 'Percentage change',
-          },
-          labels: {
-            staggerLines: 0,
-            formatter: function() {
-              return formatChangeNumber(this.value);
-            },
-          },
-          opposite: false,
-          plotBands: [],
-        },
-      ],
-    },
-    rawDataSource:
-      'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.',
-    dataSource: <Source />,
-    chartContainerID: 'chart2',
-    logoUrl: 'http://profile.local.com.au:8666/dist/images/id-logo.png',
-    chartTemplate: 'Standard',
   };
 };
 // #endregion

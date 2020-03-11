@@ -337,7 +337,6 @@ const tableBuilder = ({
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Resident workers age structure';
   const firstColTitle = `Ten year age groups (years)`;
-  console.log('contentData: ', contentData);
   const rows = contentData
     .filter(node => node.LabelKey !== 999999)
     .map(row => ({

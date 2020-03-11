@@ -418,7 +418,6 @@ const chartBuilder = () => {
       tooltip: {
         headerFormat: '',
         pointFormatter: function() {
-          console.log(this);
           return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> Net change in ${this.name}, ${
             this.series.name
           } relative to ${currentBenchmarkName}: ${formatNumber(this.y)}`;

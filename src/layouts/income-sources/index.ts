@@ -2,31 +2,21 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
-// select * from dbo.fn_SourcesofIncome(102,10,40,2019,2004,1,Null)
-// const BuildingApprovalsSQL = ({ ClientID, WebID, BMID, sStartYear, sEndYear }) =>
-//   `select * from CommData_Economy.[dbo].[fn_SourcesofIncome](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`;
-
 // const fetchData = async ({ filters }) => await sqlConnection.raw(BuildingApprovalsSQL(filters));
 const contentDataQuery = {
   id: 1,
   name: 'main',
-  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear }) => {
-    return `select * from CommData_Economy.[dbo].[fn_SourcesofIncome](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`;
-  },
+  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear }) =>
+    `select * from CommData_Economy.[dbo].[fn_SourcesofIncome](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`,
 };
 
 //select * from [dbo].[fn_SourcesofIncome_Charts](102,10,40,2019,1,null)
 const chartQuery = {
   id: 2,
   name: 'sharedAnalysis',
-  query: ({ ClientID, WebID, BMID, sStartYear }) => {
-    console.log('ClientID, WebID, BMID, sStartYear: ', ClientID, WebID, BMID, sStartYear);
-    const query = `select * from CommData_Economy.[dbo].[fn_SourcesofIncome_Charts](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, 1, null)`;
-    console.log('query: ', query);
-    return query;
-  },
+  query: ({ ClientID, WebID, BMID, sStartYear }) =>
+    `select * from CommData_Economy.[dbo].[fn_SourcesofIncome_Charts](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, 1, null)`,
 };
-console.log('chartQuery: ', chartQuery);
 
 const queries = [contentDataQuery, chartQuery];
 

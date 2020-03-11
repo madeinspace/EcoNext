@@ -94,9 +94,6 @@ const IncomeQuartilePage = () => {
   const lowesttIncomProportionText = lowestGroupArea > lowestGroupBM ? 'greater' : 'lesser ';
   const industryText = Indkey == 23000 ? '' : `(${currentIndustryName})`;
 
-  // console.log(`highestGroupArea: ${highestGroupArea}\nhighestGroupBM: ${highestGroupBM}`);
-  // console.log(`lowestGroupArea: ${lowestGroupArea}\lowestGroupBM: ${lowestGroupBM}`);
-
   return (
     <>
       <PageIntro>
