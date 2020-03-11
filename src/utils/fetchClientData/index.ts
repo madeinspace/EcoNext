@@ -40,6 +40,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
       MetaDescription: AllPages[page.Alias]['MetaDescription'],
       MetaKeywords: AllPages[page.Alias]['MetaKeywords'],
       ParentPageID: AllPages[page.Alias]['ParentPageID'],
+      RelatedPages: AllPages[page.Alias]['RelatedPages'],
       IsParent,
     };
   });
