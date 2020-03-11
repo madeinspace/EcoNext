@@ -58,8 +58,11 @@ const pageContent = {
       renderString: ({ data, contentData, filters }): string => headLine({ data, contentData, filters }),
     },
     {
-      Title: 'Subtitle',
-      renderString: (): string => `Industry sector analysis - All industries`,
+      Title: 'SubTitle',
+      renderString: ({ data }): string => {
+        const { currentIndustryName } = data;
+        return `Industry sector analysis - ${currentIndustryName}`;
+      },
     },
     {
       Title: 'DataSource',
