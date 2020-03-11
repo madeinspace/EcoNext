@@ -51,7 +51,7 @@ const pageContent = {
       renderString: ({ data, contentData }): string => headLine({ data, contentData }),
     },
     {
-      Title: 'Subtitle',
+      Title: 'SubTitle',
       renderString: (): string => `Sources of income`,
     },
     {
