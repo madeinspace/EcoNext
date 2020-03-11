@@ -50,6 +50,7 @@ import EconomicModelUpdatesPage from './economic-model-updates/page';
 import GlossaryPage from './glossary/page';
 import TopicNotesPage from './topic-notes/page';
 import ShiftShareAnalysisPage from './shift-share/page';
+import IncomeSourcesPage from './income-sources/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -119,6 +120,7 @@ const PageMappings = {
   glossary: GlossaryPage,
   'topic-notes': TopicNotesPage,
   'shift-share': ShiftShareAnalysisPage,
+  'income-sources': IncomeSourcesPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

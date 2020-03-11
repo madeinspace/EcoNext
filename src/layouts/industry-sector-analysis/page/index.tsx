@@ -98,10 +98,6 @@ const TemplatePage = () => {
       <ItemWrapper>
         <EntityChart data={chartBuilderShiftShare()} />
       </ItemWrapper>
-
-      {/*<ItemWrapper>
-        <EntityChart data={chartLineData} />
-      </ItemWrapper> */}
     </>
   );
 };
