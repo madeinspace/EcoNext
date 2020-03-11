@@ -262,7 +262,6 @@ const chartBuilder = () => {
       },
       yAxis: [
         {
-          min: 0,
           title: {
             text: 'Percentage',
           },
