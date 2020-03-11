@@ -137,8 +137,6 @@ const tableBuilder = () => {
 
   const rows = data.filter(({ LabelKey }) => !without.includes(LabelKey));
   const totaux = _.takeRight(data, 3);
-  console.log('totaux: ', totaux);
-  console.log('data: ', data);
 
   return {
     cssClass: '',

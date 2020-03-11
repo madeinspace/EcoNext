@@ -18,7 +18,8 @@ const LQSSDataQuery = {
   id: 2,
   name: 'sharedAnalysis',
   query: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
-    return `select * from CommData_Economy.[dbo].[fn_LQSS_Analysis_1and2Digit_chart](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, ${IndkeyNieir}, ${DataType})`;
+    const query = `select * from CommData_Economy.[dbo].[fn_LQSS_Analysis_1and2Digit_chart](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, ${IndkeyNieir}, ${DataType})`;
+    return query;
   },
 };
 

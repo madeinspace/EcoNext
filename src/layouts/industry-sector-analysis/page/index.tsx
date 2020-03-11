@@ -471,10 +471,7 @@ const chartBuilderShiftShare = () => {
     entityData: { currentBenchmarkName, currentIndustryName, currentAreaName, currentComparisonYear, currentStartYear },
   } = useContext(PageContext);
   const categories = data[1].data.map(({ Topic }) => Topic);
-  console.log('categories: ', categories);
   const serie = data[1].data.map(item => item['Number']);
-  console.log('serie: ', serie);
-  console.log('data[1].data: ', data[1].data);
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> Net change in ${this.category}, - ${
       this.series.name
@@ -504,7 +501,7 @@ const chartBuilderShiftShare = () => {
       series: [
         {
           name: `${currentAreaName} relative to  ${currentBenchmarkName}`,
-          data: [22.243, -11.6135, 10.6295, 44.7123, 34.0829],
+          data: serie,
         },
       ],
 

@@ -49,7 +49,6 @@ const DataNote = styled.a`
 `;
 
 export const SourceAndTopicNotes = ({ source, anchorName, clientAlias }) => {
-  console.log('source, anchorName, clientAlias: ', source, anchorName, clientAlias);
   return (
     !_.isEmpty(source) && (
       <DataTableSource>
