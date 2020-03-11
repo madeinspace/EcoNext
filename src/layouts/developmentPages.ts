@@ -70,4 +70,5 @@ export default [
   'shift-share',
   'income-sources',
   'industry-composition',
+  'household-expenditure',
 ];

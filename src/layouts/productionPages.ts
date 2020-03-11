@@ -68,6 +68,7 @@ export default [
   // 'glossary',
   // 'topic-notes',
   // 'shift-share',
-  // 'income-sources'
-  // 'industry-composition'
+  // 'income-sources',
+  // 'industry-composition',
+  // 'household-expenditure'
 ];
