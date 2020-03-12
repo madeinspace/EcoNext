@@ -72,4 +72,5 @@ export default [
   'industry-composition',
   'household-expenditure',
   'consumer-price-index',
+  'retail-trade',
 ];

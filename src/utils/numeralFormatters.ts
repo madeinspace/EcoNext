@@ -1,6 +1,6 @@
 import numeral from 'numeral';
 const REGEX_CHANGE_CURRENCY = /^(\$\d*)/;
-export const formatNumber = number => (number != null ? numeral(number).format('0,0') : '--'); // ie: 3,326,812
+export const formatNumber = number => (number != null ? numeral(number).format('0,0') : '--'); // ie: 3,326
 export const formatLongNumber = number => (number != null ? numeral(number).format('0,0.00') : '--'); // ie: 3,326.81
 export const formatPercent = (number, zero = '0') => (number ? numeral(number).format('0,0.0') : zero);
 // export const formatChangeNumber = (number, zero = '0') => (number ? numeral(number).format('+0,0') : zero); //ie: +3.21

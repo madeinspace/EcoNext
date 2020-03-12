@@ -72,4 +72,5 @@ export default [
   'household-expenditure',
   // 'unemployment',
   // 'consumer-price-index',
+  // 'retail-trade',
 ];
