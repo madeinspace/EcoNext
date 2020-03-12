@@ -152,11 +152,13 @@ class EntityTable extends React.Component<any, any> {
   };
 
   private renderColumns = (cols: IColumn[]): any => {
+    const { allowSort } = this.props.data;
     const cells: any = cols.map((col: IColumn, i: number) => {
       let label: string = col.displayText;
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
-        className: (_.has(col, 'sortable') && !col.sortable ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
+        className:
+          (!allowSort || (_.has(col, 'sortable') && !col.sortable) ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
       };
 
       // keeping the classes for the rows' cells out of the state.
@@ -397,7 +399,17 @@ class EntityTable extends React.Component<any, any> {
   };
 
   render(): JSX.Element {
-    const { headRows, cols, rows, footRows, showMore, showMoreButton, allowExport, allowSortReset } = this.state;
+    const {
+      headRows,
+      cols,
+      rows,
+      footRows,
+      showMore,
+      showMoreButton,
+      allowExport,
+      allowSortReset,
+      allowSort,
+    } = this.state;
     const { data } = this.props;
     const SourceAndTopicNotesProps: ISourceAndTopicNotesProps = {
       source: data.source,
