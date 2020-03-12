@@ -15,7 +15,7 @@ const PageHeader = ({ children = null }) => {
   return (
     <EntityContainer>
       <TitleContainer>
-        <MainTitle>{currentAreaName}</MainTitle>
+        <MainTitle>{useEntityText('MainTitle') || currentAreaName}</MainTitle>
         <SubTitle />
       </TitleContainer>
       {children}
