@@ -2,10 +2,11 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import { formatPercent } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
+import _ from 'lodash';
 
 // select * from [dbo].[fn_IN_UnemploymentPivot](102,10,40)
 const SQLQuery = ({ ClientID, WebID, BMID }) =>
-  `SELECT * from CommData_Economy.[dbo].[fn_In_UnemploymentPivot](${ClientID},${WebID},${BMID}) ORDER BY Year DESC, Month DESC`;
+  `SELECT * from CommData_Economy.[dbo].[fn_In_UnemploymentPivot](${ClientID},${WebID},${BMID}) ORDER BY Year ASC, Month ASC`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));
 
@@ -14,8 +15,10 @@ const activeCustomToggles = ({ filterToggles }) => ({
 });
 
 const headline = ({ data, contentData }) => {
-  const unemploymentRate = formatPercent(contentData[0]['NumberUnempRate']);
-  return `In the 2019 June quarter, the unemployment rate in ${data.prefixedAreaName} was ${unemploymentRate}%.`;
+  const lastQuarter: any = _.takeRight(contentData, 1)[0];
+  return `In the ${lastQuarter.Year} ${lastQuarter.LabelMonth} quarter, the unemployment rate in ${
+    data.prefixedAreaName
+  } was ${formatPercent(lastQuarter.NumberUnempRate)}%.`;
 };
 
 const pageContent = {

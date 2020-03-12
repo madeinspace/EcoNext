@@ -8,6 +8,7 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
+import * as Highcharts from 'highcharts';
 // #endregion
 
 // #region population page
@@ -33,9 +34,13 @@ const UnemploymentPage = () => {
             residential area with a significantly disadvantaged population.
           </p>
           <p>
-            Note: The Department of Employment advise that highly disaggregated labour force and unemployment estimates
-            at the LGA level can display significant variability and should be viewed with caution. The figures are
-            smoothed using a four-quarter (annual) average to minimise the variability inherent in small area estimates.
+            Note: The Department of Employment advise that{' '}
+            <strong>
+              highly disaggregated labour force and unemployment estimates at the LGA level can display significant
+              variability and should be viewed with caution.
+            </strong>{' '}
+            The figures are smoothed using a four-quarter (annual) average to minimise the variability inherent in small
+            area estimates.
           </p>
           <p>
             This page presents unemployment estimates for benchmark regions which are headline figures widely published
@@ -48,9 +53,9 @@ const UnemploymentPage = () => {
       <ItemWrapper>
         <EntityChart data={lineChartBuilder()} />
       </ItemWrapper>
-      {/* <ItemWrapper>
-        <EntityChart data={lineChartBuilder()} />
-      </ItemWrapper> */}
+      <ItemWrapper>
+        <EntityChart data={chartBuilder()} />
+      </ItemWrapper>
       <ItemWrapper>
         <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
       </ItemWrapper>
@@ -104,7 +109,7 @@ const tableBuilder = () => {
   );
   const STE = data[0].GeonameSTE;
   const GCCSA = data[0].GeonameGCCSA;
-  const rows = parents.map(({ year, children }) => {
+  const rows = parents.reverse().map(({ year, children }) => {
     return {
       alreadyExpanded: true,
       expandable: children.length > 0,
@@ -112,30 +117,39 @@ const tableBuilder = () => {
       id: year,
       data: [year, '', '', '', '', '', ''],
       formattedData: [`${year}`, ' ', ' ', ' ', ' ', ' ', ' '],
-      childRows: children.map(
-        ({
-          Sort,
-          LabelMonth,
-          NumberUnemp,
-          NumberLBF,
-          NumberUnempRate,
-          NumberUnempRateGCC,
-          NumberUnempRateSTE,
-          NumberUnempRateAUS,
-        }) => ({
-          id: Sort,
-          data: [LabelMonth, NumberUnemp, NumberUnempRate, NumberUnempRateGCC, NumberUnempRateSTE, NumberUnempRateAUS],
-          formattedData: [
-            `${LabelMonth}`,
-            formatNumber(NumberUnemp),
-            formatNumber(NumberLBF),
-            `${formatShortDecimal(NumberUnempRate)}`,
-            formatShortDecimal(NumberUnempRateGCC),
-            formatShortDecimal(NumberUnempRateSTE),
-            formatShortDecimal(NumberUnempRateAUS),
-          ],
-        }),
-      ),
+      childRows: children
+        .reverse()
+        .map(
+          ({
+            Sort,
+            LabelMonth,
+            NumberUnemp,
+            NumberLBF,
+            NumberUnempRate,
+            NumberUnempRateGCC,
+            NumberUnempRateSTE,
+            NumberUnempRateAUS,
+          }) => ({
+            id: Sort,
+            data: [
+              LabelMonth,
+              NumberUnemp,
+              NumberUnempRate,
+              NumberUnempRateGCC,
+              NumberUnempRateSTE,
+              NumberUnempRateAUS,
+            ],
+            formattedData: [
+              `${LabelMonth}`,
+              formatNumber(NumberUnemp),
+              formatNumber(NumberLBF),
+              `${formatPercent(NumberUnempRate)}`,
+              formatPercent(NumberUnempRateGCC),
+              formatPercent(NumberUnempRateSTE),
+              formatPercent(NumberUnempRateAUS),
+            ],
+          }),
+        ),
     };
   });
 
@@ -199,37 +213,31 @@ const tableBuilder = () => {
       },
       {
         id: 1,
-        sortable: false,
         displayText: 'Unemployed people',
         cssClass: 'even int XXL',
       },
       {
         id: 2,
-        sortable: false,
-        displayText: 'Local resident workers',
+        displayText: 'Labour force',
         cssClass: 'even int XXL',
       },
       {
         id: 3,
-        sortable: false,
         displayText: `Unemployment rate %`,
         cssClass: 'even int XXL',
       },
       {
         id: 4,
-        sortable: false,
         displayText: 'Unemployment rate %',
         cssClass: 'odd int XXXL',
       },
       {
         id: 5,
-        sortable: false,
         displayText: 'Unemployment rate %',
         cssClass: 'even int XXXL',
       },
       {
         id: 6,
-        sortable: false,
         displayText: `Unemployment rate %`,
         cssClass: 'odd int ',
       },
@@ -241,15 +249,134 @@ const tableBuilder = () => {
 };
 // #endregion
 
+const chartBuilder = () => {
+  const {
+    contentData: data,
+    entityData: { currentAreaName },
+  } = useContext(PageContext);
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id the population experts.';
+  const chartContainerID = 'quarterly-unemployment';
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(
+      this.y,
+    )} peple`;
+  };
+  const distinctYears = [...new Set(data.map(({ Year }) => Year))];
+
+  const makeQuarterSerie = q => {
+    let values = [];
+    distinctYears.forEach(year => {
+      const match = data.filter(item => item.Year === year).find(item => item.month === q);
+      values.push(match != undefined ? match['NumberUnemp'] : null);
+    });
+    return values;
+  };
+
+  const Q1 = makeQuarterSerie(3);
+  const Q2 = makeQuarterSerie(6);
+  const Q3 = makeQuarterSerie(9);
+  const Q4 = makeQuarterSerie(12);
+
+  return {
+    cssClass: '',
+    highchartOptions: {
+      chart: {
+        type: 'column',
+        styledMode: true,
+        events: {
+          load: function() {
+            const xAxis = this.xAxis[0];
+            xAxis.categories.forEach((category, index) => {
+              if (index % 2 === 0) {
+                xAxis.addPlotBand({
+                  from: index - 0.5,
+                  to: index + 0.5,
+                });
+              }
+            });
+          },
+        },
+      },
+      title: {
+        text: 'Quarterly unemployment',
+      },
+      series: [
+        {
+          name: 'Q1',
+          data: Q1,
+        },
+        {
+          name: 'Q2',
+          data: Q2,
+        },
+        {
+          name: 'Q3',
+          data: Q3,
+        },
+        {
+          name: 'Q4',
+          data: Q4,
+        },
+      ],
+      xAxis: {
+        categories: distinctYears,
+        title: {
+          text: `Year`,
+        },
+        labels: {
+          formatter: function() {
+            return this.value;
+          },
+        },
+      },
+      yAxis: [
+        {
+          title: {
+            text: `Number of unemployed people`,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return formatNumber(this.value);
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        series: {
+          groupPadding: 0.08,
+        },
+      },
+      tooltip: {
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+    },
+    rawDataSource,
+    dataSource: <Source />,
+    chartContainerID,
+    logoUrl: idlogo,
+  };
+};
+
 // #region chart
 const lineChartBuilder = () => {
-  const { clientAlias } = useContext(ClientContext);
   const {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
   const distinctYears = [...new Set(data.map(({ Year }) => Year))];
-
+  const tickPos = distinctYears.map((year: number) => Date.UTC(year, 6, 1));
+  const plotBands = distinctYears.map((year: number, i) => {
+    return i % 2 === 0
+      ? {
+          from: Date.UTC(year, 0, 1), // Start of the plot band
+          to: Date.UTC(year, 12, 1), // End of the plot band
+        }
+      : {};
+  });
   const parents: any = distinctYears.reduce(
     (acc: any, cur: any) => [
       ...acc,
@@ -268,23 +395,27 @@ const lineChartBuilder = () => {
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id the population experts.';
   const chartContainerID = 'quarterly-unemployment-rate';
-  const categories = distinctYears.reverse();
-  const serie0 = parents.reduce((acc, cur) => {
-    return [
-      ...acc,
-      cur.children.map(({ NumberUnempRate }, id) => {
-        return NumberUnempRate;
-      }),
-    ];
-  }, []); //_.map(nodes, 'ChangePer3').reverse();
-  const serie1 = []; //_.map(nodes, 'BMChangePer3').reverse();
-  const serie2 = []; //_.map(nodes, 'BMChangePer3').reverse();
-  const serie3 = []; //_.map(nodes, 'BMChangePer3').reverse();
+
+  const makeSerie = (arr, key) =>
+    arr.reduce((acc, cur) => {
+      return [
+        ...acc,
+        ...cur.children.map(item => {
+          const theyear = cur.year;
+          const themonth = item.month - 1;
+          const theDate = Date.UTC(theyear, themonth, 1);
+          const dateArr = [theDate, item[key]];
+          return dateArr;
+        }),
+      ];
+    }, []);
+
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: $${formatNumber(
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
       this.y,
-    )} millions`;
+    )}%`;
   };
+
   return {
     cssClass: '',
     highchartOptions: {
@@ -298,27 +429,33 @@ const lineChartBuilder = () => {
       series: [
         {
           name: `${currentAreaName}`,
-          data: serie0,
+          data: makeSerie(parents, 'NumberUnempRate'),
         },
         {
           name: `${GCCSA}`,
-          data: serie1,
+          data: makeSerie(parents, 'NumberUnempRateGCC'),
         },
         {
           name: `${STE}`,
-          data: serie2,
+          data: makeSerie(parents, 'NumberUnempRateSTE'),
         },
         {
-          name: `AUSTRALIA`,
-          data: serie3,
+          name: `Australia`,
+          data: makeSerie(parents, 'NumberUnempRateAUS'),
         },
       ],
       xAxis: {
-        categories,
-        max: 4,
+        type: 'datetime',
+        tickPositions: tickPos,
         title: {
           text: xAxisTitle,
         },
+        labels: {
+          formatter: function() {
+            return Highcharts.dateFormat('%Y', this.value);
+          },
+        },
+        plotBands,
       },
       yAxis: [
         {
