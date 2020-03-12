@@ -71,4 +71,5 @@ export default [
   'industry-composition',
   'household-expenditure',
   // 'unemployment',
+  // 'consumer-price-index',
 ];

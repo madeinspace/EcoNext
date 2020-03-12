@@ -71,4 +71,5 @@ export default [
   'income-sources',
   'industry-composition',
   'household-expenditure',
+  'consumer-price-index',
 ];
