@@ -74,4 +74,5 @@ export default [
   'consumer-price-index',
   'retail-trade',
   'employed-residents',
+  'Employment-capacity',
 ];
