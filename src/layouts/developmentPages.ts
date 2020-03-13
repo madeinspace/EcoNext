@@ -73,4 +73,5 @@ export default [
   'household-expenditure',
   'consumer-price-index',
   'retail-trade',
+  'employed-residents',
 ];

@@ -73,4 +73,5 @@ export default [
   // 'unemployment',
   // 'consumer-price-index',
   // 'retail-trade',
+  // "employed-residents",
 ];

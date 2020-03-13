@@ -55,6 +55,7 @@ import IndustryCompositionPage from './industry-composition/page';
 import HouseholdExpenditurePage from './household-expenditure/page';
 import ConsumerPriceIndexPage from './consumer-price-index/page';
 import RetailTradePage from './retail-trade/page';
+import EmployedResidentsPage from './employed-residents/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -129,6 +130,7 @@ const PageMappings = {
   'household-expenditure': HouseholdExpenditurePage,
   'consumer-price-index': ConsumerPriceIndexPage,
   'retail-trade': RetailTradePage,
+  'employed-residents': EmployedResidentsPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };
