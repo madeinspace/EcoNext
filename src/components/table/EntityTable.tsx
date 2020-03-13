@@ -87,7 +87,7 @@ class EntityTable extends React.Component<any, any> {
       source,
       allowExport = true,
       allowSortReset = true,
-      allowSort = true,
+      allowSort,
     } = props.data;
 
     this.initialRows = rows;
@@ -153,12 +153,13 @@ class EntityTable extends React.Component<any, any> {
 
   private renderColumns = (cols: IColumn[]): any => {
     const { allowSort } = this.props.data;
+    const sortable = allowSort != undefined ? allowSort : true;
     const cells: any = cols.map((col: IColumn, i: number) => {
       let label: string = col.displayText;
       const columnCellProps = {
         onClick: this.handleSort.bind(this, i),
         className:
-          (!allowSort || (_.has(col, 'sortable') && !col.sortable) ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
+          (!sortable || (_.has(col, 'sortable') && !col.sortable) ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
       };
 
       // keeping the classes for the rows' cells out of the state.
