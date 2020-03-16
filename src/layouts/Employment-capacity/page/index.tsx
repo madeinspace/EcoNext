@@ -17,6 +17,7 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
 import EntityChart from '../../../components/chart/EntityChart';
 import RelatedPagesCTA from '../../../components/RelatedPages';
+import InfoBox from '../../../components/ui/infoBox';
 // #endregion
 
 // #region population page
@@ -70,6 +71,12 @@ const EmploymentCapacityPage = () => {
         </SourceBubble>
       </PageIntro>
       <ControlPanel />
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
+          the sub categories.
+        </span>
+      </InfoBox>
       <ItemWrapper>
         <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
       </ItemWrapper>
@@ -260,7 +267,6 @@ const chartCapacityBuilder = () => {
     data.filter(({ LabelKey, Hierarchy }) => Hierarchy === 'P' && LabelKey !== 999999),
     item => item.LabelKey,
   );
-  console.log('parents: ', parents);
   const children = data.filter(item => item.Hierarchy === 'C');
   parents.forEach(parent => {
     parent.children = children.filter(
