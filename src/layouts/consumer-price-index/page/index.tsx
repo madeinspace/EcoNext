@@ -31,7 +31,6 @@ const ConsumerPriceIndexPage = () => {
           </p>
         </div>
       </PageIntroFullWidth>
-      <ControlPanel />
       <ItemWrapper>
         <EntityChart data={lineChartBuilder()} />
       </ItemWrapper>
