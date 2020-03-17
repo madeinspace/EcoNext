@@ -90,7 +90,6 @@ const tableVisitorNightsNumbersBuilder = () => {
   const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
   const tableTitle = `Visitor nights - Numbers`;
   const firstColTitle = `Year`;
-  console.log('contentData: ', contentData);
 
   const parentRows = contentData[0].data.map(row => ({
     id: row.LabelKey,
@@ -203,8 +202,7 @@ const tableQuartileRangesBuilder = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData,
-    filters: { Indkey },
-    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName, currentTourismType },
+    entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
   const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
   const tableTitle = `Visitor nights - Percentage`;
@@ -337,7 +335,6 @@ const chartBuilder = () => {
     'GeoName',
   );
   const categories = +BMID === 50 ? [`${currentAreaName}`] : [`${currentAreaName}`, `${currentBenchmarkName}`];
-  console.log('categories: ', categories);
   const serie1 =
     +BMID === 50 ? [domesticDayTripData[0].Number] : [domesticDayTripData[0].Number, domesticDayTripData[1].Number];
   const serie2 =

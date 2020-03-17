@@ -54,14 +54,6 @@ const activeCustomToggles = ({ filterToggles }) => ({
   currentTourismType: getActiveToggle(filterToggles, 'Tourismtype'),
 });
 
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
-
 const pageContent = {
   entities: [
     {
