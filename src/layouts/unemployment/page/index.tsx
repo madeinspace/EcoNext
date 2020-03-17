@@ -80,8 +80,7 @@ const Source = () => (
   <p>
     Source: Australian Bureau of Statistics,{' '}
     {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/6202.0`, `Labour force survey`)} catalogue number 6202.0,
-    and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by{' '}
-    <IdLink />.
+    and Department of Employment, Small Area Labour Markets. Compiled and presented in economy.id by <IdLink />.
   </p>
 );
 
@@ -112,7 +111,7 @@ const tableBuilder = () => {
   const rows = parents.reverse().map(({ year, children }) => {
     return {
       alreadyExpanded: true,
-      expandable: children.length > 0,
+      expandable: false,
       cssClass: 'plain',
       id: year,
       data: [year, '', '', '', '', '', ''],
@@ -301,6 +300,7 @@ const chartBuilder = () => {
       title: {
         text: 'Quarterly unemployment',
       },
+      subtitle: { text: `${currentAreaName}` },
       series: [
         {
           name: 'Q1',
