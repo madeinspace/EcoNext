@@ -223,12 +223,12 @@ const tableQuartileRangesBuilder = () => {
     ],
     formattedData: [
       `${row.FinYearName}`,
-      formatPercent(row['International Visitor Nights']),
-      formatPercent(row['Domestic Visitor Nights']),
-      formatPercent(row['Domestic Daytrips']),
-      formatPercent(row['International Visitor NightsBM']),
-      formatPercent(row['Domestic Visitor NightsBM']),
-      formatPercent(row['Domestic DaytripsBM']),
+      formatPercent(row['International Visitor Nights'], '--'),
+      formatPercent(row['Domestic Visitor Nights'], '--'),
+      formatPercent(row['Domestic Daytrips'], '--'),
+      formatPercent(row['International Visitor NightsBM'], '--'),
+      formatPercent(row['Domestic Visitor NightsBM'], '--'),
+      formatPercent(row['Domestic DaytripsBM'], '--'),
     ],
   }));
 
