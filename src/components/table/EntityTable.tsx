@@ -153,14 +153,25 @@ class EntityTable extends React.Component<any, any> {
 
   private renderColumns = (cols: IColumn[]): any => {
     const { allowSort } = this.props.data;
-    const sortable = allowSort != undefined ? allowSort : true;
+    const isTableSortable = allowSort != undefined ? allowSort : true;
     const cells: any = cols.map((col: IColumn, i: number) => {
       let label: string = col.displayText;
-      const columnCellProps = {
-        onClick: this.handleSort.bind(this, i),
-        className:
-          (!sortable || (_.has(col, 'sortable') && !col.sortable) ? ' ' + '' : 'sortable') + ' ' + col.cssClass,
-      };
+      const isColSortable =
+        col.sortable === undefined && !isTableSortable
+          ? false
+          : col.sortable != undefined && !isTableSortable
+          ? col.sortable
+          : true;
+      const sortableColumnClassName =
+        isTableSortable && isColSortable
+          ? 'sortable '
+          : !isTableSortable && isColSortable
+          ? 'sortable '
+          : isTableSortable && !isColSortable
+          ? ''
+          : '';
+      const clickEvent = isColSortable ? this.handleSort.bind(this, i) : null;
+      const columnCellProps = { onClick: clickEvent, className: sortableColumnClassName + col.cssClass };
 
       // keeping the classes for the rows' cells out of the state.
       this.colClass.push(columnCellProps.className);
@@ -203,8 +214,6 @@ class EntityTable extends React.Component<any, any> {
   }
 
   private handleSort = (colIndex: number, e: any): void => {
-    const { allowSort } = this.state;
-    if (!allowSort) return;
     // figure out sort direction
     const sortDirection: string = this.state.sortDir === 'asc' || '' ? 'desc' : 'asc';
     // sort the rows
