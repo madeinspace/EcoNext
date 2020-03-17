@@ -370,15 +370,16 @@ class EntityTable extends React.Component<any, any> {
       [...headRowsData, colsData, []],
     );
 
+    console.log('fullData: ', fullData);
     fullData.push(...footer);
 
     const workSheet = XLSX.utils.aoa_to_sheet(fullData);
 
-    workSheet['!merges'] = [
-      { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
-      { s: { r: 1, c: 1 }, e: { r: 1, c: 3 } },
-      { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },
-    ];
+    // workSheet['!merges'] = [
+    //   { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
+    //   { s: { r: 1, c: 1 }, e: { r: 1, c: 3 } },
+    //   { s: { r: 1, c: 4 }, e: { r: 1, c: 6 } },
+    // ];
 
     const workBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workBook, workSheet, `Sheet1`);
