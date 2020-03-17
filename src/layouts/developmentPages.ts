@@ -75,4 +75,5 @@ export default [
   'retail-trade',
   'employed-residents',
   'Employment-capacity',
+  'tourism-visitor-summary',
 ];

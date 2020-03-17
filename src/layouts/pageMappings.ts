@@ -57,6 +57,7 @@ import ConsumerPriceIndexPage from './consumer-price-index/page';
 import RetailTradePage from './retail-trade/page';
 import EmployedResidentsPage from './employed-residents/page';
 import EmploymentCapacityPage from './Employment-capacity/page';
+import TourismVisitorSummaryPage from './tourism-visitor-summary/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -133,6 +134,7 @@ const PageMappings = {
   'retail-trade': RetailTradePage,
   'employed-residents': EmployedResidentsPage,
   'Employment-capacity': EmploymentCapacityPage,
+  'tourism-visitor-summary': TourismVisitorSummaryPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };
