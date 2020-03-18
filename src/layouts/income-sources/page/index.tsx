@@ -255,7 +255,7 @@ const chartBuilder = () => {
         },
       },
       xAxis: {
-        categories: [`${currentAreaName}`, `${currentBenchmarkName}`],
+        categories: [`${currentBenchmarkName}`, `${currentAreaName}`],
         title: {
           text: '',
         },

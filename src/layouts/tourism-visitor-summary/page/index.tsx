@@ -13,6 +13,7 @@ import useEntityText from '../../../utils/useEntityText';
 
 // #region page
 const TourismVisitorSummaryPage = () => {
+  const { isLite } = useContext(ClientContext);
   return (
     <>
       <PageIntro>
@@ -49,12 +50,16 @@ const TourismVisitorSummaryPage = () => {
       <ItemWrapper>
         <EntityTable data={tableQuartileRangesBuilder()} name={'Visitor nights - Percentage'} />
       </ItemWrapper>
-      <ItemWrapper>
-        <EntityChart data={chartBuilder()} />
-      </ItemWrapper>
-      <ItemWrapper>
-        <EntityChart data={chartBuilderChange()} />
-      </ItemWrapper>
+      {!isLite && (
+        <ItemWrapper>
+          <EntityChart data={chartBuilder()} />
+        </ItemWrapper>
+      )}
+      {!isLite && (
+        <ItemWrapper>
+          <EntityChart data={chartBuilderChange()} />
+        </ItemWrapper>
+      )}
     </>
   );
 };
