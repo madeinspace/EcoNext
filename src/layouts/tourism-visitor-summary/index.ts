@@ -67,15 +67,22 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
+        const { prefixedAreaName, currentAreaName } = data;
         const startYear = contentData[0].data[0]['FinYearName'];
         const intVisitors = contentData[0].data[0]['International Visitor Nights'];
+        const domVisitors = contentData[0].data[0]['Domestic Visitor Nights'];
         const intVisitorsPerc = contentData[1].data[0]['International Visitor Nights'];
-        return `For ${startYear}, there were ${formatNumber(
+        const headlineMain = `For ${startYear}, there were ${formatNumber(
           intVisitors,
         )} international visitors nights in ${prefixedAreaName}, accounting for ${formatPercent(
           intVisitorsPerc,
         )}% of the total visitor nights.`;
+        const headlineAlt = `In ${prefixedAreaName} there were ${formatNumber(
+          domVisitors,
+        )} Domestic Visitor Nights in 2018/19`;
+        const headlineNone = `${currentAreaName} tourism visitor data is suppressed in 2018/19 due to low sample size`;
+        const headline = intVisitors != null ? headlineMain : domVisitors != null ? headlineAlt : headlineNone;
+        return headline;
       },
     },
   ],
