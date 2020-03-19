@@ -14,6 +14,15 @@ import useEntityText from '../../../utils/useEntityText';
 // #region page
 const TourismVisitorSummaryPage = () => {
   const { isLite } = useContext(ClientContext);
+  const {
+    filters: { BMID },
+    contentData,
+    entityData: { currentBenchmarkName, currentAreaName },
+  } = useContext(PageContext);
+
+  const chart1Data = chartBuilder();
+  const chart2Data = chartBuilderChange();
+
   return (
     <>
       <PageIntro>
@@ -41,25 +50,15 @@ const TourismVisitorSummaryPage = () => {
           </div>
         </SourceBubble>
       </PageIntro>
-
       <ControlPanel />
-
       <ItemWrapper>
         <EntityTable data={tableVisitorNightsNumbersBuilder()} name={'Visitor nights - Numbers'} />
       </ItemWrapper>
       <ItemWrapper>
         <EntityTable data={tableQuartileRangesBuilder()} name={'Visitor nights - Percentage'} />
       </ItemWrapper>
-      {!isLite && (
-        <ItemWrapper>
-          <EntityChart data={chartBuilder()} />
-        </ItemWrapper>
-      )}
-      {!isLite && (
-        <ItemWrapper>
-          <EntityChart data={chartBuilderChange()} />
-        </ItemWrapper>
-      )}
+      {!isLite && <ItemWrapper>{chart1Data && <EntityChart data={chart1Data} />}</ItemWrapper>}
+      {!isLite && <ItemWrapper>{chart2Data && <EntityChart data={chart2Data} />}</ItemWrapper>}
     </>
   );
 };
@@ -326,30 +325,25 @@ const chartBuilder = () => {
     contentData,
     entityData: { currentBenchmarkName, currentAreaName },
   } = useContext(PageContext);
-  const data = contentData[2].data;
-  const domesticDayTripData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1003`),
-    'GeoName',
-  );
-  const domesticVisitorNightData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1002`),
-    'GeoName',
-  );
-  const internationalVisitorNightData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1001`),
-    'GeoName',
-  );
+  const data = contentData[1].data.filter(({ FinYearName }) => FinYearName === '2018/19')[0];
+
+  let isMoot =
+    data['International Visitor Nights'] === null &&
+    data['Domestic Visitor Nights'] === null &&
+    data['Domestic Daytrips'] === null;
+
+  if (isMoot) return null;
+
   const categories = +BMID === 50 ? [`${currentAreaName}`] : [`${currentAreaName}`, `${currentBenchmarkName}`];
   const serie1 =
-    +BMID === 50 ? [domesticDayTripData[0].Number] : [domesticDayTripData[0].Number, domesticDayTripData[1].Number];
+    +BMID === 50
+      ? [data['International Visitor Nights']]
+      : [data['International Visitor Nights'], data['International Visitor NightsBM']];
   const serie2 =
     +BMID === 50
-      ? [domesticVisitorNightData[0].Number]
-      : [domesticVisitorNightData[0].Number, domesticVisitorNightData[1].Number];
-  const serie3 =
-    +BMID === 50
-      ? [internationalVisitorNightData[0].Number]
-      : [internationalVisitorNightData[0].Number, internationalVisitorNightData[1].Number];
+      ? [data['Domestic Visitor Nights']]
+      : [data['Domestic Visitor Nights'], data['Domestic Visitor NightsBM']];
+  const serie3 = +BMID === 50 ? [data['Domestic Daytrips']] : [data['Domestic Daytrips'], data['Domestic DaytripsBM']];
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, - ${
@@ -432,20 +426,27 @@ const chartBuilderChange = () => {
     contentData,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const data = contentData[3].data;
-  const domesticDayTripData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1003`),
-    'Year',
-  );
-  const domesticVisitorNightData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1002`),
-    'Year',
-  );
-  const internationalVisitorNightData = _.sortBy(
-    data.filter(({ LabelKey }) => LabelKey === `1001`),
-    'Year',
-  );
-  const categories = domesticDayTripData.map(({ FinYearName }) => FinYearName);
+  const data = contentData[0].data;
+  var reversedData = [...data].reverse();
+
+  let isMoot = true;
+  for (const el of data) {
+    if (
+      el['International Visitor Nights'] != null &&
+      el['Domestic Visitor Nights'] != null &&
+      el['Domestic Daytrips'] != null
+    ) {
+      isMoot = false;
+      break;
+    }
+  }
+
+  if (isMoot) return null;
+
+  const domesticDayTripData = reversedData.map(item => item['Domestic Daytrips']);
+  const domesticVisitorNightData = reversedData.map(item => item['Domestic Visitor Nights']);
+  const internationalVisitorNightData = reversedData.map(item => item['International Visitor Nights']);
+  const categories = reversedData.map(({ FinYearName }) => FinYearName);
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, - ${
       this.series.name
@@ -466,15 +467,15 @@ const chartBuilderChange = () => {
       series: [
         {
           name: `Domestic Daytrips`,
-          data: domesticDayTripData.map(({ Number }) => Number),
+          data: domesticDayTripData,
         },
         {
           name: `Domestic Visitor Nights`,
-          data: domesticVisitorNightData.map(({ Number }) => Number),
+          data: domesticVisitorNightData,
         },
         {
           name: `International Visitor Nights`,
-          data: internationalVisitorNightData.map(({ Number }) => Number),
+          data: internationalVisitorNightData,
         },
       ],
       plotOptions: {

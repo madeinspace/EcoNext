@@ -9,7 +9,9 @@ export const isNextPage = (handle: string) => {
 };
 
 export default async (handle: string) => {
-  if (!isNextPage(handle)) return null;
+  if (!isNextPage(handle)) {
+    throw Error(`The ${handle}/page/index.tsx layout file is missing`);
+  }
 
   const pageData = await fetchPageData(handle);
 

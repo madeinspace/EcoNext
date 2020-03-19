@@ -76,4 +76,5 @@ export default [
   'employed-residents',
   'Employment-capacity',
   'tourism-visitor-summary',
+  'tourism-visitors-nights',
 ];

@@ -76,4 +76,5 @@ export default [
   'retail-trade',
   'consumer-price-index',
   // 'tourism-visitor-summary',
+  // 'tourism-visitors-nights',
 ];

@@ -8,7 +8,7 @@ const visitor_nights_numbersQuery = {
   id: 1,
   name: `visitor_nights_numbers`,
   query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary1]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
+    `select * from CommData_Economy.[dbo].[fn_TRA_Summary1]( ${ClientID}, 10, ${BMID}) order by LabelKey Desc`,
 };
 
 // select * from [dbo].[fn_TRA_Summary2](102,10,40) ORDER BY LabelKey DESC
@@ -16,31 +16,10 @@ const visitor_nights_percentQuery = {
   id: 2,
   name: `visitor_nights_percent`,
   query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary2]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
+    `select * from CommData_Economy.[dbo].[fn_TRA_Summary2]( ${ClientID}, 10, ${BMID}) order by LabelKey Desc`,
 };
 
-// select * from [dbo].[fn_TRA_Summary_Chart2](102,10,40)
-const time_serie_tourismQuery = {
-  id: 3,
-  name: `visitor_nights_percent`,
-  query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary_Chart2]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
-};
-
-// select * from [dbo].[fn_TRA_Summary_Chart1](102,10,40)
-const breakup_visitor_nightsQuery = {
-  id: 4,
-  name: `breakup_visitor_nights`,
-  query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary_Chart1]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
-};
-
-const queries = [
-  visitor_nights_numbersQuery,
-  visitor_nights_percentQuery,
-  breakup_visitor_nightsQuery,
-  time_serie_tourismQuery,
-];
+const queries = [visitor_nights_numbersQuery, visitor_nights_percentQuery];
 
 const fetchData = async ({ filters }) =>
   await Promise.all(
