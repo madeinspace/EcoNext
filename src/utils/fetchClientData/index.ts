@@ -1,5 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
 import fetchSitemap from '../fetchSitemap';
+import getConfig from 'next/config';
 
 const DATABASE = 'CommApp';
 const LITE_CLIENT = 178;
@@ -12,6 +13,15 @@ const checkIfLite = async (clientID): Promise<boolean> => {
   const { Result } = data[0];
 
   return +Result === LITE_CLIENT;
+};
+
+const checkIfLitePlus = id => {
+  const {
+    publicRuntimeConfig: { LitePlusClients },
+  } = getConfig();
+  return LitePlusClients.split(' ')
+    .map(x => +x)
+    .some(x => +id === x);
 };
 
 const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
@@ -46,6 +56,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
   });
 
   const isLite = await checkIfLite(id);
+  const isLitePlus = checkIfLitePlus(id);
   const cdnBaseUrl = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
   const logoUrl = `${cdnBaseUrl}/eco-assets/client-logos/${clientAlias}.png`;
 
@@ -56,6 +67,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     LongName,
     Name,
     isLite,
+    isLitePlus,
     HasPrefix,
     clientPages,
     clientProducts: Applications,

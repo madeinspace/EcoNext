@@ -4,12 +4,14 @@ const withSass = require('@zeit/next-sass');
 const withCSS = require('@zeit/next-css');
 const path = require('path');
 const assetPrefix = process.env.ASSET_PREFIX || '';
+const LitePlusClients = process.env.LITE_PLUS_CLIENTS || '';
 const CDN_ENPOINT = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
 module.exports = withSass(
   withCSS(
     {
       publicRuntimeConfig: {
-        EcoCDNEndPoint: CDN_ENPOINT
+        EcoCDNEndPoint: CDN_ENPOINT,
+        LitePlusClients
       },
       cssModules: false,
       assetPrefix,

@@ -8,6 +8,7 @@ type ClientProps = {
   clientProducts?: Array<any>;
   clientLogo?: string;
   isLite?: boolean;
+  isLitePlus?: boolean;
   LongName?: string;
   Name?: string;
   sitemapGroups?: Array<any>;
