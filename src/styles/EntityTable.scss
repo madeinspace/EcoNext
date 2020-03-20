@@ -389,6 +389,12 @@ $even-row-color: $odd-color;
     }
 
     tr {
+      &.highlight {
+        td {
+          background-color: rgba(0, 0, 0, 0.25) !important;
+          color: #000000;
+        }
+      }
       &.odd {
         td {
           &.even {
