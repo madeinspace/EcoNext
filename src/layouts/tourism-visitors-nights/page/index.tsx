@@ -8,37 +8,98 @@ import {
   formatChangePercent,
   idlogo,
   formatChangeInt,
+  formatChangeOneDecimal,
+  formatOneDecimal,
 } from '../../../utils';
-import { ItemWrapper, CrossLink, ForecastProductIcon } from '../../../styles/MainContentStyles';
+import {
+  ItemWrapper,
+  CrossLink,
+  ForecastProductIcon,
+  PageIntro,
+  SourceBubble,
+} from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { IdLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
+import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
 // #region Source
 const Source = () => (
   <p>
-    Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in
-    economy.id by <IdLink />
+    Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')} , Unpublished data from the
+    International Visitor Survey 2018/19. Note: "--" represents unavailable data or data that has been suppressed due to
+    a sample size of 40 or less. Suppressed figures are still used in the 5 year average calculations.
+  </p>
+);
+const ChartSource = () => (
+  <p>
+    Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')} , Unpublished data from the
+    International Visitor Survey 2018/19.
   </p>
 );
 // #endregion
 
+// #region population page
+const TourismVisitorsNightPage = (): JSX.Element => {
+  const {
+    filters: { Tourismtype },
+  } = useContext(PageContext);
+  return (
+    <>
+      <PageIntro>
+        <p>
+          Tourism is an important part of the economy. Tourism Research Australia (TRA) run annual visitor surveys to
+          measure the size and composition of the tourism market in each area, and this data is presented here. Tourism
+          may include overseas visitors in the country for a holiday, business or education, Australian visitors staying
+          overnight, or local day trippers visiting the area. These different types of tourists will utilize different
+          services within the economy, so understanding the different tourism markets is important for Local Government
+          and businesses.
+        </p>
+        <SourceBubble>
+          <div>
+            <h3>Data source</h3>
+            <p>{useEntityText('DataSource')}</p>
+          </div>
+        </SourceBubble>
+      </PageIntro>
+
+      <ControlPanel />
+
+      <ItemWrapper>
+        <EntityTable data={+Tourismtype === 3 ? tableBuilderAlt() : tableBuilder()} name={useEntityText('SubTitle')} />
+      </ItemWrapper>
+
+      <ItemWrapper>
+        <EntityChart data={chartBuilder()} />
+      </ItemWrapper>
+    </>
+  );
+};
+// #endregion
+
+export default TourismVisitorsNightPage;
+
 // #region tableBuilder
-const tableBuilder = (alias, nodes) => {
-  const tableTitle = 'Annual change in Estimated Resident Population (ERP)';
-  const anchorName = 'indicators---estimate-resident-population';
-  const Geoname = nodes[0].Geoname;
-  const GeonameSTE = nodes[0].GeonameSTE;
-  const GeonameAUS = nodes[0].GeonameAUS;
+const tableBuilder = () => {
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    entityData: { currentBenchmarkName, currentAreaName, currentTourismtype },
+    contentData,
+  } = useContext(PageContext);
+  const tableTitle = `${currentTourismtype}`;
+  const anchorName = 'tourism-visitor-summary';
+
   return {
     cssClass: '',
-    clientAlias: alias,
+    clientAlias,
     source: <Source />,
     anchorName,
+    allowSort: false,
+    allowSortReset: false,
     headRows: [
       {
         cssClass: '',
@@ -55,23 +116,23 @@ const tableBuilder = (alias, nodes) => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: '',
+            displayText: `${currentAreaName} - 2010/11 to 2018/19`,
             colSpan: 1,
           },
           {
             cssClass: 'even ',
-            displayText: Geoname,
-            colSpan: 3,
+            displayText: `${currentAreaName}`,
+            colSpan: 4,
           },
           {
             cssClass: 'odd ',
-            displayText: GeonameSTE,
-            colSpan: 3,
+            displayText: `${currentBenchmarkName}`,
+            colSpan: 4,
           },
           {
-            cssClass: 'even ',
-            displayText: GeonameAUS,
-            colSpan: 3,
+            cssClass: 'even sub',
+            displayText: `${currentAreaName} as a % of ${currentBenchmarkName}`,
+            colSpan: 2,
           },
         ],
       },
@@ -79,95 +140,104 @@ const tableBuilder = (alias, nodes) => {
     cols: [
       {
         id: 0,
-        displayText: 'Year (ending June 30)',
+        displayText: 'Year',
         cssClass: 'odd first int',
       },
       {
         id: 1,
-        displayText: 'Number',
-        cssClass: 'even int',
+        displayText: 'Visitors',
+        cssClass: 'even int XXXL',
       },
       {
         id: 2,
-        displayText: 'Change in number',
-        cssClass: 'even int',
+        displayText: 'Visitor nights',
+        cssClass: 'even int XXXL',
       },
       {
         id: 3,
-        displayText: 'Change in percent',
+        displayText: '% Change from previous year',
         cssClass: 'even int',
       },
       {
         id: 4,
-        displayText: 'Number',
-        cssClass: 'odd int',
+        displayText: 'Average length of stay (days)',
+        cssClass: 'even int',
       },
       {
         id: 5,
-        displayText: 'Change in number',
-        cssClass: 'odd int',
+        displayText: 'Visitors',
+        cssClass: 'odd int XXXL',
       },
       {
         id: 6,
-        displayText: 'Change in percent',
-        cssClass: 'odd int',
+        displayText: 'Visitor nights',
+        cssClass: 'odd int XXXL',
       },
       {
         id: 7,
-        displayText: 'Number',
-        cssClass: 'even int',
+        displayText: '% Change from previous year',
+        cssClass: 'odd int',
       },
       {
         id: 8,
-        displayText: 'Change in number',
-        cssClass: 'even int',
+        displayText: 'Average length of stay (days)',
+        cssClass: 'odd int XS',
       },
       {
         id: 9,
-        displayText: 'Change in percent',
-        cssClass: 'even int',
+        displayText: 'Visitors',
+        cssClass: 'even int XS',
+      },
+      {
+        id: 10,
+        displayText: 'Visitor nights',
+        cssClass: 'even int XS',
       },
     ],
     footRows: [],
-    rows: nodes.map(
+    rows: contentData.map(
       (
         {
-          Year,
-          Number,
-          ChangeYear1Year2,
-          Changeper,
-          NumberSTE,
-          ChangeYear1Year2STE,
-          ChangeperSTE,
-          NumberAUS,
-          ChangeYear1Year2AUS,
-          ChangeperAUS,
+          FinYearName,
+          Visitors,
+          VisitorNights,
+          Per,
+          AvgStay,
+          VisitorsBM,
+          VisitorNightsBM,
+          PerBM,
+          AvgStayBM,
+          VisitorsPer,
+          VisitorNightsPer,
         },
         i: number,
       ) => ({
+        cssClass: i === 0 ? 'highlight' : '',
         data: [
-          Year,
-          Number,
-          ChangeYear1Year2,
-          Changeper,
-          NumberSTE,
-          ChangeYear1Year2STE,
-          ChangeperSTE,
-          NumberAUS,
-          ChangeYear1Year2AUS,
-          ChangeperAUS,
+          FinYearName,
+          Visitors,
+          VisitorNights,
+          Per,
+          AvgStay,
+          VisitorsBM,
+          VisitorNightsBM,
+          PerBM,
+          AvgStayBM,
+          VisitorsPer,
+          VisitorNightsPer,
         ],
         formattedData: [
-          Year,
-          formatNumber(Number),
-          formatChangeInt(ChangeYear1Year2, '--'),
-          formatChangePercent(Changeper, '--'),
-          formatNumber(NumberSTE),
-          formatChangeNumber(ChangeYear1Year2STE, '--'),
-          formatChangePercent(ChangeperSTE, '--'),
-          formatNumber(NumberAUS),
-          formatChangeNumber(ChangeYear1Year2AUS, '--'),
-          formatChangePercent(ChangeperAUS, '--'),
+          FinYearName,
+          formatNumber(Visitors),
+          formatNumber(VisitorNights),
+          formatChangeOneDecimal(Per, '--'),
+          formatOneDecimal(AvgStay),
+          formatNumber(VisitorsBM),
+          formatNumber(VisitorNightsBM),
+          formatChangeOneDecimal(PerBM),
+          formatOneDecimal(AvgStayBM),
+          formatOneDecimal(VisitorsPer),
+          formatOneDecimal(VisitorNightsPer),
         ],
         id: i,
       }),
@@ -177,19 +247,134 @@ const tableBuilder = (alias, nodes) => {
 };
 // #endregion
 
-// #region chartLineBuilder
-const chartLineBuilder = nodes => {
-  const chartType = 'line';
-  const clientSerie = _.map(nodes, 'Changeper').reverse();
-  const stateSerie = _.map(nodes, 'ChangeperSTE').reverse();
-  const australiaSerie = _.map(nodes, 'ChangeperAUS').reverse();
-  const categories = _.map(nodes, 'Year').reverse();
+// #region tableBuilder
+const tableBuilderAlt = () => {
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    entityData: { currentBenchmarkName, currentAreaName, currentTourismtype },
+    contentData,
+  } = useContext(PageContext);
+  const tableTitle = `${currentTourismtype}`;
+  const anchorName = 'indicators---estimate-resident-population';
+
+  return {
+    cssClass: '',
+    clientAlias,
+    source: <Source />,
+    anchorName,
+    allowSort: false,
+    allowSortReset: false,
+    headRows: [
+      {
+        cssClass: '',
+        cols: [
+          {
+            cssClass: 'table-area-name',
+            displayText: tableTitle,
+            colSpan: 10,
+          },
+        ],
+      },
+      {
+        cssClass: 'heading',
+        cols: [
+          {
+            cssClass: 'sub first',
+            displayText: `${currentAreaName} - 2010/11 to 2018/19`,
+            colSpan: 1,
+          },
+          {
+            cssClass: 'even ',
+            displayText: `${currentAreaName}`,
+            colSpan: 2,
+          },
+          {
+            cssClass: 'odd ',
+            displayText: `${currentBenchmarkName}`,
+            colSpan: 2,
+          },
+          {
+            cssClass: 'even sub',
+            displayText: `${currentAreaName} as a % of ${currentBenchmarkName}`,
+            colSpan: 1,
+          },
+        ],
+      },
+    ],
+    cols: [
+      {
+        id: 0,
+        displayText: 'Year',
+        cssClass: 'odd first int',
+      },
+      {
+        id: 1,
+        displayText: 'Visitors',
+        cssClass: 'even int XXXL',
+      },
+
+      {
+        id: 3,
+        displayText: '% Change from previous year',
+        cssClass: 'even int',
+      },
+
+      {
+        id: 5,
+        displayText: 'Visitors',
+        cssClass: 'odd int XXXL',
+      },
+
+      {
+        id: 7,
+        displayText: '% Change from previous year',
+        cssClass: 'odd int',
+      },
+
+      {
+        id: 9,
+        displayText: 'Visitors',
+        cssClass: 'even int XS',
+      },
+    ],
+    footRows: [],
+    rows: contentData.map(
+      ({ FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer, VisitorNightsPer }, i: number) => ({
+        cssClass: i === 0 ? 'highlight' : '',
+        data: [FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer],
+        formattedData: [
+          FinYearName,
+          formatNumber(Visitors),
+          formatChangeOneDecimal(Per, '--'),
+          formatNumber(VisitorsBM),
+          formatChangeOneDecimal(PerBM),
+          formatOneDecimal(VisitorsPer),
+        ],
+        id: i,
+      }),
+    ),
+    noOfRowsOnInit: 0,
+  };
+};
+// #endregion
+
+// #region chartbuilder
+const chartBuilder = () => {
+  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentTourismtype },
+  } = useContext(PageContext);
+  const chartType = 'column';
+  const chartTitle = `${currentTourismtype}`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-  const chartTitle = 'Estimated Resident Population (ERP)';
-  const xAxisTitle = 'Year ending June';
-  const yAxisTitle = 'Percentage change';
-  const chartContainerID = 'lineChart';
+    'Source: Tourism Research Australia, Unpublished data from the International Visitor Survey 2018/19.';
+  const xAxisTitle = 'Financial year';
+  const yAxisTitle = 'Visitors';
+  const chartContainerID = 'chart1';
+  const without = [...contentData].reverse().filter(({ LabelKey }) => LabelKey != 9999);
+  const categories = without.map(({ FinYearName }) => FinYearName);
+  const serie = without.map(({ Visitors }) => Visitors);
   return {
     cssClass: '',
     highchartOptions: {
@@ -199,18 +384,15 @@ const chartLineBuilder = nodes => {
       title: {
         text: chartTitle,
       },
+      subtitle: {
+        text: contentData[0].Geoname,
+      },
       series: [
         {
-          name: nodes[0].Geoname,
-          data: clientSerie,
-        },
-        {
-          name: nodes[0].GeonameSTE,
-          data: stateSerie,
-        },
-        {
-          name: nodes[0].GeonameAUS,
-          data: australiaSerie,
+          color: '',
+          yAxis: 0,
+          name: contentData[0].Geoname,
+          data: serie,
         },
       ],
       xAxis: {
@@ -225,128 +407,18 @@ const chartLineBuilder = nodes => {
             text: yAxisTitle,
           },
           labels: {
+            staggerLines: 0,
             formatter: function() {
-              const formatedNumber = `${formatChangePercent(this.value)}%`;
-              return formatedNumber;
+              return `${formatNumber(this.value)}`;
             },
           },
         },
       ],
-      tooltip: {
-        pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
-            this.series.name
-          }: ${formatShortDecimal(this.y)}%`;
-        },
-      },
     },
     rawDataSource,
-    dataSource: <Source />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
   };
 };
 // #endregion
-
-// #region chartbuilder
-const chartBuilder = nodes => {
-  const chartType = 'column';
-  const chartTitle = 'Estimated Resident Population (ERP)';
-  const serieData = _.map(nodes, 'Number').reverse();
-  const categories = _.map(nodes, 'Year').reverse();
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
-  const xAxisTitle = 'Year ending June';
-  const yAxisTitle = 'Total Estimated Resident Population (ERP)';
-  const chartContainerID = 'chart1';
-  return {
-    cssClass: '',
-    highchartOptions: {
-      chart: {
-        type: chartType,
-      },
-      title: {
-        text: chartTitle,
-      },
-      subtitle: {
-        text: nodes[0].Geoname,
-      },
-      series: [
-        {
-          color: '',
-          yAxis: 0,
-          name: nodes[0].Geoname,
-          data: serieData,
-        },
-      ],
-      xAxis: {
-        categories,
-        title: {
-          text: xAxisTitle,
-        },
-      },
-      yAxis: [
-        {
-          title: {
-            text: yAxisTitle,
-          },
-        },
-      ],
-    },
-    rawDataSource,
-    dataSource: <Source />,
-    chartContainerID,
-    logoUrl: idlogo,
-  };
-};
-// #endregion
-
-// #region population page
-const TourismVisitorsNightPage = (): JSX.Element => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
-  const { contentData } = useContext(PageContext);
-
-  const hasForecast = clientProducts => _.some(clientProducts, product => product.AppID === 3);
-
-  const chartData = chartBuilder(contentData);
-  const chartLineData = chartLineBuilder(contentData);
-  const tableParams = tableBuilder(clientAlias, contentData);
-
-  return (
-    <>
-      <ItemWrapper>
-        <ControlPanel />
-      </ItemWrapper>
-
-      <ItemWrapper>
-        <EntityChart data={chartData} />
-      </ItemWrapper>
-
-      <ItemWrapper>
-        <EntityChart data={chartLineData} />
-      </ItemWrapper>
-
-      <ItemWrapper>
-        <EntityTable data={tableParams} name={'Estimated Resident Population'} />
-      </ItemWrapper>
-
-      {hasForecast(clientProducts) && (
-        <CrossLink>
-          <ForecastProductIcon />
-          <a
-            href={`http://forecast.id.com.au/${clientAlias}/population-summary?WebId=10`}
-            target="_blank"
-            rel="noopener"
-            title="link to forecast"
-          >
-            Population forecasts
-            <span className="hidden"> (opens a new window)</span>
-          </a>
-        </CrossLink>
-      )}
-    </>
-  );
-};
-// #endregion
-
-export default TourismVisitorsNightPage;

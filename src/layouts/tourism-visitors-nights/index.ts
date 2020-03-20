@@ -4,37 +4,35 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 // select * from [dbo].[fn_TRA_International_VistorNight](102,10,40) ORDER BY LabelKey DESC
-const visitor_nights_numbersQuery = {
+const international_visitor_nights_Query = {
   id: 1,
-  name: `visitor_nights_numbers`,
-  query: ({ ClientID, BMID }) =>
+  name: `international visitor night`,
+  sql: ({ ClientID, BMID }) =>
     `select * from CommData_Economy.[dbo].[fn_TRA_International_VistorNight]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
 };
 
 // select * from [dbo].[fn_TRA_Overnight_VistorNight](102,10,40) ORDER BY LabelKey DESC
-const visitor_nights_percentQuery = {
+const overnight_vistor_night_query = {
   id: 2,
-  name: `visitor_nights_percent`,
-  query: ({ ClientID, BMID }) =>
+  name: `overnight vistor night`,
+  sql: ({ ClientID, BMID }) =>
     `select * from CommData_Economy.[dbo].[fn_TRA_Overnight_VistorNight]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
 };
 
 // select * from [dbo].[fn_TRA_Daytrip_VistorNight](102,10,40)
-const time_serie_tourismQuery = {
+const daytrip_vistor_nightQuery = {
   id: 3,
-  name: `visitor_nights_percent`,
-  query: ({ ClientID, BMID }) =>
+  name: `daytrip vistor night`,
+  sql: ({ ClientID, BMID }) =>
     `select * from CommData_Economy.[dbo].[fn_TRA_Daytrip_VistorNight]( ${ClientID}, 10, ${BMID}) order by LabelKey DESC`,
 };
 
-const queries = [visitor_nights_numbersQuery, visitor_nights_percentQuery, time_serie_tourismQuery];
+const queries = [international_visitor_nights_Query, overnight_vistor_night_query, daytrip_vistor_nightQuery];
 
-const fetchData = async ({ filters }) =>
-  await Promise.all(
-    queries.map(async ({ query, name, id }) => {
-      return { id, name, data: await sqlConnection.raw(query(filters)) };
-    }),
-  );
+const fetchData = async ({ filters }) => {
+  const query: any = queries[filters.Tourismtype - 1]['sql'];
+  return await sqlConnection.raw(query(filters));
+};
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
@@ -57,11 +55,15 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const ERP = formatNumber(contentData[0].Number);
-        const currentYear = contentData[0].Year;
-
-        return `In the 5 years up to {2018/19}, there were an average of {89,748} international visitors to {the City of Monash}. Average length stay for international visitors was {43.6} days, {higher} than the average for {Victoria}.`;
+        const { prefixedAreaName, currentBenchmarkName } = data;
+        const average = contentData.filter(({ LabelKey }) => LabelKey === 9999)[0];
+        const without = contentData.filter(({ LabelKey }) => LabelKey != 9999)[0];
+        const comparisonText = average.AvgStay > average.AvgStayBM ? 'higher' : 'lower';
+        return `In the 5 years up to ${without.FinYearName}, there were an average of ${formatNumber(
+          average.Visitors,
+        )} international visitors to ${prefixedAreaName}. Average length stay for international visitors was ${
+          average.AvgStay
+        } days, ${comparisonText} than the average for ${currentBenchmarkName}.`;
       },
     },
   ],
