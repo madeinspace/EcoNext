@@ -49,6 +49,7 @@ const Logo = styled.img`
   width: 112px;
   padding: 10px;
   align-self: end;
+  justify-self: end;
   grid-column: idlogo;
 `;
 
