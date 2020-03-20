@@ -379,7 +379,6 @@ class EntityTable extends React.Component<any, any> {
       [...headRowsData, colsData, []],
     );
 
-    console.log('fullData: ', fullData);
     fullData.push(...footer);
 
     const workSheet = XLSX.utils.aoa_to_sheet(fullData);

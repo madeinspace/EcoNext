@@ -77,4 +77,5 @@ export default [
   'Employment-capacity',
   'tourism-visitor-summary',
   'tourism-visitors-nights',
+  'covid19'
 ];

@@ -77,4 +77,5 @@ export default [
   'consumer-price-index',
   // 'tourism-visitor-summary',
   // 'tourism-visitors-nights',
+  // 'covid19',
 ];

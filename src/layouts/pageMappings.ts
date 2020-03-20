@@ -59,6 +59,7 @@ import EmployedResidentsPage from './employed-residents/page';
 import EmploymentCapacityPage from './Employment-capacity/page';
 import TourismVisitorSummaryPage from './tourism-visitor-summary/page';
 import TourismVisitorsNightPage from './tourism-visitors-nights/page';
+import CovidPage from './covid19/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -137,6 +138,7 @@ const PageMappings = {
   'Employment-capacity': EmploymentCapacityPage,
   'tourism-visitor-summary': TourismVisitorSummaryPage,
   'tourism-visitors-nights': TourismVisitorsNightPage,
+  covid19: CovidPage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };

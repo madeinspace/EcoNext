@@ -69,7 +69,6 @@ export default LiteContent;
 const tableBuilder = (currentBenchmark, clientAlias, LongName, nodes) => {
   const tableTitle = 'Employed residents';
   const anchorName = 'indicators---local-jobs';
-  console.log('nodes: ', nodes);
 
   return {
     cssClass: '',
