@@ -157,3 +157,5 @@ export const getSerieByKey = (data, key) =>
     name: item.LabelName,
     y: item[key],
   }));
+
+export const multiplesOf = (data, multiple) => data.filter(x => x.LabelKey % multiple === 0);

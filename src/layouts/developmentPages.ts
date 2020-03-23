@@ -15,8 +15,11 @@ const parentPages = [
   'explanatory-notes',
 ];
 
+const xtraPages = ['covid19'];
+
 export default [
   ...parentPages,
+  ...xtraPages,
   'home',
   'population',
   'gross-product',
@@ -78,5 +81,5 @@ export default [
   'tourism-visitor-summary',
   'tourism-visitors-nights',
   'tourism-visitors-reason',
-  'covid19',
+  'tourism-value',
 ];

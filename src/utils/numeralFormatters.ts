@@ -17,4 +17,4 @@ export const formatShortDecimal = (number, zero = '0') => (number ? numeral(numb
 export const formatOneDecimal = (number, zero = '0') => (number ? numeral(number).format('0.0') : zero); // ie: 4.37
 export const formatMillionsCurrency = (number, zero = '0') => (number ? numeral(number).format('$0a') : zero);
 export const formatMillionsCurrencyNoRounding = (number, zero = '0') =>
-  number ? numeral(number).format('$0.000a') : zero;
+  number ? numeral(number).format('$0.00a') : zero;

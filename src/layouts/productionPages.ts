@@ -78,5 +78,6 @@ export default [
   // 'tourism-visitor-summary',
   // 'tourism-visitors-nights',
   // 'tourism-visitors-reason',
+  // 'tourism-value',
   // 'covid19',
 ];
