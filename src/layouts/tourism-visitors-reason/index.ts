@@ -7,24 +7,24 @@ import getActiveToggle from '../../utils/getActiveToggle';
 const international_visitor_reason_Query = {
   id: 1,
   name: `international reason`,
-  sql: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_International_Reason]( ${ClientID}, 10, ${BMID}) order by LabelKey Asc`,
+  sql: ({ ClientID, BMID, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_TRA_International_Reason]( ${ClientID}, ${WebID}, ${BMID}) order by LabelKey Asc`,
 };
 
 // select * from [dbo].[fn_TRA_Overnight_VistorNight](102,10,40) ORDER BY LabelKey DESC
 const overnight_vistor_reason_query = {
   id: 2,
   name: `overnight vistor night`,
-  sql: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Overnight_Reason]( ${ClientID}, 10, ${BMID}) order by LabelKey Asc`,
+  sql: ({ ClientID, BMID, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_TRA_Overnight_Reason]( ${ClientID}, ${WebID}, ${BMID}) order by LabelKey Asc`,
 };
 
 // select * from [dbo].[fn_TRA_Daytrip_VistorNight](102,10,40)
 const daytrip_vistor_reasonQuery = {
   id: 3,
   name: `daytrip vistor night`,
-  sql: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Daytrip_Reason]( ${ClientID}, 10, ${BMID}) order by LabelKey Asc`,
+  sql: ({ ClientID, BMID, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_TRA_Daytrip_Reason]( ${ClientID}, ${WebID}, ${BMID}) order by LabelKey Asc`,
 };
 
 const queries = [international_visitor_reason_Query, overnight_vistor_reason_query, daytrip_vistor_reasonQuery];
