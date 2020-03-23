@@ -36,7 +36,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
             ) : (
               <StyledLink
                 className={isActive && 'active'}
-                href={`/${clientAlias}/${pageAlias === 'home' ? '' : pageAlias.toLowerCase()}`}
+                href={`/${clientAlias}/${pageAlias === 'home' ? '' : pageAlias}`}
               >
                 {MenuTitle}
               </StyledLink>
