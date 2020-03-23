@@ -60,6 +60,7 @@ import EmploymentCapacityPage from './Employment-capacity/page';
 import TourismVisitorSummaryPage from './tourism-visitor-summary/page';
 import TourismVisitorsNightPage from './tourism-visitors-nights/page';
 import CovidPage from './covid19/page';
+import TourismVisitorsReasonPage from './tourism-visitors-reason/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -138,6 +139,7 @@ const PageMappings = {
   'Employment-capacity': EmploymentCapacityPage,
   'tourism-visitor-summary': TourismVisitorSummaryPage,
   'tourism-visitors-nights': TourismVisitorsNightPage,
+  'tourism-visitors-reason': TourismVisitorsReasonPage,
   covid19: CovidPage,
 };
 
