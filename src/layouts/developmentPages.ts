@@ -82,4 +82,5 @@ export default [
   'tourism-visitors-nights',
   'tourism-visitors-reason',
   'tourism-value',
+  'tourism-workforce',
 ];
