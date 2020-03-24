@@ -35,7 +35,6 @@ const activeCustomToggles = ({ filterToggles }) => ({
 
 const headline = ({ data, contentData }) => {
   const distinctMeasures = multiplesOf(contentData[0].data, 10);
-  console.log('contentData[0].data: ', contentData[0].data);
   const parents: any = distinctMeasures.reduce(
     (acc: any, cur: any) => [
       ...acc,
@@ -51,7 +50,6 @@ const headline = ({ data, contentData }) => {
   const totalOutputSale = contentData[0].data.filter(({ LabelKey }) => LabelKey === 33)[0];
   const totalValueAdded = contentData[0].data.filter(({ LabelKey }) => LabelKey === 43)[0];
 
-  console.log('orderedParents: ', orderedParents);
   return `In ${data.currentStartYear} , the total tourism and hospitality sales in ${
     data.prefixedAreaName
   } was $${formatOneDecimal(totalOutputSale['NoYear1'])}m, the total value added was $${formatOneDecimal(
