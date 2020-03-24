@@ -80,7 +80,7 @@ const pageContent = {
         const visitorsReason =
           largestReason.LabelKey === 1001
             ? 'be visiting friends and relatives'
-            : `be visiting for ${largestReason.ReasonName} ${largestReason.LabelKey != 1006 ? 'reason' : ''}`;
+            : `be visiting ${largestReason.LabelKey != 1006 ? 'on' : 'for'} ${largestReason.ReasonName}`;
         const headlineMain = `In the 5 years up to 2018/19, ${currentTourismtype} to ${prefixedAreaName} were more likely to ${visitorsReason}, accounting for ${largestReason.Per}% of all visitors.`;
         return headlineMain;
       },

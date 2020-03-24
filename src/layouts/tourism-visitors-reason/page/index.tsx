@@ -1,30 +1,14 @@
 // #region imports
 import _ from 'lodash';
 import React from 'react';
-import {
-  formatShortDecimal,
-  formatNumber,
-  formatChangeNumber,
-  formatChangePercent,
-  idlogo,
-  formatChangeInt,
-  formatChangeOneDecimal,
-  formatOneDecimal,
-  formatPercent,
-} from '../../../utils';
-import {
-  ItemWrapper,
-  CrossLink,
-  ForecastProductIcon,
-  PageIntro,
-  SourceBubble,
-} from '../../../styles/MainContentStyles';
+import { formatNumber, idlogo, formatOneDecimal, formatPercent } from '../../../utils';
+import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { IdLink, LinkBuilder } from '../../../components/ui/links';
+import { LinkBuilder } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
@@ -369,11 +353,18 @@ const chartBuilder = () => {
   const yAxisTitle = 'Visitors';
   const chartContainerID = 'chart1';
   const without = [...contentData].reverse().filter(({ LabelKey }) => LabelKey != 9999);
-  const categories = +BMID === 50 ? [`${currentAreaName}`] : [`${currentAreaName}`, `${currentBenchmarkName}`];
-  const serie = without.reduce((acc, { ReasonName, Per, PerBM }) => {
-    return [...acc, { name: ReasonName, data: categories.length > 1 ? [Per, PerBM] : [Per] }];
+  const categories = [`${currentAreaName}`, `${currentBenchmarkName}`];
+  const serie = without.reduce((acc, { ReasonName, Per, PerBM }, i) => {
+    return [
+      ...acc,
+      { legendIndex: without.length - i, name: ReasonName, data: categories.length > 1 ? [Per, PerBM] : [Per] },
+    ];
   }, []);
-  // console.log('serie: ', serie);
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, - ${
+      this.series.name
+    }: ${formatPercent(this.y)}%`;
+  };
   return {
     cssClass: '',
     highchartOptions: {
@@ -412,6 +403,12 @@ const chartBuilder = () => {
           },
         },
       ],
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
     },
     rawDataSource,
     dataSource: <ChartSource />,
