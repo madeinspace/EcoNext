@@ -1,13 +1,5 @@
 // #region imports
-import {
-  formatNumber,
-  formatPercent,
-  formatChangeInt,
-  formatChangeOneDecimal,
-  formatLongNumber,
-  multiplesOf,
-  getParameterByName,
-} from '../../../utils/';
+import { formatNumber, formatPercent, formatLongNumber, multiplesOf, getParameterByName } from '../../../utils/';
 import { ItemWrapper, PageIntro, SourceBubble, Headline } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import { useContext, useState, useEffect } from 'react';
@@ -18,7 +10,6 @@ import useEntityText from '../../../utils/useEntityText';
 import * as Highcharts from 'highcharts';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import styled from 'styled-components';
-import Router from 'next/router';
 import qs from 'qs';
 // #endregion
 
@@ -39,7 +30,6 @@ const TourismWorkforcePage = () => {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
   const [Pane, setPane] = useState(14);
-  console.log('contentData: ', contentData);
 
   useEffect(() => {
     const tabNumber = getParameterByName('es');
@@ -53,7 +43,6 @@ const TourismWorkforcePage = () => {
     const href = `/${clientAlias}/${handle}?${stringiifiedQuery}`;
     window.history.replaceState(query, '', href);
     setPane(value);
-    // Router.replace(`/${clientAlias}/${handle}?${stringiifiedQuery}`, href, { shallow: true });
   };
 
   const Tabs = styled.ul`
@@ -288,7 +277,7 @@ const tableOccupation = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData,
-    entityData: { currentAreaName, currentStartYear, currentComparisonYear, currentBenchmarkName },
+    entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
   const anchorName = 'value-of-tourism';
   const tableTitle = `Tourism and hospitality occupations - Detailed ranked by size`;

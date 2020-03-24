@@ -63,6 +63,7 @@ import CovidPage from './covid19/page';
 import TourismVisitorsReasonPage from './tourism-visitors-reason/page';
 import TourismValuePage from './tourism-value/page';
 import TourismWorkforcePage from './tourism-workforce/page';
+import EconomyFlyerPage from './economy-flyer/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -144,6 +145,7 @@ const PageMappings = {
   'tourism-visitors-reason': TourismVisitorsReasonPage,
   'tourism-value': TourismValuePage,
   'tourism-workforce': TourismWorkforcePage,
+  'economy-flyer': EconomyFlyerPage,
   covid19: CovidPage,
 };
 
