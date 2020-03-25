@@ -209,7 +209,7 @@ const tableBuilder = () => {
       return {
         cssClass: '',
         cols: [
-          { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
+          { cssClass: '', displayText: `Agriculture - Total Value`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(PerYear1, '--'), colSpan: 1 },
           { cssClass: '', displayText: formatPercent(BMYear1, '--'), colSpan: 1 },
