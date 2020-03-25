@@ -120,7 +120,6 @@ const tableBuilder = () => {
       child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
     );
   });
-  console.log('parents: ', parents);
 
   return {
     cssClass: '',
