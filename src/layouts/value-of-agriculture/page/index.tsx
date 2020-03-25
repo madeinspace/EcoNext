@@ -37,7 +37,7 @@ const ValueOfAgriculturePage = () => {
               `Industry Sector Analysis`,
             )}{' '}
             page for the Agriculture sector, which has modelled estimates of the size of the industry on an annual
-            basis. The
+            basis. The{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locationss`, `Employment Locations`)} page
             will show where agricultural activity is taking place and the{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/workers-key-statistics`, `Workforce Profiles`)}{' '}
@@ -193,7 +193,7 @@ const tableBuilder = () => {
         formatPercent(BMYear1, '--'),
         formatPercent(LGAPerBm1, '--'),
       ],
-      childRows: children.map(({ LabelKey, LabelName, NoYear1, PerYear1, BMYear1, LGAPerBm1 }) => ({
+      childRows: children.reverse().map(({ LabelKey, LabelName, NoYear1, PerYear1, BMYear1, LGAPerBm1 }) => ({
         id: LabelKey,
         data: [LabelName, NoYear1, PerYear1, BMYear1],
         formattedData: [
