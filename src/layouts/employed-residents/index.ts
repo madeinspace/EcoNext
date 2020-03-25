@@ -30,7 +30,6 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        console.log('contentData: ', contentData);
         const { prefixedAreaName } = data;
         const localJobs = formatNumber(contentData[0].LocalJobs);
         const yearEnding = contentData[0].Year_End;

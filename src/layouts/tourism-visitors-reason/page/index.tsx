@@ -86,7 +86,6 @@ const tableBuilder = () => {
   } = useContext(PageContext);
   const tableTitle = `${currentTourismtype} - 5 year total`;
   const anchorName = 'tourism-visitor-summary';
-  console.log('contentData: ', contentData);
 
   return {
     cssClass: '',
@@ -228,7 +227,6 @@ const tableBuilderAlt = () => {
   } = useContext(PageContext);
   const tableTitle = `${currentTourismtype} - 5 year total`;
   const anchorName = 'indicators---estimate-resident-population';
-  console.log('contentData: ', contentData);
 
   return {
     cssClass: '',

@@ -14,6 +14,7 @@ const Heading = styled.h3`
 const EconomyFlyerPage = () => {
   return (
     <>
+      <SubTitleAlt>What is economy.id?</SubTitleAlt>
       <p>
         economy.id is a comprehensive economic profile of your Local Government Area, providing you with access to a
         range of different datasets to build a cohesive story of your local economy, how it is changing and how it
