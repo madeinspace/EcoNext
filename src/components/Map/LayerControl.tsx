@@ -34,7 +34,7 @@ const Checkbox = ({ type = 'checkbox', name, checked = false, onChange }) => (
 );
 
 export const LayerControl = ({ layers, onLayerToggle }) => {
-  const [checkedItems, setCheckedItems] = useState([4]);
+  const [checkedItems, setCheckedItems] = useState([4, 1]);
 
   const handleLayerToggle = event => {
     const id = parseInt(event.target.name);

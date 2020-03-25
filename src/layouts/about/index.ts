@@ -1,6 +1,5 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-import { formatShortDecimal } from '../../utils';
 import axios from 'axios';
 import getActiveToggle from '../../utils/getActiveToggle';
 const COM_CLIENT_DB = 'CommClient';
@@ -23,14 +22,12 @@ const fetchData = async ({ filters, clientAlias, mapLayers }) => {
     .catch(error => {
       console.log(error);
     });
+  console.log('mapData: ', mapData);
   mapData = { ...mapData, geomData };
   return { statsData, mapData, textData };
 };
 
-const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
-  currentTourismType: getActiveToggle(filterToggles, 'Tourismtype'),
-});
+const activeCustomToggles = ({ filterToggles }) => ({});
 
 const pageContent = {
   entities: [
@@ -39,7 +36,20 @@ const pageContent = {
       renderString: (): string => `About the area`,
     },
   ],
-  filterToggles: [],
+  filterToggles: [
+    {
+      Database: 'CommApp',
+      DefaultValue: '10',
+      Label: 'Current area:',
+      Params: [
+        {
+          ClientID: '2',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area',
+      ParamName: 'WebID',
+    },
+  ],
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };

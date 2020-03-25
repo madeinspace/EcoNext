@@ -109,15 +109,13 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
 
   const handleLayerToggle = checkedItems => setActiveLayers(checkedItems);
 
-  const clearAllOverlays = () => featureGroups.forEach(fg => removeFeatureGroup(fg.featureGroup));
+  const clearAllOverlays = () => featureGroups.forEach(({ featureGroup }) => removeFeatureGroup(featureGroup));
 
   const removeFeatureGroup = fg => fg.removeFrom(map);
 
   const drawFeatureGroups = active => {
     clearAllOverlays();
-    active.forEach(fg => {
-      fg.featureGroup.addTo(map).setZIndex(fg.zIndex);
-    });
+    active.forEach(({ featureGroup, zIndex }) => featureGroup.addTo(map).setZIndex(zIndex));
   };
 
   return (
