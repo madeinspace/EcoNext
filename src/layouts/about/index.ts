@@ -22,7 +22,6 @@ const fetchData = async ({ filters, clientAlias, mapLayers }) => {
     .catch(error => {
       console.log(error);
     });
-  console.log('mapData: ', mapData);
   mapData = { ...mapData, geomData };
   return { statsData, mapData, textData };
 };

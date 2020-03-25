@@ -82,5 +82,6 @@ export default [
   // 'tourism-workforce',
   // 'economy-flyer',
   // 'about',
+  // 'value-of-agriculture',
   // 'covid19',
 ];
