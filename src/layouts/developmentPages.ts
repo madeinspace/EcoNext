@@ -86,4 +86,5 @@ export default [
   'economy-flyer',
   'about',
   'value-of-agriculture',
+  'location-quotient',
 ];
