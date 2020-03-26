@@ -67,6 +67,7 @@ import EconomyFlyerPage from './economy-flyer/page';
 import AboutPage from './about/page';
 import ValueOfAgriculturePage from './value-of-agriculture/page';
 import LocationQuotientPage from './location-quotient/page';
+import LocalEmploymentPage from './local-employment/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -152,6 +153,7 @@ const PageMappings = {
   about: AboutPage,
   'value-of-agriculture': ValueOfAgriculturePage,
   'location-quotient': LocationQuotientPage,
+  'local-employment': LocalEmploymentPage,
   covid19: CovidPage,
 };
 

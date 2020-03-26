@@ -58,7 +58,7 @@ const TopFour = Top(4);
 const TopThreeFields = () => {
   const {
     contentData,
-    entityData: { currentMeasureName, currentStartYear, currentBenchmarkName, prefixedAreaName },
+    entityData: { currentStartYear, currentBenchmarkName, prefixedAreaName },
   } = useContext(PageContext);
   const topquals = TopLevelQualifications(contentData);
   const highestQuals = HighestQualifications(topquals, 'LQBMYear1');
@@ -68,8 +68,8 @@ const TopThreeFields = () => {
   return (
     <>
       <Highlight>
-        An analysis of {currentMeasureName.toLowerCase()} in {prefixedAreaName} in {currentStartYear} shows the three
-        industries with the highest location quotient relative to {currentBenchmarkName} were:
+        An analysis of value add in {prefixedAreaName} in {currentStartYear} shows the three industries with the highest
+        location quotient relative to {currentBenchmarkName} were:
       </Highlight>
       <TopList>
         {topThree.map((qual: any, i) => (
@@ -128,7 +128,7 @@ const EmergingGroups = () => {
 // #endregion
 
 // #region page
-const LocationQuotientPage = () => {
+const LocalEmploymentPage = () => {
   const { clientAlias } = useContext(ClientContext);
 
   return (
@@ -239,7 +239,7 @@ const LocationQuotientPage = () => {
   );
 };
 
-export default LocationQuotientPage;
+export default LocalEmploymentPage;
 
 // #endregion
 
