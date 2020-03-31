@@ -4,9 +4,19 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
 /* #region  contentDataQuery */
-// select * from [dbo].[fn_LQ_Analysis_1and2Digit](102,10,40,2015,2010,1,null,1)
-const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, LoQo, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_LQ_Analysis_1and2Digit](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null, ${LoQo}) `;
+// select * from [dbo].[fn_JTW_Self_Sufficiency_Industry_LGA_2016](102,10,2016,2011)
+const IndustryQuery = {
+  id: 1,
+  query: ({ ClientID, WebID, BMID }) =>
+    `select * from CommData_Economy.[dbo].[fn_JTW_Self_Sufficiency_Industry_LGA_2016](${ClientID}, ${WebID}, 2016, 2011)`,
+};
+
+// select * from [dbo].[fn_JTW_Self_Containment_Occupation_LGA_2016](102,10,2016,2011)
+const OccupationQuery = {
+  id: 2,
+  query: ({ ClientID, WebID, BMID }) =>
+    `select * from CommData_Economy.[dbo].[fn_JTW_Self_Sufficiency_Occupation_LGA_2016](${ClientID}, ${WebID}, 2016, 2011)`,
+};
 /* #endregion */
 
 const without = (str, exclude) => {
@@ -21,33 +31,33 @@ const largest = (arr, key) => {
     })[0];
 };
 
-const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
+const queries = [IndustryQuery, OccupationQuery];
 
-const activeCustomToggles = ({ filterToggles }) => ({
-  currentTypeName: getActiveToggle(filterToggles, 't'),
-});
+const fetchData = async ({ filters }) =>
+  await Promise.all(
+    queries.map(async ({ query, id }) => {
+      return { id, data: await sqlConnection.raw(query(filters)) };
+    }),
+  );
+
+const activeCustomToggles = ({ filterToggles }) => {
+  return {
+    currentTypeName: getActiveToggle(filterToggles, 't'),
+  };
+};
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `Employment self-sufficiency -`,
+      renderString: ({ data }): string => {
+        return `Employment self-sufficiency`;
+      },
     },
     {
       Title: 'DataSource',
-      renderString: ({ data }): string => `National Economics (NIEIR) - Modelled series`,
-    },
-    {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { currentMeasureName, currentStartYear, prefixedAreaName } = data;
-        const parents = _.sortBy(
-          contentData.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
-          item => item.LabelKey,
-        );
-        const largestLoQo = largest(parents, 'LQBMYear1');
-        return `In ${currentStartYear}, ${largestLoQo.LabelName} was a major specialisation in ${prefixedAreaName} in terms of ${currentMeasureName}.`;
-      },
+      renderString: ({ data }): string =>
+        `Australian Bureau of Statistics (ABS) – Census 2011 (experimental imputed) & 2016 – by place of work`,
     },
   ],
   filterToggles: [
@@ -58,6 +68,7 @@ const pageContent = {
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Topic_Type',
       ParamName: 't',
+      Hidden: true,
     },
     {
       Database: 'CommApp',

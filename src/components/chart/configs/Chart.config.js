@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 // default chart: vertical
 import { getParameterByName } from '../../../utils/';
-import { formatShortDecimal, formatNumber, formatChangeNumber, formatChangePercent } from '../../../utils';
+import { formatChangePercent } from '../../../utils';
 import * as deepmerge from 'deepmerge';
 
 export const ChartDefault = (...opts) => {
@@ -123,13 +123,6 @@ export const ChartDefault = (...opts) => {
         enabled: false,
       },
     },
-  };
-
-  chartDefaults.tooltip = {
-    shadow: false,
-    delayForDisplay: 100,
-    hideDelay: 10,
-    headFormat: '<span> {point.y} - </span>',
   };
 
   chartDefaults.legend = {

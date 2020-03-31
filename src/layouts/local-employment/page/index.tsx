@@ -5,24 +5,28 @@ import {
   formatShortDecimal,
   formatPercent,
   idlogo,
-  formatChangeInt,
-  formatOneDecimal,
-  formatLongNumber,
-  formatChangePercent,
-  absSort,
+  getParameterByName,
   formatChangeOneDecimal,
 } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import { PageIntro, Highlight, AnalysisContainer, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
+import {
+  PageIntro,
+  SourceBubble,
+  ItemWrapper,
+  Headline,
+  Note,
+  CrossLink,
+  ProfileProductIcon,
+} from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import InfoBox from '../../../components/ui/infoBox';
-import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import styled from 'styled-components';
 import useEntityText from '../../../utils/useEntityText';
+import qs from 'qs';
 
 // #endregion
 
@@ -35,143 +39,106 @@ const TopList = styled.ul`
     line-height: 20px;
   }
 `;
-const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
 
-const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
-
-const Top = n => quals =>
-  _(quals)
-    .takeRight(n)
-    .reverse()
-    .value();
-
-const Bottom = n => quals =>
-  _(quals)
-    .take(n)
-    .reverse()
-    .value();
-
-const TopThree = Top(3);
-const BottomThree = Bottom(3);
-const TopFour = Top(4);
-
-const TopThreeFields = () => {
-  const {
-    contentData,
-    entityData: { currentStartYear, currentBenchmarkName, prefixedAreaName },
-  } = useContext(PageContext);
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'LQBMYear1');
-  const topThree = TopThree(highestQuals);
-  const bottomThree = BottomThree(highestQuals);
-
-  return (
-    <>
-      <Highlight>
-        An analysis of value add in {prefixedAreaName} in {currentStartYear} shows the three industries with the highest
-        location quotient relative to {currentBenchmarkName} were:
-      </Highlight>
-      <TopList>
-        {topThree.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatPercent(qual.LQBMYear1)} )
-          </li>
-        ))}
-      </TopList>
-      <Highlight>
-        The three industries with the lowest location quotient relative to {currentBenchmarkName} were:
-      </Highlight>
-      <TopList>
-        {bottomThree.map((qual: any, i) => (
-          <li key={i}>
-            {qual.LabelName} ({formatPercent(qual.LQBMYear1)} )
-          </li>
-        ))}
-      </TopList>
-    </>
-  );
-};
-
-const EmergingGroupsHeading = () => {
-  const {
-    entityData: { currentMeasureName, currentStartYear, currentComparisonYear, prefixedAreaName },
-  } = useContext(PageContext);
-
-  return (
-    <>
-      <p>Changes in location quotients over time reveal emerging or declining industry specialisations.</p>
-      <Highlight>
-        The largest changes in the {currentMeasureName.toLowerCase()} LQ between {currentComparisonYear} and{' '}
-        {currentStartYear} in {prefixedAreaName} were for these industries:
-      </Highlight>
-    </>
-  );
-};
-
-const EmergingGroups = () => {
-  const { contentData } = useContext(PageContext);
-
-  const topquals = TopLevelQualifications(contentData);
-  const highestQuals = HighestQualifications(topquals, 'Change12');
-  const topFour = TopFour(absSort(highestQuals, 'Change12'));
-
-  return (
-    <TopList>
-      {topFour.map((qual: any, i) => (
-        <li key={i}>
-          {qual.LabelName} ({formatChangeOneDecimal(qual.Change12)})
-        </li>
-      ))}
-    </TopList>
-  );
-};
 // #endregion
 
 // #region page
 const LocalEmploymentPage = () => {
-  const { clientAlias } = useContext(ClientContext);
+  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const {
+    handle,
+    contentData,
+    entityData: { prefixedAreaName },
+  } = useContext(PageContext);
+  const [Pane, setPane] = useState(1);
 
+  useEffect(() => {
+    const tabNumber = getParameterByName('t');
+    tabNumber && setPane(+tabNumber);
+  });
+
+  const handleTabChange = (key, value) => {
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    query[key] = value;
+    const stringiifiedQuery = qs.stringify(query);
+    const href = `/${clientAlias}/${handle}?${stringiifiedQuery}`;
+    window.history.replaceState(query, '', href);
+    setPane(value);
+  };
+
+  const Tabs = styled.ul`
+    display: flex;
+    border-bottom: 1px solid #d7dbdd;
+  `;
+  const Tab = styled.li`
+    cursor: pointer;
+    padding: 15px 40px;
+    font-size: 16px;
+    color: ${props => (Pane === props.id ? 'white' : '#5f6062')};
+    background-color: ${props => (Pane === props.id ? '#70b859' : '#e0e0e0')};
+    &:hover {
+      background-color: #70b859;
+      color: #fff;
+    }
+  `;
+  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
+  const ProfileCrossLink = () => {
+    return (
+      hasProfile && (
+        <CrossLink>
+          <ProfileProductIcon />
+          <a
+            href={`http://profile.id.com.au/${clientAlias}/industries`}
+            target="_blank"
+            rel="noopener"
+            title="link to forecast"
+          >
+            Residents employment by industry by small area
+          </a>
+        </CrossLink>
+      )
+    );
+  };
+  const total = contentData[0].data.filter(({ LabelKey }) => LabelKey === 999999)[0];
+  const headingIndustry = `In 2016, ${formatPercent(
+    total.SelSufper1,
+  )}% of the City of Monash’s local workers were residents.`;
   return (
     <>
+      <Headline>{headingIndustry}</Headline>
       <PageIntro>
         <div>
           <p>
-            The location quotient is a simple way of seeing which are the main industries in an area, relative to the
-            wider region. LQ shows the percentage of the local economy characteristic (eg. employment, value add) in a
-            particular industry divided by the percentage of the wider area (region, state, nation) that this industry
-            makes up.
+            Self-sufficiency measures the proportion of local workers in the local area who also live in the Local
+            Government Area or region. It indicates the level at which the resident workers meet the labour requirements
+            of the local industries or businesses.
+          </p>
+          <p>
+            Self-sufficiency is likely to be higher for regional areas, lower in metropolitan areas and is influenced
+            by:
           </p>
           <TopList>
-            <li>Where LQ=1, that industry is exactly as prevalent as in the wider region.</li>
-            <li>
-              A LQ greater than 1.2 indicates a significant specialisation of the industry in the local area – possibly
-              a key economic strength. Higher numbers mean greater specialisations. Anything over 2 is a major
-              specialisation.
-            </li>
-            <li>
-              A LQ between 0.8 and 1.2 means the industry is broadly similar in importance in the local area compared to
-              the comparison region and could be seen as representative.
-            </li>
-            <li>
-              An LQ under 0.8 indicates an industry which is more important in the region than the local area, and may
-              represent an economic weakness or opportunity for growth.
-            </li>
+            <li>The nature of employment opportunities versus the skills and qualifications of residents;</li>
+            <li>Transport options available and commuting times;</li>
+            <li>Relationship between wages and salaries and house prices in the area; and</li>
+            <li>The geographic size of the area.</li>
           </TopList>
           <p>
-            LQs should be analysed in combination with the proportional economic share that industry represents. For
-            example, an industry with an LQ of 2 reveals a specialisation but if that industry only represents 3% of the
-            local economy, it may not be significant. Compare with the figures on the{' '}
+            Employment self-sufficiency data should be viewed in conjunction with detailed{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Workers place of residence')}
+            data to see how far workers are travelling to access employment in the area, as well as{' '}
             {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/employment-by-industry`,
-              'Employment by industry (Total)',
+              `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry`,
+              'Worker productivity',
             )}
-            ,{' '}
+            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, 'Local workers income')} and
             {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/employment-by-industry-fte`,
-              'Employment by industry (FTE)',
-            )}
-            , {LinkBuilder(`https://economy.id.com.au/${clientAlias}/value-add-by-industry`, 'Value added')} pages for
-            this context. National Economics (NIEIR) - Modelled series
+              `https://economy.id.com.au/${clientAlias}/workers-hours-worked`,
+              'Local workers hours worked',
+            )}{' '}
+            data to look at the value of local workers contributions. The{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/local-employment`, 'Resident workers')} section will
+            provide the characteristics of resident workers.
           </p>
         </div>
         <SourceBubble>
@@ -181,60 +148,61 @@ const LocalEmploymentPage = () => {
           </div>
         </SourceBubble>
       </PageIntro>
+      <Note>
+        <strong>Please note: </strong> The 2016 Census used a new methodology to "impute" a work location to people who
+        didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
+        To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
+        imputed using the same methodology. To provide this detail, City of Monash in 2011 had to be constructed from a
+        best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it
+        is considered close enough to allow some comparison. Users should treat this time series data with caution,
+        however, and not compare directly with 2011 data from any other source.
+      </Note>
 
       <ControlPanel />
+      <Tabs>
+        <Tab id={1} onClick={() => handleTabChange('t', 1)}>
+          Industry
+        </Tab>
+        <Tab id={2} onClick={() => handleTabChange('t', 2)}>
+          Occupations
+        </Tab>
+      </Tabs>
 
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a data row in the table you will be able to see sub categories.
-        </span>
-      </InfoBox>
+      {Pane === 1 && (
+        <>
+          <ItemWrapper>
+            <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
+          </ItemWrapper>
+          <ProfileCrossLink />
 
-      <ItemWrapper>
-        <EntityTable data={tableBuilder()} name={useEntityText('SubTitle')} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <EntityChart data={chartBuilder()} />
+          </ItemWrapper>
 
-      <InfoBox>
-        <span>
-          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
-          the sub categories.
-        </span>
-      </InfoBox>
+          <ItemWrapper>
+            <EntityChart data={chartBuilderChange()} />
+          </ItemWrapper>
+        </>
+      )}
+      {Pane === 2 && (
+        <>
+          <ItemWrapper>
+            <EntityTable data={tableBuilder2()} name={'occupation'} />
+          </ItemWrapper>
 
-      <ItemWrapper>
-        <EntityChart data={chartBuilder()} />
-      </ItemWrapper>
+          <ProfileCrossLink />
 
-      <ItemWrapper>
-        <EntityChart data={chartBuilderChange()} />
-      </ItemWrapper>
+          <ItemWrapper>
+            <EntityChart data={chartBuilderOccupation()} />
+          </ItemWrapper>
 
-      {
-        // #region dominant and emerging groups
-      }
-      <AnalysisContainer>
-        <h3>Dominant groups</h3>
-        <p>
-          A location quotient of greater than 1.2 is generally considered a level of industry specialisation, while a LQ
-          of 0.8 or less indicates an industry which doesn’t have a major presence in the area.
-        </p>
-        <TopThreeFields />
-      </AnalysisContainer>
-      <AnalysisContainer>
-        <h3>Emerging groups</h3>
-        <EmergingGroupsHeading />
-        <EmergingGroups />
-      </AnalysisContainer>
-      {
-        // #endregion
-      }
-      {
-        // #region related pages
-      }
+          <ItemWrapper>
+            <EntityChart data={chartBuilderOccupationChange()} />
+          </ItemWrapper>
+        </>
+      )}
+
       <RelatedPagesCTA />
-      {
-        // #endregion
-      }
     </>
   );
 };
@@ -248,9 +216,8 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. NIEIR-ID data are adjusted each
-      year, using updated employment estimates. Each release may change previous years’ figures.{' '}
-      {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
+      Source: {LinkBuilder(`http://www.abs.gov.au/census`, `Australian Bureau of Statistics`)}, Census of Population and
+      Housing 2011 and 2016. Compiled and presented in economy.id by <IdLink />.
     </p>
   );
 };
@@ -267,31 +234,21 @@ const tableBuilder = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: data,
-    entityData: { currentAreaName, currentBenchmarkName, currentStartYear, currentComparisonYear },
+    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Local workers field of qualification - Summary';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
-  const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
-    item => item.LabelKey,
-  );
-  const children = data.filter(item => item.Hierarchy === 'C');
-
-  parents.forEach(parent => {
-    parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
-    );
-  });
+  const tableTitle = 'Employment self-sufficiency by industry';
+  const firstColTitle = 'Industry';
+  const footerRows = data[0].data.filter(({ LabelKey }) => LabelKey === 999999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey != 999999);
 
   return {
     cssClass: '',
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: '',
+    anchorName: 'self-sufficiency---industry',
     headRows: [
       {
         cssClass: '',
@@ -313,12 +270,12 @@ const tableBuilder = () => {
           },
           {
             cssClass: 'even',
-            displayText: `${currentStartYear}`,
+            displayText: `2016`,
             colSpan: 3,
           },
           {
             cssClass: 'odd',
-            displayText: `${currentComparisonYear}`,
+            displayText: `2011`,
             colSpan: 3,
           },
           {
@@ -337,32 +294,168 @@ const tableBuilder = () => {
       },
       {
         id: 1,
-        displayText: '%',
+        displayText: 'Total local workers',
         cssClass: 'even int M',
       },
       {
         id: 2,
-        displayText: `${currentBenchmarkName}%`,
+        displayText: `Local workers residing in ${prefixedAreaName}%`,
         cssClass: 'even int M',
       },
       {
         id: 3,
-        displayText: `Location Quotien ${currentBenchmarkName}`,
-        cssClass: 'even int M',
+        displayText: `% industry self- sufficiency`,
+        cssClass: 'even int ',
       },
       {
         id: 4,
-        displayText: '%',
+        displayText: 'Total local workers',
         cssClass: 'odd int M',
       },
       {
         id: 5,
-        displayText: `${currentBenchmarkName}%`,
+        displayText: `Local workers residing in ${prefixedAreaName}%`,
         cssClass: 'odd int M',
       },
       {
         id: 6,
-        displayText: `Location Quotien ${currentBenchmarkName}`,
+        displayText: `% industry self- sufficiency`,
+        cssClass: 'odd int ',
+      },
+      {
+        id: 7,
+        displayText: '2011 - 2016',
+        cssClass: 'even int XS',
+      },
+    ],
+    rows: parents.map(
+      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => ({
+        id: LabelKey,
+        data: [LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12],
+        formattedData: [
+          `${LabelName}`,
+          formatNumber(TotalYear1),
+          formatNumber(ResYear1),
+          formatPercent(SelSufper1),
+          formatNumber(TotalYear2),
+          formatNumber(ResYear2),
+          formatPercent(SelSufper2),
+          `${formatChangeOneDecimal(Change12, '--')}%`,
+        ],
+      }),
+    ),
+    footRows: footerRows.map(({ TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => {
+      return {
+        cssClass: '',
+        cols: [
+          { cssClass: '', displayText: `Total Industries`, colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(TotalYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(ResYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelSufper1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(TotalYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(ResYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelSufper2), colSpan: 1 },
+          { cssClass: '', displayText: `${formatChangeOneDecimal(Change12)}%`, colSpan: 1 },
+        ],
+      };
+    }),
+    noOfRowsOnInit: 0,
+  };
+};
+// #endregion
+
+// #region table builders
+const tableBuilder2 = () => {
+  const { clientAlias } = useContext(ClientContext);
+  const {
+    contentData: data,
+    entityData: { currentAreaName, currentBenchmarkName, prefixedAreaname },
+  } = useContext(PageContext);
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const tableTitle = 'Employment self-sufficiency by occupation';
+  const firstColTitle = 'Occupation';
+  const footerRows = data[1].data.filter(({ LabelKey }) => LabelKey === 99999);
+
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey != 99999);
+
+  return {
+    cssClass: '',
+    clientAlias,
+    source: <TableSource />,
+    rawDataSource,
+    anchorName: 'self-sufficiency---occupation',
+    headRows: [
+      {
+        cssClass: '',
+        cols: [
+          {
+            cssClass: 'table-area-name',
+            displayText: tableTitle,
+            colSpan: 10,
+          },
+        ],
+      },
+      {
+        cssClass: 'heading',
+        cols: [
+          {
+            cssClass: 'sub first',
+            displayText: `${currentAreaName}`,
+            colSpan: 1,
+          },
+          {
+            cssClass: 'even',
+            displayText: `2016`,
+            colSpan: 3,
+          },
+          {
+            cssClass: 'odd',
+            displayText: `2011`,
+            colSpan: 3,
+          },
+          {
+            cssClass: 'sub even',
+            displayText: 'Change',
+            colSpan: 1,
+          },
+        ],
+      },
+    ],
+    cols: [
+      {
+        id: 0,
+        displayText: firstColTitle,
+        cssClass: 'odd first',
+      },
+      {
+        id: 1,
+        displayText: 'Total local workers',
+        cssClass: 'even int M',
+      },
+      {
+        id: 2,
+        displayText: `Local workers residing in ${prefixedAreaname}%`,
+        cssClass: 'even int M',
+      },
+      {
+        id: 3,
+        displayText: `% Occupation self- sufficiency`,
+        cssClass: 'even int M',
+      },
+      {
+        id: 4,
+        displayText: 'Total local workers',
+        cssClass: 'odd int M',
+      },
+      {
+        id: 5,
+        displayText: `Local workers residing in ${prefixedAreaname}%`,
+        cssClass: 'odd int M',
+      },
+      {
+        id: 6,
+        displayText: `% Occupation self- sufficiency`,
         cssClass: 'odd int M',
       },
       {
@@ -372,50 +465,33 @@ const tableBuilder = () => {
       },
     ],
     rows: parents.map(
-      ({ LabelKey, LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12 }) => ({
-        expandable: children.length > 0,
+      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => ({
         id: LabelKey,
-        data: [LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12],
+        data: [LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12],
         formattedData: [
           `${LabelName}`,
-          formatOneDecimal(PerYear1),
-          formatPercent(BMYear1),
-          formatLongNumber(LQBMYear1),
-          formatNumber(PerYear2),
-          formatPercent(BMYear2),
-          formatLongNumber(LQBMYear2),
-          formatChangePercent(Change12, '--'),
+          formatNumber(TotalYear1),
+          formatNumber(ResYear1),
+          formatPercent(SelSufper1),
+          formatNumber(TotalYear2),
+          formatNumber(ResYear2),
+          formatPercent(SelSufper2),
+          `${formatChangeOneDecimal(Change12, '--')}%`,
         ],
-        childRows: children.map(
-          ({ LabelKey, LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12 }) => ({
-            id: LabelKey,
-            data: [LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12],
-            formattedData: [
-              `${LabelName}`,
-              formatNumber(PerYear1),
-              formatPercent(BMYear1),
-              formatLongNumber(LQBMYear1),
-              formatNumber(PerYear2),
-              formatPercent(BMYear2),
-              formatLongNumber(LQBMYear2),
-              formatChangePercent(Change12, '--'),
-            ],
-          }),
-        ),
       }),
     ),
-    footRows: footerRows.map(({ PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12 }) => {
+    footRows: footerRows.map(({ TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => {
       return {
         cssClass: '',
         cols: [
-          { cssClass: '', displayText: `Total Industries`, colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatLongNumber(LQBMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatNumber(PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(BMYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatChangePercent(LQBMYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatChangeInt(Change12), colSpan: 1 },
+          { cssClass: '', displayText: `Total Occupation`, colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(TotalYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(ResYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelSufper1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(TotalYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(ResYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelSufper2), colSpan: 1 },
+          { cssClass: '', displayText: `${formatChangeOneDecimal(Change12)}%`, colSpan: 1 },
         ],
       };
     }),
@@ -428,31 +504,33 @@ const tableBuilder = () => {
 const chartBuilder = () => {
   const {
     contentData: data,
-    entityData: { currentAreaName, currentMeasureName, currentStartYear, currentBenchmarkName },
+    entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
-    item => item.LabelKey,
-  );
-  const perYear1Serie = _.map(parents, ({ LabelName, LQBMYear1 }) => {
-    return {
-      name: LabelName,
-      y: LQBMYear1,
-    };
-  });
-
-  const chartType = 'bar';
-  const chartTitle = `Location quotient by industry sector ${currentStartYear}`;
-  const chartSubtitle = `${currentMeasureName}`;
-  const xAxisTitle = 'Industry sector';
-  const yAxisTitle = `Location quotient`;
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
+  const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
+  const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
+  const categories = parents.map(({ LabelName }) => LabelName);
+  const chartType = 'column';
+  const chartTitle = `Employment self-sufficiency by industry 2016`;
+  const chartSubtitle = `${currentAreaName}`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${
+      this.series.name
+    }: ${formatNumber(this.y)}`;
+  };
+  const tooltipScatter = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${
+      this.series.name
+    }: ${formatPercent(this.y)}%`;
+  };
   return {
     highchartOptions: {
+      height: 500,
       chart: {
         type: chartType,
       },
@@ -472,36 +550,73 @@ const chartBuilder = () => {
           }: ${formatShortDecimal(this.y)}`;
         },
       },
+
       series: [
         {
-          name: `${currentAreaName} relative to ${currentBenchmarkName}`,
-          data: perYear1Serie,
+          name: 'Total local workers',
+          type: 'column',
+          yAxis: 1,
+          data: totalLocalWorkers,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltip.apply(this);
+            },
+          },
+        },
+        {
+          name: 'Local workers residing locally',
+          type: 'column',
+          yAxis: 1,
+          data: workersResigingLocally,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltip.apply(this);
+            },
+          },
+        },
+        {
+          name: '% of industry self-sufficiency ',
+          type: 'scatter',
+          className: 'scatt',
+          data: industrySelfSufficiency,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltipScatter.apply(this);
+            },
+          },
+          marker: {
+            radius: 4,
+          },
         },
       ],
-      xAxis: {
-        type: 'category',
-        title: {
-          text: xAxisTitle,
+      xAxis: [
+        {
+          categories: categories,
+          crosshair: true,
         },
-      },
+      ],
       yAxis: [
         {
+          // Secondary yAxis
           title: {
-            text: yAxisTitle,
+            text: '% of industry self-sufficiency',
           },
           labels: {
-            staggerLines: 0,
-            formatter: function() {
-              return `${this.value}`;
-            },
+            format: '{value}',
           },
-          plotBands: [
-            {
-              color: 'orange',
-              from: 0.75,
-              to: 1.25,
-            },
-          ],
+          opposite: true,
+        },
+        {
+          // Primary yAxis
+          labels: {
+            format: '{value}',
+          },
+          title: {
+            text: 'NUmber employed',
+          },
         },
       ],
     },
@@ -518,19 +633,17 @@ const chartBuilder = () => {
 const chartBuilderChange = () => {
   const {
     contentData: data,
-    entityData: { currentAreaName, currentMeasureName },
+    entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
-    item => item.LabelKey,
-  );
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const change = parents.map(({ TotalYear1 }) => TotalYear1);
   const categories = _.map(parents, 'LabelName');
-  const chartType = 'bar';
-  const chartTitle = 'Change in local workers field of qualification, 2016';
-  const chartSubtitle = `${currentAreaName} - ${currentMeasureName}`;
+  const chartType = 'column';
+  const chartTitle = 'Change in self-sufficiency percentage by industry, 2011 to 2016';
+  const chartSubtitle = `${currentAreaName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';
-  const yAxisTitle = `Change in location quotient`;
+  const yAxisTitle = `% employed`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chartwfoqChange';
@@ -539,7 +652,202 @@ const chartBuilderChange = () => {
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${currentAreaName} - ${
       this.series.name
-    }: ${formatChangePercent(this.y)}`;
+    }: ${formatChangeOneDecimal(this.y)}`;
+  };
+
+  return {
+    cssClass: '',
+    highchartOptions: {
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      series: [
+        {
+          name: `${currentAreaName}`,
+          data: serie,
+        },
+      ],
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          title: {
+            text: yAxisTitle,
+          },
+        },
+      ],
+    },
+    rawDataSource,
+    dataSource: <ChartSource />,
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
+  };
+};
+
+// #endregion
+
+// #region chart builders
+const chartBuilderOccupation = () => {
+  const {
+    contentData: data,
+    entityData: { currentAreaName },
+  } = useContext(PageContext);
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
+  const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
+  const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
+  const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
+  const categories = parents.map(({ LabelName }) => LabelName);
+  const chartType = 'column';
+  const chartTitle = `Employment self-sufficiency by occupation 2016`;
+  const chartSubtitle = `${currentAreaName}`;
+  const rawDataSource =
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+  const chartContainerID = 'chart1';
+  const chartTemplate = 'Standard';
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${
+      this.series.name
+    }: ${formatNumber(this.y)}`;
+  };
+  const tooltipScatter = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${
+      this.series.name
+    }: ${formatPercent(this.y)}%`;
+  };
+  return {
+    highchartOptions: {
+      height: 500,
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      legend: {
+        enabled: true,
+      },
+
+      series: [
+        {
+          name: 'Total local workers',
+          type: 'column',
+          yAxis: 1,
+          data: totalLocalWorkers,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltip.apply(this);
+            },
+          },
+        },
+        {
+          name: 'Local workers residing locally',
+          type: 'column',
+          yAxis: 1,
+          data: workersResigingLocally,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltip.apply(this);
+            },
+          },
+        },
+        {
+          name: '% of industry self-sufficiency ',
+          type: 'scatter',
+          className: 'scatt',
+          data: industrySelfSufficiency,
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function() {
+              return tooltipScatter.apply(this);
+            },
+          },
+          marker: {
+            radius: 4,
+          },
+        },
+      ],
+      xAxis: [
+        {
+          categories: categories,
+          crosshair: true,
+        },
+      ],
+      yAxis: [
+        {
+          // Secondary yAxis
+          title: {
+            text: 'industry self-sufficiency %',
+          },
+          labels: {
+            format: '{value}',
+          },
+          opposite: true,
+        },
+        {
+          // Primary yAxis
+          labels: {
+            format: '{value}',
+          },
+          title: {
+            text: 'NUmber employed',
+          },
+        },
+      ],
+    },
+    rawDataSource,
+    dataSource: <ChartSource />,
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
+  };
+};
+// #endregion
+
+// #region chart builder change
+const chartBuilderOccupationChange = () => {
+  const {
+    contentData: data,
+    entityData: { currentAreaName },
+  } = useContext(PageContext);
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
+  const categories = _.map(parents, 'LabelName');
+  const chartType = 'column';
+  const chartTitle = 'Change in self-sufficiency percentage by occupation, 2011 to 2016';
+  const chartSubtitle = `${currentAreaName}`;
+  const serie = _.map(parents, 'Change12');
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `% employed`;
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const chartContainerID = 'chartwfoqChange';
+  const chartTemplate = 'Standard';
+
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${
+      this.series.name
+    }: ${formatChangeOneDecimal(this.y)}%`;
   };
 
   return {

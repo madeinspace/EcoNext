@@ -4,20 +4,17 @@ import {
   formatPercent,
   formatChangeInt,
   idlogo,
-  formatOneDecimal,
   formatChangeOneDecimal,
-  formatShortDecimal,
   formatLongNumber,
-  formatCurrency,
   formatMillionsCurrencyNoRounding,
   multiplesOf,
 } from '../../../utils/';
-import { ProfileProductIcon, ItemWrapper, CrossLink, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
+import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../../utils/context';
-import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
+import { IdLink, NierLink } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
 import * as Highcharts from 'highcharts';
@@ -27,9 +24,6 @@ import _ from 'lodash';
 
 // #region population page
 const TourismValuePage = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
-  const hasProfile = () => clientProducts.some(product => product.AppID === 1);
-
   return (
     <>
       <PageIntro>

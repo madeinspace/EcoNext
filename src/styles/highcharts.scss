@@ -247,6 +247,17 @@ g.highcharts-series,
 .highcharts-color-2 {
   fill: #80d090;
   stroke: #80d090;
+  &.scatt {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
+}
+
+.scatt {
+  .highcharts-color-2 {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
 }
 
 .highcharts-color-3 {
