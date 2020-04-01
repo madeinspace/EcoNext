@@ -348,12 +348,6 @@ const chartBuilderPer = () => {
           data: serieBM,
         },
       ],
-      plotOptions: {
-        series: {
-          stacking: 'normal',
-          minPointLength: 3,
-        },
-      },
       xAxis: {
         categories: categories,
         title: {
