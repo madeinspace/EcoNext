@@ -22,7 +22,6 @@ const activeCustomToggles = ({ filterToggles }) => {
 };
 
 const headLine = ({ data, contentData, filters }) => {
-  console.log('filters: ', filters);
   const indText = +filters.IndkeyNieir === 22000 ? '' : data.currentIndustryName;
   const year2019 = contentData.filter(({ SeriesYear }) => SeriesYear === 2019)[0];
   const headline = `In 2018/19, ${data.prefixedAreaName} contributed ${formatPercent(year2019.CperBM)}% to ${

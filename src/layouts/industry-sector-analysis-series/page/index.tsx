@@ -110,7 +110,6 @@ const tableBuilder = () => {
     filters: { Measure },
     entityData: { currentAreaName, currentBenchmarkName, currentMeasure, currentIndustryName },
   } = useContext(PageContext);
-  console.log('contentData: ', contentData);
   const format = num => (+Measure === 100001 || +Measure === 10001 ? formatNumber(num) : formatPercent(num));
   const rows = contentData
     .filter(item => item.LabelKey != 999999)

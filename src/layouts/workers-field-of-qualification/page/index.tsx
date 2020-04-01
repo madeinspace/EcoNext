@@ -214,14 +214,7 @@ const LocalWorkerFieldsOfQualificationPage = () => {
     entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, currentGenderName, prefixedAreaName },
   } = useContext(PageContext);
 
-  const tableParams = tableBuilder({
-    clientAlias,
-    areaName: currentAreaName,
-    industryName: currentIndustryName,
-    bmName: currentBenchmarkName,
-    genderName: currentGenderName,
-    TabularData: contentData,
-  });
+  const tableParams = tableBuilder();
 
   const chartData = chartBuilder({
     areaName: currentAreaName,
@@ -390,24 +383,22 @@ const ChartSource = () => (
 // #endregion
 
 // #region table builders
-const tableBuilder = ({
-  clientAlias,
-  areaName,
-  industryName: industry,
-  bmName: benchmark,
-  genderName: gender,
-  TabularData: data,
-}) => {
+const tableBuilder = () => {
+  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const {
+    contentData,
+    entityData: { currentAreaName, currentBenchmarkName, currentIndustryName, currentGenderName, prefixedAreaName },
+  } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Local workers field of qualification - Summary';
   const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const footerRows = contentData.filter(item => item.IndustryName === 'Total');
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    contentData.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
     item => item.LabelKey,
   );
-  const children = data.filter(item => item.Hierarchy === 'C');
+  const children = contentData.filter(item => item.Hierarchy === 'C');
 
   parents.forEach(parent => {
     parent.children = children.filter(
@@ -437,7 +428,7 @@ const tableBuilder = ({
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${areaName} - ${industry}`,
+            displayText: `${currentAreaName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -476,7 +467,7 @@ const tableBuilder = ({
       },
       {
         id: 3,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'even int',
       },
       {
@@ -491,7 +482,7 @@ const tableBuilder = ({
       },
       {
         id: 6,
-        displayText: `${benchmark}`,
+        displayText: `${currentBenchmarkName}`,
         cssClass: 'odd int',
       },
       {
@@ -551,7 +542,7 @@ const tableBuilder = ({
       return {
         cssClass: '',
         cols: [
-          { cssClass: '', displayText: `Total ${gender}`, colSpan: 1 },
+          { cssClass: '', displayText: `Total ${currentGenderName}`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(row.NoYear1), colSpan: 1 },
           { cssClass: '', displayText: formatShortDecimal(row.PerYear1), colSpan: 1 },
           { cssClass: '', displayText: formatShortDecimal(row.BMYear1), colSpan: 1 },

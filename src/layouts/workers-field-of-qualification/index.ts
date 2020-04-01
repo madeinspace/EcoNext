@@ -17,7 +17,7 @@ const largest = (arr, key) => {
 const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
+  currentBenchmarkName: getActiveToggle(filterToggles, 'IGBMID'),
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   currentGenderName: getActiveToggle(filterToggles, 'Sex'),
 });
