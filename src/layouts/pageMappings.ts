@@ -68,6 +68,7 @@ import AboutPage from './about/page';
 import ValueOfAgriculturePage from './value-of-agriculture/page';
 import LocationQuotientPage from './location-quotient/page';
 import LocalEmploymentPage from './local-employment/page';
+import EmployedLocallyPage from './employed-locally/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -154,6 +155,7 @@ const PageMappings = {
   'value-of-agriculture': ValueOfAgriculturePage,
   'location-quotient': LocationQuotientPage,
   'local-employment': LocalEmploymentPage,
+  'employed-locally': EmployedLocallyPage,
   covid19: CovidPage,
 };
 

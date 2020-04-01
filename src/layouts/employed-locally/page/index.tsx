@@ -43,7 +43,7 @@ const TopList = styled.ul`
 // #endregion
 
 // #region page
-const LocalEmploymentPage = () => {
+const EmployedLocallyPage = () => {
   const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     handle,
@@ -51,6 +51,7 @@ const LocalEmploymentPage = () => {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
   const [Pane, setPane] = useState(1);
+  console.log('contentData: ', contentData);
 
   useEffect(() => {
     const tabNumber = getParameterByName('t');
@@ -99,23 +100,23 @@ const LocalEmploymentPage = () => {
       )
     );
   };
-  const total = contentData[0].data.filter(({ LabelKey }) => LabelKey === 999999)[0];
+  const total = contentData[0].data.filter(({ LabelKey }) => LabelKey === 99999)[0];
   const headingIndustry = `In 2016, ${formatPercent(
-    total.SelSufper1,
-  )}% of the City of Monash’s local workers were residents.`;
+    total.SelContper1,
+  )}% of the City of Monash’s resident workers were employed locally.`;
   return (
     <>
       <Headline>{headingIndustry}</Headline>
       <PageIntro>
         <div>
           <p>
-            Self-sufficiency measures the proportion of local workers in the local area who also live in the Local
-            Government Area or region. It indicates the level at which the resident workers meet the labour requirements
-            of the local industries or businesses.
+            Self-containment measures the proportion of resident workers who are employed within the boundaries of the
+            Local Government Area or region. It indicates the propensity of residents to seek employment outside the
+            Local Government Area or region in which they live.
           </p>
           <p>
-            Self-sufficiency is likely to be higher for regional areas, lower in metropolitan areas and is influenced
-            by:
+            Self containment is likely to be higher for regional areas and, lower in metropolitan areas and is
+            influenced by:
           </p>
           <TopList>
             <li>The nature of employment opportunities versus the skills and qualifications of residents;</li>
@@ -124,21 +125,14 @@ const LocalEmploymentPage = () => {
             <li>The geographic size of the area.</li>
           </TopList>
           <p>
-            Employment self-sufficiency data should be viewed in conjunction with detailed{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Workers place of residence')}
-            data to see how far workers are travelling to access employment in the area, as well as{' '}
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry`,
-              'Worker productivity',
-            )}
-            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, 'Local workers income')} and
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/workers-hours-worked`,
-              'Local workers hours worked',
-            )}{' '}
-            data to look at the value of local workers contributions. The{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/local-employment`, 'Resident workers')} section will
-            provide the characteristics of resident workers.
+            Employment self-containment data should be viewed in conjunction with detailed{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Residents place of work')}
+            data to see where resident workers are accessing employment, along with{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers')} ratio data
+            which provides the theoretical number of jobs which could be provided to residents of the City of Monash in
+            the local area, and is updated annually. The{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}{' '}
+            section will provide the characteristics of resident workers.
           </p>
         </div>
         <SourceBubble>
@@ -207,7 +201,7 @@ const LocalEmploymentPage = () => {
   );
 };
 
-export default LocalEmploymentPage;
+export default EmployedLocallyPage;
 
 // #endregion
 
@@ -216,16 +210,14 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: {LinkBuilder(`http://www.abs.gov.au/census`, `Australian Bureau of Statistics`)}, Census of Population and
-      Housing 2011 and 2016. Compiled and presented in economy.id by <IdLink />.
+      Source: {LinkBuilder(`https://www.abs.gov.au/census`, `Australian Bureau of Statistics`)}, Census of Population
+      and Housing 2011 and 2016 Compiled and presented in economy.id by <IdLink />.
     </p>
   );
 };
-const ChartSource = () => (
-  <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
-    <IdLink />.
-  </p>
+const ChartSource = () => <p>Source: Australian Bureau of Statistics, Census of Population and Housing 2016.</p>;
+const ChartSourceChange = () => (
+  <p>Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016.</p>
 );
 // #endregion
 
@@ -234,21 +226,21 @@ const tableBuilder = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: data,
-    entityData: { currentAreaName, currentTypeName, prefixedAreaName },
+    entityData: { currentAreaName, prefixedAreaName, currentTypeName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Employment self-sufficiency by ${currentTypeName}`;
+    'Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016 Compiled and presented in economy.id by .id , the population experts.';
+  const tableTitle = `Employment self-containment by ${currentTypeName}`;
   const firstColTitle = 'Industry';
-  const footerRows = data[0].data.filter(({ LabelKey }) => LabelKey === 999999);
-  const parents = data[0].data.filter(({ LabelKey }) => LabelKey != 999999);
+  const footerRows = data[0].data.filter(({ LabelKey }) => LabelKey === 99999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey != 99999);
 
   return {
     cssClass: '',
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'self-sufficiency---industry',
+    anchorName: 'self-containment---industry',
     headRows: [
       {
         cssClass: '',
@@ -294,32 +286,32 @@ const tableBuilder = () => {
       },
       {
         id: 1,
-        displayText: 'Total local workers',
+        displayText: 'Total resident workers',
         cssClass: 'even int M',
       },
       {
         id: 2,
-        displayText: `Local workers residing in ${prefixedAreaName}%`,
+        displayText: `Resident workers residing in ${prefixedAreaName}%`,
         cssClass: 'even int M',
       },
       {
         id: 3,
-        displayText: `% industry self- sufficiency`,
+        displayText: `% resident workers employed in ${prefixedAreaName}`,
         cssClass: 'even int ',
       },
       {
         id: 4,
-        displayText: 'Total local workers',
+        displayText: 'Total resident workers',
         cssClass: 'odd int M',
       },
       {
         id: 5,
-        displayText: `Local workers residing in ${prefixedAreaName}%`,
+        displayText: `Resident workers residing in ${prefixedAreaName}%`,
         cssClass: 'odd int M',
       },
       {
         id: 6,
-        displayText: `% industry self- sufficiency`,
+        displayText: `% resident workers employed in ${prefixedAreaName}`,
         cssClass: 'odd int ',
       },
       {
@@ -329,32 +321,32 @@ const tableBuilder = () => {
       },
     ],
     rows: parents.map(
-      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => ({
+      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12 }) => ({
         id: LabelKey,
-        data: [LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12],
+        data: [LabelName, TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12],
         formattedData: [
           `${LabelName}`,
           formatNumber(TotalYear1),
           formatNumber(ResYear1),
-          formatPercent(SelSufper1),
+          formatPercent(SelContper1),
           formatNumber(TotalYear2),
           formatNumber(ResYear2),
-          formatPercent(SelSufper2),
+          formatPercent(SelContper2),
           `${formatChangeOneDecimal(Change12, '--')}%`,
         ],
       }),
     ),
-    footRows: footerRows.map(({ TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => {
+    footRows: footerRows.map(({ TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12 }) => {
       return {
         cssClass: '',
         cols: [
           { cssClass: '', displayText: `Total Industries`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(TotalYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(ResYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(SelSufper1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelContper1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(TotalYear2), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(ResYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(SelSufper2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelContper2), colSpan: 1 },
           { cssClass: '', displayText: `${formatChangeOneDecimal(Change12)}%`, colSpan: 1 },
         ],
       };
@@ -373,9 +365,10 @@ const tableBuilder2 = () => {
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Employment self-sufficiency by occupation';
+  const tableTitle = 'Employment self-containment by occupation';
   const firstColTitle = 'Occupation';
   const footerRows = data[1].data.filter(({ LabelKey }) => LabelKey === 99999);
+
   const parents = data[1].data.filter(({ LabelKey }) => LabelKey != 99999);
 
   return {
@@ -383,7 +376,7 @@ const tableBuilder2 = () => {
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'self-sufficiency---occupation',
+    anchorName: 'self-containment---occupation',
     headRows: [
       {
         cssClass: '',
@@ -434,12 +427,12 @@ const tableBuilder2 = () => {
       },
       {
         id: 2,
-        displayText: `Local workers residing in ${prefixedAreaName}%`,
+        displayText: `Resident workers employed in ${prefixedAreaName}%`,
         cssClass: 'even int M',
       },
       {
         id: 3,
-        displayText: `% Occupation self- sufficiency`,
+        displayText: `% resident workers employed in ${prefixedAreaName}`,
         cssClass: 'even int M',
       },
       {
@@ -449,12 +442,12 @@ const tableBuilder2 = () => {
       },
       {
         id: 5,
-        displayText: `Local workers residing in ${prefixedAreaName}%`,
+        displayText: `Resident workers employed in ${prefixedAreaName}%`,
         cssClass: 'odd int M',
       },
       {
         id: 6,
-        displayText: `% Occupation self- sufficiency`,
+        displayText: `% resident workers employed in ${prefixedAreaName}`,
         cssClass: 'odd int M',
       },
       {
@@ -464,32 +457,32 @@ const tableBuilder2 = () => {
       },
     ],
     rows: parents.map(
-      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => ({
+      ({ LabelKey, LabelName, TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12 }) => ({
         id: LabelKey,
-        data: [LabelName, TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12],
+        data: [LabelName, TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12],
         formattedData: [
           `${LabelName}`,
           formatNumber(TotalYear1),
           formatNumber(ResYear1),
-          formatPercent(SelSufper1),
+          formatPercent(SelContper1),
           formatNumber(TotalYear2),
           formatNumber(ResYear2),
-          formatPercent(SelSufper2),
+          formatPercent(SelContper2),
           `${formatChangeOneDecimal(Change12, '--')}%`,
         ],
       }),
     ),
-    footRows: footerRows.map(({ TotalYear1, ResYear1, SelSufper1, TotalYear2, ResYear2, SelSufper2, Change12 }) => {
+    footRows: footerRows.map(({ TotalYear1, ResYear1, SelContper1, TotalYear2, ResYear2, SelContper2, Change12 }) => {
       return {
         cssClass: '',
         cols: [
           { cssClass: '', displayText: `Total Occupation`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(TotalYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(ResYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(SelSufper1), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelContper1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(TotalYear2), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(ResYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(SelSufper2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(SelContper2), colSpan: 1 },
           { cssClass: '', displayText: `${formatChangeOneDecimal(Change12)}%`, colSpan: 1 },
         ],
       };
@@ -505,16 +498,16 @@ const chartBuilder = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 23020);
+  console.log('parents: ', parents);
   const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
   const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
-  const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
+  const industrySelfcontainment = parents.map(({ SelContper1 }) => SelContper1);
   const categories = parents.map(({ LabelName }) => LabelName);
   const chartType = 'column';
-  const chartTitle = `Employment self-sufficiency by industry 2016`;
+  const chartTitle = `Employment self-containment by industry 2016`;
   const chartSubtitle = `${currentAreaName}`;
-  const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+  const rawDataSource = 'Source: Australian Bureau of Statistics, Census of Population and Housing 2016.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const tooltip = function() {
@@ -576,10 +569,10 @@ const chartBuilder = () => {
           },
         },
         {
-          name: '% of industry self-sufficiency ',
+          name: '% of industry self-containment ',
           type: 'scatter',
           className: 'scatt',
-          data: industrySelfSufficiency,
+          data: industrySelfcontainment,
           tooltip: {
             headerFormat: '',
             pointFormatter: function() {
@@ -601,10 +594,10 @@ const chartBuilder = () => {
         {
           // Secondary yAxis
           title: {
-            text: '% of industry self-sufficiency',
+            text: '% of industry self-containment',
           },
           labels: {
-            format: '{value}',
+            format: '{value}%',
           },
           opposite: true,
         },
@@ -636,17 +629,16 @@ const chartBuilderChange = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 23020 && LabelKey != 24090);
   const change = parents.map(({ TotalYear1 }) => TotalYear1);
   const categories = _.map(parents, 'LabelName');
   const chartType = 'column';
-  const chartTitle = 'Change in self-sufficiency percentage by industry, 2011 to 2016';
+  const chartTitle = 'Change in self-containment percentage by industry, 2011 to 2016';
   const chartSubtitle = `${currentAreaName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% employed`;
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const rawDataSource = 'Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 
@@ -659,6 +651,7 @@ const chartBuilderChange = () => {
   return {
     cssClass: '',
     highchartOptions: {
+      height: 500,
       chart: {
         type: chartType,
       },
@@ -695,7 +688,7 @@ const chartBuilderChange = () => {
       ],
     },
     rawDataSource,
-    dataSource: <ChartSource />,
+    dataSource: <ChartSourceChange />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,
@@ -713,13 +706,12 @@ const chartBuilderOccupation = () => {
   const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
   const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
   const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
-  const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
+  const industrySelfcontainment = parents.map(({ SelContper1 }) => SelContper1);
   const categories = parents.map(({ LabelName }) => LabelName);
   const chartType = 'column';
-  const chartTitle = `Employment self-sufficiency by occupation 2016`;
+  const chartTitle = `Employment self-containment by occupation 2016`;
   const chartSubtitle = `${currentAreaName}`;
-  const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+  const rawDataSource = 'Source: Australian Bureau of Statistics, Census of Population and Housing 2016.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const tooltip = function() {
@@ -774,10 +766,10 @@ const chartBuilderOccupation = () => {
           },
         },
         {
-          name: '% of industry self-sufficiency ',
+          name: '% of industry self-containment ',
           type: 'scatter',
           className: 'scatt',
-          data: industrySelfSufficiency,
+          data: industrySelfcontainment,
           tooltip: {
             headerFormat: '',
             pointFormatter: function() {
@@ -797,9 +789,8 @@ const chartBuilderOccupation = () => {
       ],
       yAxis: [
         {
-          // Secondary yAxis
           title: {
-            text: 'industry self-sufficiency %',
+            text: 'industry self-containment %',
           },
           labels: {
             format: '{value}%',
@@ -807,7 +798,6 @@ const chartBuilderOccupation = () => {
           opposite: true,
         },
         {
-          // Primary yAxis
           labels: {
             formatter: function() {
               return formatNumber(this.value);
@@ -834,16 +824,15 @@ const chartBuilderOccupationChange = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 23020 && LabelKey != 24090);
   const categories = _.map(parents, 'LabelName');
   const chartType = 'column';
-  const chartTitle = 'Change in self-sufficiency percentage by occupation, 2011 to 2016';
+  const chartTitle = 'Change in self-containment percentage by occupation, 2011 to 2016';
   const chartSubtitle = `${currentAreaName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% employed`;
-  const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+  const rawDataSource = 'Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 
@@ -892,7 +881,7 @@ const chartBuilderOccupationChange = () => {
       ],
     },
     rawDataSource,
-    dataSource: <ChartSource />,
+    dataSource: <ChartSourceChange />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,

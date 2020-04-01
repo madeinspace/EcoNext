@@ -85,5 +85,6 @@ export default [
   'value-of-agriculture',
   // 'location-quotient',
   // 'local-employment',
+  // 'employed-locally',
   // 'covid19',
 ];
