@@ -499,7 +499,6 @@ const chartBuilder = () => {
     entityData: { currentAreaName },
   } = useContext(PageContext);
   const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 23020);
-  console.log('parents: ', parents);
   const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
   const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
   const industrySelfcontainment = parents.map(({ SelContper1 }) => SelContper1);

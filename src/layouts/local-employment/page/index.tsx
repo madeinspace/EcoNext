@@ -505,7 +505,7 @@ const chartBuilder = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999 && LabelKey != 23020);
   const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
   const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
   const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
@@ -604,7 +604,7 @@ const chartBuilder = () => {
             text: '% of industry self-sufficiency',
           },
           labels: {
-            format: '{value}',
+            format: '{value}%',
           },
           opposite: true,
         },
@@ -636,7 +636,7 @@ const chartBuilderChange = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999);
+  const parents = data[0].data.filter(({ LabelKey }) => LabelKey !== 999999 && LabelKey !== 23020);
   const change = parents.map(({ TotalYear1 }) => TotalYear1);
   const categories = _.map(parents, 'LabelName');
   const chartType = 'column';
@@ -659,6 +659,7 @@ const chartBuilderChange = () => {
   return {
     cssClass: '',
     highchartOptions: {
+      height: 500,
       chart: {
         type: chartType,
       },
@@ -710,7 +711,7 @@ const chartBuilderOccupation = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090 && LabelKey != 23020);
   const totalLocalWorkers = parents.map(({ TotalYear1 }) => TotalYear1);
   const workersResigingLocally = parents.map(({ ResYear1 }) => ResYear1);
   const industrySelfSufficiency = parents.map(({ SelSufper1 }) => SelSufper1);
@@ -834,7 +835,7 @@ const chartBuilderOccupationChange = () => {
     contentData: data,
     entityData: { currentAreaName },
   } = useContext(PageContext);
-  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090);
+  const parents = data[1].data.filter(({ LabelKey }) => LabelKey !== 99999 && LabelKey != 24090 && LabelKey != 24090);
   const categories = _.map(parents, 'LabelName');
   const chartType = 'column';
   const chartTitle = 'Change in self-sufficiency percentage by occupation, 2011 to 2016';
