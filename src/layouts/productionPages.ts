@@ -86,5 +86,6 @@ export default [
   // 'location-quotient',
   // 'local-employment',
   // 'employed-locally',
+  // 'industry-sector-analysis-series',
   // 'covid19',
 ];
