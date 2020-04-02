@@ -83,9 +83,9 @@ export default [
   'economy-flyer',
   'about',
   'value-of-agriculture',
-  // 'location-quotient',
-  // 'local-employment',
-  // 'employed-locally',
-  // 'industry-sector-analysis-series',
+  'location-quotient',
+  'local-employment',
+  'employed-locally',
+  'industry-sector-analysis-series',
   // 'covid19',
 ];
