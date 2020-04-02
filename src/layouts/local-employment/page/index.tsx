@@ -102,7 +102,7 @@ const LocalEmploymentPage = () => {
   const total = contentData[0].data.filter(({ LabelKey }) => LabelKey === 999999)[0];
   const headingIndustry = `In 2016, ${formatPercent(
     total.SelSufper1,
-  )}% of the City of Monash’s local workers were residents.`;
+  )}% of ${prefixedAreaName}’s local workers were residents.`;
   return (
     <>
       <Headline>{headingIndustry}</Headline>
@@ -125,20 +125,17 @@ const LocalEmploymentPage = () => {
           </TopList>
           <p>
             Employment self-sufficiency data should be viewed in conjunction with detailed{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Workers place of residence')}
-            data to see how far workers are travelling to access employment in the area, as well as{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Workers place of residence')} data
+            to see how far workers are travelling to access employment in the area, as well as{' '}
             {LinkBuilder(
               `https://economy.id.com.au/${clientAlias}/worker-productivity-by-industry`,
               'Worker productivity',
-            )}
-            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, 'Local workers income')} and
-            {LinkBuilder(
-              `https://economy.id.com.au/${clientAlias}/workers-hours-worked`,
-              'Local workers hours worked',
             )}{' '}
+            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-income`, 'Local workers income')} and{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/workers-hours-worked`, 'Local workers hours worked')}{' '}
             data to look at the value of local workers contributions. The{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/local-employment`, 'Resident workers')} section will
-            provide the characteristics of resident workers.
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}{' '}
+            section will provide the characteristics of resident workers.
           </p>
         </div>
         <SourceBubble>
@@ -152,10 +149,10 @@ const LocalEmploymentPage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to "impute" a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, City of Monash in 2011 had to be constructed from a
-        best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it
-        is considered close enough to allow some comparison. Users should treat this time series data with caution,
-        however, and not compare directly with 2011 data from any other source.
+        imputed using the same methodology. To provide this detail, {prefixedAreaName} in 2011 had to be constructed
+        from a best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region
+        boundary, it is considered close enough to allow some comparison. Users should treat this time series data with
+        caution, however, and not compare directly with 2011 data from any other source.
       </Note>
 
       <ControlPanel />
@@ -653,7 +650,7 @@ const chartBuilderChange = () => {
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${currentAreaName} - ${
       this.series.name
-    }: ${formatChangeOneDecimal(this.y)}`;
+    }: ${formatChangeOneDecimal(this.y)}%`;
   };
 
   return {

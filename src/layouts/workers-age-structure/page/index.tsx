@@ -200,8 +200,8 @@ const WorkersAgeStructurePage = () => {
             attracting new staff.
           </p>
           <p>
-            For a complete local workers analysis for Monash, Age Structure should be viewed in conjunction with{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)} and{' '}
+            For a complete local workers analysis for {prefixedAreaName}, Age Structure should be viewed in conjunction
+            with {LinkBuilder(`https://economy.id.com.au/${clientAlias}/income`, `Income`)} and{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/hours-worked`, `Hours worked`)}.
           </p>
         </div>
@@ -216,9 +216,9 @@ const WorkersAgeStructurePage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to “impute” a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, City of Monash in 2011 had to be constructed from a
-        best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it
-        is considered close enough to allow some comparison. Users should treat this time series data with caution,
+        imputed using the same methodology. To provide this detail, {LongName} in 2011 had to be constructed from a best
+        fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it is
+        considered close enough to allow some comparison. Users should treat this time series data with caution,
         however, and not compare directly with 2011 data from any other source.
       </Note>
 

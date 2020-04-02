@@ -44,14 +44,13 @@ const TopList = styled.ul`
 
 // #region page
 const EmployedLocallyPage = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
+  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
   const {
     handle,
     contentData,
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
   const [Pane, setPane] = useState(1);
-  console.log('contentData: ', contentData);
 
   useEffect(() => {
     const tabNumber = getParameterByName('t');
@@ -103,7 +102,7 @@ const EmployedLocallyPage = () => {
   const total = contentData[0].data.filter(({ LabelKey }) => LabelKey === 99999)[0];
   const headingIndustry = `In 2016, ${formatPercent(
     total.SelContper1,
-  )}% of the City of Monash’s resident workers were employed locally.`;
+  )}% of ${prefixedAreaName}’s resident workers were employed locally.`;
   return (
     <>
       <Headline>{headingIndustry}</Headline>
@@ -129,7 +128,7 @@ const EmployedLocallyPage = () => {
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/journey-to-work`, 'Residents place of work')}
             data to see where resident workers are accessing employment, along with{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers')} ratio data
-            which provides the theoretical number of jobs which could be provided to residents of the City of Monash in
+            which provides the theoretical number of jobs which could be provided to residents of {prefixedAreaName} in
             the local area, and is updated annually. The{' '}
             {LinkBuilder(`https://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}{' '}
             section will provide the characteristics of resident workers.
@@ -146,9 +145,9 @@ const EmployedLocallyPage = () => {
         <strong>Please note: </strong> The 2016 Census used a new methodology to "impute" a work location to people who
         didn’t state their workplace address. As a result, 2016 and 2011 place of work data are not normally comparable.
         To allow comparison between 2011 and 2016, .id has sourced a 2011 dataset from the ABS which was experimentally
-        imputed using the same methodology. To provide this detail, City of Monash in 2011 had to be constructed from a
-        best fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it
-        is considered close enough to allow some comparison. Users should treat this time series data with caution,
+        imputed using the same methodology. To provide this detail, {LongName} in 2011 had to be constructed from a best
+        fit of Work Destination Zones (DZNs). While it may not be an exact match to the LGA or region boundary, it is
+        considered close enough to allow some comparison. Users should treat this time series data with caution,
         however, and not compare directly with 2011 data from any other source.
       </Note>
 
@@ -644,7 +643,7 @@ const chartBuilderChange = () => {
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${currentAreaName} - ${
       this.series.name
-    }: ${formatChangeOneDecimal(this.y)}`;
+    }: ${formatChangeOneDecimal(this.y)}%`;
   };
 
   return {

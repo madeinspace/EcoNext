@@ -172,8 +172,8 @@ const WorkersHoursWorkedPage = () => {
       <PageIntro>
         <div>
           <p>
-            Hours Worked statistics shows the distribution of employment hours in Monash across each industry sector.
-            Full-time employment is considered 35-hours and over.
+            Hours Worked statistics shows the distribution of employment hours in {prefixedAreaName} across each
+            industry sector. Full-time employment is considered 35-hours and over.
           </p>
           <p>The hours worked by employed people in a particular industry depend on a number of factors:</p>
           <TopList>
@@ -221,7 +221,7 @@ const WorkersHoursWorkedPage = () => {
         <p>
           Overall, {partTimerClient}% of the {industryText} {genderText} workforce worked part-time (34 hours or less) ,
           and {fullTimerClient}% worked full-time (35 hours or more), compared with {partTimerBM}% and {fullTimerBM}%
-          respectively for {benchmarkText} within City of Monash.
+          respectively for {benchmarkText} within {prefixedAreaName}.
         </p>
         <MajorDifferences />
       </AnalysisContainer>

@@ -94,7 +94,7 @@ const TourismWorkforcePage = () => {
             occupation categories working across a number of industries.
           </p>
           <p>
-            This page presents some key statistics for tourism and hospitality workers in the City of Monash with
+            This page presents some key statistics for tourism and hospitality workers in {prefixedAreaName} with
             comparisons to benchmark areas. Tourism and hospitality data should be viewed in conjunction with the{' '}
             {LinkBuilder(
               `https://economy.id.com.au/${clientAlias}/industry-sector-analysis`,
