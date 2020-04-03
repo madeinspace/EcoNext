@@ -4,8 +4,10 @@ import axios from 'axios';
 import getActiveToggle from '../../utils/getActiveToggle';
 const COM_CLIENT_DB = 'CommClient';
 
-const homeStatsDataQuery = filters =>
-  `select * from ${COM_CLIENT_DB}.[dbo].[ClientEconomyBoxes] where ClientID = ${filters.ClientID} and WebID = 10 order by WebID`;
+const homeStatsDataQuery = ({ ClientID, WebID }) => {
+  const query = `select * from CommClient.[dbo].[ClientEconomyBoxes] where ClientID = ${ClientID} and WebID = ${WebID} order by WebID`;
+  return query;
+};
 
 const GeomQuery = clientId => `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelopeLGA] ${clientId}`;
 
