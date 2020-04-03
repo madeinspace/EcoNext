@@ -16,10 +16,8 @@ const handle = app.getRequestHandler();
 // This is where we cache our rendered HTML pages
 const ssrCache = new LRUCache({
   max: 500 /* cache size will be 100 MB using `return n.length` as length() function */,
-  length: function (n, key) {
-    return n.length;
-  },
-  maxAge: 1000 * 60 * 60,
+  length: function (n, key) { return n * 2 + key.length },
+  maxAge: 1000 * 60 * 60 * 12, // 12hours
 });
 
 /*
