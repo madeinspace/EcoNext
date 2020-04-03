@@ -15,8 +15,8 @@ const handle = app.getRequestHandler();
 
 // This is where we cache our rendered HTML pages
 const ssrCache = new LRUCache({
-  max: 500 /* cache size will be 100 MB using `return n.length` as length() function */,
-  length: function (n, key) { return n * 2 + key.length },
+  max: 100 * 1024 * 1024 /* cache size will be 100 MB using `return n.length` as length() function */,
+  length: function (n, key) { return n.length },
   maxAge: 1000 * 60 * 60 * 12, // 12hours
 });
 
@@ -35,7 +35,8 @@ async function renderAndCache(req, res) {
 
   // If we have a page in the cache, let's serve it
   if (ssrCache.has(key) && CACHE_ENABLED) {
-    console.log(`serving from cache ${key}`);
+    console.log(`serving from cached ${key}`);
+    const c = ssrCache.get(key)
     res.setHeader('x-cache', 'HIT');
     res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     res.send(ssrCache.get(key));
