@@ -34,7 +34,8 @@ const Checkbox = ({ type = 'checkbox', name, checked = false, onChange }) => (
 );
 
 export const LayerControl = ({ layers, onLayerToggle }) => {
-  const [checkedItems, setCheckedItems] = useState([4, 1]);
+  const checkedLayers = layers.filter(({ initVisibility }) => initVisibility === true).map(({ id }) => +id);
+  const [checkedItems, setCheckedItems] = useState([4, ...checkedLayers]);
 
   const handleLayerToggle = event => {
     const id = parseInt(event.target.name);
@@ -52,13 +53,16 @@ export const LayerControl = ({ layers, onLayerToggle }) => {
     onLayerToggle(checkedItems);
   }, [checkedItems]);
 
-  const LayerLabel = ({ item, togg = true }) => (
-    <Label key={item.id}>
-      {togg && <Checkbox name={item.id} checked={checkedItems.includes(item.id)} onChange={handleLayerToggle} />}
-      <LayerColor color={item.shapeOptions.borderColor.color} />
-      {item.name}
-    </Label>
-  );
+  const LayerLabel = ({ item, togg = true }) => {
+    const color = item.shapeOptions != undefined ? item.shapeOptions.color : '#ffffff';
+    return (
+      <Label key={item.id}>
+        {togg && <Checkbox name={+item.id} checked={checkedItems.includes(+item.id)} onChange={handleLayerToggle} />}
+        <LayerColor color={color} />
+        {item.layerName}
+      </Label>
+    );
+  };
 
   const Maplayers = (): JSX.Element =>
     layers.length > 1 ? (

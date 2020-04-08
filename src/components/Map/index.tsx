@@ -12,7 +12,7 @@ import { IdLink } from '../ui/links';
 
 const LeafletMap = ({ mapData, onMapLoaded }) => {
   const { LongName } = useContext(ClientContext);
-  const { layers, entitylayers, geomData } = mapData;
+  const { layers, envelope, mapHeight } = mapData;
   const [map, setMap] = useState(null);
   const [mapLayers, setMapLayers] = useState(null);
   const [featureGroups, setFeatureGroups] = useState([]);
@@ -39,23 +39,22 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
     let map: L.map = L.map(mapContainer.current, {
       layers: TileLayers.road,
     });
-    const bounds = getBoundariesFromWKT(geomData[0].WKT);
+    const bounds = getBoundariesFromWKT(envelope);
     map.fitBounds(bounds);
     setMap(map);
     onMapLoaded();
   };
 
-  const initializeLayers = () => setMapLayers(createMapLayers({ entitylayers, layers, LongName }));
+  const initializeLayers = () => setMapLayers(createMapLayers({ layers, LongName }));
 
   const DrawLayers = () => {
     const featureGroups = [];
     mapLayers.forEach(layer => {
-      const PathOptions = { color: layer.shapeOptions.borderColor.color, weight: 2 };
+      const PathOptions = layer.shapeOptions;
       const featureGroup = {
-        id: layer.id,
+        id: +layer.id,
         zIndex: layer.zIndex,
-        featureGroup: createFeatureGroup(createLeafletLayer(layer, PathOptions)).setZIndex(layer.zIndex),
-        // .setStyle(PathOptions),
+        featureGroup: createFeatureGroup(createLeafletLayer(layer, PathOptions)),
       };
       featureGroups.push(featureGroup);
     });
@@ -87,10 +86,20 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
 
   const createPolygon = polygon => L.polygon(polygon.leafletPolys).bindTooltip(ToolTip(polygon.areaName));
 
-  const applyStyles = (shape, style) => {
+  const applyStyles = (shape, PathOptions) => {
+    const style = {
+      fill: PathOptions.fill,
+      color: PathOptions.color,
+      fillOpacity: PathOptions.fillOpacity,
+      fillColor: PathOptions.fillColor,
+      weight: PathOptions.weight,
+    };
     const hoverStyle = {
-      color: '#ffffff',
-      weight: 2,
+      fill: PathOptions.fill,
+      color: '#f00',
+      weight: 3,
+      fillColor: '#f00',
+      fillOpacity: PathOptions.fillOpacity,
     };
 
     shape
@@ -101,6 +110,7 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
       })
       .on('mouseout', function(e) {
         this.setStyle(style);
+        PathOptions.zIndexPriority ? this.bringToFront() : this.bringToBack();
       });
     return shape;
   };
@@ -115,13 +125,16 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
 
   const drawFeatureGroups = active => {
     clearAllOverlays();
-    active.forEach(({ featureGroup, zIndex }) => featureGroup.addTo(map).setZIndex(zIndex));
+    active.forEach(({ featureGroup, zIndex }) => {
+      featureGroup.addTo(map);
+      featureGroup.setZIndex(zIndex);
+    });
   };
 
   return (
     <MapContainer>
       <InfoPanel>{mapLayers && <LayerControl layers={mapLayers} onLayerToggle={handleLayerToggle} />}</InfoPanel>
-      <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: '400px' }} />
+      <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: `${mapHeight}px` }} />
       <Footer>
         <Source>
           Compiled and presented in economy.id by <IdLink />

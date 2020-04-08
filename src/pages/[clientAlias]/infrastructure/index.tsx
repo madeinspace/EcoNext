@@ -12,11 +12,11 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import Error from 'next/error';
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
-import { activeCustomToggles } from '../../../layouts/about';
+import { activeCustomToggles } from '../../../layouts/infrastructure';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
-  const MainContent = PageMappings['about'];
+  const MainContent = PageMappings['infrastructure'];
   const { pageData } = page;
   return !pageData ? (
     <Error statusCode={404} />
@@ -41,7 +41,7 @@ const HomePageComponent = ({ client, page }): JSX.Element => {
 
 HomePageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, ...providedFilters } = query;
-  const handle = 'about';
+  const handle = 'infrastructure';
   const client: any = await fetchClientData({ clientAlias, containers });
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
   // no client? => 404
@@ -94,7 +94,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   };
 
   const mapLayers = [...new Set(client.clientAreas.map(item => item.LayerID))].join(',');
-  const contentData = await fetchData({ filters, LongName, clientAlias, mapLayers });
+  const contentData = await fetchData({ filters, clientAlias, LongName, mapLayers });
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {

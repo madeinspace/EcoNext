@@ -87,5 +87,6 @@ export default [
   'local-employment',
   'employed-locally',
   'industry-sector-analysis-series',
+  'infrastructure',
   // 'covid19',
 ];

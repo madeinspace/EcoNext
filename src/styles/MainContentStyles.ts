@@ -80,6 +80,16 @@ export const PageIntro = styled.div`
   margin-bottom: 20px;
 `;
 
+export const LayoutHalfHalf = styled.div`
+  display: grid;
+  grid-template-areas: 'chart . text';
+  grid-template-columns: 45% 5% 50%;
+  p {
+    line-height: 18px;
+  }
+  margin-bottom: 20px;
+`;
+
 export const PageIntroFullWidth = styled.div`
   display: grid;
   grid-template-areas: 'text';

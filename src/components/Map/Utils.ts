@@ -5,33 +5,12 @@ import _ from 'lodash';
 /**
  * Compiles a layer object ready to be consumed by the leaflet engine
  */
-export const createMapLayers = ({ entitylayers, layers, LongName }) => {
-  const lookup = entitylayers.reduce((a, c) => {
-    a[c.TypeID] = {
-      id: c.TypeID,
-      name: c.Name === '[C]' ? LongName : c.Name,
-      shapeOptions: c.ShapeOptions,
-      visible: c.InitVisibility,
-      zIndex: c.ZIndex,
-      shapeType: c.RenderAs,
-    };
-    return a;
-  }, {});
-
-  const mapLayers = layers
-    .filter(layer => lookup[layer.id] !== undefined)
-    .reduce((acc, currlayer) => {
-      const match = lookup[parseInt(currlayer.id)];
-      if (match === undefined) return;
-      const key = match.name;
-      const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: match.shapeType }));
-
-      if (!(key in acc)) {
-        acc.push({ ...match, decodedLayer: decodedAreas });
-      }
-      return acc;
-    }, []);
-
+export const createMapLayers = ({ layers, LongName }) => {
+  const mapLayers = layers.reduce((acc, currlayer) => {
+    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: currlayer.shapeType }));
+    acc.push({ ...currlayer, decodedLayer: decodedAreas });
+    return acc;
+  }, []);
   return mapLayers;
 };
 

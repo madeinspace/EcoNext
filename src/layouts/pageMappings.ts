@@ -70,6 +70,7 @@ import LocationQuotientPage from './location-quotient/page';
 import LocalEmploymentPage from './local-employment/page';
 import EmployedLocallyPage from './employed-locally/page';
 import IndustrySectorAnalysisSeriesPage from './industry-sector-analysis-series/page';
+import InfrastructurePage from './infrastructure/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -158,6 +159,7 @@ const PageMappings = {
   'local-employment': LocalEmploymentPage,
   'employed-locally': EmployedLocallyPage,
   'industry-sector-analysis-series': IndustrySectorAnalysisSeriesPage,
+  infrastructure: InfrastructurePage,
   covid19: CovidPage,
 };
 

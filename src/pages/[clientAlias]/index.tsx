@@ -44,7 +44,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   // no client? => 404
   if (client === null) return fourOfourData;
 
-  const { ID, isLite } = client;
+  const { ID, isLite, LongName } = client;
   const layoutData = await fetchLayout(handle);
   const { fetchData, pageContent } = layoutData;
   const { AllPages } = containers;
@@ -69,19 +69,8 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     HasPrefix: client.HasPrefix,
   };
 
-  const uniqueLayers = [];
-  const map = new Map();
-  for (const item of client.clientAreas) {
-    if (!map.has(item.LayerID)) {
-      map.set(item.LayerID, true);
-      uniqueLayers.push({
-        id: item.LayerID,
-        name: item.Group,
-      });
-    }
-  }
   const mapLayers = [...new Set(client.clientAreas.map(item => item.LayerID))].join(',');
-  const contentData = await fetchData({ filters, clientAlias, mapLayers });
+  const contentData = await fetchData({ filters, LongName, clientAlias, mapLayers });
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {

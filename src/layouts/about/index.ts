@@ -13,7 +13,7 @@ const GeomQuery = clientId => `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelo
 
 const TextDataQuery = (clientId, WebID) => `exec ${COM_CLIENT_DB}.[dbo].[spGetText] ${clientId}, ${WebID}`;
 
-const fetchData = async ({ filters, clientAlias, mapLayers }) => {
+const fetchData = async ({ LongName, filters, clientAlias, mapLayers }) => {
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));
   const geomData = await sqlConnection.raw(GeomQuery(filters.ClientID));
   const textData = await sqlConnection.raw(TextDataQuery(filters.ClientID, filters.WebID));
@@ -24,7 +24,29 @@ const fetchData = async ({ filters, clientAlias, mapLayers }) => {
     .catch(error => {
       console.log(error);
     });
-  mapData = { ...mapData, geomData };
+  const layerLookup = [
+    { id: 4, name: `${LongName}`, color: '#000' },
+    { id: 1, name: 'Local Government Areas', color: '#00c5ff' },
+  ];
+  mapData.envelope = geomData[0].WKT;
+  mapData.layers.map(layer => {
+    const match = layerLookup.find(({ id }) => id === parseInt(layer.id));
+    const isMainArea = parseInt(layer.id) === 4;
+    layer.id = parseInt(layer.id);
+    layer.layerName = match.name;
+    layer.zIndex = isMainArea ? 100 : 10;
+    layer.shapeOptions = {
+      color: match.color,
+      fillOpacity: 0.3,
+      fill: !isMainArea,
+      weight: isMainArea ? 4 : 1,
+      zIndexPriority: isMainArea,
+    };
+    layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
+    layer.infoBox = { title: match.name };
+    layer.initVisibility = true;
+  });
+  mapData.mapHeight = 500;
   return { statsData, mapData, textData };
 };
 
