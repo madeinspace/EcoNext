@@ -295,6 +295,56 @@ g.highcharts-series,
   stroke: #91e8e1;
 }
 
+.Parkland {
+  fill: #00ca00;
+  stroke: #00ca00;
+}
+
+.Water {
+  fill: #042593;
+  stroke: #042593;
+}
+
+.Residential {
+  fill: #91e8e1;
+  stroke: #91e8e1;
+}
+
+.Primary {
+  fill: #e4d354;
+  stroke: #e4d354;
+}
+
+.Commercial {
+  fill: #ff9800;
+  stroke: #ff9800;
+}
+
+.Other {
+  fill: #666666;
+  stroke: #666;
+}
+
+.Education {
+  fill: #d400ff;
+  stroke: #d400ff;
+}
+
+.Transport {
+  fill: #000000;
+  stroke: #000;
+}
+
+.Industrial {
+  fill: #b87d04;
+  stroke: #b87d04;
+}
+
+.Hospital {
+  fill: #ff0000;
+  stroke: #ff0000;
+}
+
 .highcharts-area {
   fill-opacity: 0.75;
   stroke-width: 0;

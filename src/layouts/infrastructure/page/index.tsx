@@ -129,7 +129,7 @@ const chartBuilder = () => {
   } = useContext(PageContext);
 
   const perYear1Serie = landUse.map(({ PerYear1, LabelName }) => {
-    return { name: LabelName, y: PerYear1 };
+    return { name: LabelName, y: PerYear1, className: LabelName.match(/^[^\/ ]+/i) };
   });
 
   const chartType = 'pie';
@@ -158,9 +158,7 @@ const chartBuilder = () => {
 
       tooltip: {
         pointFormatter: function() {
-          return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatPercent(
-            this.y,
-          )}%`;
+          return `<span class="${this.className}">\u25CF</span> ${this.series.name}: ${formatPercent(this.y)}%`;
         },
       },
       plotOptions: {

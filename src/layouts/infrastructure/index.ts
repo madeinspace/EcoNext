@@ -32,16 +32,16 @@ const fetchData = async ({ filters, clientAlias, LongName }) => {
     });
   const colorLookup = [
     { id: 4, name: `${LongName}`, color: '#000' },
-    { id: 201, name: 'Residential', color: '#2b908f' },
-    { id: 203, name: 'Commercial', color: '#009a44' },
-    { id: 204, name: 'Industrial', color: '#a5b204' },
-    { id: 205, name: 'Education', color: '#70b859' },
-    { id: 206, name: 'Hospital/Medical', color: '#80d090' },
-    { id: 207, name: 'Parkland', color: '#e4d354' },
-    { id: 208, name: 'Transport', color: '#f45b5b' },
-    { id: 209, name: 'Water', color: '#91e8e1' },
-    { id: 210, name: 'Other', color: '#b87d04' },
-    { id: 211, name: 'Primary Production', color: '#f15c80' },
+    { id: 201, name: 'Residential', color: '#91e8e1' },
+    { id: 203, name: 'Commercial', color: '#ff9800' },
+    { id: 204, name: 'Industrial', color: '#b87d04' },
+    { id: 205, name: 'Education', color: '#d400ff' },
+    { id: 206, name: 'Hospital/Medical', color: '#ff0000' },
+    { id: 207, name: 'Parkland', color: '#00ca00' },
+    { id: 208, name: 'Transport', color: '#000000' },
+    { id: 209, name: 'Water', color: '#042593' },
+    { id: 210, name: 'Other', color: '#666666' },
+    { id: 211, name: 'Primary Production', color: '#e4d354' },
   ];
   mapData.envelope = geomData[0].WKT;
   mapData.layers.map(layer => {
