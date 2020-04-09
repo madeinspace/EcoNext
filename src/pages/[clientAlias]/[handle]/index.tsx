@@ -15,6 +15,7 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import SiblingsMenu from '../../../components/SiblingsMenu';
 import Error from 'next/error';
+const Cosmos = require('../../../../db/cosmos');
 
 // #endregion
 
@@ -69,8 +70,9 @@ const PageComponent = ({ client, page }): JSX.Element => {
   );
 };
 
-PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
+PageComponent.getInitialProps = async function({ query }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
+  const containers = await Cosmos.connect();
   const client: any = await fetchClientData({ clientAlias, containers });
   const clientPage = await client.clientPages.find(page => page.Alias === handle);
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
@@ -79,14 +81,14 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   if (!clientPage || !client) return fourOfourData;
 
   const layoutData = await fetchLayout(handle);
-  const { ID, isLite } = client;
+  const { ID, isLite, LongName } = client;
   const { fetchData, pageContent, activeCustomToggles } = layoutData;
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
       [ParamName]: DefaultValue,
     }),
-    { ClientID: ID, IsLite: isLite },
+    { ClientID: ID, IsLite: isLite, clientAlias, LongName },
   );
 
   /**
@@ -113,7 +115,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   // we pass that data to interpolate the entities
   const customToggles = await activeCustomToggles({ filterToggles });
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', client.LongName);
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
   const HasPrefix = client.HasPrefix;
   const prefix = HasPrefix ? 'the ' : '';
   const prefixedAreaName = `${prefix}${currentAreaName}`;

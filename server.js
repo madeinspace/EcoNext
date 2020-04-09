@@ -44,12 +44,12 @@ async function renderAndCache(req, res) {
   }
 
   // let's get the containers from cosmosDB and pass that along to the getInitialProps method on pages
-  const containers = await Cosmos.connect();
+  // const containers = await Cosmos.connect();
 
   try {
     console.log(`key ${key} not found, rendering`);
     // If not let's render the page into HTML
-    const html = await app.renderToHTML({ ...req, containers }, res, req.path, req.query);
+    const html = await app.renderToHTML({ ...req }, res, req.path, req.query);
 
     // Something is wrong with the request, let's skip the cache
     if (res.statusCode !== 200) {

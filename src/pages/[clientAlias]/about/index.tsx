@@ -14,6 +14,7 @@ import Error from 'next/error';
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
 import { activeCustomToggles } from '../../../layouts/about';
 import getActiveToggle from '../../../utils/getActiveToggle';
+const Cosmos = require('../../../../db/cosmos');
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
   const MainContent = PageMappings['about'];
@@ -39,8 +40,9 @@ const HomePageComponent = ({ client, page }): JSX.Element => {
   );
 };
 
-HomePageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
+HomePageComponent.getInitialProps = async function({ query }): Promise<{}> {
   const { clientAlias, ...providedFilters } = query;
+  const containers = await Cosmos.connect();
   const handle = 'about';
   const client: any = await fetchClientData({ clientAlias, containers });
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
