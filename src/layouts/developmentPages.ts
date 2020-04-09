@@ -91,4 +91,5 @@ export default [
   'employed-locally',
   'industry-sector-analysis-series',
   'infrastructure',
+  'workers-place-of-residence-occupation',
 ];
