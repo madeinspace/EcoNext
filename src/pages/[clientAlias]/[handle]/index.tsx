@@ -15,7 +15,6 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import SiblingsMenu from '../../../components/SiblingsMenu';
 import Error from 'next/error';
-const Cosmos = require('../../../../db/cosmos');
 
 // #endregion
 
@@ -70,9 +69,8 @@ const PageComponent = ({ client, page }): JSX.Element => {
   );
 };
 
-PageComponent.getInitialProps = async function({ query }): Promise<{}> {
+PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
-  const containers = await Cosmos.connect();
   const client: any = await fetchClientData({ clientAlias, containers });
   const clientPage = await client.clientPages.find(page => page.Alias === handle);
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
