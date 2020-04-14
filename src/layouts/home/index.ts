@@ -15,20 +15,30 @@ const fetchData = async ({ filters, LongName, clientAlias, mapLayers }) => {
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));
   const newsData = await sqlConnection.raw(newDataQuery());
   const geomData = await sqlConnection.raw(GeomQuery(filters.ClientID));
-  const url = `https://economy.id.com.au/${clientAlias}/geo/MapMeta/${mapLayers}`;
+  const url = `https://economy.id.com.au/${clientAlias}/geo/areasbytypeid/${mapLayers}`;
   let mapData = await axios
     .get(url)
     .then(response => response.data)
     .catch(error => {
       console.log(error);
     });
-  const layerLookup = [
-    { id: 4, name: `${LongName}`, color: '#000' },
-    { id: 1, name: 'Local Government Areas', color: '#00c5ff' },
-  ];
+  mapData.layers = mapData.layers.filter(layer => +layer.id === 1 || +layer.id === 4);
+  const layerName = layer => (layer.shapes.length > 1 ? 'Local Government Areas' : layer.shapes[0].shapeName);
+
+  const clientLookup = mapData.layers.reduce((acc, cur) => {
+    return [
+      ...acc,
+      {
+        id: +cur.id,
+        name: layerName(cur),
+        color: +cur.id === 4 ? '#000' : '#00c5ff',
+      },
+    ];
+  }, []);
+
   mapData.envelope = geomData[0].WKT;
   mapData.layers.map(layer => {
-    const match = layerLookup.find(({ id }) => id === parseInt(layer.id));
+    const match = clientLookup.find(({ id }) => id === parseInt(layer.id));
     const isMainArea = parseInt(layer.id) === 4;
     layer.id = parseInt(layer.id);
     layer.layerName = match.name;

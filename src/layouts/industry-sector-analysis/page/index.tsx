@@ -308,7 +308,7 @@ const chartBuilder = () => {
     contentData,
     entityData: { currentBenchmarkName, currentIndustryName, currentAreaName },
   } = useContext(PageContext);
-  const data = contentData[0].data;
+  const data = [...contentData[0].data];
   const totalExports = data.filter(({ LabelName }) => LabelName === 'Output/Total Sales ($m)')[0];
   const localSales = data.filter(({ LabelName }) => LabelName === 'Local Sales ($m)')[0];
   const exportsInt = data.filter(({ LabelName }) => LabelName === 'Exports (international) ($m)')[0];
@@ -332,16 +332,18 @@ const chartBuilder = () => {
       },
       series: [
         {
+          name: `Exports (international)`,
+          legendIndex: 2,
+          data: [(exportsInt.NoYear1 / totalExports.NoYear1) * 100, (exportsInt.BMYear1 / totalExports.BMYear1) * 100],
+        },
+        {
           name: `Local Sales`,
+          legendIndex: 1,
           data: [(localSales.NoYear1 / totalExports.NoYear1) * 100, (localSales.BMYear1 / totalExports.BMYear1) * 100],
         },
         {
           name: `Exports (domestic)`,
           data: [(exportsDom.NoYear1 / totalExports.NoYear1) * 100, (exportsDom.BMYear1 / totalExports.BMYear1) * 100],
-        },
-        {
-          name: `Exports (international)`,
-          data: [(exportsInt.NoYear1 / totalExports.NoYear1) * 100, (exportsInt.BMYear1 / totalExports.BMYear1) * 100],
         },
       ],
       plotOptions: {

@@ -64,15 +64,16 @@ const AboutPage = () => {
               <div key={key}>
                 <SubTitleAlt>{title}</SubTitleAlt>
                 {displayText}
-                {key === 'IncludedAreas' && (
-                  <>
-                    <SubTitleAlt>Economic Region</SubTitleAlt>
-                    <MapWrapper>
-                      <MapLoader loaded={mapLoaded} />
-                      <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
-                    </MapWrapper>
-                  </>
-                )}
+                {key === 'IncludedAreas' ||
+                  (key === 'Location' && (
+                    <>
+                      <SubTitleAlt>Economic Region</SubTitleAlt>
+                      <MapWrapper>
+                        <MapLoader loaded={mapLoaded} />
+                        <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
+                      </MapWrapper>
+                    </>
+                  ))}
               </div>
             )
           );

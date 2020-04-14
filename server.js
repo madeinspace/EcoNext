@@ -30,7 +30,7 @@ function getCacheKey(req) {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-async function renderAndCache(req, res, containers) {
+async function renderAndCache(req, res) {
   const key = getCacheKey(req);
 
   // If we have a page in the cache, let's serve it
@@ -43,7 +43,8 @@ async function renderAndCache(req, res, containers) {
     return;
   }
 
-
+  // let's get the containers from cosmosDB and pass that along to the getInitialProps method on pages
+  const containers = await Cosmos.connect();
 
   try {
     console.log(`key ${key} not found, rendering`);
@@ -71,8 +72,6 @@ async function renderAndCache(req, res, containers) {
 
 app.prepare().then(async () => {
   const server = express();
-  // let's get the containers from cosmosDB and pass that along to the getInitialProps method on pages
-  const containers = await Cosmos.connect();
   server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
   server.get('/_next/*', (req, res) => {
     /* serving _next static content using next.js handler */
@@ -81,7 +80,7 @@ app.prepare().then(async () => {
 
   server.get('*', (req, res) => {
     /* serving page */
-    return renderAndCache(req, res, containers);
+    return renderAndCache(req, res);
   });
 
   /* starting server */
