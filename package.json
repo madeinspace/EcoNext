@@ -41,7 +41,7 @@
     "lodash": "^4.17.15",
     "lru-cache": "^5.1.1",
     "mssql": "^6.0.1",
-    "next": "^9.2.1",
+    "next": "^9.3.2",
     "next-cookies": "^2.0.3",
     "next-images": "^1.2.0",
     "next-transpile-modules": "^2.3.1",
