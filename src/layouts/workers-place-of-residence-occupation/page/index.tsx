@@ -1,16 +1,10 @@
 // #region imports
-import { useContext, useState } from 'react';
-import { PageContext } from '../../../utils/context';
-import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { MapLoader } from '../../../components/Map/MapLoader';
-import { MapWrapper, SubTitleAlt, ItemWrapper, TopList } from '../../../styles/MainContentStyles';
-import _ from 'lodash';
-import EntityChart from '../../../components/chart/EntityChart';
-import { idlogo, formatPercent } from '../../../utils';
-import { IdLink } from '../../../components/ui/links';
-import ReactHtmlParser, { processNodes } from 'react-html-parser';
+import { useContext, useState } from 'react';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { MapLoader } from '../../../components/Map/MapLoader';
+import { MapWrapper } from '../../../styles/MainContentStyles';
+import { PageContext } from '../../../utils/context';
 
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion

@@ -7,23 +7,24 @@ const COM_CLIENT_DB = 'CommClient';
 const GeomQuery = ({ ClientID }) => `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelopeLGA] ${ClientID}`;
 
 const fetchData = async ({ filters }) => {
+  console.clear();
   const { clientAlias, LongName, ClientID } = filters;
   const geomData = await sqlConnection.raw(GeomQuery(filters));
 
-  const url = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7329?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=24000`;
-  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/workers-place-of-residence-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=24002&dataid=387&_dc=1586393764142`;
-  const getMapData = () => axios.get(url);
-  const getThematicData = () => axios.get(thematicUrl);
+  const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7329?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=${filters.OccuKey}`;
+  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/workers-place-of-residence-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=${filters.OccuKey}&dataid=387`;
 
-  let mapData = await axios.all([getMapData(), getThematicData()]).then(
-    axios.spread(function(data, thematic) {
-      // Both requests are now completereturn
-      return [data.data, thematic.data];
-    }),
-  );
+  let mapData = await axios
+    .all([axios.get(layersUrl), axios.get(thematicUrl)])
+    .then(axios.spread((data, thematic) => ({ layerData: data.data, thematicData: thematic.data })));
 
-  mapData[0].envelope = geomData[0].WKT;
-  mapData[0].layers.map((layer, { id }) => {
+  const { layerData, thematicData } = mapData;
+  console.log('mapData: ', mapData);
+
+  layerData.envelope = geomData[0].WKT;
+  layerData.thematicData = thematicData.data;
+  layerData.legend = thematicData.legend;
+  layerData.layers.map((layer, { id }) => {
     const isMainArea = parseInt(layer.id) === 4;
     layer.id = parseInt(layer.id);
     layer.layerName = layer.id === 4 ? LongName : layer.layerName;
@@ -39,8 +40,11 @@ const fetchData = async ({ filters }) => {
     layer.infoBox = { title: 'match.name' };
     layer.initVisibility = true;
   });
-  mapData[0].mapHeight = 500;
-  return { mapData: mapData[0] };
+  layerData.mapHeight = 500;
+  layerData.thematic = true;
+  // map thematic data geoID with the shapes of the layers
+  console.log('map data: ', layerData);
+  return { mapData: layerData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => {
