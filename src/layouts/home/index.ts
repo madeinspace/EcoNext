@@ -44,10 +44,15 @@ const fetchData = async ({ filters, LongName, clientAlias, mapLayers }) => {
     layer.layerName = match.name;
     layer.zIndex = isMainArea ? 100 : 10;
     layer.layerOptions = {
-      color: match.color,
-      fillOpacity: 0.3,
-      fill: true,
-      weight: isMainArea ? 4 : 1,
+      styles: {
+        default: {
+          color: match.color,
+          fillOpacity: 0.3,
+          fill: !isMainArea,
+          weight: isMainArea ? 4 : 1,
+        },
+        hover: { color: '#f00', fillColor: '#f00', fillOpacity: 0.3, fill: !isMainArea, weight: isMainArea ? 4 : 1 },
+      },
       zIndexPriority: isMainArea,
     };
     layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
