@@ -92,18 +92,6 @@ const TemplatePage = () => {
             {LinkBuilder('https://economy.id.com.au/tasmania/employment-locations', 'Employment locations')} data to see
             where business employment occurs within the area.
           </p>
-          <p>
-            Please note that this data set has several limitations which are explained in the{' '}
-            {LinkBuilder(
-              'https://economy.id.com.au/tasmania/topic-notes?#employment-size-of-registered-businesses',
-              'data notes',
-            )}{' '}
-            for this topic. Business register counts are an approximation to LGA boundaries based on SA2 level data
-            provided by the Australian Bureau of Statistics. As such, they may not exactly match figures sourced
-            directly from the ATO, due to boundary issues and the application of ABS randomisation to the dataset.
-            Notably, public sector institutions are not recorded which has a significant impact on the numbers for
-            Health Care, Education and Public Administration and Safety.
-          </p>
         </div>
         <SourceBubble>
           <div>
@@ -135,7 +123,7 @@ export default TemplatePage;
 // #region Source
 const sourceLink = LinkBuilder(
   'http://www.abs.gov.au/AUSSTATS/abs@.nsf/allprimarymainfeatures/85372091B76BD119CA257B710014993B?opendocument',
-  ' Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018 ',
+  ' Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2015 to 2019 ',
 );
 const TableSource = () => (
   <p>
@@ -335,7 +323,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2015 to 2019',
     dataSource: <Source />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -408,7 +396,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
       ],
     },
     rawDataSource:
-      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2016 to 2018',
+      'Source: Australian Bureau of Statistics, Counts of Australian Businesses, including Entries and Exits, 2015 to 2019',
     dataSource: <Source />,
     chartContainerID: 'chart2',
     logoUrl: idlogo,

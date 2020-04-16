@@ -5,7 +5,8 @@ import { formatPercent } from '../../utils';
 
 const contentDataQuery = filters => {
   const { ClientID, WebID, sStartYear, sEndYear, BType } = filters;
-  return `select * from CommData_Economy.[dbo].[fn_BusinessRegister](${ClientID}, ${WebID}, 40, ${sStartYear}, ${sEndYear}, 1, null, ${BType}) order by LabelKey`;
+  const query = `select * from CommData_Economy.[dbo].[fn_BusinessRegisterNew](${ClientID}, ${WebID}, 40, ${sStartYear}, ${sEndYear}, 1, null, ${BType}) order by LabelKey`;
+  return query;
 };
 
 const fetchData = async ({ filters }) => {

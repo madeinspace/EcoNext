@@ -934,19 +934,6 @@ const TopicNotesPage = () => {
           )}
           Cat. No. 8165.0
         </p>
-        <p>
-          <em>IMPORTANT NOTE ABOUT GEOGRAPHIC AREAS:</em>Business Register counts are published by the ABS on SA2
-          (Statistical Area level 2) boundaries, not Local Government Area boundaries. The data presented in economy.id
-          aggregates SA2 level data to Local Government Areas. However, in some cases, SA2s do not align to LGA
-          boundaries. Where an SA2 crosses an LGA boundary, an estimate has been made to apportion the businesses in an
-          SA2 across two or more LGAs. The estimate is done on the basis of the proportion of commercial, industrial and
-          agricultural land use falling on either side of a boundary but please be aware that this is an approximation
-          only, and doesn’t take account of the differing distributions of different industry sectors, nor is it an
-          accurate count of individual businesses on either side of a boundary. For this reason, the business counts
-          used in economy.id may not be an exact match to counts sourced directly from the Australian Taxation Office.
-          Some areas are more affected by this issue than others. For more information on whether your area is affected,
-          please contact .id.
-        </p>
       </Full>
       <Full>
         <a id="industry-sector-analysis"></a>
