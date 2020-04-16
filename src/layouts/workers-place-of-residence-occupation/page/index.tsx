@@ -8,7 +8,8 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import { LinkBuilder, IdLink } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 import EntityChart from '../../../components/chart/EntityChart';
-import { formatPercent, idlogo } from '../../../utils';
+import { formatPercent, idlogo, formatNumber } from '../../../utils';
+import EntityTable from '../../../components/table/EntityTable';
 
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
@@ -65,13 +66,16 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
         </SourceBubble>
       </PageIntro>
       <ControlPanel />
+      <ItemWrapper>
+        <EntityChart data={chartBuilder()} />
+      </ItemWrapper>
+      <ItemWrapper>
+        <EntityTable data={tableBuilder()} />
+      </ItemWrapper>
       <MapWrapper>
         <MapLoader loaded={mapLoaded} />
         <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
       </MapWrapper>
-      <ItemWrapper>
-        <EntityChart data={chartBuilder()} />
-      </ItemWrapper>
       <p>
         NOTE: The land use shown in the map is derived from ABS Mesh Block categories. Mesh Blocks broadly identify land
         use and are not designed to provide definitive land use. It is purely an indicator of the main planned land use
@@ -92,6 +96,82 @@ const TableSource = () => (
 
 // #endregion
 
+// #region table builders
+const tableBuilder = () => {
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData: { mapData },
+    entityData: { currentOccupationName, prefixedAreaName },
+  } = useContext(PageContext);
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const tableTitle = `Local workers qualifications`;
+
+  const rawData = mapData.layers.find(l => l.id === 7).shapes.map(({ shapeOptions }) => shapeOptions);
+  const monash = rawData.filter(area => +area.GeoID === 24970)[0];
+  const monashTotal = monash.RealPercentage;
+  const rest = rawData.filter(area => +area.GeoID != 24970);
+  const restTotal = rest.reduce((acc, cur) => {
+    return acc + cur.RealPercentage;
+  }, 0);
+
+  return {
+    cssClass: '',
+    clientAlias,
+    source: <TableSource />,
+    rawDataSource,
+    anchorName: 'local-workers---qualifications',
+    headRows: [
+      {
+        cssClass: '',
+        cols: [
+          {
+            cssClass: 'table-area-name',
+            displayText: tableTitle,
+            colSpan: 10,
+          },
+        ],
+      },
+      {
+        cssClass: 'heading',
+        cols: [
+          {
+            cssClass: 'sub first',
+            displayText: 'headingText',
+            colSpan: 1,
+          },
+          {
+            cssClass: 'even',
+            displayText: ' 2016',
+            colSpan: 2,
+          },
+        ],
+      },
+    ],
+    cols: [
+      {
+        id: 0,
+        displayText: 'firstColTitle',
+        cssClass: 'odd first',
+      },
+      {
+        id: 1,
+        displayText: 'Number',
+        cssClass: 'even int',
+      },
+      {
+        id: 2,
+        displayText: '%',
+        cssClass: 'even int',
+      },
+    ],
+    rows: [],
+    footRows: [],
+    noOfRowsOnInit: 0,
+  };
+};
+// #endregion
+
 // #region chart builders
 const chartBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
@@ -103,7 +183,6 @@ const chartBuilder = () => {
   const rawData = mapData.layers.find(l => l.id === 7).shapes.map(({ shapeOptions }) => shapeOptions);
   const monash = rawData.filter(area => +area.GeoID === 24970)[0];
   const monashTotal = monash.RealPercentage;
-  console.log('monashTotal: ', monashTotal);
   const rest = rawData.filter(area => +area.GeoID != 24970);
   const restTotal = rest.reduce((acc, cur) => {
     return acc + cur.RealPercentage;

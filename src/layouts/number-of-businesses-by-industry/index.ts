@@ -29,14 +29,13 @@ const headline = ({ data, contentData }) => {
   const lookup = {
     'Non-employing': 'registered non-employing businesses',
     Employing: 'registered employing businesses',
-    '1 to 4 ': 'businesses employing 1 to 4 people',
-    '5 to 19': 'businesses employing 5 to 19 people',
+    '1 to 19': 'businesses employing 1 to 19 people',
     '20 to 199': 'businesses employing 20 to 199 people',
     '200 or more': 'businesses employing 200 or more people',
     'Total businesses': 'total registered businesses',
   };
 
-  const totalLabelKey = 999999;
+  const totalLabelKey = 99999;
 
   const TopInd = contentData
     .filter(ind => ind.LabelKey !== totalLabelKey)
@@ -86,7 +85,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2018',
+      DefaultValue: '2019',
       Label: 'Year:',
       Params: null,
       Hidden: true,
@@ -95,7 +94,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2017',
+      DefaultValue: '2018',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End_BR',
