@@ -43,16 +43,35 @@ const fetchData = async ({ filters, LongName, clientAlias, mapLayers }) => {
     layer.id = parseInt(layer.id);
     layer.layerName = match.name;
     layer.zIndex = isMainArea ? 100 : 10;
-    layer.shapeOptions = {
+    layer.layerOptions = {
       color: match.color,
       fillOpacity: 0.3,
-      fill: !isMainArea,
+      fill: true,
       weight: isMainArea ? 4 : 1,
       zIndexPriority: isMainArea,
     };
     layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
     layer.infoBox = { title: match.name };
     layer.initVisibility = true;
+    layer.shapes.forEach(shape => {
+      const styles = {
+        default: {
+          fill: !isMainArea,
+          color: isMainArea ? '#000' : '#00c5ff',
+          weight: isMainArea ? 3 : 1,
+          fillOpacity: 0.3,
+          fillColor: '#00c5ff',
+        },
+        hover: {
+          fill: !isMainArea,
+          color: '#f00',
+          weight: isMainArea ? 3 : 3,
+          fillColor: '#f00',
+          fillOpacity: 0.3,
+        },
+      };
+      shape.shapeOptions = { Rank: 0, InfoBox: {}, styles };
+    });
   });
   mapData.mapHeight = 500;
   return { statsData, newsData, mapData };

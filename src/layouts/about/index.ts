@@ -39,10 +39,6 @@ const fetchData = async ({ LongName, filters, clientAlias, mapLayers }) => {
     ];
   }, []);
 
-  const layerLookup = [
-    { id: 4, name: `${LongName}`, color: '#000' },
-    { id: 1, name: 'Local Government Areas', color: '#00c5ff' },
-  ];
   mapData.envelope = geomData[0].WKT;
   mapData.layers.map(layer => {
     const match = clientLookup.find(({ id }) => id === parseInt(layer.id));
@@ -50,16 +46,40 @@ const fetchData = async ({ LongName, filters, clientAlias, mapLayers }) => {
     layer.id = parseInt(layer.id);
     layer.layerName = match.name;
     layer.zIndex = isMainArea ? 100 : 10;
-    layer.shapeOptions = {
-      color: match.color,
-      fillOpacity: 0.3,
-      fill: !isMainArea,
-      weight: isMainArea ? 4 : 1,
+    layer.layerOptions = {
+      styles: {
+        default: {
+          color: match.color,
+          fillOpacity: 0.3,
+          fill: !isMainArea,
+          weight: isMainArea ? 4 : 1,
+        },
+        hover: { color: '#f00', fillColor: '#f00', fillOpacity: 0.3, fill: !isMainArea, weight: isMainArea ? 4 : 1 },
+      },
       zIndexPriority: isMainArea,
     };
     layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
     layer.infoBox = { title: match.name };
     layer.initVisibility = true;
+    layer.shapes.forEach(shape => {
+      const styles = {
+        default: {
+          fill: !isMainArea,
+          color: isMainArea ? '#000' : '#00c5ff',
+          weight: isMainArea ? 3 : 1,
+          fillOpacity: 0.3,
+          fillColor: '#00c5ff',
+        },
+        hover: {
+          fill: !isMainArea,
+          color: '#f00',
+          weight: isMainArea ? 3 : 3,
+          fillColor: '#f00',
+          fillOpacity: 0.3,
+        },
+      };
+      shape.shapeOptions = { Rank: 0, InfoBox: {}, styles };
+    });
   });
   mapData.mapHeight = 500;
   return { statsData, mapData, textData };

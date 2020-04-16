@@ -1,7 +1,8 @@
 import L from 'leaflet';
+import _ from 'lodash';
 const defaultTooltipOptions: any = {
   sticky: true,
-  opacity: 0.8,
+  opacity: 0.9,
   direction: 'right',
   offset: [20, 30],
   permanent: false,
@@ -9,11 +10,15 @@ const defaultTooltipOptions: any = {
 };
 
 export default (data, options?) => {
-  let htmlElem: string = `<div class="polyToolTip"><h1>${data}</h1></div>`;
-  // for (var key in data.displayText) {
-  //   if (data.displayText.hasOwnProperty(key)) {
-  //     htmlElem += `${key}: ${data.displayText[key]}<br />`;
-  //   }
-  // }
+  let htmlElem: string = `<div class="polyToolTip"><h1>${data.areaName}</h1>`;
+  if (!_.isEmpty(data.infoBox)) {
+    htmlElem += '<br />';
+    for (var key in data.infoBox) {
+      if (data.infoBox.hasOwnProperty(key)) {
+        htmlElem += `<span>${key}: ${data.infoBox[key]}</span><br />`;
+      }
+    }
+  }
+  htmlElem += '</div>';
   return L.tooltip(options || defaultTooltipOptions).setContent(htmlElem);
 };

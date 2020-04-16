@@ -7,34 +7,43 @@ import _ from 'lodash';
  */
 export const createMapLayers = ({ layers, LongName }) => {
   const mapLayers = layers.reduce((acc, currlayer) => {
-    const decodedAreas = currlayer.shapes.map(area => decodeArea({ area, type: currlayer.shapeType }));
-    acc.push({ ...currlayer, decodedLayer: decodedAreas });
+    const decodedShapes = currlayer.shapes.map(shape => {
+      const isMainArea = parseInt(currlayer.id) === 4;
+      return {
+        areaId: shape.id,
+        areaName: shape.shapeName,
+        infoBox: shape.shapeOptions.InfoBox || {},
+        rank: shape.shapeOptions.Rank || 0,
+        styles: shape.shapeOptions.styles,
+        type: currlayer.shapeType,
+        zIndexPriority: isMainArea,
+        leafletPolys: decodeArea(shape),
+      };
+    });
+    acc.push({ ...currlayer, decodedLayer: decodedShapes });
     return acc;
   }, []);
   return mapLayers;
 };
 
-export const decodeArea = ({ area, type }) => {
+export const decodeArea = shape => {
   // each area can be just a simple polygon or a collection of polygons
   // (multipolygon shape) or a polygon with holes or a combination or both
   const polys = [];
-  const decodedArea = { areaName: area.shapeName, areaId: area.id, leafletPolys: polys, type };
-
-  const mainGeo = decodePoints(area.points, true);
-  polys.push(mainGeo);
+  polys.push(decodePoints(shape.points, true));
 
   // if area has hole polys become a multidimensional array (https://leafletjs.com/reference-1.6.0.html#polygon)
-  if (area.holes.length > 0) {
-    const holes = area.holes.map(hole => decodePoints(hole.points, true));
+  if (shape.holes.length > 0) {
+    const holes = shape.holes.map(hole => decodePoints(hole.points, true));
     polys.push(holes);
   }
 
-  if (area.shapes.length > 0) {
-    area.shapes.forEach(shape => {
+  if (shape.shapes.length > 0) {
+    shape.shapes.forEach(shape => {
       polys.push(decodePoints(shape.points, true));
     });
   }
-  return decodedArea;
+  return polys;
 };
 
 export const getBoundariesFromWKT = WKT => {

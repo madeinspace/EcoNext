@@ -159,3 +159,25 @@ export const getSerieByKey = (data, key) =>
   }));
 
 export const multiplesOf = (data, multiple) => data.filter(x => x.LabelKey % multiple === 0);
+
+// Function to darken or lightn a hex color ie adjust("#ff0000", -20)
+export const adjust = (color, amount) => {
+  return (
+    '#' +
+    color
+      .replace(/^#/, '')
+      .replace(/../g, color => ('0' + Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2))
+  );
+};
+
+// EXAMPLES
+// const obj = { name: 'Bobo', job: 'Front-End Master', shoeSize: 100 };
+// renameKeys({ name: 'firstName', job: 'passion' }, obj); // { firstName: 'Bobo', passion: 'Front-End Master', shoeSize: 100 }
+export const renameKeys = (keysMap, obj) =>
+  Object.keys(obj).reduce(
+    (acc, key) => ({
+      ...acc,
+      ...{ [keysMap[key] || key]: obj[key] },
+    }),
+    {},
+  );

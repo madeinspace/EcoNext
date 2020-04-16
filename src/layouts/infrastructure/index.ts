@@ -1,7 +1,6 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import axios from 'axios';
-import getActiveToggle from '../../utils/getActiveToggle';
 const COM_CLIENT_DB = 'CommClient';
 
 const TextDataQuery = ({ ClientID, WebID }) => {
@@ -43,6 +42,7 @@ const fetchData = async ({ filters, clientAlias, LongName }) => {
     { id: 210, name: 'Other', color: '#666666' },
     { id: 211, name: 'Primary Production', color: '#e4d354' },
   ];
+
   mapData.envelope = geomData[0].WKT;
   mapData.layers.map(layer => {
     const match = colorLookup.find(({ id }) => id === parseInt(layer.id));
@@ -50,16 +50,41 @@ const fetchData = async ({ filters, clientAlias, LongName }) => {
     layer.id = parseInt(layer.id);
     layer.layerName = match.name;
     layer.zIndex = isMainArea ? 100 : 10;
-    layer.shapeOptions = {
-      color: match.color,
-      fillOpacity: 0.3,
-      fill: !isMainArea,
-      weight: isMainArea ? 4 : 1,
+    layer.layerOptions = {
+      styles: {
+        default: {
+          color: match.color,
+          fillOpacity: 0.3,
+          fill: !isMainArea,
+          weight: isMainArea ? 4 : 1,
+        },
+      },
       zIndexPriority: isMainArea,
+      Rank: 0,
+      InfoBox: {},
     };
     layer.shapeType = match.id === 4 ? 'polyline' : 'polygon';
     layer.infoBox = { title: match.name };
     layer.initVisibility = true;
+    layer.shapes.forEach(shape => {
+      const styles = {
+        default: {
+          fill: !isMainArea,
+          color: match.color,
+          weight: isMainArea ? 3 : 1,
+          fillOpacity: 0.3,
+          fillColor: match.color,
+        },
+        hover: {
+          fill: !isMainArea,
+          color: '#f00',
+          weight: isMainArea ? 3 : 2,
+          fillColor: '#f00',
+          fillOpacity: 0.3,
+        },
+      };
+      shape.shapeOptions = { styles, rank: match.id, InfoBox: {} };
+    });
   });
   mapData.mapHeight = 500;
   return { mapData, textData, landUse };
