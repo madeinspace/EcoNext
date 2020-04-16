@@ -255,7 +255,7 @@ const tableBuilder = (
 
 // #region chart builders
 const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
-  const totalBiz = 999999;
+  const totalBiz = 99999;
   const filterednodes = nodes.filter(item => item.LabelKey !== totalBiz);
 
   const perYear1Serie = filterednodes.map(item => {
@@ -334,7 +334,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
 
 // #region chart builder change
 const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, benchmarkYear, currentAreaName, nodes) => {
-  const totalBiz = 999999;
+  const totalBiz = 99999;
   const filterednodes = nodes.filter(item => item.LabelKey !== totalBiz);
   const categories = _.map(filterednodes, 'LabelName');
   return {
