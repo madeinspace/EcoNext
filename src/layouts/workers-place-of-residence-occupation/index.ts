@@ -7,12 +7,19 @@ import _ from 'lodash';
 const COM_CLIENT_DB = 'CommClient';
 
 const GeomQuery = ({ ClientID }) => `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelopeLGA] ${ClientID}`;
+const DestByOccupationQuery = ({ ClientID, OccuKey }) =>
+  `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Occupation_Summ_2016](${ClientID},10,NULL,${OccuKey}) order by LabelKey`;
 
+const DestByOccupationAllQuery = ({ ClientID, OccuKey }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Occupation_2016](${ClientID},10,NULL,${OccuKey}) Where Number > 9 order by Number DESC`;
+  return query;
+};
 const fetchData = async ({ filters }) => {
   console.clear();
   const { clientAlias, LongName, ClientID } = filters;
   const geomData = await sqlConnection.raw(GeomQuery(filters));
-
+  const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
+  const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
   const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7329?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=${filters.OccuKey}`;
   const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/workers-place-of-residence-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=${filters.OccuKey}&dataid=387`;
 
@@ -53,12 +60,10 @@ const fetchData = async ({ filters }) => {
     layer.initVisibility = true;
     layer.shapes.forEach(shape => {
       const options = { ...thematicData.data.find(obj => obj.GeoID === shape.id) };
-
       // Perfect example of technical debt created here
       if (!_.isEmpty(options) && options.InfoBox.hasOwnProperty('Geocode')) {
         delete options.InfoBox['Geocode'];
       }
-
       const darkened = adjust(options.color || '#009a44', -50);
       const styles = {
         default: {
@@ -82,8 +87,7 @@ const fetchData = async ({ filters }) => {
   });
   layerData.mapHeight = 500;
   layerData.thematic = true;
-  console.log('layerData: ', layerData);
-  return { mapData: layerData };
+  return { mapData: layerData, tableData: [DestByOccSumData, DestByOccData] };
 };
 
 const activeCustomToggles = ({ filterToggles }) => {

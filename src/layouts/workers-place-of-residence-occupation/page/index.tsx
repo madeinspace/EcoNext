@@ -10,18 +10,27 @@ import useEntityText from '../../../utils/useEntityText';
 import EntityChart from '../../../components/chart/EntityChart';
 import { formatPercent, idlogo, formatNumber } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
-
+import styled from 'styled-components';
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
+
+const Split = styled.div`
+  display: flex;
+  ${ItemWrapper}:first-child {
+    margin-right: 20px;
+  }
+  ${ItemWrapper} {
+    width: 50%;
+  }
+`;
 
 // #region template page
 const WorkersPlaceOfResidenceOccupationPage = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
-  const { clientAlias, LongName } = useContext(ClientContext);
 
   const {
     contentData: { mapData },
-    entityData: { currentOccupationName, prefixedAreaName },
+    entityData: { prefixedAreaName },
   } = useContext(PageContext);
 
   console.log('mapData: ', mapData);
@@ -66,16 +75,22 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
         </SourceBubble>
       </PageIntro>
       <ControlPanel />
-      <ItemWrapper>
-        <EntityChart data={chartBuilder()} />
-      </ItemWrapper>
-      <ItemWrapper>
-        <EntityTable data={tableBuilder()} />
-      </ItemWrapper>
+      <Split>
+        <ItemWrapper>
+          <EntityTable data={tableBuilder()} />
+        </ItemWrapper>
+        <ItemWrapper>
+          <EntityChart data={chartBuilder()} />
+        </ItemWrapper>
+      </Split>
+
       <MapWrapper>
         <MapLoader loaded={mapLoaded} />
         <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
       </MapWrapper>
+      <ItemWrapper>
+        <EntityTable data={tableBuilderLGA()} />
+      </ItemWrapper>
       <p>
         NOTE: The land use shown in the map is derived from ABS Mesh Block categories. Mesh Blocks broadly identify land
         use and are not designed to provide definitive land use. It is purely an indicator of the main planned land use
@@ -100,27 +115,25 @@ const TableSource = () => (
 const tableBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
-    contentData: { mapData },
-    entityData: { currentOccupationName, prefixedAreaName },
+    contentData: { tableData },
+    entityData: { currentOccupationName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Local workers qualifications`;
+  const tableTitle = `Residential location of local workers`;
 
-  const rawData = mapData.layers.find(l => l.id === 7).shapes.map(({ shapeOptions }) => shapeOptions);
-  const monash = rawData.filter(area => +area.GeoID === 24970)[0];
-  const monashTotal = monash.RealPercentage;
-  const rest = rawData.filter(area => +area.GeoID != 24970);
-  const restTotal = rest.reduce((acc, cur) => {
-    return acc + cur.RealPercentage;
-  }, 0);
+  const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => ({
+    id: LabelKey,
+    data: [LabelName, Number, Per],
+    formattedData: [`${LabelName}`, formatNumber(Number), formatPercent(Per)],
+  }));
 
   return {
     cssClass: '',
     clientAlias,
     source: <TableSource />,
     rawDataSource,
-    anchorName: 'local-workers---qualifications',
+    anchorName: '',
     headRows: [
       {
         cssClass: '',
@@ -137,7 +150,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: 'headingText',
+            displayText: `${LongName} - ${currentOccupationName}`,
             colSpan: 1,
           },
           {
@@ -151,7 +164,7 @@ const tableBuilder = () => {
     cols: [
       {
         id: 0,
-        displayText: 'firstColTitle',
+        displayText: 'Location',
         cssClass: 'odd first',
       },
       {
@@ -165,7 +178,83 @@ const tableBuilder = () => {
         cssClass: 'even int',
       },
     ],
-    rows: [],
+    rows: serie,
+    footRows: [],
+    noOfRowsOnInit: 0,
+  };
+};
+// #endregion
+
+// #region table builders
+const tableBuilderLGA = () => {
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData: { tableData },
+    entityData: { currentOccupationName },
+  } = useContext(PageContext);
+  const rawDataSource =
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+  const tableTitle = `Residential location of local workers by LGA by occupation`;
+
+  const serie = tableData[1].map(({ LabelKey, GeoName, Number, Per }) => ({
+    id: LabelKey,
+    // cssClass: i === 0 ? 'highlight' : '',
+    data: [GeoName, Number, Per],
+    formattedData: [`${GeoName}`, formatNumber(Number), formatPercent(Per)],
+  }));
+  console.log('tableData: ', tableData);
+
+  return {
+    cssClass: '',
+    clientAlias,
+    source: <TableSource />,
+    rawDataSource,
+    anchorName: '',
+    headRows: [
+      {
+        cssClass: '',
+        cols: [
+          {
+            cssClass: 'table-area-name',
+            displayText: tableTitle,
+            colSpan: 10,
+          },
+        ],
+      },
+      {
+        cssClass: 'heading',
+        cols: [
+          {
+            cssClass: 'sub first',
+            displayText: `${LongName} - ${currentOccupationName}`,
+            colSpan: 1,
+          },
+          {
+            cssClass: 'even',
+            displayText: ' 2016',
+            colSpan: 2,
+          },
+        ],
+      },
+    ],
+    cols: [
+      {
+        id: 0,
+        displayText: 'Location',
+        cssClass: 'odd first',
+      },
+      {
+        id: 1,
+        displayText: 'Number',
+        cssClass: 'even XXL',
+      },
+      {
+        id: 2,
+        displayText: '%',
+        cssClass: 'even XXL',
+      },
+    ],
+    rows: serie,
     footRows: [],
     noOfRowsOnInit: 0,
   };
@@ -174,26 +263,16 @@ const tableBuilder = () => {
 
 // #region chart builders
 const chartBuilder = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { LongName } = useContext(ClientContext);
   const {
-    contentData: { mapData },
-    entityData: { currentOccupationName, prefixedAreaName },
+    contentData: { tableData },
+    entityData: { currentOccupationName },
   } = useContext(PageContext);
 
-  const rawData = mapData.layers.find(l => l.id === 7).shapes.map(({ shapeOptions }) => shapeOptions);
-  const monash = rawData.filter(area => +area.GeoID === 24970)[0];
-  const monashTotal = monash.RealPercentage;
-  const rest = rawData.filter(area => +area.GeoID != 24970);
-  const restTotal = rest.reduce((acc, cur) => {
-    return acc + cur.RealPercentage;
-  }, 0);
-  console.log('rest: ', rest);
-  // { name: LabelName, y: PerYear1, className: LabelName.match(/^[^\/ ]+/i) };
-  const serie = [
-    { name: 'Live and work in the area', y: monashTotal },
-    { name: 'Work in the area but live outside', y: restTotal },
-  ];
-  console.log('serie: ', serie);
+  console.log('tableData[0]: ', tableData[0]);
+  const serie = tableData[0]
+    .filter(({ LabelName, OccupationWebKey }) => OccupationWebKey != 30000 && LabelName != 'Live and work in the area')
+    .map(({ LabelName, Per }) => ({ name: LabelName, y: Per }));
 
   const chartType = 'pie';
   const chartTitle = `Residential location of local workers, 2016`;
@@ -209,6 +288,7 @@ const chartBuilder = () => {
     logoUrl: idlogo,
     chartTemplate,
     highchartOptions: {
+      height: 250,
       chart: {
         type: chartType,
         plotBackgroundColor: null,
