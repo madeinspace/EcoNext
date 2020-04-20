@@ -15,7 +15,6 @@ const DestByOccupationAllQuery = ({ ClientID, OccuKey }) => {
   return query;
 };
 const fetchData = async ({ filters }) => {
-  console.clear();
   const { clientAlias, LongName, ClientID } = filters;
   const geomData = await sqlConnection.raw(GeomQuery(filters));
   const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
