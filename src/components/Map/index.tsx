@@ -106,14 +106,7 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
     setActiveLayers(checkedItems);
   };
 
-  const handleLegendOver = Rank => {
-    // featureGroups.forEach(({ featureGroup }) =>
-    //   featureGroup.eachLayer(function(layer) {
-    //     console.log(featureGroup.getLayerId(layer));
-    //   }),
-    // );
-    console.log('handling legend over: ', Rank);
-  };
+  const handleLegendOver = Rank => {};
 
   const clearAllOverlays = () => featureGroups.forEach(({ featureGroup }) => removeFeatureGroup(featureGroup));
 

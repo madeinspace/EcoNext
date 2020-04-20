@@ -2,7 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import axios from 'axios';
 import getActiveToggle from '../../utils/getActiveToggle';
-import { adjust } from '../../utils';
+import { adjust, formatNumber, formatPercent } from '../../utils';
 import _ from 'lodash';
 const COM_CLIENT_DB = 'CommClient';
 
@@ -114,7 +114,12 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        return `Of the {29,983} local workers as Professionals in {the Monash}, {6,758} or {22.5%} also live in the area.`;
+        const occupationText = +filters.OccuKey === 24000 ? '' : ` as ${data.currentOccupationName}`;
+        const mainArea = contentData.tableData[0].find(({ LabelName }) => LabelName === 'Live and work in the area');
+        const total = contentData.tableData[0].find(({ OccupationWebKey }) => OccupationWebKey === 30000);
+        return `Of the ${formatNumber(total.Number)} local workers ${occupationText} in ${
+          data.prefixedAreaName
+        }, ${formatNumber(mainArea.Number)} or ${formatPercent(mainArea.Per)}% also live in the area.`;
       },
     },
   ],

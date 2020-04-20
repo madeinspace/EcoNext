@@ -27,13 +27,12 @@ const Split = styled.div`
 // #region template page
 const WorkersPlaceOfResidenceOccupationPage = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
-
+  const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
 
-  console.log('mapData: ', mapData);
   const onMapLoaded = () => setMapLoaded(true);
 
   return (
@@ -60,11 +59,19 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
             all skill levels.
           </p>
           <p>
-            Workers place of residence data should be viewed alongside Self-sufficiency and Jobs to workers ratio
-            datasets for a summary of local employment opportunity by industry, as well as modelled Employment by
-            industry (Total) numbers and Employment locations to understand the relative size of each industry sector
-            and its distribution across the the City of Monash. To analyse the characteristics of local workers in each
-            industry, go to the Local workers section.
+            Workers place of residence data should be viewed alongside{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/local-employment`, 'Self-sufficiency')} and{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers ratio')}{' '}
+            datasets for a summary of local employment opportunity by industry, as well as modelled{' '}
+            {LinkBuilder(
+              `http://economy.id.com.au/${clientAlias}/employment-by-industry`,
+              'Employment by industry (Total)',
+            )}{' '}
+            numbers and{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employment-locations`, 'Employment locations')} to
+            understand the relative size of each industry sector and its distribution across {prefixedAreaName}. To
+            analyse the characteristics of local workers in each industry, go to the{' '}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/workers-key-statistics`, 'Local workers')} section.
           </p>
         </div>
         <SourceBubble>
@@ -91,11 +98,6 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
       <ItemWrapper>
         <EntityTable data={tableBuilderLGA()} />
       </ItemWrapper>
-      <p>
-        NOTE: The land use shown in the map is derived from ABS Mesh Block categories. Mesh Blocks broadly identify land
-        use and are not designed to provide definitive land use. It is purely an indicator of the main planned land use
-        for a Mesh Blocks. For more information please refer to ABS Mesh Block categories.
-      </p>
     </>
   );
 };
@@ -105,7 +107,9 @@ export default WorkersPlaceOfResidenceOccupationPage;
 // #region sources
 const TableSource = () => (
   <p>
-    Source: Australian Bureau of Statistics, 2011 and 2016. Compiled and presented by <IdLink />
+    Source: Australian Bureau of Statistics, {LinkBuilder('http://www.abs.gov.au/census', 'Census of Population')} and
+    Housing 2016. Compiled and presented in economy.id by <IdLink /> Excludes residential locations with fewer than 10
+    people.
   </p>
 );
 
@@ -202,7 +206,6 @@ const tableBuilderLGA = () => {
     data: [GeoName, Number, Per],
     formattedData: [`${GeoName}`, formatNumber(Number), formatPercent(Per)],
   }));
-  console.log('tableData: ', tableData);
 
   return {
     cssClass: '',
@@ -269,9 +272,8 @@ const chartBuilder = () => {
     entityData: { currentOccupationName },
   } = useContext(PageContext);
 
-  console.log('tableData[0]: ', tableData[0]);
   const serie = tableData[0]
-    .filter(({ LabelName, OccupationWebKey }) => OccupationWebKey != 30000 && LabelName != 'Live and work in the area')
+    .filter(({ LabelName, OccupationWebKey }) => OccupationWebKey != 30000)
     .map(({ LabelName, Per }) => ({ name: LabelName, y: Per }));
 
   const chartType = 'pie';
@@ -288,7 +290,7 @@ const chartBuilder = () => {
     logoUrl: idlogo,
     chartTemplate,
     highchartOptions: {
-      height: 250,
+      height: 300,
       chart: {
         type: chartType,
         plotBackgroundColor: null,
@@ -311,7 +313,7 @@ const chartBuilder = () => {
           allowPointSelect: true,
           cursor: 'pointer',
           dataLabels: {
-            enabled: true,
+            enabled: false,
           },
           showInLegend: true,
         },
@@ -328,7 +330,7 @@ const chartBuilder = () => {
           text: '',
         },
       },
-      legend: { enabled: false },
+      legend: { enabled: true },
       yAxis: [
         {
           title: {
