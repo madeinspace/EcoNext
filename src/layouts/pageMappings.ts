@@ -72,6 +72,7 @@ import EmployedLocallyPage from './employed-locally/page';
 import IndustrySectorAnalysisSeriesPage from './industry-sector-analysis-series/page';
 import InfrastructurePage from './infrastructure/page';
 import WorkersPlaceOfResidenceOccupationPage from './workers-place-of-residence-occupation/page';
+import ResidentsPlaceOfWorkOccupationPage from './residents-place-of-work-occupation/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -162,6 +163,7 @@ const PageMappings = {
   'industry-sector-analysis-series': IndustrySectorAnalysisSeriesPage,
   infrastructure: InfrastructurePage,
   'workers-place-of-residence-occupation': WorkersPlaceOfResidenceOccupationPage,
+  'residents-place-of-work-occupation': ResidentsPlaceOfWorkOccupationPage,
   covid19: CovidPage,
 };
 

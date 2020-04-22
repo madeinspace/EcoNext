@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import L from 'leaflet';
-import '../../styles/leaflet.css';
 import { LayerControl } from './LayerControl';
 import TileLayers, { minimapLayer } from './TileLayers';
 import { ClientContext } from '../../utils/context';

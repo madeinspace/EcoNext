@@ -89,5 +89,6 @@ export default [
   'industry-sector-analysis-series',
   'infrastructure',
   // 'workers-place-of-residence-occupation',
+  // 'residents-place-of-work-occupation',
   // 'covid19',
 ];

@@ -12,12 +12,11 @@ const defaultTooltipOptions: any = {
 export default (data, options?) => {
   let htmlElem: string = `<div class="polyToolTip"><h1>${data.areaName}</h1>`;
   if (!_.isEmpty(data.infoBox)) {
+    const { displayText } = data.infoBox;
     htmlElem += '<br />';
-    for (var key in data.infoBox) {
-      if (data.infoBox.hasOwnProperty(key)) {
-        htmlElem += `<span>${key}: ${data.infoBox[key]}</span><br />`;
-      }
-    }
+    displayText.forEach(element => {
+      htmlElem += `<span>${element}</span><br />`;
+    });
   }
   htmlElem += '</div>';
   return L.tooltip(options || defaultTooltipOptions).setContent(htmlElem);
