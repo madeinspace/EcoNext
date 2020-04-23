@@ -36,7 +36,6 @@ async function renderAndCache(req, res) {
   // If we have a page in the cache, let's serve it
   if (ssrCache.has(key) && CACHE_ENABLED) {
     console.log(`serving from cached ${key}`);
-    const c = ssrCache.get(key)
     res.setHeader('x-cache', 'HIT');
     res.setHeader('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
     res.send(ssrCache.get(key));

@@ -6,42 +6,27 @@ const DATABASE = 'WebProfile';
 
 const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`;
 
-const fetchData = async ({ filters, clientAlias, mapLayers }) => {
-  const newsData = await sqlConnection.raw(newDataQuery());
-
-  return { newsData };
+const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) => `
+  select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${+ClientID},${+WebID},${+BMID}) ORDER BY QtrChg DESC
+`;
+const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${+ClientID},${+WebID},${+BMID})`;
+  console.log('query: ', query);
+  return query;
 };
 
-const headline = ({ data, contentData }) => {
-  const prefix = data.HasPrefix ? 'The ' : '';
-  const areaName = data.currentAreaName;
-  return `${areaName} COVID 19 headline`;
+const fetchData = async ({ filters, clientAlias, mapLayers }) => {
+  const newsData = await sqlConnection.raw(newDataQuery());
+  const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
+  const headlineData = await sqlConnection.raw(headlineQuery(filters));
+  return { newsData, topThreeData, headlineData };
 };
 
 const pageContent = {
   entities: [
-    { Title: 'SubTitle', renderString: ({ data }): string => `Covid 19 info page` },
     {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => headline({ data, contentData }),
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '177',
-    },
-    {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => headline({ data, contentData }),
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '178',
+      Title: 'SubTitle',
+      renderString: ({ data }): string => `COVID-19 Economic Outlook Tool (Last updated 23/04/2020)`,
     },
   ],
   filterToggles: [],
