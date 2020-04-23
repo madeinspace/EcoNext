@@ -11,7 +11,6 @@ const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) => `
 `;
 const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${+ClientID},${+WebID},${+BMID})`;
-  console.log('query: ', query);
   return query;
 };
 
