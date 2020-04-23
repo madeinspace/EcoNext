@@ -129,7 +129,11 @@ const tableBuilder = () => {
   const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => ({
     id: LabelKey,
     data: [LabelName, Number, Per],
-    formattedData: [`${LabelName}`, formatNumber(Number), formatPercent(Per)],
+    formattedData: [
+      `${LabelKey === 1 || LabelKey === 2 ? '-  ' : ''}${LabelName}`,
+      formatNumber(Number),
+      formatPercent(Per),
+    ],
   }));
 
   return {
@@ -272,9 +276,12 @@ const chartBuilder = () => {
     entityData: { currentOccupationName },
   } = useContext(PageContext);
 
-  const serie = tableData[0]
-    .filter(({ LabelName, OccupationWebKey }) => OccupationWebKey != 30000)
-    .map(({ LabelName, Per }) => ({ name: LabelName, y: Per }));
+  const isRDA = tableData[0].some(({ LabelKey }) => LabelKey === 1 || LabelKey === 2);
+  const noTotal = tableData[0].filter(({ LabelKey }) => LabelKey != 9);
+  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 0) : noTotal;
+  const serie = final.map(({ LabelName, Per }) => {
+    return { name: LabelName, y: Per };
+  });
 
   const chartType = 'pie';
   const chartTitle = `Residential location of local workers, 2016`;

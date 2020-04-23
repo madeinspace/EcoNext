@@ -114,11 +114,17 @@ const tableBuilder = () => {
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = `Residential location of local workers`;
 
-  const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => ({
-    id: LabelKey,
-    data: [LabelName, Number, Per],
-    formattedData: [`${LabelName}`, formatNumber(Number), formatPercent(Per)],
-  }));
+  const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => {
+    return {
+      id: LabelKey,
+      data: [LabelName, Number, Per],
+      formattedData: [
+        `${LabelKey === 1 || LabelKey === 2 ? '-  ' : ''}${LabelName}`,
+        formatNumber(Number),
+        formatPercent(Per),
+      ],
+    };
+  });
 
   return {
     cssClass: '',
@@ -260,9 +266,16 @@ const chartBuilder = () => {
     entityData: { currentOccupationName },
   } = useContext(PageContext);
 
-  const serie = tableData[0]
-    .filter(({ LabelName, OccupationWebKey }) => OccupationWebKey != 30000)
-    .map(({ LabelName, Per }) => ({ name: LabelName, y: Per }));
+  const isRDA = tableData[0].some(({ LabelKey }) => {
+    return LabelKey === 1 || LabelKey === 2;
+  });
+
+  const noTotal = tableData[0].filter(({ LabelKey }) => LabelKey != 9);
+  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 1) : noTotal;
+
+  const serie = final.map(({ LabelName, Per }) => {
+    return { name: LabelName, y: Per };
+  });
 
   const chartType = 'pie';
   const chartTitle = `Residential location of local workers, 2016`;
