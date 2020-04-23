@@ -31,7 +31,7 @@ const CovidPage = () => {
   const GRPCOMPText = GRPLGA.QtrChgPer < GRPBM.QtrChgPer ? 'higher' : 'lower';
 
   const JOBSLGAText = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
-  const JOBSLGATextAlt = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
+  const JOBSLGATextAlt = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
 
   const URJOBSIMPACTText = URJOBSLGA.ExJKCompPer > JOBSLGA.ExJKCompPer ? 'higher' : 'lower';
 
@@ -49,7 +49,7 @@ const CovidPage = () => {
       <p>
         COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
         developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws on
-        the economic forecast model development by NIEIR and focusses on the impacts to June 2020. We will continue to
+        the economic forecast model developed by NIEIR and focuses on the impacts to June 2020. We will continue to
         update our forecasts as more information is known about the health measures and the effectiveness of economic
         policy.{' '}
       </p>
@@ -92,11 +92,11 @@ const CovidPage = () => {
       <SectionTitle>Key Insights</SectionTitle>
       <TopList>
         <li>
-          Gross regional product is forecast to {GRPLGAText} by {formatLongNumber(GRPLGA.QtrChgPer)}% in the June
+          Gross Regional Product is forecast to {GRPLGAText} by {formatLongNumber(GRPLGA.QtrChgPer)}% in the June
           Quarter 2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
         </li>
         <li>
-          Local Jobs are forecast to {JOBSLGAText} by {formatLongNumber(JOBSLGA.QtrChgPer)}% in the June Qarter 2020.
+          Local Jobs are forecast to {JOBSLGAText} by {formatLongNumber(JOBSLGA.QtrChgPer)}% in the June Quarter 2020.
           This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.QtrChg))} local jobs.
         </li>
         <li>
@@ -117,13 +117,13 @@ const CovidPage = () => {
         The forecast model estimates the impact on final demand on each industry and then calculates the multiplier
         effects using NIEIR’s regional database. Assumptions are made about the household, business and government
         supression rates directly flowing from the measures introduced to contain the virus. The impact of economic
-        measures is also incorporated into the modelling. A contingeny factor is also assumed to account for downside
+        measures is also incorporated into the modelling. A contingency factor is also assumed to account for downside
         risks (e.g. productivity impacts from working at home).{' '}
       </p>
       <p>
-        The modelling assumes that rigid social distancing measures are maintained to well into June. A gradual
-        unwinding of social distancing measures are assumed but a more complete recovery only becomes possible when a
-        vaccine becomes generally available by the March or June quarter 2021.
+        The modelling assumes that rigid social distancing measures are maintained well into June. A gradual unwinding
+        of social distancing measures are assumed but a more complete recovery only becomes possible when a vaccine
+        becomes generally available by the March or June quarter 2021.
       </p>
       <p>
         These forecasts are subject to a high degree of uncertainty and will continue to be improved and updated as more
