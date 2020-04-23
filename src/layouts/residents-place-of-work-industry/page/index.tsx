@@ -120,7 +120,7 @@ const tableBuilder = () => {
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers`;
+  const tableTitle = `Employment location of resident workers by industry`;
 
   const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => {
     return {
@@ -200,7 +200,7 @@ const tableBuilderLGA = () => {
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers by LGA by occupation`;
+  const tableTitle = `Employment location of resident workers by LGA by industry`;
 
   const serie = tableData[1].map(({ LabelKey, GeoName, Number, Per }) => ({
     id: LabelKey,
@@ -286,7 +286,7 @@ const chartBuilder = () => {
   });
 
   const chartType = 'pie';
-  const chartTitle = `Residential location of local workers, 2016`;
+  const chartTitle = `Employment location of resident workers, 2016`;
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
   const chartContainerID = 'chart1';
