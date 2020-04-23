@@ -11,26 +11,26 @@ const GeomQuery = ({ ClientID }) => {
   return query;
 };
 
-const DestByOccupationQuery = ({ ClientID, OccuKey }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Occupation_Summ_2016](${ClientID},10,NULL,${OccuKey}) order by LabelKey`;
+const DestByIndustryQuery = ({ ClientID, Indkey }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Industry_Summ_2016](${ClientID},10,NULL,${Indkey}) order by LabelKey`;
   return query;
 };
 
-const DestByOccupationAllQuery = ({ ClientID, OccuKey }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Occupation_2016](${ClientID},10,NULL,${OccuKey}) Where Number > 9 order by Number DESC`;
+const DestByIndustryAllQuery = ({ ClientID, Indkey }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Industry_2016](${ClientID},10,NULL,${Indkey}) Where Number > 9 order by Number DESC`;
   return query;
 };
 const fetchData = async ({ filters }) => {
   const { clientAlias, LongName, ClientID } = filters;
-  const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7330?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=${filters.OccuKey}`;
-  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/residents-place-of-work-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=${filters.OccuKey}&dataid=388`;
+  const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7328?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}`;
+  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/residents-place-of-work-Industry?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=386`;
   let mapData = await axios
     .all([axios.get(layersUrl), axios.get(thematicUrl)])
     .then(axios.spread((data, thematic) => ({ layerData: data.data, thematicData: thematic.data })));
 
   const geomData = await sqlConnection.raw(GeomQuery(filters));
-  const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
-  const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
+  const DestByOccData = await sqlConnection.raw(DestByIndustryAllQuery(filters));
+  const DestByOccSumData = await sqlConnection.raw(DestByIndustryQuery(filters));
 
   const { layerData, thematicData } = mapData;
   const defaultShapeOption = {
@@ -98,7 +98,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentOccupationName: getActiveToggle(filterToggles, 'OccuKey'),
+    currentOccupationName: getActiveToggle(filterToggles, 'Indkey'),
   };
   return activeCustomToggles;
 };
@@ -114,15 +114,14 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: ({ data }): string => {
-        return `Australian Bureau of Statistics (ABS) – Census 2016 – by journey to work`;
+        return `Australian Bureau of Statistics (ABS) – Census 2016 – by place to work`;
       },
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        const occupationText = +filters.OccuKey === 24000 ? '' : ` as ${data.currentOccupationName}`;
+        const occupationText = +filters.Indkey === 24000 ? '' : ` in ${data.currentOccupationName}`;
         const mainArea = contentData.tableData[0].find(({ LabelKey }) => LabelKey === 3);
-        const total = contentData.tableData[0].find(({ OccupationWebKey }) => OccupationWebKey === 30000);
         return `${formatNumber(mainArea.Number)} or ${formatPercent(mainArea.Per)}% of ${
           data.prefixedAreaName
         }’s resident workers ${occupationText} travel outside of the area to work.`;
@@ -132,11 +131,18 @@ const pageContent = {
   filterToggles: [
     {
       Database: 'CommApp',
-      DefaultValue: '24000',
-      Label: 'Occupation',
-      Params: null,
-      StoredProcedure: 'sp_Toggle_Econ_Occupation',
-      ParamName: 'OccuKey',
+      DefaultValue: '23000',
+      Label: 'Select industry:',
+      Params: [
+        {
+          IGBMID: '0',
+        },
+        {
+          a: '0',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Industry',
+      ParamName: 'Indkey',
     },
   ],
 };

@@ -104,7 +104,7 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: ({ data }): string => {
-        return `Workers place of residence by industry - ${data.currentOccupationName}`;
+        return `Residents place of work by industry - ${data.currentOccupationName}`;
       },
     },
     {

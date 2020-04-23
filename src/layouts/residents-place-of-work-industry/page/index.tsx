@@ -25,7 +25,7 @@ const Split = styled.div`
 `;
 
 // #region template page
-const ResidentsPlaceOfWorkOccupationPage = () => {
+const ResidentsPlaceOfWorkIndustryPage = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const { clientAlias } = useContext(ClientContext);
   const {
@@ -40,25 +40,33 @@ const ResidentsPlaceOfWorkOccupationPage = () => {
       <PageIntro>
         <div>
           <p>
-            Journey to Work (residents) data shows where {prefixedAreaName}'s resident workers go to work and whether
-            they need to travel significant distances to work. This impacts upon planning and advocacy for roads and
-            public transport provision, as well as economic development strategies to develop local employment which
-            fits the skills and qualifications of the resident workers.
+            Journey to Work (residents) data shows where the Riverina and Murray Region's resident workers go to work
+            and whether they need to travel significant distances to work. This impacts upon planning and advocacy for
+            roads and public transport provision, as well as economic development strategies to develop local employment
+            which fits the skills and qualifications of the resident workers.
           </p>
           <p>
-            The distance travelled by residents in different broad occupations may be influenced by; the nature of
+            The distance travelled by residents in different industry sectors may be influenced by; the nature of
             employment opportunities versus the skills and qualifications of local residents; transport options
             available and commuting times; relationship between wages and salaries (people will travel further for
-            higher paid jobs), house prices in the local area; and the geographic size of the local area.
+            higher paid jobs), house prices in the local area; and the geographic size of the local area (in large
+            areas, local jobs may not in fact be so local, while in more compact areas, resident workers may walk to
+            work in a neighbouring LGA.).
+          </p>
+          <p>
+            Please note that where an industry has a very small number of employed residents, there may be no
+            information displayed on the map or the detailed table due to insufficient residents travelling to any one
+            area to display. The summary table will still include the information for the total residents working
+            locally or travelling outside the area to work.
           </p>
           <p>
             Residents place of work data should be viewed alongside{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employed-locally`, 'Self-containment')} and{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers ratio')}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers ratio')}{' '}
             datasets, as well as modelled{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employed-residents`, 'Employed residents')} estimates,
             which are updated annually. The{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}{' '}
             section will provide the characteristics of resident workers.
           </p>
         </div>
@@ -89,7 +97,7 @@ const ResidentsPlaceOfWorkOccupationPage = () => {
     </>
   );
 };
-export default ResidentsPlaceOfWorkOccupationPage;
+export default ResidentsPlaceOfWorkIndustryPage;
 // #endregion
 
 // #region sources
