@@ -14,7 +14,7 @@ const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
   return query;
 };
 
-const fetchData = async ({ filters, clientAlias, mapLayers }) => {
+const fetchData = async ({ filters }) => {
   const newsData = await sqlConnection.raw(newDataQuery());
   const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
   const headlineData = await sqlConnection.raw(headlineQuery(filters));
@@ -25,7 +25,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ data }): string => `COVID-19 Economic Outlook Tool (Last updated 23/04/2020)`,
+      renderString: (): string => `COVID-19 Economic Outlook Tool (Last updated 23/04/2020)`,
     },
   ],
   filterToggles: [],
