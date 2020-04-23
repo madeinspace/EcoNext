@@ -30,7 +30,6 @@ const ResidentsPlaceOfWorkIndustryPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
-    entityData: { prefixedAreaName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);

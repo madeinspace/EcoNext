@@ -120,7 +120,8 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        const occupationText = +filters.Indkey === 24000 ? '' : ` in ${data.currentOccupationName}`;
+        console.log('filters: ', filters);
+        const occupationText = +filters.Indkey === 23000 ? '' : ` in ${data.currentOccupationName}`;
         const mainArea = contentData.tableData[0].find(({ LabelKey }) => LabelKey === 3);
         return `${formatNumber(mainArea.Number)} or ${formatPercent(mainArea.Per)}% of ${
           data.prefixedAreaName
