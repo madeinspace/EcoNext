@@ -6,27 +6,31 @@ import { adjust, formatNumber, formatPercent } from '../../utils';
 import _ from 'lodash';
 const COM_CLIENT_DB = 'CommClient';
 
-const GeomQuery = ({ ClientID }) => `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelopeLGA] ${ClientID}`;
-const DestByOccupationQuery = ({ ClientID, Indkey }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Industry_Summ_2016](${ClientID},10,NULL,${Indkey}) order by LabelKey`;
+const GeomQuery = ({ ClientID }) => {
+  const query = `exec ${COM_CLIENT_DB}.[dbo].[sp_GeomEconomyEnvelopeLGA] ${ClientID}`;
   return query;
 };
 
-const DestByOccupationAllQuery = ({ ClientID, Indkey }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Industry_2016](${ClientID},10,NULL,${Indkey}) Where Number > 9 order by Number DESC`;
+const DestByOccupationQuery = ({ ClientID, OccuKey }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Occupation_Summ_2016](${ClientID},10,NULL,${OccuKey}) order by LabelKey`;
+  return query;
+};
+
+const DestByOccupationAllQuery = ({ ClientID, OccuKey }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Origin_LGA_by_Occupation_2016](${ClientID},10,NULL,${OccuKey}) Where Number > 9 order by Number DESC`;
   return query;
 };
 const fetchData = async ({ filters }) => {
   const { clientAlias, LongName, ClientID } = filters;
-  const geomData = await sqlConnection.raw(GeomQuery(filters));
-  const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
-  const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
-  const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7313?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}`;
-  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/workers-place-of-residence-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=383`;
-
+  const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7330?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=${filters.OccuKey}`;
+  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/residents-place-of-work-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=${filters.OccuKey}&dataid=388`;
   let mapData = await axios
     .all([axios.get(layersUrl), axios.get(thematicUrl)])
     .then(axios.spread((data, thematic) => ({ layerData: data.data, thematicData: thematic.data })));
+
+  const geomData = await sqlConnection.raw(GeomQuery(filters));
+  const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
+  const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
 
   const { layerData, thematicData } = mapData;
   const defaultShapeOption = {
@@ -94,7 +98,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentOccupationName: getActiveToggle(filterToggles, 'Indkey'),
+    currentOccupationName: getActiveToggle(filterToggles, 'OccuKey'),
   };
   return activeCustomToggles;
 };
@@ -104,7 +108,7 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: ({ data }): string => {
-        return `Workers place of residence by industry - ${data.currentOccupationName}`;
+        return `Residents place of work by occupation - ${data.currentOccupationName}`;
       },
     },
     {
@@ -116,29 +120,23 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        const mainArea = contentData.tableData[0].find(({ LabelName }) => LabelName === 'Live and work in the area');
-        const total = contentData.tableData[0].find(({ IndustryWebKey }) => IndustryWebKey === 30000);
-        return `Of the ${formatNumber(total.Number)} local workers in ${data.prefixedAreaName}, ${formatNumber(
-          mainArea.Number,
-        )} or ${formatPercent(mainArea.Per)}% also live in the area.`;
+        const occupationText = +filters.OccuKey === 24000 ? '' : ` as ${data.currentOccupationName}`;
+        const mainArea = contentData.tableData[0].find(({ LabelKey }) => LabelKey === 3);
+        const total = contentData.tableData[0].find(({ OccupationWebKey }) => OccupationWebKey === 30000);
+        return `${formatNumber(mainArea.Number)} or ${formatPercent(mainArea.Per)}% of ${
+          data.prefixedAreaName
+        }’s resident workers ${occupationText} travel outside of the area to work.`;
       },
     },
   ],
   filterToggles: [
     {
       Database: 'CommApp',
-      DefaultValue: '23000',
-      Label: 'Select industry:',
-      Params: [
-        {
-          IGBMID: '0',
-        },
-        {
-          a: '0',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Industry',
-      ParamName: 'Indkey',
+      DefaultValue: '24000',
+      Label: 'Occupation',
+      Params: null,
+      StoredProcedure: 'sp_Toggle_Econ_Occupation',
+      ParamName: 'OccuKey',
     },
   ],
 };
