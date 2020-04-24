@@ -3,7 +3,9 @@ import _ from 'lodash';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
-import { formatPercent, formatLongNumber, formatNumber, absSort } from '../../../utils';
+import { formatPercent, formatLongNumber, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
+import { ItemWrapper } from '../../../styles/MainContentStyles';
+import EntityChart from '../../../components/chart/EntityChart';
 
 // #endregion
 
@@ -42,7 +44,12 @@ const CovidPage = () => {
       .value();
 
   const TopThree = Top(3);
-  const topThree = TopThree(absSort(topThreeData, 'QtrChgPer'));
+  const topThree = TopThree(
+    absSort(
+      topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000),
+      'QtrChg',
+    ),
+  );
 
   return (
     <>
@@ -82,7 +89,7 @@ const CovidPage = () => {
             {topThree.map(item => {
               return (
                 <li>
-                  {item.NieirIndWeb1DigitName} ({formatLongNumber(item.QtrChgPer)}%)
+                  {item.NieirIndWeb1DigitName} ({formatNumber(item.QtrChg)} local jobs)
                 </li>
               );
             })}
@@ -107,6 +114,23 @@ const CovidPage = () => {
           The impact on employed residents ({formatLongNumber(URJOBSLGA.ExJKCompPer)}%) was {URJOBSIMPACTText} than the
           local job impact.
         </li>
+      </TopList>
+      <SectionTitle>Sector Employment impact</SectionTitle>
+      <ItemWrapper>
+        <EntityChart data={chartBuilderChange()} />
+      </ItemWrapper>
+      <SectionTitle>Data updates</SectionTitle>
+      <p>
+        This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
+        new information becomes available, e.g. changes to government stimulus, shifts in quarantine conditions, or the
+        release of relevant date etc. revisions and updates will be applied, and new data will be added where possible.{' '}
+      </p>
+      <p>New features to be published soon, include;</p>
+      <TopList>
+        <li>jobs detail by industry</li>
+        <li>employed resident data</li>
+        <li>interactive charts and export functionality</li>
+        <li>etailed analysis of Stimulus & Recovery Phase</li>
       </TopList>
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
@@ -134,6 +158,87 @@ const CovidPage = () => {
   );
 };
 export default CovidPage;
+// #endregion
+
+// #region chart builder change
+const chartBuilderChange = () => {
+  const { LongName } = useContext(ClientContext);
+  const {
+    contentData: { newsData, headlineData, topThreeData },
+  } = useContext(PageContext);
+  const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
+  const serie = noTotal.map(item => item.QtrChg);
+  const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
+  const chartType = 'bar';
+  const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2020 Q2`;
+  const chartSubtitle = `${LongName}`;
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `Change in the number of employed (estimated)`;
+  const rawDataSource =
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+  const chartContainerID = 'chartwfoqChange';
+  const chartTemplate = 'Standard';
+  const chartHeight = 500;
+
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+      this.category
+    }, ${LongName}: ${formatChangeInt(this.y)}`;
+  };
+
+  return {
+    cssClass: '',
+    highchartOptions: {
+      height: chartHeight,
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      series: [
+        {
+          name: `serie name`,
+          data: serie,
+        },
+      ],
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          title: {
+            text: yAxisTitle,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return formatChangeInt(this.value);
+            },
+          },
+        },
+      ],
+    },
+    rawDataSource,
+    dataSource: '',
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
+  };
+};
+
 // #endregion
 
 const TilesGrid = styled.div`
