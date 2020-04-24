@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { formatPercent, formatLongNumber, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
 import { ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
+import { IdLink } from '../../../components/ui/links';
 
 // #endregion
 
@@ -160,6 +161,13 @@ const CovidPage = () => {
 export default CovidPage;
 // #endregion
 
+const ChartSource = () => (
+  <p>
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    <IdLink />.
+  </p>
+);
+
 // #region chart builder change
 const chartBuilderChange = () => {
   const { LongName } = useContext(ClientContext);
@@ -170,7 +178,7 @@ const chartBuilderChange = () => {
   const serie = noTotal.map(item => item.QtrChg);
   const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const chartType = 'bar';
-  const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2020 Q2`;
+  const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2019/20 Q2`;
   const chartSubtitle = `${LongName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;
@@ -232,7 +240,7 @@ const chartBuilderChange = () => {
       ],
     },
     rawDataSource,
-    dataSource: '',
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,
