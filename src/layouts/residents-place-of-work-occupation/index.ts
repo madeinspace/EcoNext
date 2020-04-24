@@ -114,7 +114,7 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: ({ data }): string => {
-        return `Australian Bureau of Statistics (ABS) – Census 2016 – by journey to work`;
+        return `Australian Bureau of Statistics (ABS) – Census 2016 – by place of work`;
       },
     },
     {

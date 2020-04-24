@@ -131,7 +131,7 @@ const CovidPage = () => {
         <li>jobs detail by industry</li>
         <li>employed resident data</li>
         <li>interactive charts and export functionality</li>
-        <li>etailed analysis of Stimulus & Recovery Phase</li>
+        <li>detailed analysis of Stimulus & Recovery Phase</li>
       </TopList>
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
@@ -172,7 +172,7 @@ const ChartSource = () => (
 const chartBuilderChange = () => {
   const { LongName } = useContext(ClientContext);
   const {
-    contentData: { newsData, headlineData, topThreeData },
+    contentData: { topThreeData },
   } = useContext(PageContext);
   const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
   const serie = noTotal.map(item => item.QtrChg);
