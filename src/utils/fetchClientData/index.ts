@@ -31,11 +31,16 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
     .fetchAll();
 
+  console.log('clientData: ', clientData);
   if (clientData.length === 0) {
     return null;
   }
 
   const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix } = clientData[0];
+
+  if (Pages === undefined) {
+    return null;
+  }
   const allPagesArray = Object.keys(AllPages).map(key => AllPages[key]);
   const filteredAreas = Areas.filter(({ AppID }) => AppID === 4).map(area => ({ ...area, ID: area.WebID }));
   const filteredPages = Pages.filter(({ AppID }) => AppID === 4);

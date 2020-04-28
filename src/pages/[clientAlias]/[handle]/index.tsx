@@ -72,11 +72,15 @@ const PageComponent = ({ client, page }): JSX.Element => {
 PageComponent.getInitialProps = async function({ query, req: { containers } }): Promise<{}> {
   const { clientAlias, handle, ...providedFilters } = query;
   const client: any = await fetchClientData({ clientAlias, containers });
-  const clientPage = await client.clientPages.find(page => page.Alias === handle);
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
 
-  // no page or client? => 404
-  if (!clientPage || !client) return fourOfourData;
+  // no client? => 404
+  if (!client) return fourOfourData;
+
+  const clientPage = await client.clientPages.find(page => page.Alias === handle);
+
+  // no page? => 404
+  if (!clientPage) return fourOfourData;
 
   const layoutData = await fetchLayout(handle);
   const { ID, isLite, LongName } = client;
@@ -113,7 +117,8 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
 
   // we pass that data to interpolate the entities
   const customToggles = await activeCustomToggles({ filterToggles });
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID');
+  console.log('currentAreaName: ', currentAreaName);
   const HasPrefix = client.HasPrefix;
   const prefix = HasPrefix ? 'the ' : '';
   const prefixedAreaName = `${prefix}${currentAreaName}`;
