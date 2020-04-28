@@ -118,7 +118,6 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   // we pass that data to interpolate the entities
   const customToggles = await activeCustomToggles({ filterToggles });
   const currentAreaName = getActiveToggle(filterToggles, 'WebID');
-  console.log('currentAreaName: ', currentAreaName);
   const HasPrefix = client.HasPrefix;
   const prefix = HasPrefix ? 'the ' : '';
   const prefixedAreaName = `${prefix}${currentAreaName}`;

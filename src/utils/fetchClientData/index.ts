@@ -31,7 +31,6 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     .query(`SELECT * FROM c WHERE c.Alias = "${clientAlias}"`)
     .fetchAll();
 
-  console.log('clientData: ', clientData);
   if (clientData.length === 0) {
     return null;
   }
