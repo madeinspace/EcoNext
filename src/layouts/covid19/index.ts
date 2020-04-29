@@ -6,12 +6,10 @@ const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`
 
 const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${+ClientID},${+WebID},${+BMID}) ORDER BY QtrChg DESC`;
-  console.log('topThreeQuery: ', query);
   return query;
 };
 const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${+ClientID},${+WebID},${+BMID})`;
-  console.log('headlineQuery: ', query);
   return query;
 };
 

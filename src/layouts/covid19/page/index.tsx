@@ -64,7 +64,6 @@ const CovidPage = () => {
       'QtrChg',
     ),
   );
-  console.log('topThree: ', topThree);
 
   return (
     <>
@@ -139,8 +138,8 @@ const CovidPage = () => {
       <SectionTitle>Sector Employment impact</SectionTitle>
       <InfoBox>
         <span>
-          <b>Did you know? </b> You can show/hide or highlight a serie in the chart below by clicking/tapping or
-          hovering on a legend (ie: JobKeeper Component).
+          <b>Did you know? </b> You can show/hide or highlight a serie in the chart below by clicking or hovering on a
+          legend (ie: JobKeeper Component).
         </span>
       </InfoBox>
       <ItemWrapper>
@@ -203,7 +202,6 @@ const chartBuilderChange = () => {
     contentData: { topThreeData },
   } = useContext(PageContext);
   const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
-  console.log('topThreeData: ', topThreeData);
   const serie = noTotal.map(item => item.QtrChg);
   const withoutJK = noTotal.map(item => item.NJKQtrComp);
   const WithJK = noTotal.map(item => item.JKQtrComp);
