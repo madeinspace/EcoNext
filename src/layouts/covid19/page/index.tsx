@@ -29,6 +29,7 @@ const CovidPage = () => {
     contentData: { newsData, headlineData, topThreeData },
   } = useContext(PageContext);
 
+  console.log('headlineData: ', headlineData);
   const LGA = headlineData.filter(({ WebID }) => WebID != 40);
   const BM = headlineData.filter(({ WebID }) => WebID === 40);
   const currentBenchmarkName = BM[0].GeoName;
@@ -119,19 +120,19 @@ const CovidPage = () => {
       <SectionTitle>Key Insights</SectionTitle>
       <TopList>
         <li>
-          Gross Regional Product is forecast to {GRPLGAText} by {formatLongNumber(GRPLGA.QtrChgPer)}% in the June
-          Quarter 2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
+          Gross Regional Product is forecast to {GRPLGAText} by {formatPercent(GRPLGA.QtrChgPer)}% in the June Quarter
+          2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
         </li>
         <li>
-          Local Jobs are forecast to {JOBSLGAText} by {formatLongNumber(JOBSLGA.QtrChgPer)}% in the June Quarter 2020.
-          This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.QtrChg))} local jobs.
+          Local Jobs are forecast to {JOBSLGAText} by {formatPercent(JOBSLGA.ExJKCompPer)}% in the June Quarter 2020.
+          This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} local jobs.
         </li>
         <li>
-          If JobKeeper recipients are counted as 'employed' then the employment {JOBSLGATextAlt} is estimated at{' '}
-          {formatLongNumber(JOBSLGA.ExJKCompPer)}% ({formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} jobs)
+          If JobKeeper recipients impacts are included then the employment {JOBSLGATextAlt} is estimated at{' '}
+          {formatPercent(JOBSLGA.QtrChgPer)}% ({formatNumber(Math.abs(JOBSLGA.QtrChg))} jobs)
         </li>
         <li>
-          The impact on employed residents ({formatLongNumber(URJOBSLGA.ExJKCompPer)}%) was {URJOBSIMPACTText} than the
+          The impact on employed residents ({formatPercent(URJOBSLGA.ExJKCompPer)}%) was {URJOBSIMPACTText} than the
           local job impact.
         </li>
       </TopList>
@@ -145,6 +146,14 @@ const CovidPage = () => {
       <ItemWrapper>
         <EntityChart data={chartBuilderChange()} />
       </ItemWrapper>
+      <p>Impacts have been split into:</p>
+      <TopList>
+        <li>not on JobKeeper – unemployed as defined by the ABS; and</li>
+        <li>
+          JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic
+          activity.
+        </li>
+      </TopList>
       <SectionTitle>Data updates (Last updated 23/04/2020)</SectionTitle>
       <p>
         This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
@@ -180,7 +189,6 @@ const CovidPage = () => {
         These forecasts are subject to a high degree of uncertainty and will continue to be improved and updated as more
         information is released.{' '}
       </p>
-      {/* <p>A more detailed methodology paper can be downloaded here.</p> */}
     </>
   );
 };
@@ -189,7 +197,7 @@ export default CovidPage;
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
