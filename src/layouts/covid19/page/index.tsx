@@ -17,6 +17,7 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { IdLink } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import InfoBox from '../../../components/ui/infoBox';
 
 // #endregion
 
@@ -24,8 +25,10 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 const CovidPage = () => {
   const { LongName } = useContext(ClientContext);
   const {
+    entityData: { currentAreaName },
     contentData: { newsData, headlineData, topThreeData },
   } = useContext(PageContext);
+
   const LGA = headlineData.filter(({ WebID }) => WebID != 40);
   const BM = headlineData.filter(({ WebID }) => WebID === 40);
   const currentBenchmarkName = BM[0].GeoName;
@@ -78,7 +81,7 @@ const CovidPage = () => {
 
       <ControlPanel />
       <SectionTitle>
-        Headline estimates - {LongName}
+        Headline estimates - {currentAreaName}
         <span>Impacts refer to June Quarter 2020 compared to 2018/19 4-quarter average</span>
       </SectionTitle>
       <TilesGrid>
@@ -134,6 +137,12 @@ const CovidPage = () => {
         </li>
       </TopList>
       <SectionTitle>Sector Employment impact</SectionTitle>
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> You can show/hide or highlight a serie in the chart below by clicking/tapping or
+          hovering on a legend (ie: JobKeeper Component).
+        </span>
+      </InfoBox>
       <ItemWrapper>
         <EntityChart data={chartBuilderChange()} />
       </ItemWrapper>
@@ -190,6 +199,7 @@ const ChartSource = () => (
 const chartBuilderChange = () => {
   const { LongName } = useContext(ClientContext);
   const {
+    entityData: { currentAreaName },
     contentData: { topThreeData },
   } = useContext(PageContext);
   const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
@@ -200,7 +210,7 @@ const chartBuilderChange = () => {
   const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const chartType = 'bar';
   const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2019/20 Q2`;
-  const chartSubtitle = `${LongName}`;
+  const chartSubtitle = `${currentAreaName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;
   const rawDataSource =

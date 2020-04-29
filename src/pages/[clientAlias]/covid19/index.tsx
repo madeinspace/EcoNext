@@ -13,6 +13,7 @@ import { Actions, Share, ExportPage } from '../../../components/Actions';
 import Error from 'next/error';
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
 import { activeCustomToggles } from '../../../layouts/covid19';
+import getActiveToggle from '../../../utils/getActiveToggle';
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
   const MainContent = PageMappings['covid19'];
@@ -85,10 +86,10 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   const filters = Object.assign(tempfilters, ...activeFilters);
   // we pass that data to interpolate the entities
   const customToggles = await activeCustomToggles({ filterToggles });
-  console.log('customToggles: ', customToggles);
+  const currentAreaName = getActiveToggle(filterToggles, 'WebID', client.LongName);
   // we pass that data to interpolate the entities
   const data = {
-    currentAreaName: client.LongName,
+    currentAreaName,
     clientID: client.ClientID,
     HasPrefix: client.HasPrefix,
     ...customToggles,
