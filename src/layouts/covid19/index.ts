@@ -27,6 +27,24 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: (): string => `COVID-19 Economic Outlook Tool`,
+      StoredProcedure: 'sp_Condition_IsLiteClient',
+      Params: [
+        {
+          ClientID: '0',
+        },
+      ],
+      Value: '177',
+    },
+    {
+      Title: 'SubTitle',
+      renderString: (): string => `COVID-19 update`,
+      StoredProcedure: 'sp_Condition_IsLiteClient',
+      Params: [
+        {
+          ClientID: '0',
+        },
+      ],
+      Value: '178',
     },
   ],
   filterToggles: [
