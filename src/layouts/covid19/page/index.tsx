@@ -146,14 +146,7 @@ const CovidPage = () => {
       <ItemWrapper>
         <EntityChart data={chartBuilderChange()} />
       </ItemWrapper>
-      <p>Impacts have been split into:</p>
-      <TopList>
-        <li>not on JobKeeper – unemployed as defined by the ABS; and</li>
-        <li>
-          JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic
-          activity.
-        </li>
-      </TopList>
+
       <SectionTitle>Data updates (Last updated 23/04/2020)</SectionTitle>
       <p>
         This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
@@ -198,7 +191,11 @@ export default CovidPage;
 const ChartSource = () => (
   <p>
     Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by{' '}
-    <IdLink />.
+    <IdLink />.<br />
+    <p>
+      Impacts have been split into: (1) not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper –
+      performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.
+    </p>
   </p>
 );
 
@@ -220,7 +217,7 @@ const chartBuilderChange = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
