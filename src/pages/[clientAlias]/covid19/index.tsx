@@ -11,6 +11,8 @@ import filterEntities from '../../../utils/filterEntities';
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import Error from 'next/error';
+import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
+import { activeCustomToggles } from '../../../layouts/covid19';
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
   const MainContent = PageMappings['covid19'];
@@ -62,38 +64,45 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     { ClientID: ID, IsLite: isLite, WebID: 10 },
   );
 
-  const filters = {
+  /**
+   * the provided filters from the query string can be wrong
+   * but we don't know it yet at this stage and we'll have to update them later
+   * (see note in the fetchToggleOptions() method)
+   */
+  const tempfilters = {
     ...pageDefaultFilters,
     ...providedFilters,
   };
 
+  const filterToggles = await fetchToggleOptions(
+    tempfilters,
+    [...pageContent['filterToggles'], ...globalToggles] || [],
+  );
+
+  const activeFilters = filterToggles.map(({ key, value }) => ({ [key]: value }));
+
+  // let's update the filters with the active one
+  const filters = Object.assign(tempfilters, ...activeFilters);
+  // we pass that data to interpolate the entities
+  const customToggles = await activeCustomToggles({ filterToggles });
+  console.log('customToggles: ', customToggles);
   // we pass that data to interpolate the entities
   const data = {
     currentAreaName: client.LongName,
     clientID: client.ClientID,
     HasPrefix: client.HasPrefix,
+    ...customToggles,
   };
 
-  const uniqueLayers = [];
-  const map = new Map();
-  for (const item of client.clientAreas) {
-    if (!map.has(item.LayerID)) {
-      map.set(item.LayerID, true);
-      uniqueLayers.push({
-        id: item.LayerID,
-        name: item.Group,
-      });
-    }
-  }
-  const mapLayers = [...new Set(client.clientAreas.map(item => item.LayerID))].join(',');
-  const contentData = await fetchData({ filters, clientAlias, mapLayers });
+  const contentData = await fetchData({ filters, clientAlias });
+
   const entities = await filterEntities(filters, pageContent['entities'], { contentData, data });
 
   const page = {
     handle,
     contentData,
     filters,
-    filterToggles: [],
+    filterToggles,
     providedFilters: [],
     pageData,
     entities,

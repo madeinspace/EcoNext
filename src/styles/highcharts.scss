@@ -1000,3 +1000,15 @@ text.highcharts-drilldown-data-label,
 .highcharts-credits {
   display: none;
 }
+
+.jobkeeper {
+  .highcharts-negative.highcharts-color-0 {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
+}
+
+.highcharts-legend-item.jobkeeper {
+  fill: #e4d354;
+  stroke: #e4d354;
+}

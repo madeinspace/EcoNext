@@ -4,9 +4,19 @@ import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
 import { formatPercent, formatLongNumber, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
-import { ItemWrapper } from '../../../styles/MainContentStyles';
+import {
+  ItemWrapper,
+  EntityContainer,
+  TitleContainer,
+  MainTitle,
+  _SubTitle,
+  PageIntro,
+  PageIntroFullWidth,
+} from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import { IdLink } from '../../../components/ui/links';
+import useEntityText from '../../../utils/useEntityText';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 
 // #endregion
 
@@ -16,7 +26,7 @@ const CovidPage = () => {
   const {
     contentData: { newsData, headlineData, topThreeData },
   } = useContext(PageContext);
-  const LGA = headlineData.filter(({ WebID }) => WebID === 10);
+  const LGA = headlineData.filter(({ WebID }) => WebID != 40);
   const BM = headlineData.filter(({ WebID }) => WebID === 40);
   const currentBenchmarkName = BM[0].GeoName;
 
@@ -51,46 +61,53 @@ const CovidPage = () => {
       'QtrChg',
     ),
   );
+  console.log('topThree: ', topThree);
 
   return (
     <>
-      <p>
-        COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
-        developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws on
-        the economic forecast model developed by NIEIR and focuses on the impacts to June 2020. We will continue to
-        update our forecasts as more information is known about the health measures and the effectiveness of economic
-        policy.{' '}
-      </p>
+      <PageIntroFullWidth>
+        {' '}
+        <p>
+          COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
+          developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws
+          on the economic forecast model developed by NIEIR and focuses on the impacts to June 2020. We will continue to
+          update our forecasts as more information is known about the health measures and the effectiveness of economic
+          policy.{' '}
+        </p>
+      </PageIntroFullWidth>
 
-      <SectionTitle>Headline estimates - {LongName}</SectionTitle>
+      <ControlPanel />
+      <SectionTitle>
+        Headline estimates - {LongName}
+        <span>Impacts refer to June Quarter 2020 compared to 2018/19 4-quarter average</span>
+      </SectionTitle>
       <TilesGrid>
         <Tile>
           <Title>GRP change</Title>
-          <NumberValue>{formatLongNumber(GRPLGA.QtrChgPer)}%</NumberValue>
+          <NumberValue>{formatPercent(GRPLGA.QtrChgPer)}%</NumberValue>
           <Footer>
-            ({currentBenchmarkName}: {formatLongNumber(GRPBM.QtrChgPer)}%)
+            ({currentBenchmarkName}: {formatPercent(GRPBM.QtrChgPer)}%)
           </Footer>
         </Tile>
         <Tile>
           <Title>Local job change</Title>
-          <NumberValue>{formatLongNumber(JOBSLGA.QtrChgPer)}%</NumberValue>
-          <Footer>({formatLongNumber(JOBSLGA.ExJKCompPer)}% excluding job keeper recipients)</Footer>
+          <NumberValue>{formatPercent(JOBSLGA.ExJKCompPer)}%</NumberValue>
+          <Footer>({formatPercent(JOBSLGA.QtrChgPer)}% including JobKeeper recipients)</Footer>
         </Tile>
         <Tile>
           <Title>Employed resident change</Title>
-          <NumberValue>{formatLongNumber(URJOBSLGA.QtrChgPer)}%</NumberValue>
-          <Footer>({formatLongNumber(URJOBSLGA.ExJKCompPer)}% excluding job keeper recipients)</Footer>
+          <NumberValue>{formatPercent(URJOBSLGA.ExJKCompPer)}%</NumberValue>
+          <Footer>({formatPercent(URJOBSLGA.QtrChgPer)}% including JobKeeper recipients)</Footer>
         </Tile>
       </TilesGrid>
       <TilesGrid2Col>
         <Tile>
-          <Title>Sector impacts - Top 3</Title>
+          <Title>Sector impacts - Top 3 (excluding JobKeeper)</Title>
           <TopList>
-            {' '}
             {topThree.map(item => {
               return (
-                <li>
-                  {item.NieirIndWeb1DigitName} ({formatNumber(item.QtrChg)} local jobs)
+                <li key={item.NieirInd1DigitWebKey}>
+                  {item.NieirIndWeb1DigitName} ({formatNumber(item.NJKQtrComp)} local jobs)
                 </li>
               );
             })}
@@ -108,7 +125,7 @@ const CovidPage = () => {
           This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.QtrChg))} local jobs.
         </li>
         <li>
-          If job keeper recipients are counted as 'employed' then the employment {JOBSLGATextAlt} is estimated at{' '}
+          If JobKeeper recipients are counted as 'employed' then the employment {JOBSLGATextAlt} is estimated at{' '}
           {formatLongNumber(JOBSLGA.ExJKCompPer)}% ({formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} jobs)
         </li>
         <li>
@@ -120,7 +137,7 @@ const CovidPage = () => {
       <ItemWrapper>
         <EntityChart data={chartBuilderChange()} />
       </ItemWrapper>
-      <SectionTitle>Data updates</SectionTitle>
+      <SectionTitle>Data updates (Last updated 23/04/2020)</SectionTitle>
       <p>
         This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
         new information becomes available, e.g. changes to government stimulus, shifts in quarantine conditions, or the
@@ -132,6 +149,7 @@ const CovidPage = () => {
         <li>employed resident data</li>
         <li>interactive charts and export functionality</li>
         <li>detailed analysis of Stimulus & Recovery Phase</li>
+        <li>Benchmarks so you can compare your impacts to other regions</li>
       </TopList>
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
@@ -175,7 +193,10 @@ const chartBuilderChange = () => {
     contentData: { topThreeData },
   } = useContext(PageContext);
   const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
+  console.log('topThreeData: ', topThreeData);
   const serie = noTotal.map(item => item.QtrChg);
+  const withoutJK = noTotal.map(item => item.NJKQtrComp);
+  const WithJK = noTotal.map(item => item.JKQtrComp);
   const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const chartType = 'bar';
   const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2019/20 Q2`;
@@ -213,10 +234,20 @@ const chartBuilderChange = () => {
           return tooltip.apply(this);
         },
       },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+        },
+      },
       series: [
         {
-          name: `serie name`,
-          data: serie,
+          className: 'jobkeeper',
+          name: `JobKeeper Component`,
+          data: WithJK,
+        },
+        {
+          name: `Not on JobKeeper`,
+          data: withoutJK,
         },
       ],
       xAxis: {
@@ -268,6 +299,12 @@ const SectionTitle = styled.h3`
   padding: 0;
   padding-bottom: 10px;
   margin: 20px 0;
+  span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 25px;
+  }
 `;
 
 const Tile = styled.section`
