@@ -23,7 +23,7 @@ const HomePageComponent = ({ client, page }): JSX.Element => {
         <MainLayout>
           <PageHeader>
             <Actions>
-              <Share />
+              {/* <Share /> */}
               <ExportPage />
             </Actions>
           </PageHeader>
