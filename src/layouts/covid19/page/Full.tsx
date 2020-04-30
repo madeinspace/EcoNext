@@ -17,7 +17,7 @@ const FullContent = () => {
   const { isLite, LongName } = useContext(ClientContext);
 
   const {
-    entityData: { currentAreaName },
+    entityData: { currentAreaName, prefixedAreaName },
     contentData: { headlineData, topThreeData },
   } = useContext(PageContext);
 
@@ -68,6 +68,7 @@ const FullContent = () => {
           update our forecasts as more information is known about the health measures and the effectiveness of economic
           policy.{' '}
         </p>
+        <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
 
       <ControlPanel />
@@ -172,6 +173,25 @@ const FullContent = () => {
       <p>
         These forecasts are subject to a high degree of uncertainty and will continue to be improved and updated as more
         information is released.{' '}
+      </p>
+      <SectionTitle>Disclaimer</SectionTitle>
+      <p>
+        This report has been prepared for {prefixedAreaName}. .id has taken all due care in the preparation of this
+        report. Content in this Report is based on Data from the National Institute of Economic and Industry Research
+        (NIEIR) and the Data remains the property of the NIEIR. While NIEIR endeavours to provide reliable forecasts and
+        believes the material is accurate it will not be liable for any claim by any party acting on such information.
+        .id accepts no liability with respect to the correctness, accuracy, currency, completeness, relevance or
+        otherwise of this Data. Please view our Privacy Policy, Terms of use and Legal notices.
+      </p>
+      <SectionTitle>Copyright Notice</SectionTitle>
+      <p>
+        This Report and all material contained within it is subject to Australian copyright law. Copyright in all such
+        material [excluding ABS Data & other data or information where ownership by a third party is evident] is owned
+        by .ID Consulting Pty Ltd ACN 084 054 473. Other than in accordance with the Copyright Act 1968 or as
+        specifically agreed between .id and the Client, no material from this Report may, in any form or by any means,
+        be reproduced, stored in a retrieval system or transmitted, without prior written permission from .id. Any
+        enquiries regarding the use of this Report should be directed to{' '}
+        <a href="mailto:info@id.com.au">info@id.com.au</a> or 03 9417 2205.
       </p>
     </>
   );
