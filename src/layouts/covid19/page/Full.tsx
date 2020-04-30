@@ -41,7 +41,7 @@ const FullContent = () => {
   const JOBSLGAText = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
   const JOBSLGATextAlt = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
 
-  const URJOBSIMPACTText = URJOBSLGA.ExJKCompPer > JOBSLGA.ExJKCompPer ? 'higher' : 'lower';
+  const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
 
   const Top = n => quals =>
     _(quals)

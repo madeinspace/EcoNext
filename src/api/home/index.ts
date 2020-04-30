@@ -1,5 +1,4 @@
 /* #region imports*/
-import _ from 'lodash';
 import fetchAllClients from '../../utils/fetchAllClients';
 
 const fetchClients = async () => {
