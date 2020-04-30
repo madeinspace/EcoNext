@@ -131,7 +131,7 @@ const FullContent = () => {
       <SectionTitle>Sector Employment impact</SectionTitle>
       <InfoBox>
         <span>
-          <b>Did you know? </b> You can show/hide or highlight a serie in the chart below by clicking or hovering on a
+          <b>Did you know? </b> You can show/hide or highlight a series in the chart below by clicking or hovering on a
           legend (ie: JobKeeper Component).
         </span>
       </InfoBox>
