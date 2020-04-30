@@ -21,6 +21,22 @@ const largest = (arr, key) => {
     })[0];
 };
 
+const Tabs = styled.ul`
+  display: flex;
+  border-bottom: 1px solid #d7dbdd;
+`;
+const Tab = styled.li`
+  cursor: pointer;
+  padding: 15px 40px;
+  font-size: 16px;
+  color: ${props => (props.Pane === props.id ? 'white' : '#5f6062')};
+  background-color: ${props => (props.Pane === props.id ? '#70b859' : '#e0e0e0')};
+  &:hover {
+    background-color: #70b859;
+    color: #fff;
+  }
+`;
+
 // #region population page
 const TourismWorkforcePage = () => {
   const { clientAlias } = useContext(ClientContext);
@@ -44,22 +60,6 @@ const TourismWorkforcePage = () => {
     window.history.replaceState(query, '', href);
     setPane(value);
   };
-
-  const Tabs = styled.ul`
-    display: flex;
-    border-bottom: 1px solid #d7dbdd;
-  `;
-  const Tab = styled.li`
-    cursor: pointer;
-    padding: 15px 40px;
-    font-size: 16px;
-    color: ${props => (Pane === props.id ? 'white' : '#5f6062')};
-    background-color: ${props => (Pane === props.id ? '#70b859' : '#e0e0e0')};
-    &:hover {
-      background-color: #70b859;
-      color: #fff;
-    }
-  `;
 
   const totalWorkers = contentData[0].data.filter(({ LabelKey }) => LabelKey === 10001)[0];
   const fulltimeWorkers = contentData[0].data.filter(({ LabelKey }) => LabelKey === 30001)[0];
@@ -122,10 +122,10 @@ const TourismWorkforcePage = () => {
       <ControlPanel />
 
       <Tabs>
-        <Tab id={14} onClick={() => handleTabChange('es', 14)}>
+        <Tab Pane={Pane} id={14} onClick={() => handleTabChange('es', 14)}>
           Key Statistics
         </Tab>
-        <Tab id={15} onClick={() => handleTabChange('es', 15)}>
+        <Tab Pane={Pane} id={15} onClick={() => handleTabChange('es', 15)}>
           Occupations
         </Tab>
       </Tabs>

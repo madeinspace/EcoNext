@@ -8,15 +8,15 @@ import { LinkBuilder } from '../../../components/ui/links';
 
 // #endregion
 
+const Lite = styled.div``;
+const Full = styled.div`
+  display: ${props => (props.isLite ? 'none' : 'block')};
+`;
 const TopicNotesPage = () => {
   const { isLite, clientAlias } = useContext(ClientContext);
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
-  const Lite = styled.div``;
-  const Full = styled.div`
-    display: ${isLite ? 'none' : 'block'};
-  `;
   return (
     <>
       <Lite>
@@ -67,7 +67,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="industry-composition"></a>
         <SubTitleAlt>Industry composition</SubTitleAlt>
         <TopList>
@@ -230,7 +230,7 @@ const TopicNotesPage = () => {
           6401.0)
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="gross-regional-product-(grp)"></a>
         <SubTitleAlt>Gross Regional Product (GRP)</SubTitleAlt>
         <p>
@@ -274,7 +274,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="employment-by-industry-(total)"></a>
         <SubTitleAlt>Employment by industry (Total)</SubTitleAlt>
         <p>
@@ -340,7 +340,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="employment-by-industry-(fte)"></a>
         <SubTitleAlt>Employment by industry (FTE)</SubTitleAlt>
         <p>
@@ -512,7 +512,7 @@ const TopicNotesPage = () => {
           on the ABS website.{' '}
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="value-added-by-industry"></a>
         <SubTitleAlt>Value added by industry</SubTitleAlt>
         <p>
@@ -607,7 +607,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-sales"></a>
         <SubTitleAlt>Local sales</SubTitleAlt>
         <p>
@@ -633,7 +633,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="domestic-exports"></a>
         <SubTitleAlt>Domestic exports</SubTitleAlt>
@@ -662,7 +662,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="international-exports"></a>
         <SubTitleAlt>International exports</SubTitleAlt>
@@ -691,7 +691,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="domestic-imports"></a>
         <SubTitleAlt>Domestic imports</SubTitleAlt>
         <p>
@@ -725,7 +725,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="imports"></a>
         <SubTitleAlt>Imports</SubTitleAlt>
         <p>
@@ -758,7 +758,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="international-imports"></a>
         <SubTitleAlt>International imports</SubTitleAlt>
         <p>
@@ -791,7 +791,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="worker-productivity"></a>
         <SubTitleAlt>Worker productivity</SubTitleAlt>
         <p>
@@ -828,7 +828,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="worker-productivity-per-hour"></a>
         <SubTitleAlt>Worker productivity per hour</SubTitleAlt>
         <p>
@@ -866,7 +866,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="business-by-industry"></a>
         <SubTitleAlt>Business by industry</SubTitleAlt>
         <p>
@@ -935,7 +935,7 @@ const TopicNotesPage = () => {
           Cat. No. 8165.0
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="industry-sector-analysis"></a>
         <SubTitleAlt>Industry sector analysis</SubTitleAlt>
         <p>
@@ -999,7 +999,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="employment-locations"></a>
         <SubTitleAlt>Employment locations</SubTitleAlt>
         <p>
@@ -1065,7 +1065,7 @@ const TopicNotesPage = () => {
         </p>
         <p>Please use the value-added estimates as a guide only.</p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="business-locations"></a>
         <SubTitleAlt>Business locations</SubTitleAlt>
         <p>
@@ -1135,7 +1135,7 @@ const TopicNotesPage = () => {
           {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/8165.0`, 'ABS website')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="workers-place-of-residence"></a>
         <SubTitleAlt>Workers place of residence</SubTitleAlt>
         <p>
@@ -1175,7 +1175,7 @@ const TopicNotesPage = () => {
           2016.
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="jobs-to-workers-ratio"></a>
         <SubTitleAlt>Jobs to workers ratio</SubTitleAlt>
         <p>
@@ -1222,7 +1222,7 @@ const TopicNotesPage = () => {
           see {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Economic model updates')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="self-containment--occupation"></a>
         <SubTitleAlt>Self-containment- Occupation</SubTitleAlt>
         <p>
@@ -1260,7 +1260,7 @@ const TopicNotesPage = () => {
           2011 and 2016.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="self-containment---industry"></a>
         <SubTitleAlt>Self-containment - Industry</SubTitleAlt>
         <p>
@@ -1298,7 +1298,7 @@ const TopicNotesPage = () => {
           2011 and 2016.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="self-sufficiency---industry"></a>
         <SubTitleAlt>Self-sufficiency - Industry</SubTitleAlt>
         <p>
@@ -1337,7 +1337,7 @@ const TopicNotesPage = () => {
           2011 and 2016.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="self-sufficiency---occupation"></a>
         <SubTitleAlt>Self-sufficiency - Occupation</SubTitleAlt>
         <p>
@@ -1394,7 +1394,7 @@ const TopicNotesPage = () => {
           and Housing 2006 and 2011.
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---age"></a>
         <SubTitleAlt>Local workers - Age</SubTitleAlt>
         <p>
@@ -1414,7 +1414,7 @@ const TopicNotesPage = () => {
           {LinkBuilder(`http://www.abs.gov.au/ausstats/abs@.nsf/mf/2901.0`, 'Census Dictionary 2016')}.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---hours-worked"></a>
         <SubTitleAlt>Local workers - Hours Worked</SubTitleAlt>
         <p>
@@ -1442,7 +1442,7 @@ const TopicNotesPage = () => {
           and Housing 2016 and 2011.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---occupations"></a>
         <SubTitleAlt>Local workers - Occupations</SubTitleAlt>
         <p>
@@ -1469,7 +1469,7 @@ const TopicNotesPage = () => {
           and Housing 2016 and 2011.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---qualifications"></a>
         <SubTitleAlt>Local workers - Qualifications</SubTitleAlt>
         <p>
@@ -1563,7 +1563,7 @@ const TopicNotesPage = () => {
           <p>Data source: Australian Bureau of Statistics, Census of Population and Housing 2006 and 2011.</p>
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---field-of-qualifications"></a>
         <SubTitleAlt>Local workers - Field of qualifications</SubTitleAlt>
         <p>
@@ -1614,7 +1614,7 @@ const TopicNotesPage = () => {
           Population and Housing 2016 and 2011.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---weekly-income"></a>
         <SubTitleAlt>Local workers - Weekly income</SubTitleAlt>
         <p>
@@ -1628,7 +1628,7 @@ const TopicNotesPage = () => {
           Population and Housing 2016.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---weekly-income-quartiles"></a>
         <SubTitleAlt>Local workers - Weekly income quartiles</SubTitleAlt>
         <p>
@@ -1651,7 +1651,7 @@ const TopicNotesPage = () => {
         the four quartiles. Once the dollar values have been established for these quartiles, it is possible to make
         meaningful comparisons to any industry or area, based on the inflation adjusted parameters.
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="local-workers---method-of-travel-to-work"></a>
         <SubTitleAlt>Local workers - Method of travel to work</SubTitleAlt>
         <p>
@@ -1698,7 +1698,7 @@ const TopicNotesPage = () => {
           Population and Housing 2011 and 2006<span>(opens a new window)</span>
         </p>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---industry"></a>
         <SubTitleAlt>Resident workers - Industry</SubTitleAlt>
         <p>
@@ -1731,7 +1731,7 @@ const TopicNotesPage = () => {
           Population and Housing 2011 and 2006.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="resident-workers---age"></a>
         <SubTitleAlt>Resident workers - Age</SubTitleAlt>
@@ -1744,7 +1744,7 @@ const TopicNotesPage = () => {
           Population and Housing 2016 and 2011.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="resident-workers---hours-worked"></a>
         <SubTitleAlt>Resident workers - Hours worked</SubTitleAlt>
@@ -1767,7 +1767,7 @@ const TopicNotesPage = () => {
           Population and Housing 2011 and 2006.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---occupation"></a>
         <SubTitleAlt>Resident workers - Occupation</SubTitleAlt>
         <p>
@@ -1797,7 +1797,7 @@ const TopicNotesPage = () => {
           Population and Housing 2011 and 2006.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---qualification"></a>
         <SubTitleAlt>Resident workers - Qualification</SubTitleAlt>
         <p>
@@ -1894,7 +1894,7 @@ const TopicNotesPage = () => {
           Population and Housing 2011.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---field-of-qualification"></a>
         <SubTitleAlt>Resident workers - Field of qualification</SubTitleAlt>
         <div>
@@ -1943,7 +1943,7 @@ const TopicNotesPage = () => {
           </p>
         </div>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="resident-workers---income"></a>
         <SubTitleAlt>Resident workers - Income</SubTitleAlt>
@@ -1977,7 +1977,7 @@ const TopicNotesPage = () => {
         However if a comparison to the region showed 50% in the lowest income quartile, then the employed residents of
         the area are higher income than the benchmark.
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---method-of-travel-to-work"></a>
         <SubTitleAlt>Resident workers - Method of travel to work</SubTitleAlt>
         <p>
@@ -1997,7 +1997,7 @@ const TopicNotesPage = () => {
           other methods. “Did not go to work” relates to the day of Census only.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="resident-workers---unemployed-key-statistics"></a>
         <SubTitleAlt>Resident workers - Unemployed key statistics</SubTitleAlt>
         <p>
@@ -2160,7 +2160,7 @@ const TopicNotesPage = () => {
           </p>
         </div>
       </Lite>
-      <Full>
+      <Full isLite={isLite}>
         <a id="household-expenditure"></a>
         <SubTitleAlt>Household expenditure</SubTitleAlt>
         <div>
@@ -2195,7 +2195,7 @@ const TopicNotesPage = () => {
           .
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="sources-of-income"></a>
         <SubTitleAlt>Sources of income</SubTitleAlt>
         <p>
@@ -2257,7 +2257,7 @@ const TopicNotesPage = () => {
           .
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="housing-values-and-rentals"></a>
         <SubTitleAlt>Housing values and rentals</SubTitleAlt>
         <div>
@@ -2304,7 +2304,7 @@ const TopicNotesPage = () => {
           </p>
         </div>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="economic-impact-model"></a>
         <SubTitleAlt>Economic impact model</SubTitleAlt>
         <p>
@@ -2365,7 +2365,7 @@ const TopicNotesPage = () => {
           Households will then increase spending at local businesses.{' '}
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="event-impact-model"></a>
         <SubTitleAlt>Event impact model</SubTitleAlt>
         <p>
@@ -2428,7 +2428,7 @@ const TopicNotesPage = () => {
           of the local area is assumed in the calculation.
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         {' '}
         <a id="location-quotient"></a>
         <SubTitleAlt>Location Quotient</SubTitleAlt>
@@ -2477,7 +2477,7 @@ const TopicNotesPage = () => {
           .
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="value-of-tourism"></a>
         <SubTitleAlt>Value of tourism</SubTitleAlt>
         <p>
@@ -2521,7 +2521,7 @@ const TopicNotesPage = () => {
           </ItemWrapper>
         </div>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="shift-share-analysis"></a>
         <SubTitleAlt>Shift-share analysis</SubTitleAlt>
         <p>
@@ -2588,7 +2588,7 @@ const TopicNotesPage = () => {
           .
         </p>
       </Full>
-      <Full>
+      <Full isLite={isLite}>
         <a id="tourism-visitor-summary"></a>
         <SubTitleAlt>Tourism visitor summary</SubTitleAlt>
         <p>

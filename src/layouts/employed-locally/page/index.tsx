@@ -41,7 +41,21 @@ const TopList = styled.ul`
 `;
 
 // #endregion
-
+const Tabs = styled.ul`
+  display: flex;
+  border-bottom: 1px solid #d7dbdd;
+`;
+const Tab = styled.li`
+  cursor: pointer;
+  padding: 15px 40px;
+  font-size: 16px;
+  color: ${props => (props.Pane === props.id ? 'white' : '#5f6062')};
+  background-color: ${props => (props.Pane === props.id ? '#70b859' : '#e0e0e0')};
+  &:hover {
+    background-color: #70b859;
+    color: #fff;
+  }
+`;
 // #region page
 const EmployedLocallyPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
@@ -66,21 +80,6 @@ const EmployedLocallyPage = () => {
     setPane(value);
   };
 
-  const Tabs = styled.ul`
-    display: flex;
-    border-bottom: 1px solid #d7dbdd;
-  `;
-  const Tab = styled.li`
-    cursor: pointer;
-    padding: 15px 40px;
-    font-size: 16px;
-    color: ${props => (Pane === props.id ? 'white' : '#5f6062')};
-    background-color: ${props => (Pane === props.id ? '#70b859' : '#e0e0e0')};
-    &:hover {
-      background-color: #70b859;
-      color: #fff;
-    }
-  `;
   const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
   const ProfileCrossLink = () => {
     return (
@@ -153,10 +152,10 @@ const EmployedLocallyPage = () => {
 
       <ControlPanel />
       <Tabs>
-        <Tab id={1} onClick={() => handleTabChange('t', 1)}>
+        <Tab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
           Industry
         </Tab>
-        <Tab id={2} onClick={() => handleTabChange('t', 2)}>
+        <Tab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
           Occupations
         </Tab>
       </Tabs>
