@@ -267,12 +267,12 @@ const tableBuilder = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: data,
-    entityData: { currentAreaName, currentBenchmarkName, currentStartYear, currentComparisonYear },
+    entityData: { currentAreaName, currentBenchmarkName, currentStartYear, currentComparisonYear, currentMeasureName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = 'Local workers field of qualification - Summary';
-  const firstColTitle = 'Field of qualification (Click rows to view sub-categories)';
+  const tableTitle = 'Location quotient';
+  const firstColTitle = 'Industry (Click rows to view sub-categories)';
   const footerRows = data.filter(item => item.IndustryName === 'Total');
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
@@ -282,7 +282,7 @@ const tableBuilder = () => {
 
   parents.forEach(parent => {
     parent.children = children.filter(
-      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 1000,
+      child => child.LabelKey > parent.LabelKey && child.LabelKey < parent.LabelKey + 100,
     );
   });
 
@@ -308,7 +308,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName}`,
+            displayText: `${currentAreaName} - ${currentMeasureName}`,
             colSpan: 1,
           },
           {
@@ -347,7 +347,7 @@ const tableBuilder = () => {
       },
       {
         id: 3,
-        displayText: `Location Quotien ${currentBenchmarkName}`,
+        displayText: `Location Quotient ${currentBenchmarkName}`,
         cssClass: 'even int M',
       },
       {
@@ -372,7 +372,7 @@ const tableBuilder = () => {
       },
     ],
     rows: parents.map(
-      ({ LabelKey, LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12 }) => ({
+      ({ children, LabelKey, LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12 }) => ({
         expandable: children.length > 0,
         id: LabelKey,
         data: [LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12],
@@ -518,7 +518,7 @@ const chartBuilder = () => {
 const chartBuilderChange = () => {
   const {
     contentData: data,
-    entityData: { currentAreaName, currentMeasureName },
+    entityData: { currentAreaName, currentMeasureName, currentStartYear, currentComparisonYear },
   } = useContext(PageContext);
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
@@ -526,7 +526,7 @@ const chartBuilderChange = () => {
   );
   const categories = _.map(parents, 'LabelName');
   const chartType = 'bar';
-  const chartTitle = 'Change in local workers field of qualification, 2016';
+  const chartTitle = `Change in LQ by industry sector, ${currentComparisonYear} to ${currentStartYear}`;
   const chartSubtitle = `${currentAreaName} - ${currentMeasureName}`;
   const serie = _.map(parents, 'Change12');
   const xAxisTitle = 'Industry sector';
