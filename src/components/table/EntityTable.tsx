@@ -12,7 +12,6 @@ import XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import * as docx from 'docx';
 import styled from 'styled-components';
-import PubSub from 'pubsub-js';
 import { IColumn, IRow, IHeaderRow, ICell, ISourceAndTopicNotesProps } from './Interfaces.table';
 import ShowMoreButton from './ShowMoreButton';
 // #endregion
@@ -48,9 +47,6 @@ const ParentRow = ({ alreadyExpanded, expandable, childRows, i, formattedData, c
   const clickHandler = () => {
     setExpanded(!expanded);
   };
-  const sortEventSubscriber = () => setExpanded(false);
-  PubSub.subscribe('table.reset', sortEventSubscriber);
-
   return (
     <React.Fragment key={i}>
       <DataRow
@@ -77,7 +73,6 @@ class EntityTable extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-
     const {
       headRows,
       cols,
@@ -131,6 +126,8 @@ class EntityTable extends React.Component<any, any> {
       parentRowRefs: [],
     });
   }
+
+  componentWillUnmount() {}
 
   private renderHeaders = (headerRow: IHeaderRow, i: number): JSX.Element => {
     const cells: any[] = headerRow.cols.map((cell: ICell, i: number) => {
@@ -247,7 +244,6 @@ class EntityTable extends React.Component<any, any> {
   };
 
   private resetSort = (): void => {
-    PubSub.publish('table.reset', {});
     // clear dir class from all sortable th
     $(`.sortable`).removeClass(`asc desc`);
     // mystery
