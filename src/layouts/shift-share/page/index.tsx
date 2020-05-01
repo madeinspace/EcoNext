@@ -1,11 +1,10 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, idlogo, formatChangeInt, formatChangeNumber, formatChangeOneDecimal } from '../../../utils/';
+import { formatNumber, idlogo, formatChangeInt, formatChangeOneDecimal } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import Headline from '../../../components/Headline';
 import {
   PageIntro,
   Highlight,
@@ -19,7 +18,6 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
 import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
-import styled from 'styled-components';
 import useEntityText from '../../../utils/useEntityText';
 
 // #endregion

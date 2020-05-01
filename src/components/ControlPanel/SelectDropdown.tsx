@@ -20,8 +20,16 @@ const ParentStyle = `
 const Option = styled.option`
   height: 40px;
   padding: 5px 0;
-  ${({ isParent }) => isParent && ParentStyle};
-  ${({ isParent }) => !isParent && `text-indent: 5px;`};
+  ${({ isParent }) =>
+    isParent &&
+    css`
+      ${ParentStyle}
+    `};
+  ${({ isParent }) =>
+    !isParent &&
+    css`
+      text-indent: 5px;
+    `};
 `;
 
 const SelectDropdown: React.FC<any> = ({ title, list, value, handleChange }) => {

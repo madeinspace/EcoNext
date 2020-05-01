@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FaInfoCircle } from 'react-icons/fa';
 const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../../styles/variables.scss`);
 
 const _InfoBox = styled.div`
-  display: ${props => (props.visible ? 'flex' : 'none')};
+  display: ${props => (props.visible ? css`flex` : css`none`)};
   margin: 10px 0;
   padding: 5px 0;
   align-items: center;

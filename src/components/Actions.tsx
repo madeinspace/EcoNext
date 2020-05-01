@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable react/prop-types */
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import ExportOptions from '../utils/fecthPageReport/Formats';
 import fetchPageReport from '../utils/fecthPageReport';
 import { ClientContext, PageContext } from '../utils/context';
@@ -383,7 +383,7 @@ const DropdownListItem = styled.li`
 `;
 
 const DropdownList = styled.ul`
-  visibility: ${(props: any) => (props.dropdownVisible ? 'visible' : 'hidden')};
+  visibility: ${(props: any) => (props.dropdownVisible ? css`visible` : css`hidden`)};
   z-index: 100;
   position: absolute;
   right: 0;

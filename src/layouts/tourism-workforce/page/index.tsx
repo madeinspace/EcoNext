@@ -7,9 +7,8 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import { LinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import useEntityText from '../../../utils/useEntityText';
-import * as Highcharts from 'highcharts';
 import RelatedPagesCTA from '../../../components/RelatedPages';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import qs from 'qs';
 // #endregion
 
@@ -29,8 +28,8 @@ const Tab = styled.li`
   cursor: pointer;
   padding: 15px 40px;
   font-size: 16px;
-  color: ${props => (props.Pane === props.id ? 'white' : '#5f6062')};
-  background-color: ${props => (props.Pane === props.id ? '#70b859' : '#e0e0e0')};
+  color: ${props => (props.Pane === props.id ? css`white` : css`#5f6062`)};
+  background-color: ${props => (props.Pane === props.id ? css`#70b859` : css`#e0e0e0`)};
   &:hover {
     background-color: #70b859;
     color: #fff;

@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, formatPercent, idlogo, formatChangeInt, formatOneDecimal, multiplesOf } from '../../../utils/';
+import { formatNumber, formatPercent, idlogo, formatOneDecimal, multiplesOf } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
@@ -9,8 +9,7 @@ import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
-import { ABSCensusHousingLink, IdLink, LinkBuilder } from '../../../components/ui/links';
-import styled from 'styled-components';
+import { LinkBuilder } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 // #endregion
 

@@ -1,9 +1,9 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 const LoadingWrapper = styled.div`
   min-height: 400px;
   width: 100%;
   position: absolute;
-  display: ${props => (props.loaded ? 'none' : 'flex')};
+  display: ${props => (props.loaded ? css`none` : css`flex`)};
 `;
 const pulsate = keyframes`
   0% {

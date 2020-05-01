@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import groupBy from 'lodash/groupBy';
 import _ from 'lodash';
 import Link from '../components/Link';
@@ -110,7 +110,7 @@ const ColumnGroup = styled.div`
 `;
 
 const Column = styled.div`
-  grid-area: ${props => `col${props.col}`};
+  grid-area: ${props => css`col${props.col}`};
 `;
 
 const buildSiteMap = (clientAlias, columns, navigation) => {

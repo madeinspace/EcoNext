@@ -3,14 +3,14 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import { useContext } from 'react';
 import { SubTitleAlt, TopList, TopOrderedList, ItemWrapper } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { LinkBuilder } from '../../../components/ui/links';
 
 // #endregion
 
 const Lite = styled.div``;
 const Full = styled.div`
-  display: ${props => (props.isLite ? 'none' : 'block')};
+  display: ${props => (props.isLite ? css`none` : css`block`)};
 `;
 const TopicNotesPage = () => {
   const { isLite, clientAlias } = useContext(ClientContext);

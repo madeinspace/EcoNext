@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const LoadingWrapper = styled.div`
   min-height: 200px;
-  display: ${props => (props.loaded ? 'none' : 'flex')};
+  display: ${props => (props.loaded ? css`none` : css`flex`)};
   align-items: center;
   justify-content: center;
   img {

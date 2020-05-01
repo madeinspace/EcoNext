@@ -8,14 +8,14 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { detectIE } from '../../utils/';
 import { ExportDropdown, Actions } from '../Actions';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { IChartProps, IChartState } from './Interfaces.chart';
 import { Loader } from '../ui/loader';
 // #endregion
 
 const HighChartContainer = styled.div`
   padding: 10px 0;
-  visibility: ${props => (props.loaded ? 'visible' : 'hidden')};
+  visibility: ${props => (props.loaded ? css`visible` : css`hidden`)};
 `;
 
 export const EntityContainer = styled.div`

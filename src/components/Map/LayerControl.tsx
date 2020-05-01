@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
 
 const Checkbox = ({ type = 'checkbox', name, checked = false, onChange }) => (
@@ -72,7 +72,7 @@ const LayerColor = styled.span`
   height: 12px;
   width: 12px;
 
-  border: 2px solid ${props => props.color};
+  border: 2px solid ${({ color }) => color};
   margin: 0px 6px 0 0;
   display: inline-block;
   align-self: center;
