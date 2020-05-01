@@ -11,7 +11,6 @@ import useForm from 'react-hook-form';
 import { emailRGX } from '../utils/Regex';
 import { FaFileExport, FaShareAlt, FaUndo } from 'react-icons/fa';
 import axios from 'axios';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const ExportDropdown: React.FC<any> = props => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -131,7 +130,7 @@ const NOROBOT = styled.div`
 
 const ThankyouNote = styled.div`
   padding: 10px;
-  background-color: ${variables.colorEconomy};
+  background-color: #70b859;
   line-height: 18px;
   font-size: 14px;
   width: 300px;
@@ -144,7 +143,7 @@ const RequestReportForm = styled.form`
   padding: 10px;
   margin: 0;
   position: relative;
-  background-color: ${variables.colorEconomy};
+  background-color: #70b859;
   p {
     color: #fff;
   }
@@ -195,7 +194,7 @@ const AlignAlt = styled.div`
 
 const SubmitButton = styled.button`
   background-color: #fff;
-  color: ${variables.colorEconomy};
+  color: #70b859;
   font-weight: bold;
   border-radius: 5px;
   border: none;
@@ -377,7 +376,7 @@ const DropdownListItem = styled.li`
 
   &:hover {
     cursor: pointer;
-    color: ${variables.colorEconomyDark};
+    color: #009a44;
     background-color: white;
   }
 `;
@@ -388,7 +387,7 @@ const DropdownList = styled.ul`
   position: absolute;
   right: 0;
   top: 25px;
-  background-color: ${variables.colorEconomy};
+  background-color: #70b859;
   color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100px;
@@ -415,11 +414,11 @@ const ShareDropdownListItem = styled(DropdownListItem)`
   &:hover {
     cursor: pointer;
     a {
-      color: ${variables.colorEconomyDark};
+      color: #009a44;
       background-color: white;
     }
     svg {
-      fill: ${variables.colorEconomyDark};
+      fill: #009a44;
     }
   }
 `;
@@ -435,7 +434,7 @@ const ButtonLink = styled.a`
   height: 25px;
   cursor: pointer;
   background-color: #dddddd;
-  color: ${variables.grayDark};
+  color: #333;
 `;
 
 const IconBase = styled.span`
@@ -443,7 +442,7 @@ const IconBase = styled.span`
   width: 25px;
   margin-left: 5px;
   color: #fff;
-  background-color: ${variables.colorEconomy};
+  background-color: #70b859;
   display: flex;
   align-items: center;
   justify-content: center;

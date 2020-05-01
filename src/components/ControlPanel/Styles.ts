@@ -1,24 +1,23 @@
-import styled from "styled-components"
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`)
+import styled from 'styled-components';
 
 export const DropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   position: relative;
-`
+`;
 
 export const DropdownListItem = styled.li`
   padding: 0 10px;
 
   &:hover {
     cursor: pointer;
-    background-color: ${variables.grayLightest};
+    background-color: #f2f2f2;
   }
-`
+`;
 
 export const DropdownList = styled.ul`
-  visibility: ${props => (props.dropdownVisible ? "visible" : "hidden")};
+  visibility: ${props => (props.dropdownVisible ? 'visible' : 'hidden')};
   z-index: 100;
   position: absolute;
   right: 0;
@@ -28,18 +27,18 @@ export const DropdownList = styled.ul`
   width: 100px;
   list-style-type: none;
   margin: 5px auto auto 0;
-`
+`;
 export const ShareDropdownList = styled(DropdownList)`
   width: 110px;
-`
+`;
 
 export const ShareDropdownListItem = styled(DropdownListItem)`
   a {
     text-decoration: none;
-    color: ${variables.linkColor};
+    color: #333;
     display: block;
   }
-`
+`;
 
 export const ButtonLink = styled.a`
   width: fit-content;
@@ -52,7 +51,7 @@ export const ButtonLink = styled.a`
   height: 25px;
   cursor: pointer;
   background-color: #dddddd;
-`
+`;
 
 export const IconBase = styled.span`
   line-height: 25px;
@@ -60,44 +59,44 @@ export const IconBase = styled.span`
   width: 24px;
   margin-left: 5px;
   color: #fff;
-  background-color: ${variables.colorEconomy};
-  font-family: "id-icons";
+  background-color: #70b859;
+  font-family: 'id-icons';
   padding-left: 4px;
-`
+`;
 
 export const ResetIcon = styled(IconBase)`
   &::before {
-    content: "\\E907";
+    content: '\\E907';
   }
-`
+`;
 
 export const ExportIcon = styled(IconBase)`
   &::before {
-    content: "\\E61A";
+    content: '\\E61A';
   }
-`
+`;
 
 export const PageButtonLink = styled(ButtonLink)`
   background-color: unset;
-`
+`;
 
 export const PageShareButtonLink = styled.div`
   cursor: pointer;
   &::before {
     vertical-align: middle;
     font-size: 20px;
-    font-family: "id-icons";
-    content: "\\e901";
+    font-family: 'id-icons';
+    content: '\\e901';
   }
-`
+`;
 export const PageExportButtonLink = styled.div`
   cursor: pointer;
   &::before {
     vertical-align: middle;
     font-size: 20px;
-    font-family: "id-icons";
-    content: "\\E61A";
+    font-family: 'id-icons';
+    content: '\\E61A';
   }
-`
+`;
 
-const ExportButtonLink = styled(ButtonLink)``
+const ExportButtonLink = styled(ButtonLink)``;

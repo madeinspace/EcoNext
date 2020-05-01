@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Link from './Link';
 import { ClientContext, PageContext } from '../utils/context';
 
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const Heading = styled.h1`
   width: 100%;
   font-size: 23px;
@@ -20,14 +19,14 @@ const ChildrenMenuContainer = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   padding: 0px;
   margin-bottom: 10px;
   border-bottom: 2px solid transparent;
   line-height: 20px;
   &.active,
   :hover {
-    border-bottom: 2px solid ${variables.colorEconomy};
+    border-bottom: 2px solid #70b859;
   }
 `;
 
@@ -38,12 +37,12 @@ const ChildrenList = styled.ul`
 const DisabledLink = styled.a`
   padding: 0px;
   margin-bottom: 10px;
-  color: ${variables.grayLight};
+  color: #bbb;
   text-decoration: none;
   line-height: 20px;
   cursor: default;
   :hover {
-    border-bottom: 2px solid ${variables.colorEconomy};
+    border-bottom: 2px solid #70b859;
   }
 `;
 

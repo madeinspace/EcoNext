@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FooterData } from './FooterData';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const Footer = styled.div`
   position: relative;
@@ -10,23 +9,23 @@ const Footer = styled.div`
   grid-template-columns: [source] auto [idlogo];
   border-top: 1px solid lightgray;
   p {
-    color: ${variables.graySligtlyLighter};
+    color: #a2a2a2;
   }
 
   a {
-    color: ${variables.graySligtlyLighter};
+    color: #a2a2a2;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
     }
     &:visited {
-      color: ${variables.graySligtlyLighter};
+      color: #a2a2a2;
     }
   }
   &:hover {
     p,
     a {
-      color: ${variables.gray};
+      color: #757575;
     }
   }
 `;

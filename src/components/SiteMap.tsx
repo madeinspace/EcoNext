@@ -6,8 +6,6 @@ import Link from '../components/Link';
 import { FooterRow, SiteMapGrid } from './grid';
 import { ClientContext } from '../utils/context';
 
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
-
 const SiteMapHeader = styled.h1`
   margin: 0;
   padding-bottom: 15px;
@@ -27,7 +25,7 @@ const FooterContents = styled.div`
 `;
 
 const SitemapWrapper = styled.div`
-  background-color: ${variables.grayLightest};
+  background-color: #f2f2f2;
   margin-top: 40px;
   padding-bottom: 1.5em;
 `;
@@ -49,22 +47,22 @@ const ProductItem = styled.li`
   }
   &.app-1 {
     a {
-      color: ${variables.colorProfile};
+      color: #cb2c30;
     }
   }
   &.app-2 {
     a {
-      color: ${variables.colorAtlas};
+      color: #caae01;
     }
   }
   &.app-3 {
     a {
-      color: ${variables.colorForecast};
+      color: #3b6e8f;
     }
   }
   &.app-4 {
     a {
-      color: ${variables.colorEconomy};
+      color: #70b859;
     }
   }
 `;
@@ -89,7 +87,7 @@ const PageItem = styled.li`
   line-height: 16px;
 `;
 const DisabledLink = styled(PageItem)`
-  color: ${variables.grayLight};
+  color: #bbb;
   text-decoration: none;
   cursor: default;
 `;
@@ -98,7 +96,7 @@ const StyledLink = styled(Link)`
   font-size: 11px;
   line-height: 16px;
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   display: block;
   &:hover {
     text-decoration: underline;

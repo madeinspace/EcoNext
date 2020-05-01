@@ -109,7 +109,7 @@ const products = [
   },
 ];
 
-const HomePage = ({ clients }): JSX.Element => {
+const RootPage = ({ clients }): JSX.Element => {
   const clientList = clients.map(client => {
     const imgSrc = `https://econext-cdn.azureedge.net/eco-assets/client-logos/${client.Alias}.png`;
     return (
@@ -169,7 +169,7 @@ const HomePage = ({ clients }): JSX.Element => {
   );
 };
 
-HomePage.getInitialProps = async () => {
+RootPage.getInitialProps = async () => {
   const clients = await fetchClients();
   const pageData = {
     MetaTitle: 'home page',
@@ -177,4 +177,4 @@ HomePage.getInitialProps = async () => {
   return { clients, pageData };
 };
 
-export default HomePage;
+export default RootPage;
