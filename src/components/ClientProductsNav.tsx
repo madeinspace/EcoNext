@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ClientContext } from '../utils/context';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const ProductsNav = styled.nav`
   height: 42px;
@@ -30,33 +29,33 @@ const ProductItem = styled.a`
   text-transform: lowercase;
   font-size: 16px;
   &.app-1 {
-    background-color: ${variables.colorProfile};
+    background-color: #cb2c30;
     ${ActiveIndicator} {
-      border-color: ${variables.colorProfile} transparent transparent;
+      border-color: #cb2c30 transparent transparent;
     }
   }
   &.app-2 {
-    background-color: ${variables.colorAtlas};
+    background-color: #caae01;
     ${ActiveIndicator} {
-      border-color: ${variables.colorAtlas} transparent transparent;
+      border-color: #caae01 transparent transparent;
     }
   }
   &.app-3 {
-    background-color: ${variables.colorForecast};
+    background-color: #3b6e8f;
     ${ActiveIndicator} {
-      border-color: ${variables.colorForecast} transparent transparent;
+      border-color: #3b6e8f transparent transparent;
     }
   }
   &.app-4 {
-    background-color: ${variables.colorEconomy};
+    background-color: #70b859;
     ${ActiveIndicator} {
-      border-color: ${variables.colorEconomy} transparent transparent;
+      border-color: #70b859 transparent transparent;
     }
   }
   &.app-1016 {
-    background-color: ${variables.colorHousing};
+    background-color: #7513b8;
     ${ActiveIndicator} {
-      border-color: ${variables.colorHousing} transparent transparent;
+      border-color: #7513b8 transparent transparent;
     }
   }
   &.active {

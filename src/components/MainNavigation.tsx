@@ -5,7 +5,6 @@ import _ from 'lodash';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
 import { ClientContext, PageContext } from '../utils/context';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 const MainNav = styled.div``;
 
 const buildIsCurrent = currentPageAlias => navigationNode => navigationNode.Alias == currentPageAlias;
@@ -75,35 +74,35 @@ export default MainNavigation;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   display: block;
   padding: 3.5px 7px;
   &.active,
   :hover {
-    background-color: ${variables.colorEconomy};
+    background-color: #70b859;
     color: white;
   }
 `;
 
 const HardCodedLink = styled.a`
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   display: block;
   padding: 3.5px 7px;
   &.active,
   :hover {
-    background-color: ${variables.colorEconomy};
+    background-color: #70b859;
     color: white;
   }
 `;
 
 const DisabledLink = styled.div`
   padding: 3.5px 7px;
-  color: ${variables.grayLight};
+  color: #bbb;
   text-decoration: none;
   cursor: default;
   :hover {
-    background-color: ${variables.colorEconomy};
+    background-color: #70b859;
     color: white;
   }
 `;
@@ -128,7 +127,7 @@ const MenuItem = styled.li`
   font-size: 14px;
   line-height: 1.2;
   display: block;
-  color: ${variables.gray};
+  color: #757575;
   position: relative;
 
   &.parent {
@@ -180,8 +179,8 @@ const Menu = styled.ul`
   padding: 0;
   margin: 0;
   & > ${GroupName} {
-    color: ${variables.colorEconomy};
-    border-top: solid 1px ${variables.grayLight};
+    color: #70b859;
+    border-top: solid 1px #bbb;
     padding-top: 0.5em;
     margin-top: 0.5em;
   }

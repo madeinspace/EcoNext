@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { ClientContext, PageContext } from '../../utils/context';
 import MonolithOrNextLink from '../Link';
 import { FaChevronRight } from 'react-icons/fa';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const StyledCTA = styled.div`
   display: grid;
@@ -14,7 +13,7 @@ const StyledCTA = styled.div`
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   margin: 20px 0;
   h3 {
-    color: ${variables.colorEconomyDark};
+    color: #009a44;
     margin-bottom: 0;
   }
   ul {
@@ -25,7 +24,7 @@ const StyledCTA = styled.div`
       line-height: 20px;
     }
     a {
-      color: ${variables.gray};
+      color: #757575;
       text-decoration: none;
       &:hover {
         text-decoration: underline;

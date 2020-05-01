@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { BaseFooterRow } from './grid';
 import { ClientContext, PageContext } from '../utils/context';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 const StaticFooter = styled(BaseFooterRow)`
   margin-top: 2em;
@@ -91,7 +90,7 @@ const ExternalLink = styled.a`
 
 const HomeLink = styled.a`
   text-decoration: none;
-  color: ${variables.colorId};
+  color: #ff4612;
 
   &.active,
   :hover {

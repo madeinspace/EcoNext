@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import Link from '../components/Link';
 import { ClientContext, PageContext } from '../utils/context';
 
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
-
 const SiblingsMenu = () => {
   const { clientAlias, clientPages } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
@@ -36,30 +34,30 @@ const SiblingsMenuContainer = styled.div`
   align-items: flex-start;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid ${variables.grayLighter};
+  border-bottom: 1px solid #ddd;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   padding: 0px 12px 0 12px;
   margin-bottom: 10px;
   border-bottom: 2px solid transparent;
   line-height: 27px;
   &.active,
   :hover {
-    border-bottom: 2px solid ${variables.colorEconomy};
+    border-bottom: 2px solid #70b859;
   }
 `;
 
 const DisabledLink = styled.a`
   padding: 0px 12px 0 12px;
   margin-bottom: 10px;
-  color: ${variables.grayLight};
+  color: #bbb;
   text-decoration: none;
   line-height: 27px;
   cursor: default;
   :hover {
-    border-bottom: 2px solid ${variables.colorEconomy};
+    border-bottom: 2px solid #70b859;
   }
 `;

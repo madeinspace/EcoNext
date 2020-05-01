@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../styles/variables.scss`);
 
 export const SidebarNav = styled.div`
   margin-right: 1rem;
@@ -59,12 +58,12 @@ export const _SubTitle = styled.h3`
 export const SubTitleAlt = styled(_SubTitle)`
   margin-top: 1.45em;
   margin-bottom: 1.2em;
-  color: ${variables.colorEconomyDark};
+  color: #009a44;
 `;
 
 export const Headline = styled.p`
   position: relative;
-  color: ${variables.colorEconomyDark};
+  color: #009a44;
   font-size: 23px;
   line-height: 26px;
   margin-bottom: 30px;
@@ -125,14 +124,14 @@ export const ProductIcon = styled.span`
 `;
 
 export const ForecastProductIcon = styled(ProductIcon)`
-  background-color: ${variables.colorForecast};
+  background-color: #3b6e8f;
   &::before {
     content: 'f';
   }
 `;
 
 export const ProfileProductIcon = styled(ProductIcon)`
-  background-color: ${variables.colorProfile};
+  background-color: #cb2c30;
   &::before {
     content: 'P';
   }
@@ -140,7 +139,7 @@ export const ProfileProductIcon = styled(ProductIcon)`
 
 export const CrossLink = styled.div`
   a {
-    color: ${variables.linkColor};
+    color: #757575;
   }
 `;
 
@@ -153,7 +152,7 @@ export const Note = styled.div`
 `;
 export const AnalysisContainer = styled.div`
   h3 {
-    color: ${variables.colorEconomyDark};
+    color: #009a44;
     margin-bottom: 8px;
     border-bottom: 1px solid #999;
     font-size: 23px;
@@ -162,7 +161,7 @@ export const AnalysisContainer = styled.div`
 `;
 
 export const Highlight = styled.p`
-  color: ${variables.colorEconomyDark};
+  color: #009a44;
 `;
 
 export const SourceBubble = styled.div`
@@ -171,7 +170,7 @@ export const SourceBubble = styled.div`
     h3 {
       font-size: 20px;
       margin-bottom: 10px;
-      color: ${variables.colorEconomyDark};
+      color: #009a44;
     }
     padding: 20px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);

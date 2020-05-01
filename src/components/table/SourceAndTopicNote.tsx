@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import styled from 'styled-components';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 
 const DataTableSource = styled.div`
   position: relative;
@@ -12,24 +11,24 @@ const DataTableSource = styled.div`
   padding: 10px;
 
   p {
-    color: ${variables.graySligtlyLighter};
+    color: #a2a2a2;
     font-size: 11px;
     margin: 0;
   }
   a {
-    color: ${variables.graySligtlyLighter};
+    color: #a2a2a2;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
     }
     &:visited {
-      color: ${variables.graySligtlyLighter};
+      color: #a2a2a2;
     }
   }
   &:hover {
     p,
     a {
-      color: ${variables.gray};
+      color: #757575;
     }
   }
 `;
@@ -37,14 +36,14 @@ const DataTableSource = styled.div`
 const DataNote = styled.a`
   display: inline-block;
   text-decoration: none;
-  color: ${variables.graySligtlyLighter};
+  color: #a2a2a2;
   display: block;
   font-size: 11px;
   &:hover {
     text-decoration: underline;
   }
   &:visited {
-    color: ${variables.graySligtlyLighter};
+    color: #a2a2a2;
   }
 `;
 

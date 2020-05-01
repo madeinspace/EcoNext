@@ -5,7 +5,6 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import React from 'react';
 import Link from '../../components/Link';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../styles/variables.scss`);
 const ColumnGroup = styled.div`
   margin-top: 10px;
   margin-right: 40px;
@@ -34,7 +33,7 @@ const PageItem = styled.li`
   line-height: 18px;
 `;
 const DisabledLink = styled(PageItem)`
-  color: ${variables.grayLight};
+  color: #bbb;
   text-decoration: none;
   cursor: default;
 `;
@@ -43,7 +42,7 @@ const StyledLink = styled(Link)`
   font-size: 12px;
   line-height: 18px;
   text-decoration: none;
-  color: ${variables.gray};
+  color: #757575;
   display: block;
   &:hover {
     text-decoration: underline;

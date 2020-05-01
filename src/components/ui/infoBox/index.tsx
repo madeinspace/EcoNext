@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { FaInfoCircle } from 'react-icons/fa';
-const variables = require(`sass-extract-loader?{"plugins": ["sass-extract-js"]}!../../../styles/variables.scss`);
 
 const _InfoBox = styled.div`
   display: ${props => (props.visible ? css`flex` : css`none`)};
   margin: 10px 0;
   padding: 5px 0;
   align-items: center;
-  color: ${variables.grayMediumdark};
-  background: ${variables.grayLightest};
+  color: #595959;
+  background: #f2f2f2;
   border-left: 3px solid #00a8ff;
   span {
     line-height: 18px;
