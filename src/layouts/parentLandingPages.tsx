@@ -10,7 +10,6 @@ import DisabledPageWarning from '../components/DisabledPageWarning';
 import { ClientContext, PageContext } from '../utils/context';
 import { SidebarNav, SiteContent } from '../styles/MainContentStyles';
 import ChildrenMenu from '../components/ChildrenMenu';
-import LockIcon from '../components/LockIcon';
 import SEO from '../utils/SEO';
 
 const ParentLandingPageLayout = ({ children = null }) => {
@@ -28,7 +27,6 @@ const ParentLandingPageLayout = ({ children = null }) => {
           <MainNavigation />
         </SidebarNav>
         <SiteContent id="main-content">
-          {/* <LockIcon /> */}
           {isDisabled ? <DisabledPageWarning /> : children}
           <ChildrenMenu />
         </SiteContent>

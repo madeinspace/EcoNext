@@ -1,9 +1,0 @@
-@mixin theme() {
-  @for $i from 1 through length($products) {
-    $index: $i !global;
-
-    .product-#{nth($products, $i)} & {
-      @content;
-    }
-  }
-}
