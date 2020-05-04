@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { useContext } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
-import { formatPercent, formatLongNumber, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
-import { ItemWrapper, _SubTitle, PageIntroFullWidth } from '../../../styles/MainContentStyles';
+import { formatPercent, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
+import { ItemWrapper, _SubTitle, PageIntroFullWidth, Lead } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import { IdLink } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -14,8 +14,6 @@ import InfoBox from '../../../components/ui/infoBox';
 
 // #region template page
 const FullContent = () => {
-  const { isLite, LongName } = useContext(ClientContext);
-
   const {
     entityData: { currentAreaName, prefixedAreaName },
     contentData: { headlineData, topThreeData },
@@ -129,6 +127,11 @@ const FullContent = () => {
         </li>
       </TopList>
       <SectionTitle>Sector Employment impact</SectionTitle>
+      <Lead>
+        The sector impacts in the chart below were based on information available in mid-April. We are currently
+        updating the forecasts to incorporate more recent information. For example, impacts on Education have not been
+        as high (e.g. restrictions on schools not as severe as first thought).
+      </Lead>
       <InfoBox>
         <span>
           <b>Did you know? </b> You can show/hide or highlight a series in the chart below by clicking or hovering on a

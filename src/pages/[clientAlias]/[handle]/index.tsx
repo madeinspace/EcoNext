@@ -15,12 +15,7 @@ import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import SiblingsMenu from '../../../components/SiblingsMenu';
 import Error from 'next/error';
-
 // #endregion
-
-const ErrorPage = ({ status }): JSX.Element => {
-  return <div>Oh no, this is a {status} page</div>;
-};
 
 const PageTemplate = (): JSX.Element => {
   const { pageData, handle } = useContext(PageContext);

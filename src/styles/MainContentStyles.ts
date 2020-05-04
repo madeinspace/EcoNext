@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Lead = styled.p`
+  font-weight: 600;
+`;
+
 export const SidebarNav = styled.div`
   margin-right: 1rem;
   width: 240px;
