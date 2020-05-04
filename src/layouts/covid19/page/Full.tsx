@@ -223,7 +223,7 @@ const chartBuilderChange = () => {
   const WithJK = noTotal.map(item => item.JKQtrComp);
   const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const chartType = 'bar';
-  const chartTitle = `Employment change, 2018/19 (4 quarter average) to 2019/20 Q2`;
+  const chartTitle = `Employment impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
   const chartSubtitle = `${currentAreaName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;

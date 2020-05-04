@@ -1,8 +1,5 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-const DATABASE = 'WebProfile';
-
-const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`;
 
 const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${+ClientID},${+WebID},${+BMID}) ORDER BY QtrChg DESC`;
@@ -14,10 +11,9 @@ const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
 };
 
 const fetchData = async ({ filters }) => {
-  const newsData = await sqlConnection.raw(newDataQuery());
   const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
   const headlineData = await sqlConnection.raw(headlineQuery(filters));
-  return { newsData, topThreeData, headlineData };
+  return { topThreeData, headlineData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => ({});
