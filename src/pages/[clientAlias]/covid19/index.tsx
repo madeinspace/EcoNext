@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from 'react';
+import React from 'react';
 import fetchClientData from '../../../utils/fetchClientData';
 import fetchLayout from '../../../layouts';
 import PageMappings from '../../../layouts/pageMappings';
@@ -9,10 +9,8 @@ import Headline from '../../../components/Headline';
 import Description from '../../../components/Description';
 import filterEntities from '../../../utils/filterEntities';
 import { PageContext, ClientContext } from '../../../utils/context';
-import { Actions, Share, ExportPage } from '../../../components/Actions';
-import Error from 'next/error';
+import { Actions, ExportPage } from '../../../components/Actions';
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
-import { activeCustomToggles } from '../../../layouts/covid19';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
@@ -46,7 +44,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
 
   const { ID, isLite } = client;
   const layoutData = await fetchLayout(handle);
-  const { fetchData, pageContent } = layoutData;
+  const { fetchData, pageContent, activeCustomToggles } = layoutData;
   const pageData = {
     GroupName: '',
     MenuTitle: 'Covid19',

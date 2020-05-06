@@ -6,9 +6,12 @@ import styled from 'styled-components';
 import { formatPercent, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
 import { ItemWrapper, _SubTitle, PageIntroFullWidth, Lead } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
-import { IdLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+const paperUrl = `${publicRuntimeConfig.EcoCDNEndPoint}/eco-assets/documents/covid19/Methodological paper - COVID19 first release assumptions.docx`;
 
 // #endregion
 
@@ -178,6 +181,13 @@ const FullContent = () => {
       <p>
         These forecasts are subject to a high degree of uncertainty and will continue to be improved and updated as more
         information is released.{' '}
+      </p>
+      <p>
+        For more details, see{' '}
+        {LinkBuilder(
+          `${paperUrl}`,
+          `Methodological Paper: Modelling the impact of COVID-19 at the Australian Local Government Area (LGA) level`,
+        )}
       </p>
       <SectionTitle>Disclaimer</SectionTitle>
       <p>
