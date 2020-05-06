@@ -41,6 +41,8 @@ const FullContent = () => {
 
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
 
+  const NegativeImpactNJK = topThreeData.filter(({ NJKQtrComp }) => NJKQtrComp < 0);
+
   const Top = n => quals =>
     _(quals)
       .takeRight(n)
@@ -50,8 +52,8 @@ const FullContent = () => {
   const TopThree = Top(3);
   const topThree = TopThree(
     absSort(
-      topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000),
-      'QtrChg',
+      NegativeImpactNJK.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000),
+      'NJKQtrComp',
     ),
   );
 
