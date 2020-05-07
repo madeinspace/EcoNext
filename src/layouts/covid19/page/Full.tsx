@@ -293,6 +293,7 @@ const chartBuilderChange = (type = 1) => {
       },
       tooltip: {
         headerFormat: '',
+
         pointFormatter: function() {
           return tooltip.apply(this);
         },
@@ -321,6 +322,7 @@ const chartBuilderChange = (type = 1) => {
       },
       yAxis: [
         {
+          crosshair: true,
           title: {
             text: yAxisTitle,
           },
@@ -371,7 +373,7 @@ const chartBuilderChangePer = (type = 1) => {
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
       this.category
-    }, ${LongName}: ${formatChangeInt(this.y)}`;
+    }, ${LongName}: ${formatChangeInt(this.y)}%`;
   };
 
   return {
@@ -389,6 +391,7 @@ const chartBuilderChangePer = (type = 1) => {
       },
       tooltip: {
         headerFormat: '',
+        crosshairs: true,
         pointFormatter: function() {
           return tooltip.apply(this);
         },
@@ -417,6 +420,7 @@ const chartBuilderChangePer = (type = 1) => {
       },
       yAxis: [
         {
+          crosshair: true,
           title: {
             text: yAxisTitle,
           },
