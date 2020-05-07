@@ -66,9 +66,7 @@ const FullContent = () => {
 
   return (
     <>
-      <Lead>
-        Version 1.1 (Model updated 7 May 2020. <a href="#revs">See revision notes below)</a>
-      </Lead>
+      <Lead>Version 1.1 (Model updated 7 May 2020. See revision notes below)</Lead>
       <PageIntroFullWidth>
         {' '}
         <p>
