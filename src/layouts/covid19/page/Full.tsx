@@ -1,10 +1,10 @@
 // #region imports
 import _ from 'lodash';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
 import { formatPercent, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
-import { ItemWrapper, _SubTitle, PageIntroFullWidth, Lead } from '../../../styles/MainContentStyles';
+import { ItemWrapper, _SubTitle, PageIntroFullWidth, Lead, Tab, Tabs } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
@@ -60,8 +60,15 @@ const FullContent = () => {
     ),
   );
 
+  const [Pane, setPane] = useState(1);
+
+  const handleTabChange = (key, value) => setPane(value);
+
   return (
     <>
+      <Lead>
+        Version 1.1 (Model updated 7 May 2020. <a href="#revs">See revision notes below)</a>
+      </Lead>
       <PageIntroFullWidth>
         {' '}
         <p>
@@ -132,22 +139,33 @@ const FullContent = () => {
         </li>
       </TopList>
       <SectionTitle>Sector Employment impact</SectionTitle>
-      <Lead>
-        The sector impacts in the chart below were based on information available in mid-April. We are currently
-        updating the forecasts to incorporate more recent information. For example, impacts on Education have not been
-        as high (e.g. restrictions on schools not as severe as first thought).
-      </Lead>
+
       <InfoBox>
         <span>
           <b>Did you know? </b> You can show/hide or highlight a series in the chart below by clicking or hovering on a
           legend (ie: JobKeeper Component).
         </span>
       </InfoBox>
-      <ItemWrapper>
-        <EntityChart data={chartBuilderChange()} />
-      </ItemWrapper>
+      <Tabs>
+        <Tab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
+          Number
+        </Tab>
+        <Tab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
+          Percentage
+        </Tab>
+      </Tabs>
+      {Pane === 1 && (
+        <ItemWrapper>
+          <EntityChart data={chartBuilderChange()} />
+        </ItemWrapper>
+      )}
+      {Pane === 2 && (
+        <ItemWrapper>
+          <EntityChart data={chartBuilderChangePer()} />
+        </ItemWrapper>
+      )}
 
-      <SectionTitle>Data updates (Last updated 23/04/2020)</SectionTitle>
+      <SectionTitle>Data updates</SectionTitle>
       <p>
         This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
         new information becomes available, e.g. changes to government stimulus, shifts in quarantine conditions, or the
@@ -164,7 +182,7 @@ const FullContent = () => {
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
         NIEIR has estimated the potential impacts of coronavirus on economic activity, employment and sectors at the LGA
-        level.
+        level. Model outputs above are based on information available before May 7.
       </p>
       <p>
         The forecast model estimates the impact on final demand on each industry and then calculates the multiplier
@@ -188,6 +206,15 @@ const FullContent = () => {
           `${paperUrl}`,
           `Methodological Paper: Modelling the impact of COVID-19 at the Australian Local Government Area (LGA) level`,
         )}
+      </p>
+      <SectionTitle id="revs">Revisions</SectionTitle>
+      <Lead>Version 1.1 Revisions - model updated on 6 May 2020</Lead>
+      <p>
+        For the June Quarter 2020, NIEIR’s Australia GDP estimate has been revised from -16.6% to -12.4%. Compared to
+        NIEIR’s previous forecast (based on information available mid-April 2020), the better than expected containment
+        of the virus has impacted assumptions related to household spending and social distancing impacts. This has
+        resulted in lower impacts across a numbe of sectors. For example, impacts on Education have not been as high
+        (e.g. restrictions on schools not as severe as first thought).
       </p>
       <SectionTitle>Disclaimer</SectionTitle>
       <p>
@@ -216,26 +243,25 @@ export default FullContent;
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by{' '}
-    <IdLink />.<br />
-    <p>
-      Impacts have been split into: (1) not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper –
-      performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.
-    </p>
+    Source: National Institute of Economic and Industry Research (NIEIR) Version 1.1 (May 2020). ©2020 Compiled and
+    presented in economy.id by <IdLink />. Impacts have been split into: (1) not on JobKeeper – unemployed as defined by
+    the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing
+    to economic activity.
   </p>
 );
 
 // #region chart builder change
-const chartBuilderChange = () => {
+const chartBuilderChange = (type = 1) => {
   const { LongName } = useContext(ClientContext);
   const {
     entityData: { currentAreaName },
     contentData: { topThreeData },
   } = useContext(PageContext);
   const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
-  const serie = noTotal.map(item => item.QtrChg);
+  // Number
   const withoutJK = noTotal.map(item => item.NJKQtrComp);
   const WithJK = noTotal.map(item => item.JKQtrComp);
+
   const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const chartType = 'bar';
   const chartTitle = `Employment impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
@@ -243,7 +269,7 @@ const chartBuilderChange = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) Version 1.1 (May 2020) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -287,6 +313,102 @@ const chartBuilderChange = () => {
         {
           name: `Not on JobKeeper`,
           data: withoutJK,
+        },
+      ],
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          title: {
+            text: yAxisTitle,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return formatChangeInt(this.value);
+            },
+          },
+        },
+      ],
+    },
+    rawDataSource,
+    dataSource: <ChartSource />,
+    chartContainerID,
+    logoUrl: idlogo,
+    chartTemplate,
+  };
+};
+
+// #endregion
+
+// #region chart builder change
+const chartBuilderChangePer = (type = 1) => {
+  const { LongName } = useContext(ClientContext);
+  const {
+    entityData: { currentAreaName },
+    contentData: { topThreeData },
+  } = useContext(PageContext);
+  const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
+  // Percentage
+  // JKCompPer = QtrChgPer - ExJKCompPer
+  const withoutJKPer = noTotal.map(item => item.ExJKCompPer);
+  const WithJKPer = noTotal.map(item => item.QtrChgPer - item.ExJKCompPer);
+
+  const categories = noTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
+  const chartType = 'bar';
+  const chartTitle = `Employment impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
+  const chartSubtitle = `${currentAreaName}`;
+  const xAxisTitle = 'Industry sector';
+  const yAxisTitle = `% Change in the number of employed (estimated)`;
+  const rawDataSource =
+    'Source: National Institute of Economic and Industry Research (NIEIR) Version 1.1 (May 2020) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';
+  const chartContainerID = 'chartwfoqChangePer';
+  const chartTemplate = 'Standard';
+  const chartHeight = 500;
+
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
+      this.category
+    }, ${LongName}: ${formatChangeInt(this.y)}`;
+  };
+
+  return {
+    cssClass: '',
+    highchartOptions: {
+      height: chartHeight,
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+        },
+      },
+      series: [
+        {
+          className: 'jobkeeper',
+          name: `JobKeeper Component`,
+          data: WithJKPer,
+        },
+        {
+          name: `Not on JobKeeper`,
+          data: withoutJKPer,
         },
       ],
       xAxis: {

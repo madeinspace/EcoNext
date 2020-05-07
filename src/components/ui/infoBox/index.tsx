@@ -4,7 +4,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 
 const _InfoBox = styled.div`
   display: ${props => (props.visible ? css`flex` : css`none`)};
-  margin: 10px 0;
+  margin: 20px 0;
   padding: 5px 0;
   align-items: center;
   color: #595959;
