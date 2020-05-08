@@ -132,6 +132,19 @@ const pageContent = {
   filterToggles: [
     {
       Database: 'CommApp',
+      DefaultValue: '10',
+      Label: 'Current area:',
+      Params: [
+        {
+          ClientID: '2',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area',
+      ParamName: 'WebID',
+      Hidden: true,
+    },
+    {
+      Database: 'CommApp',
       DefaultValue: '24000',
       Label: 'Occupation',
       Params: null,

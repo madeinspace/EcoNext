@@ -11,6 +11,7 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { formatPercent, idlogo, formatNumber } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
 import styled from 'styled-components';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
 
@@ -30,6 +31,7 @@ const ResidentsPlaceOfWorkIndustryPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
+    entityData: { currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
@@ -39,10 +41,10 @@ const ResidentsPlaceOfWorkIndustryPage = () => {
       <PageIntro>
         <div>
           <p>
-            Journey to Work (residents) data shows where the Riverina and Murray Region's resident workers go to work
-            and whether they need to travel significant distances to work. This impacts upon planning and advocacy for
-            roads and public transport provision, as well as economic development strategies to develop local employment
-            which fits the skills and qualifications of the resident workers.
+            Journey to Work (residents) data shows where {prefixedAreaName}'s resident workers go to work and whether
+            they need to travel significant distances to work. This impacts upon planning and advocacy for roads and
+            public transport provision, as well as economic development strategies to develop local employment which
+            fits the skills and qualifications of the resident workers.
           </p>
           <p>
             The distance travelled by residents in different industry sectors may be influenced by; the nature of
@@ -79,7 +81,10 @@ const ResidentsPlaceOfWorkIndustryPage = () => {
       <ControlPanel />
       <Split>
         <ItemWrapper>
-          <EntityTable data={tableBuilder()} />
+          <EntityTable
+            data={tableBuilder()}
+            name={`Employment location of resident workers by industry - ${currentIndustryName}`}
+          />
         </ItemWrapper>
         <ItemWrapper>
           <EntityChart data={chartBuilder()} />
@@ -91,8 +96,12 @@ const ResidentsPlaceOfWorkIndustryPage = () => {
         <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
       </MapWrapper>
       <ItemWrapper>
-        <EntityTable data={tableBuilderLGA()} />
+        <EntityTable
+          data={tableBuilderLGA()}
+          name={`Employment location of resident workers by LGA by industry - ${currentIndustryName}`}
+        />
       </ItemWrapper>
+      <RelatedPagesCTA />
     </>
   );
 };
@@ -278,7 +287,7 @@ const chartBuilder = () => {
   });
 
   const noTotal = tableData[0].filter(({ LabelKey }) => LabelKey != 9);
-  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 1) : noTotal;
+  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 0) : noTotal;
 
   const serie = final.map(({ LabelName, Per }) => {
     return { name: LabelName, y: Per };

@@ -11,6 +11,7 @@ import EntityChart from '../../../components/chart/EntityChart';
 import { formatPercent, idlogo, formatNumber } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
 import styled from 'styled-components';
+import RelatedPagesCTA from '../../../components/RelatedPages';
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
 
@@ -30,7 +31,7 @@ const WorkersPlaceOfResidenceIndustryPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
-    entityData: { prefixedAreaName },
+    entityData: { currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
@@ -52,8 +53,8 @@ const WorkersPlaceOfResidenceIndustryPage = () => {
             nature of employment opportunities (higher paid, high value employment may draw people from a wider area);
             the skill level required (jobs requiring tertiary qualifications will draw more workers from areas with high
             qualification levels among the residents) the number of jobs available in the industry sector (sectors with
-            more opportunities may have a wider catchment); transport options available and commuting times to the City
-            of Monash.
+            more opportunities may have a wider catchment); transport options available and commuting times to{' '}
+            {prefixedAreaName}.
           </p>
           <p>
             Workers place of residence data should be viewed alongside{' '}
@@ -65,9 +66,9 @@ const WorkersPlaceOfResidenceIndustryPage = () => {
               'Employment by industry (Total)',
             )}{' '}
             numbers and Employment locations to understand the relative size of each industry sector and its
-            distribution across the the City of Monash. To analyse the characteristics of local workers in each
-            industry, go to the{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/workers-key-statistics`, 'Local workers')} section.
+            distribution across {prefixedAreaName}. To analyse the characteristics of local workers in each industry, go
+            to the {LinkBuilder(`http://economy.id.com.au/${clientAlias}/workers-key-statistics`, 'Local workers')}{' '}
+            section.
           </p>
         </div>
         <SourceBubble>
@@ -80,10 +81,16 @@ const WorkersPlaceOfResidenceIndustryPage = () => {
       <ControlPanel />
       <Split>
         <ItemWrapper>
-          <EntityTable data={tableBuilder()} />
+          <EntityTable
+            data={tableBuilder()}
+            name={`Residential location of local workers by industry - ${currentIndustryName}`}
+          />
         </ItemWrapper>
         <ItemWrapper>
-          <EntityChart data={chartBuilder()} />
+          <EntityChart
+            data={chartBuilder()}
+            name={`Residential location of local workers by LGA by industry - ${currentIndustryName}`}
+          />
         </ItemWrapper>
       </Split>
 
@@ -94,6 +101,7 @@ const WorkersPlaceOfResidenceIndustryPage = () => {
       <ItemWrapper>
         <EntityTable data={tableBuilderLGA()} />
       </ItemWrapper>
+      <RelatedPagesCTA />
     </>
   );
 };
@@ -116,11 +124,11 @@ const tableBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers`;
+  const tableTitle = `Residential location of local workers by industry`;
 
   const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => ({
     id: LabelKey,
@@ -154,7 +162,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentOccupationName}`,
+            displayText: `${LongName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -194,11 +202,11 @@ const tableBuilderLGA = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers by LGA by occupation`;
+  const tableTitle = `Residential location of local workers by LGA by industry`;
 
   const serie = tableData[1].map(({ LabelKey, GeoName, Number, Per }) => ({
     id: LabelKey,
@@ -229,7 +237,7 @@ const tableBuilderLGA = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentOccupationName}`,
+            displayText: `${LongName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -269,7 +277,7 @@ const chartBuilder = () => {
   const { LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
 
   const isRDA = tableData[0].some(({ LabelKey }) => LabelKey === 1 || LabelKey === 2);
@@ -304,7 +312,7 @@ const chartBuilder = () => {
         text: chartTitle,
       },
       subtitle: {
-        text: `${LongName} - ${currentOccupationName}`,
+        text: `${LongName} - ${currentIndustryName}`,
       },
       tooltip: {
         pointFormatter: function() {

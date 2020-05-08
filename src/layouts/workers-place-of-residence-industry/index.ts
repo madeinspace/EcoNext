@@ -94,7 +94,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentOccupationName: getActiveToggle(filterToggles, 'Indkey'),
+    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   };
   return activeCustomToggles;
 };
@@ -104,7 +104,7 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: ({ data }): string => {
-        return `Residents place of work by industry - ${data.currentOccupationName}`;
+        return `Workers place of residence by industry - ${data.currentIndustryName}`;
       },
     },
     {
@@ -125,6 +125,18 @@ const pageContent = {
     },
   ],
   filterToggles: [
+    {
+      Database: 'CommApp',
+      DefaultValue: '10',
+      Label: 'Current area:',
+      Params: [
+        {
+          ClientID: '2',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area',
+      ParamName: 'WebID',
+    },
     {
       Database: 'CommApp',
       DefaultValue: '23000',

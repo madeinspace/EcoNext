@@ -98,7 +98,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
-    currentOccupationName: getActiveToggle(filterToggles, 'Indkey'),
+    currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
   };
   return activeCustomToggles;
 };
@@ -108,7 +108,7 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: ({ data }): string => {
-        return `Residents place of work by industry - ${data.currentOccupationName}`;
+        return `Residents place of work by industry - ${data.currentIndustryName}`;
       },
     },
     {
@@ -120,7 +120,7 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        const occupationText = +filters.Indkey === 23000 ? '' : ` in ${data.currentOccupationName}`;
+        const occupationText = +filters.Indkey === 23000 ? '' : ` in ${data.currentIndustryName}`;
         const mainArea = contentData.tableData[0].find(({ LabelKey }) => LabelKey === 3);
         return `${formatNumber(mainArea.Number)} or ${formatPercent(mainArea.Per)}% of ${
           data.prefixedAreaName
@@ -129,6 +129,18 @@ const pageContent = {
     },
   ],
   filterToggles: [
+    {
+      Database: 'CommApp',
+      DefaultValue: '10',
+      Label: 'Current area:',
+      Params: [
+        {
+          ClientID: '2',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area',
+      ParamName: 'WebID',
+    },
     {
       Database: 'CommApp',
       DefaultValue: '23000',

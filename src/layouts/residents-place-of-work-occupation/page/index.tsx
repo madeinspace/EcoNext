@@ -30,7 +30,7 @@ const ResidentsPlaceOfWorkOccupationPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
-    entityData: { prefixedAreaName },
+    entityData: { currentOccupationName, prefixedAreaName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
@@ -54,11 +54,11 @@ const ResidentsPlaceOfWorkOccupationPage = () => {
           <p>
             Residents place of work data should be viewed alongside{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employed-locally`, 'Self-containment')} and{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers ratio')}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/Employment-capacity`, 'Jobs to workers ratio')}{' '}
             datasets, as well as modelled{' '}
             {LinkBuilder(`http://economy.id.com.au/${clientAlias}/employed-residents`, 'Employed residents')} estimates,
             which are updated annually. The{' '}
-            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}
+            {LinkBuilder(`http://economy.id.com.au/${clientAlias}/labourforce-key-statistics`, 'Resident workers')}{' '}
             section will provide the characteristics of resident workers.
           </p>
         </div>
@@ -72,10 +72,16 @@ const ResidentsPlaceOfWorkOccupationPage = () => {
       <ControlPanel />
       <Split>
         <ItemWrapper>
-          <EntityTable data={tableBuilder()} />
+          <EntityTable
+            data={tableBuilder()}
+            name={`Employment location of resident workers by occupation - ${currentOccupationName}`}
+          />
         </ItemWrapper>
         <ItemWrapper>
-          <EntityChart data={chartBuilder()} />
+          <EntityChart
+            data={chartBuilder()}
+            name={`Employment location of resident workers by LGA by occupation - ${currentOccupationName}`}
+          />
         </ItemWrapper>
       </Split>
 
@@ -96,8 +102,20 @@ export default ResidentsPlaceOfWorkOccupationPage;
 const TableSource = () => (
   <p>
     Source: Australian Bureau of Statistics, {LinkBuilder('http://www.abs.gov.au/census', 'Census of Population')} and
+    Housing 2016. Compiled and presented in economy.id by <IdLink />
+  </p>
+);
+const TableSourceAlt = () => (
+  <p>
+    Source: Australian Bureau of Statistics, {LinkBuilder('http://www.abs.gov.au/census', 'Census of Population')} and
     Housing 2016. Compiled and presented in economy.id by <IdLink /> Excludes residential locations with fewer than 10
     people.
+  </p>
+);
+const ChartSource = () => (
+  <p>
+    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 (Usual residence data) Compiled and
+    presented in profile.id by <IdLink />.
   </p>
 );
 
@@ -111,8 +129,8 @@ const tableBuilder = () => {
     entityData: { currentOccupationName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers`;
+    'Source: Australian Bureau of Statistics, Census of Population and Housing 2016. Compiled and presented in economy.id by .id , the population experts.';
+  const tableTitle = `Employment location of resident workers by occupation`;
 
   const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => {
     return {
@@ -192,7 +210,7 @@ const tableBuilderLGA = () => {
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers by LGA by occupation`;
+  const tableTitle = `Employment location of resident workers by LGA by occupation`;
 
   const serie = tableData[1].map(({ LabelKey, GeoName, Number, Per }) => ({
     id: LabelKey,
@@ -204,7 +222,7 @@ const tableBuilderLGA = () => {
   return {
     cssClass: '',
     clientAlias,
-    source: <TableSource />,
+    source: <TableSourceAlt />,
     rawDataSource,
     anchorName: '',
     headRows: [
@@ -271,7 +289,7 @@ const chartBuilder = () => {
   });
 
   const noTotal = tableData[0].filter(({ LabelKey }) => LabelKey != 9);
-  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 1) : noTotal;
+  const final = isRDA ? noTotal.filter(({ LabelKey }) => LabelKey != 0) : noTotal;
 
   const serie = final.map(({ LabelName, Per }) => {
     return { name: LabelName, y: Per };
@@ -280,13 +298,13 @@ const chartBuilder = () => {
   const chartType = 'pie';
   const chartTitle = `Residential location of local workers, 2016`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 (Usual residence data) Compiled and presented in profile.id by .id, the population experts.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
   return {
     rawDataSource,
-    dataSource: <TableSource />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,

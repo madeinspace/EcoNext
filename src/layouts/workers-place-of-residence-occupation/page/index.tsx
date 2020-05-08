@@ -30,7 +30,7 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
     contentData: { mapData },
-    entityData: { prefixedAreaName },
+    entityData: { prefixedAreaName, currentOccupationName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
@@ -84,10 +84,16 @@ const WorkersPlaceOfResidenceOccupationPage = () => {
       <ControlPanel />
       <Split>
         <ItemWrapper>
-          <EntityTable data={tableBuilder()} />
+          <EntityTable
+            data={tableBuilder()}
+            name={`Residential location of local workers by occupation - ${currentOccupationName}`}
+          />
         </ItemWrapper>
         <ItemWrapper>
-          <EntityChart data={chartBuilder()} />
+          <EntityChart
+            data={chartBuilder()}
+            name={`Residential location of local workers by LGA by occupation - ${currentOccupationName}`}
+          />
         </ItemWrapper>
       </Split>
 
@@ -108,8 +114,20 @@ export default WorkersPlaceOfResidenceOccupationPage;
 const TableSource = () => (
   <p>
     Source: Australian Bureau of Statistics, {LinkBuilder('http://www.abs.gov.au/census', 'Census of Population')} and
+    Housing 2016. Compiled and presented in economy.id by <IdLink />
+  </p>
+);
+const TableSourceAlt = () => (
+  <p>
+    Source: Australian Bureau of Statistics, {LinkBuilder('http://www.abs.gov.au/census', 'Census of Population')} and
     Housing 2016. Compiled and presented in economy.id by <IdLink /> Excludes residential locations with fewer than 10
     people.
+  </p>
+);
+const ChartSource = () => (
+  <p>
+    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 (Usual residence data) Compiled and
+    presented in profile.id by <IdLink />.
   </p>
 );
 
@@ -123,8 +141,8 @@ const tableBuilder = () => {
     entityData: { currentOccupationName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
-  const tableTitle = `Residential location of local workers`;
+    'Source: Australian Bureau of Statistics, Census of Population and Housing 2016. Compiled and presented in economy.id by .id , the population experts.';
+  const tableTitle = `Residential location of local workers by occupation`;
 
   const serie = tableData[0].map(({ LabelKey, LabelName, Number, Per }) => ({
     id: LabelKey,
@@ -214,7 +232,7 @@ const tableBuilderLGA = () => {
   return {
     cssClass: '',
     clientAlias,
-    source: <TableSource />,
+    source: <TableSourceAlt />,
     rawDataSource,
     anchorName: '',
     headRows: [
@@ -292,7 +310,7 @@ const chartBuilder = () => {
 
   return {
     rawDataSource,
-    dataSource: <TableSource />,
+    dataSource: <ChartSource />,
     chartContainerID,
     logoUrl: idlogo,
     chartTemplate,
