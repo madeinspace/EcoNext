@@ -23,7 +23,9 @@ const DestByIndustryAllQuery = ({ ClientID, Indkey }) => {
 const fetchData = async ({ filters }) => {
   const { clientAlias, LongName, ClientID } = filters;
   const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7328?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}`;
-  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/residents-place-of-work-Industry?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=386`;
+  console.log('layersUrl: ', layersUrl);
+  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=386`;
+  console.log('thematicUrl: ', thematicUrl);
   let mapData = await axios
     .all([axios.get(layersUrl), axios.get(thematicUrl)])
     .then(axios.spread((data, thematic) => ({ layerData: data.data, thematicData: thematic.data })));

@@ -22,8 +22,7 @@ const fetchData = async ({ filters }) => {
   const DestByOccSumData = await sqlConnection.raw(DestByOccupationQuery(filters));
   const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
   const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7313?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}`;
-  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data/workers-place-of-residence-occupation?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=383`;
-
+  const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data?ClientID=${ClientID}&WebID=10&LGACode=0&Indkey=${filters.Indkey}&dataid=383`;
   let mapData = await axios
     .all([axios.get(layersUrl), axios.get(thematicUrl)])
     .then(axios.spread((data, thematic) => ({ layerData: data.data, thematicData: thematic.data })));
