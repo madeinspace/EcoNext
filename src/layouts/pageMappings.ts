@@ -75,6 +75,7 @@ import WorkersPlaceOfResidenceOccupationPage from './workers-place-of-residence-
 import ResidentsPlaceOfWorkOccupationPage from './residents-place-of-work-occupation/page';
 import WorkersPlaceOfResidenceIndustryPage from './workers-place-of-residence-industry/page';
 import ResidentsPlaceOfWorkIndustryPage from './residents-place-of-work-industry/page';
+import WorkersPlaceOfResidencePage from './workers-place-of-residence/page';
 
 const parentPageMappings = {
   indicator: Parent,
@@ -169,6 +170,7 @@ const PageMappings = {
   covid19: CovidPage,
   'workers-place-of-residence-industry': WorkersPlaceOfResidenceIndustryPage,
   'residents-place-of-work-industry': ResidentsPlaceOfWorkIndustryPage,
+  'workers-place-of-residence': WorkersPlaceOfResidencePage,
 };
 
 export default { ...PageMappings, ...parentPageMappings };
