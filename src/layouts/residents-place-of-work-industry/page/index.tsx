@@ -124,7 +124,7 @@ const tableBuilder = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
@@ -164,7 +164,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentOccupationName}`,
+            displayText: `${LongName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -204,7 +204,7 @@ const tableBuilderLGA = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
@@ -239,7 +239,7 @@ const tableBuilderLGA = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentOccupationName}`,
+            displayText: `${LongName} - ${currentIndustryName}`,
             colSpan: 1,
           },
           {
@@ -279,7 +279,7 @@ const chartBuilder = () => {
   const { LongName } = useContext(ClientContext);
   const {
     contentData: { tableData },
-    entityData: { currentOccupationName },
+    entityData: { currentIndustryName },
   } = useContext(PageContext);
 
   const isRDA = tableData[0].some(({ LabelKey }) => {
@@ -318,7 +318,7 @@ const chartBuilder = () => {
         text: chartTitle,
       },
       subtitle: {
-        text: `${LongName} - ${currentOccupationName}`,
+        text: `${LongName} - ${currentIndustryName}`,
       },
       tooltip: {
         pointFormatter: function() {
