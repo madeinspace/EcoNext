@@ -94,4 +94,5 @@ export default [
   'workers-place-of-residence-industry',
   'residents-place-of-work-industry',
   'workers-place-of-residence',
+  'residents-place-of-work',
 ];
