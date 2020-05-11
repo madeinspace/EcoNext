@@ -56,8 +56,9 @@ const DisabledLink = styled.a`
   color: #bbb;
   text-decoration: none;
   line-height: 27px;
+  border-bottom: 2px solid transparent;
   cursor: default;
   :hover {
-    border-bottom: 2px solid #70b859;
+    /* border-bottom: 2px solid #70b859; */
   }
 `;

@@ -101,10 +101,10 @@ const DisabledLink = styled.div`
   color: #bbb;
   text-decoration: none;
   cursor: default;
-  :hover {
+  /* :hover {
     background-color: #70b859;
     color: white;
-  }
+  } */
 `;
 
 const SubMenu = styled.ul`
