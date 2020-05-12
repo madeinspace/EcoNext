@@ -19,12 +19,14 @@ import {
   Note,
   CrossLink,
   ProfileProductIcon,
+  TopList,
+  Tabs,
+  Tab,
 } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { IdLink, LinkBuilder } from '../../../components/ui/links';
-import styled, { css } from 'styled-components';
 import useEntityText from '../../../utils/useEntityText';
 import qs from 'qs';
 
@@ -32,30 +34,8 @@ import qs from 'qs';
 
 // #region autotext / dynamic content
 
-const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
-  li {
-    list-style: disc;
-    line-height: 20px;
-  }
-`;
-
 // #endregion
-const Tabs = styled.ul`
-  display: flex;
-  border-bottom: 1px solid #d7dbdd;
-`;
-const Tab = styled.li`
-  cursor: pointer;
-  padding: 15px 40px;
-  font-size: 16px;
-  color: ${props => (props.Pane === props.id ? css`white` : css`#5f6062`)};
-  background-color: ${props => (props.Pane === props.id ? css`#70b859` : css`#e0e0e0`)};
-  &:hover {
-    background-color: #70b859;
-    color: #fff;
-  }
-`;
+
 // #region page
 const LocalEmploymentPage = () => {
   const { clientAlias, clientProducts } = useContext(ClientContext);

@@ -1,6 +1,6 @@
 // #region imports
 import _ from 'lodash';
-import { formatNumber, idlogo, formatChangeInt, formatChangeOneDecimal } from '../../../utils/';
+import { formatNumber, idlogo, formatChangeInt, formatChangeOneDecimal, Top } from '../../../utils/';
 
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -27,12 +27,6 @@ import useEntityText from '../../../utils/useEntityText';
 const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
 
 const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
-
-const Top = n => quals =>
-  _(quals)
-    .takeRight(n)
-    .reverse()
-    .value();
 
 const Bottom = n => quals =>
   _(quals)

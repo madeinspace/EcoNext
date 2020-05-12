@@ -181,3 +181,9 @@ export const renameKeys = (keysMap, obj) =>
     }),
     {},
   );
+
+export const Top = n => quals =>
+  _(quals)
+    .takeRight(n)
+    .reverse()
+    .value();

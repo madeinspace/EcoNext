@@ -78,7 +78,7 @@ import ResidentsPlaceOfWorkIndustryPage from './residents-place-of-work-industry
 import WorkersPlaceOfResidencePage from './workers-place-of-residence/page';
 import ResidentPlaceOfWorkPage from './residents-place-of-work/page';
 
-const parentPageMappings = {
+const PageMappings = {
   indicator: Parent,
   size: Parent,
   structure: Parent,
@@ -93,9 +93,6 @@ const parentPageMappings = {
   'reports-root': Parent,
   'about-economy-parent': Parent,
   'explanatory-notes': Parent,
-};
-
-const PageMappings = {
   home: HomePage,
   'gross-product': GrossProduct,
   population: Population,
@@ -175,4 +172,4 @@ const PageMappings = {
   'residents-place-of-work': ResidentPlaceOfWorkPage,
 };
 
-export default { ...PageMappings, ...parentPageMappings };
+export default PageMappings;

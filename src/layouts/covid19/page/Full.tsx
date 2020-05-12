@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useContext, useState, useEffect } from 'react';
 import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
-import { formatPercent, formatNumber, absSort, formatChangeInt, idlogo } from '../../../utils';
+import { formatPercent, formatNumber, absSort, formatChangeInt, idlogo, Top } from '../../../utils';
 import { ItemWrapper, _SubTitle, PageIntroFullWidth, Lead, Tab, Tabs } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import { IdLink, LinkBuilder } from '../../../components/ui/links';
@@ -45,12 +45,6 @@ const FullContent = () => {
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
 
   const NegativeImpactNJK = topThreeData.filter(({ NJKQtrComp }) => NJKQtrComp < 0);
-
-  const Top = n => quals =>
-    _(quals)
-      .takeRight(n)
-      .reverse()
-      .value();
 
   const TopThree = Top(3);
   const topThree = TopThree(

@@ -7,6 +7,7 @@ import {
   formatPercent,
   idlogo,
   formatChangeInt,
+  Top,
 } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
@@ -20,6 +21,7 @@ import {
   ItemWrapper,
   CrossLink,
   ProfileProductIcon,
+  TopList,
 } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
@@ -27,28 +29,14 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import InfoBox from '../../../components/ui/infoBox';
 import { ABSCensusHousingLink, IdLink } from '../../../components/ui/links';
 import MonolithOrNextLink from '../../../components/Link';
-import styled from 'styled-components';
 
 // #endregion
 
 // #region autotext / dynamic content
 
-const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
-  li {
-    list-style: disc;
-    line-height: 20px;
-  }
-`;
 const TopLevelQualifications = data => data.filter(qual => qual.Hierarchy === 'P' && qual.LabelKey < 97000);
 
 const HighestQualifications = (quals, sortKey) => _.sortBy(_.filter(quals, sortKey), sortKey);
-
-const Top = n => quals =>
-  _(quals)
-    .takeRight(n)
-    .reverse()
-    .value();
 
 const TopThree = Top(3);
 const TopFour = Top(4);

@@ -19,6 +19,7 @@ import {
   Note,
   CrossLink,
   ProfileProductIcon,
+  TopList,
 } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
@@ -32,13 +33,6 @@ import qs from 'qs';
 
 // #region autotext / dynamic content
 
-const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
-  li {
-    list-style: disc;
-    line-height: 20px;
-  }
-`;
 
 // #endregion
 const Tabs = styled.ul`
@@ -56,6 +50,7 @@ const Tab = styled.li`
     color: #fff;
   }
 `;
+
 // #region page
 const EmployedLocallyPage = () => {
   const { clientAlias, clientProducts, LongName } = useContext(ClientContext);

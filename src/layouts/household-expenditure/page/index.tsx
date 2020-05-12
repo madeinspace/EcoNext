@@ -1,62 +1,22 @@
 // #region imports
 import _ from 'lodash';
-import {
-  formatNumber,
-  formatShortDecimal,
-  formatPercent,
-  idlogo,
-  formatChangeInt,
-  formatChangeCurrency,
-  formatCurrency,
-} from '../../../utils/';
-
+import { formatPercent, idlogo, formatChangeInt, formatChangeCurrency, formatCurrency } from '../../../utils/';
 import EntityTable from '../../../components/table/EntityTable';
 import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import {
-  PageIntro,
-  Note,
-  Highlight,
-  AnalysisContainer,
-  SourceBubble,
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-} from '../../../styles/MainContentStyles';
+import { PageIntro, SourceBubble, ItemWrapper } from '../../../styles/MainContentStyles';
 import RelatedPagesCTA from '../../../components/RelatedPages';
 import { ClientContext, PageContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import InfoBox from '../../../components/ui/infoBox';
 import { IdLink, LinkBuilder, NierLink } from '../../../components/ui/links';
-import styled from 'styled-components';
 import useEntityText from '../../../utils/useEntityText';
 
 // #endregion
 
-const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
-  li {
-    list-style: disc;
-    line-height: 20px;
-  }
-`;
 // #region autotext / dynamic content
 
 // #region page
 const HouseholdExpenditurePage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
-  const {
-    contentData,
-    entityData: {
-      currentAreaName,
-      currentBenchmarkName,
-      currentIndustryName,
-      prefixedAreaName,
-      currentStartYear,
-      currentComparaisonYear,
-    },
-  } = useContext(PageContext);
-
   return (
     <>
       <PageIntro>
@@ -303,7 +263,7 @@ const tableBuilder = () => {
 const chartBuilder = () => {
   const {
     contentData: data,
-    entityData: { currentBenchmarkName, currentAreaName, currentStartYear, currentComparaisonYear },
+    entityData: { currentBenchmarkName, currentAreaName, currentStartYear },
   } = useContext(PageContext);
 
   const without = [99999999, 9999999, 999999];
