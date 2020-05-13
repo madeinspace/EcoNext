@@ -365,15 +365,17 @@ const chartBuilder = () => {
       series: [
         {
           name: `Domestic Daytrip`,
-          data: serie1,
+          legendIndex: 2,
+          data: serie3,
         },
         {
           name: `Domestic Visitor Night`,
+          legendIndex: 1,
           data: serie2,
         },
         {
           name: `International Visitor Nights`,
-          data: serie3,
+          data: serie1,
         },
       ],
       plotOptions: {
@@ -467,10 +469,12 @@ const chartBuilderChange = () => {
       series: [
         {
           name: `Domestic Daytrips`,
+          legendIndex: 2,
           data: domesticDayTripData,
         },
         {
           name: `Domestic Visitor Nights`,
+          legendIndex: 1,
           data: domesticVisitorNightData,
         },
         {
