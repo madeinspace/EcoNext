@@ -346,7 +346,9 @@ const chartBuilderChangePer = (type = 1) => {
     entityData: { currentAreaName },
     contentData: { topThreeData },
   } = useContext(PageContext);
-  const noTotal = topThreeData.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
+  const noTotal = _.sortBy(topThreeData, 'QtrChgPer')
+    .reverse()
+    .filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000);
   // Percentage
   // JKCompPer = QtrChgPer - ExJKCompPer
   const withoutJKPer = noTotal.map(item => item.ExJKCompPer);
