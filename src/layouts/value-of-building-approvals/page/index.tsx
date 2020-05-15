@@ -14,8 +14,9 @@ import getActiveToggle from '../../../utils/getActiveToggle';
 // #region population page
 const ValueOfBuildingApprovalsPage = () => {
   const { clientAlias, isLite } = useContext(ClientContext);
-  const { contentData, entityData } = useContext(PageContext);
-  const defaultBenchmarkName = entityData.activeBenchmarkName;
+  const { contentData, entityData, filterToggles } = useContext(PageContext);
+  const benchmarkList: any = filterToggles.filter(({ key }) => key === 'BMID')[0];
+  const defaultBenchmarkName = benchmarkList.default.Label; //entityData.activeBenchmarkName;
   const pageName = 'Value of total building approvals';
   const chartData = chartBuilder(contentData);
   const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);

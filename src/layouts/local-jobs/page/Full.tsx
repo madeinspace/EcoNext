@@ -11,10 +11,11 @@ import { NierLink, IdLink } from '../../../components/ui/links';
 const FullContent = () => {
   const { clientAlias } = useContext(ClientContext);
   const { contentData, filterToggles } = useContext(PageContext);
-  const currentBenchmark = getActiveToggle(filterToggles, 'BMID');
+  const benchmarkList: any = filterToggles.filter(({ key }) => key === 'BMID')[0];
+  const defaultBenchmarkName = benchmarkList.default.Label;
   const GRPChartData = JobsChartBuilder(contentData);
-  const AnnualChangeChartData = AnnualChangeJobsChartBuilder(contentData, currentBenchmark);
-  const tableParams = tableBuilder(currentBenchmark, clientAlias, contentData);
+  const AnnualChangeChartData = AnnualChangeJobsChartBuilder(contentData, defaultBenchmarkName);
+  const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);
 
   return (
     <>
@@ -43,7 +44,7 @@ const Source = () => (
 
 // #endregion
 
-const tableBuilder = (currentBenchmark, clientAlias, rows) => {
+const tableBuilder = (defaultBenchmarkName, clientAlias, rows) => {
   const tableTitle = 'Local jobs';
   const clientLongName = rows[0].GeoName;
   const totalColSpan = 8;
@@ -77,7 +78,7 @@ const tableBuilder = (currentBenchmark, clientAlias, rows) => {
           },
           {
             cssClass: 'odd ',
-            displayText: currentBenchmark,
+            displayText: defaultBenchmarkName,
             colSpan: 2,
           },
           {
@@ -115,7 +116,7 @@ const tableBuilder = (currentBenchmark, clientAlias, rows) => {
       },
       {
         id: 5,
-        displayText: `${clientLongName} as a % of ${currentBenchmark}`,
+        displayText: `${clientLongName} as a % of ${defaultBenchmarkName}`,
         cssClass: 'even int',
       },
     ],
@@ -202,7 +203,7 @@ const JobsChartBuilder = nodes => {
   };
 };
 
-const AnnualChangeJobsChartBuilder = (nodes, currentBenchmark) => {
+const AnnualChangeJobsChartBuilder = (nodes, defaultBenchmarkName) => {
   const chartType = 'line';
   const chartTitle = 'Annual change in local jobs';
   const yAxisTitle = '% change from previous year'; // vert axis
@@ -234,7 +235,7 @@ const AnnualChangeJobsChartBuilder = (nodes, currentBenchmark) => {
           data: clientSerie,
         },
         {
-          name: currentBenchmark,
+          name: defaultBenchmarkName,
           data: benchmarkSerie,
         },
         {

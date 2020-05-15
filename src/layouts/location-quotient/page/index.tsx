@@ -267,9 +267,9 @@ const tableBuilder = () => {
     'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
   const tableTitle = 'Location quotient';
   const firstColTitle = 'Industry (Click rows to view sub-categories)';
-  const footerRows = data.filter(item => item.IndustryName === 'Total');
+  const footerRows = data.filter(item => item.LabelKey === 999999);
   const parents = _.sortBy(
-    data.filter(item => item.Hierarchy === 'P' && item.IndustryName !== 'Total'),
+    data.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
     item => item.LabelKey,
   );
   const children = data.filter(item => item.Hierarchy === 'C');
@@ -361,7 +361,7 @@ const tableBuilder = () => {
       },
       {
         id: 7,
-        displayText: '2011 - 2016',
+        displayText: `${currentStartYear} - ${currentComparisonYear}`,
         cssClass: 'even int',
       },
     ],

@@ -47,6 +47,7 @@ const fetchToggleOptions = async (filters, filterToggles) => {
 
       return {
         active: list.find(({ Value }) => Value === value),
+        default: list.find(({ Value }) => Value === DefaultValue),
         key: ParamName,
         hidden: Hidden || false,
         list,

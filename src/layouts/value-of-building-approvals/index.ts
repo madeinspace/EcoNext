@@ -4,17 +4,12 @@ import Page from './page';
 import { formatMillionsCurrency } from '../../utils';
 import getActiveToggle from '../../utils/getActiveToggle';
 
-const fetchData = async ({ filters }) => {
-  const { ClientID, WebID } = filters;
-  const contentData = await sqlConnection.raw(BuildingApprovalsSQL({ ClientID, WebID }));
+const BuildingApprovalsSQL = ({ ClientID, WebID }) =>
+  `SELECT * from CommData_Economy.[dbo].[fn_IN_BuildingApprovals](${ClientID}, ${WebID}, 40 ) ORDER BY Yr DESC`;
 
-  return contentData;
-};
+const fetchData = async ({ filters }) => await sqlConnection.raw(BuildingApprovalsSQL(filters));
 
-const activeCustomToggles = ({ filterToggles }) => {
-  const activeCustomToggles = { activeBenchmarkName: getActiveToggle(filterToggles, 'BMID') };
-  return activeCustomToggles;
-};
+const activeCustomToggles = ({ filterToggles }) => ({ activeBenchmarkName: getActiveToggle(filterToggles, 'BMID') });
 
 const pageContent = {
   entities: [
@@ -52,7 +47,3 @@ const pageContent = {
 };
 
 export { fetchData, activeCustomToggles, Page, pageContent };
-
-const BuildingApprovalsSQL = ({ ClientID, WebID }) => `
- SELECT * from CommData_Economy.[dbo].[fn_IN_BuildingApprovals](${ClientID}, ${WebID}, 40 ) ORDER BY Yr DESC
-`;
