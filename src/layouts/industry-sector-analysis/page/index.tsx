@@ -306,7 +306,7 @@ const tableBuilder = () => {
 const chartBuilder = () => {
   const {
     contentData,
-    entityData: { currentBenchmarkName, currentIndustryName, currentAreaName },
+    entityData: { currentBenchmarkName, currentIndustryName, currentAreaName, currentStartYear },
   } = useContext(PageContext);
   const data = [...contentData[0].data];
   const totalExports = data.filter(({ LabelName }) => LabelName === 'Output/Total Sales ($m)')[0];
@@ -325,7 +325,7 @@ const chartBuilder = () => {
         type: 'bar',
       },
       title: {
-        text: 'Economic output by destination',
+        text: `Economic output by destination ${currentStartYear}`,
       },
       subtitle: {
         text: `${currentAreaName} - ${currentIndustryName}`,
