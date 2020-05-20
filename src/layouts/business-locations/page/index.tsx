@@ -56,7 +56,7 @@ const BusinessLocationsPage = () => {
       .get(
         `https://economy.id.com.au/${clientAlias}/entity/table/2902?IndkeyABR=${
           filters.IndkeyABR
-        }&ShapeId=${selectedAreas.toString()}`,
+        }&Title=${currentIndustryName}&ShapeId=${selectedAreas.toString()}`,
       )
       .then(res => {
         const table = res.data.replace('[ShapeId]', `${currentIndustryName}`);
