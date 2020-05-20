@@ -309,3 +309,58 @@ $even-row-color: $odd-color;
     }
   }
 }
+
+#idc-entity-table-0-wrapper {
+  position: absolute;
+  bottom: 70px;
+  max-width: 300px;
+  max-height: 350px;
+  overflow-y: auto;
+  background-color: #fff;
+  left: 10px;
+  z-index: 401;
+  font-size: 11px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
+  [data-toggle='dropdown'] {
+    display: none;
+  }
+  .idc-entity-table-export {
+    position: relative;
+    padding: 5px;
+  }
+  table.mappop {
+    thead {
+      tr {
+        th {
+          padding: 5px;
+          border-bottom: 1px solid #5f6062;
+        }
+      }
+    }
+    td,
+    th {
+      padding: 5px;
+      line-height: 16px;
+    }
+    tr.even {
+      background-color: #e6e6e6;
+    }
+    tbody,
+    tfoot {
+      td {
+        border-right: solid 1px #999;
+      }
+      td:last-child {
+        border-right: none;
+      }
+    }
+    tfoot {
+      tr#idc-entity-table-footer-Row {
+        td {
+          background-color: rgba(0, 0, 0, 0.4) !important;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

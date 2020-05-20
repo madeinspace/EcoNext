@@ -80,6 +80,17 @@ export const SubTitleAlt = styled(_SubTitle)`
   margin-bottom: 1.2em;
   color: #009a44;
 `;
+export const EntityTitle = styled(_SubTitle)`
+  padding-left: 10px;
+  padding-top: 10px;
+  color: #009a44;
+  margin: 0;
+  span {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+  }
+`;
 
 export const Headline = styled.p`
   position: relative;
@@ -127,7 +138,7 @@ export const ItemWrapper = styled.div`
 
 export const MapWrapper = styled(ItemWrapper).attrs({ className: `e-shad` })`
   position: relative;
-  min-height: 400px;
+  min-height: 500px;
 `;
 
 export const ProductIcon = styled.span`
