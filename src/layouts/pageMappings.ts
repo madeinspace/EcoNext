@@ -77,6 +77,7 @@ import WorkersPlaceOfResidenceIndustryPage from './workers-place-of-residence-in
 import ResidentsPlaceOfWorkIndustryPage from './residents-place-of-work-industry/page';
 import WorkersPlaceOfResidencePage from './workers-place-of-residence/page';
 import ResidentPlaceOfWorkPage from './residents-place-of-work/page';
+import BusinessLocationsPage from './business-locations/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -170,6 +171,7 @@ const PageMappings = {
   'residents-place-of-work-industry': ResidentsPlaceOfWorkIndustryPage,
   'workers-place-of-residence': WorkersPlaceOfResidencePage,
   'residents-place-of-work': ResidentPlaceOfWorkPage,
+  'business-locations': BusinessLocationsPage,
 };
 
 export default PageMappings;
