@@ -7,29 +7,17 @@ import _ from 'lodash';
 // select * from [dbo].[fn_JTW_Self_Sufficiency_Industry_LGA_2016](102,10,2016,2011)
 const IndustryQuery = {
   id: 1,
-  query: ({ ClientID, WebID, BMID }) =>
+  query: ({ ClientID, WebID }) =>
     `select * from CommData_Economy.[dbo].[fn_JTW_Self_Containment_Industry_LGA_2016_2011Sum](${ClientID}, ${WebID}, 2016, 2011)`,
 };
 
 // select * from [dbo].[fn_JTW_Self_Containment_Occupation_LGA_2016](102,10,2016,2011)
 const OccupationQuery = {
   id: 2,
-  query: ({ ClientID, WebID, BMID }) =>
+  query: ({ ClientID, WebID }) =>
     `select * from CommData_Economy.[dbo].[fn_JTW_Self_Containment_Occupation_LGA_2016_2011Sum](${ClientID}, ${WebID}, 2016, 2011)`,
 };
 /* #endregion */
-
-const without = (str, exclude) => {
-  return str === exclude ? '' : str;
-};
-
-const largest = (arr, key) => {
-  return arr
-    .filter(a => a.LabelKey < 96000)
-    .sort((a, b) => {
-      return b[key] - a[key];
-    })[0];
-};
 
 const queries = [IndustryQuery, OccupationQuery];
 
