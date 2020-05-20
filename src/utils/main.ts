@@ -187,3 +187,11 @@ export const Top = n => quals =>
     .takeRight(n)
     .reverse()
     .value();
+
+export const Largest = (arr, key) => {
+  return arr
+    .filter(a => a.LabelKey < 999999)
+    .sort((a, b) => {
+      return b[key] - a[key];
+    })[0];
+};
