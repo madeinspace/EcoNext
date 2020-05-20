@@ -466,8 +466,8 @@ const Button = ({ name, action, children }): JSX.Element => (
   </ButtonLink>
 );
 
-const ExportButton = ({ onClick }): JSX.Element => (
-  <Button name="export" action={onClick}>
+export const ExportButton = ({ onClick, name = 'export' }): JSX.Element => (
+  <Button name={name} action={onClick}>
     <IconBase>
       <FaFileExport />
     </IconBase>
