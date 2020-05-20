@@ -10,7 +10,9 @@ const defaultTooltipOptions: any = {
 };
 
 export default (data, options?) => {
-  let htmlElem: string = `<div class="polyToolTip"><h1>${data.areaName}</h1>`;
+  const title = `<h1>${data.areaName}</h1>`;
+  const lead = data.infoBox.header !== undefined ? `<h3 class='ttHeader'>${data.infoBox.header}</h3>` : '';
+  let htmlElem: string = `<div class="polyToolTip">${lead}${title}`;
   if (!_.isEmpty(data.infoBox)) {
     const { displayText } = data.infoBox;
     htmlElem += '<br />';

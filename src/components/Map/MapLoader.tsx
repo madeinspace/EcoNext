@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
 const LoadingWrapper = styled.div`
-  min-height: 400px;
+  min-height: 500px;
   width: 100%;
   position: absolute;
   display: ${props => (props.loaded ? css`none` : css`flex`)};

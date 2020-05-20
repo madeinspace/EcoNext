@@ -10,7 +10,8 @@ export const createMapLayers = ({ layers, LongName }) => {
     const decodedShapes = currlayer.shapes.map(shape => {
       const isMainArea = parseInt(currlayer.id) === 4;
       return {
-        areaId: shape.id,
+        id: shape.id,
+        clickable: shape.clickable,
         areaName: shape.shapeName,
         infoBox: shape.shapeOptions.InfoBox || {},
         rank: shape.shapeOptions.Rank || 0,
@@ -21,6 +22,7 @@ export const createMapLayers = ({ layers, LongName }) => {
       };
     });
     acc.push({ ...currlayer, decodedLayer: decodedShapes });
+
     return acc;
   }, []);
   return mapLayers;

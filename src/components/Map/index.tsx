@@ -5,12 +5,12 @@ import TileLayers, { minimapLayer } from './TileLayers';
 import { ClientContext } from '../../utils/context';
 import { getBoundariesFromWKT, createMapLayers } from './Utils';
 import ToolTip from './ToolTip';
-import { MapContainer, InfoPanel, Footer, Source } from './MapStyledComponents';
+import { MapContainer, InfoPanel } from './MapStyledComponents';
 import MiniMap from 'leaflet-minimap';
-import { IdLink } from '../ui/links';
 import { LegendPanel } from './LegendPanel';
 
-const LeafletMap = ({ mapData, onMapLoaded }) => {
+const LeafletMap = (props: any) => {
+  const { mapData, onMapLoaded, forwardRef } = props;
   const { LongName } = useContext(ClientContext);
   const { layers, envelope, mapHeight, legend } = mapData;
   const [map, setMap] = useState(null);
@@ -18,6 +18,20 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
   const [featureGroups, setFeatureGroups] = useState(null);
   const [activeLayers, setActiveLayers] = useState(null);
   const mapContainer = useRef(null);
+
+  const resetLayerStyles = () => {
+    if (featureGroups && activeLayers) {
+      featureGroups.forEach(fg => {
+        fg.featureGroup.eachLayer(function(layer) {
+          layer.setStyle(layer.defaultStyle);
+          layer.selected = false;
+        });
+      });
+    }
+  };
+  if (forwardRef != undefined) {
+    forwardRef.current = { resetLayerStyles };
+  }
 
   useEffect(() => {
     if (!map) {
@@ -42,6 +56,7 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
   const initializeMap = ({ mapContainer }) => {
     let map: L.map = L.map(mapContainer.current, {
       layers: TileLayers.road,
+      preferCanvas: true,
     });
     const bounds = getBoundariesFromWKT(envelope);
     map.fitBounds(bounds);
@@ -85,20 +100,30 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
     });
   };
 
-  const createPolyline = polygon => L.polyline(polygon.leafletPolys).bindTooltip(ToolTip(polygon));
+  const createPolyline = polyline => L.polyline(polyline.leafletPolys).bindTooltip(ToolTip(polyline));
   const createPolygon = polygon => L.polygon(polygon.leafletPolys).bindTooltip(ToolTip(polygon));
 
   const applyStyles = (shape, poly) => {
-    return shape
+    shape.defaultStyle = poly.styles.default;
+    shape.hoverStyle = poly.styles.hover;
+    shape
       .setStyle(poly.styles.default)
       .on('mouseover', function(e) {
-        this.setStyle(poly.styles.hover);
-        this.bringToFront();
+        shape.selected ? null : this.setStyle(poly.styles.hover).bringToFront();
       })
       .on('mouseout', function(e) {
-        this.setStyle(poly.styles.default);
-        poly.zIndexPriority ? this.bringToFront() : this.bringToBack();
+        shape.selected ? null : this.setStyle(poly.styles.default);
+        shape.selected ? null : shape.zIndexPriority ? this.bringToFront() : this.bringToBack();
       });
+
+    if (poly.clickable) {
+      shape.on('click', function(e) {
+        this.setStyle(poly.selected ? poly.styles.default : { color: '#ff0000', weight: 3 }).bringToFront();
+        shape.selected = !shape.selected;
+        props.onShapeSelect(poly.id);
+      });
+    }
+    return shape;
   };
 
   const handleLayerToggle = checkedItems => {
@@ -126,11 +151,6 @@ const LeafletMap = ({ mapData, onMapLoaded }) => {
         {legend && <LegendPanel legends={legend} onLegendOver={handleLegendOver} />}
       </InfoPanel>
       <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: `${mapHeight}px` }} />
-      <Footer>
-        <Source>
-          Compiled and presented in economy.id by <IdLink />
-        </Source>
-      </Footer>
     </MapContainer>
   );
 };
