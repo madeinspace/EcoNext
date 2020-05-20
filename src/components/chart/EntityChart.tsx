@@ -9,14 +9,14 @@ const ChartWrapper = styled.div``;
 const EntityChart: React.SFC<any> = props => {
   const {
     data,
-    data: { enableExport, chartTemplate, dataSource, logoUrl },
+    data: { chartTemplate, dataSource },
   } = props;
   const Chart = ChartFactory.getChart(chartTemplate, data);
 
   return (
     <ChartWrapper className="e-shad">
       {Chart}
-      {dataSource && <ChartFooter dataSource={dataSource} logoUrl={logoUrl} />}
+      {dataSource && <ChartFooter dataSource={dataSource} />}
     </ChartWrapper>
   );
 };

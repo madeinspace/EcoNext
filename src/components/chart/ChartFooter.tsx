@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FooterData } from './FooterData';
+import { idlogo } from '../../utils/pageUtils';
 
 const Footer = styled.div`
   position: relative;
@@ -52,11 +53,11 @@ const Logo = styled.img`
   grid-column: idlogo;
 `;
 
-export const ChartFooter: React.SFC<FooterData> = ({ dataSource, logoUrl }) => {
+export const ChartFooter: React.SFC<FooterData> = ({ dataSource }) => {
   return (
     <Footer>
       <DataSourceText>{dataSource}</DataSourceText>
-      <Logo src={logoUrl} alt=".id logo" />
+      <Logo src={idlogo} alt=".id logo" />
     </Footer>
   );
 };
