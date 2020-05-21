@@ -2,7 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import axios from 'axios';
 import getActiveToggle from '../../utils/getActiveToggle';
-import { adjust, formatNumber, formatPercent, Largest } from '../../utils';
+import { adjust, Largest } from '../../utils';
 import _ from 'lodash';
 const COM_CLIENT_DB = 'CommClient';
 
@@ -110,7 +110,7 @@ const pageContent = {
     {
       Title: 'SubTitle',
       renderString: ({ data }): string => {
-        return `Residents place of work by industry - ${data.currentIndustryName}`;
+        return `Business locations - ${data.currentIndustryName}`;
       },
     },
     {
