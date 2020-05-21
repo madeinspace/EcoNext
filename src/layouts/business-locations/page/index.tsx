@@ -33,7 +33,7 @@ const BusinessLocationsPage = () => {
   const {
     filters,
     contentData: { mapData },
-    entityData: { currentIndustryName },
+    entityData: { currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
@@ -100,7 +100,7 @@ const BusinessLocationsPage = () => {
           </p>
           <p>
             Data from the ABR is useful in planning and economic development, to identify the spatial patterns of
-            businesses across the Monash, clusters and change in business growth patterns across the area.
+            businesses across {prefixedAreaName}, clusters and change in business growth patterns across the area.
           </p>
           <p>
             The raw business register dataset contains large numbers of ABNs which are not relevant to local government
