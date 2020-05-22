@@ -44,7 +44,7 @@ const EmploymentLocationsPage = () => {
   };
 
   const getTable = () => {
-    const tableId = +EconSpace === 0 ? '2889' : '410';
+    const tableId = +EconSpace === 0 ? '410' : '2889';
     axios
       .get(
         `https://economy.id.com.au/${clientAlias}/entity/table/${tableId}?&Title=${currentIndustryName}&ShapeId=${selectedAreas.toString()}`,
