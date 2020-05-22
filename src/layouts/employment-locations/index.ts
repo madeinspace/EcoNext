@@ -14,7 +14,6 @@ const GeomQuery = ({ ClientID }) => {
 // select * from [dbo].[fn_ABR_Businessloc_ALL_1and3Digit](102,23000)
 const BusinessLocationQuery = ({ ClientID, Indkey, EconSpace }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_DestinationZones_2016](${ClientID},2016,${Indkey},${EconSpace})`;
-  console.log('query: ', query);
   return query;
 };
 
@@ -61,7 +60,6 @@ const fetchData = async ({ filters }) => {
     layer.initVisibility = layer.id != 1;
     layer.shapes.forEach(shape => {
       const options = { ...thematicData.data.find(obj => obj.GeoID === shape.id) };
-      layer.id === 1 ? console.log('options: ', options) : null;
       // Perfect example of technical debt created here
       if (!_.isEmpty(options) && options.InfoBox.hasOwnProperty('Geocode')) {
         delete options.InfoBox['Geocode'];
@@ -127,7 +125,6 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
-        console.log('data, contentData, filters: ', data, contentData, filters);
         const { tableData } = contentData;
         const greatest = Largest(tableData, 'Number');
         return `The destination zone with the greatest number (${formatNumber(
