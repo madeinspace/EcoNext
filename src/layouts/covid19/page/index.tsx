@@ -10,8 +10,11 @@ import NoData from './NoData';
 // #region template page
 const CovidPage = () => {
   const { isLite } = useContext(ClientContext);
-  const { filters } = useContext(PageContext);
-  if (+filters.WebID === 220) return <NoData />;
+  const {
+    contentData: { headlineData, topThreeData },
+  } = useContext(PageContext);
+  const fullDataSet = !_.isEmpty(headlineData) && !_.isEmpty(topThreeData);
+  if (!fullDataSet) return <NoData />;
   return <>{isLite ? <LiteContent /> : <FullContent />}</>;
 };
 export default CovidPage;

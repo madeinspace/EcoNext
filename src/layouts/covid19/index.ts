@@ -1,18 +1,16 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 
-const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${+ClientID},${+WebID},${+BMID}) ORDER BY QtrChg DESC`;
-  return query;
-};
-const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${+ClientID},${+WebID},${+BMID})`;
-  return query;
-};
+const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
+  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
+const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
+  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
 
 const fetchData = async ({ filters }) => {
-  const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
   const headlineData = await sqlConnection.raw(headlineQuery(filters));
+  console.log('headlineData: ', headlineData);
+  const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
+  console.log('topThreeData: ', topThreeData);
   return { topThreeData, headlineData };
 };
 
