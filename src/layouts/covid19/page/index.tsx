@@ -14,7 +14,7 @@ const CovidPage = () => {
     contentData: { headlineData, topThreeData },
   } = useContext(PageContext);
   const fullDataSet = !_.isEmpty(headlineData) && !_.isEmpty(topThreeData);
-  if (!fullDataSet) return <NoData />;
+  if (!fullDataSet && !isLite) return <NoData />;
   return <>{isLite ? <LiteContent /> : <FullContent />}</>;
 };
 export default CovidPage;

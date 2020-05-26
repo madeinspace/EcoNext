@@ -7,10 +7,11 @@ const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
 
 const fetchData = async ({ filters }) => {
+  if(filters.IsLite){
+    return {}
+  }
   const headlineData = await sqlConnection.raw(headlineQuery(filters));
-  console.log('headlineData: ', headlineData);
   const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
-  console.log('topThreeData: ', topThreeData);
   return { topThreeData, headlineData };
 };
 
@@ -42,6 +43,18 @@ const pageContent = {
     },
   ],
   filterToggles: [
+    {
+      Database: 'CommApp',
+      DefaultValue: '40',
+      Label: 'Current benchmark:',
+      Params: [
+        {
+          ClientID: '9',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
+    },
     {
       Database: 'CommApp',
       DefaultValue: '10',
