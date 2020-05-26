@@ -33,8 +33,8 @@ const lookup = {
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { contentData, filterToggles } = useContext(PageContext);
-  const currentAreaName = getActiveToggle(filterToggles, 'WebID', LongName);
+  const { entityData: { currentAreaName, prefixedAreaName },contentData, filterToggles } = useContext(PageContext);
+  
   const currentYear = getActiveToggle(filterToggles, 'sStartYear', LongName);
   const benchmarkYear = getActiveToggle(filterToggles, 'sEndYear', LongName);
   const currentBtype = getActiveToggle(filterToggles, 'BType');
@@ -70,7 +70,7 @@ const TemplatePage = () => {
       <PageIntro>
         <div>
           <p>
-            Registered business by industry shows how many businesses there are in {currentAreaName} within each
+            Registered business by industry shows how many businesses there are {prefixedAreaName} within each
             industry sector using the Australian Bureau of Statistics (ABS) Business Register which itself is derived
             from the GST register held by the Australian Tax Office (ATO). Businesses are included if they are
             registered with the ATO, with an ABN used within the previous two financial years. Businesses are split up
@@ -84,11 +84,11 @@ const TemplatePage = () => {
           </p>
 
           <p>
-            The number of businesses in the {currentAreaName} should be viewed in conjunction with{' '}
-            {LinkBuilder('https://economy.id.com.au/tasmania/employment-by-industry', 'Employment by industry (Total)')}{' '}
-            and {LinkBuilder('https://economy.id.com.au/tasmania/value-add-by-industry', 'Value added')} datasets to see
+            The number of businesses in {prefixedAreaName} should be viewed in conjunction with{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-by-industry`, 'Employment by industry (Total)')}{' '}
+            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/value-add-by-industry`, 'Value added')} datasets to see
             the relative size of industries, and with{' '}
-            {LinkBuilder('https://economy.id.com.au/tasmania/employment-locations', 'Employment locations')} data to see
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-locations`, 'Employment locations')} data to see
             where business employment occurs within the area.
           </p>
         </div>
