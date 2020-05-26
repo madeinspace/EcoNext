@@ -45,18 +45,6 @@ const pageContent = {
   filterToggles: [
     {
       Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '9',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
-      ParamName: 'BMID',
-    },
-    {
-      Database: 'CommApp',
       DefaultValue: '10',
       Label: 'Current area:',
       Params: [
