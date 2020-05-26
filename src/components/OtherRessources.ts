@@ -1,4 +1,9 @@
-export default [
+import { useContext } from "react";
+import { ClientContext } from "../utils/context";
+
+const OtherResources = () => {
+  const { clientAlias } = useContext(ClientContext);
+  return [
   {
     url:
       "https://www.youtube.com/playlist?list=PL8qHEkAyaQ0fQT2LuO1bv_vf_SBJGw2iJ",
@@ -21,7 +26,7 @@ export default [
     displayText: "Nat'l Economic Indicators",
   },
   {
-    url: "https://economy.id.com.au/mitcham/related-sites",
+    url: `https://economy.id.com.au/${clientAlias}/related-sites`,
     displayText: "Related sites",
   },
   {
@@ -33,3 +38,7 @@ export default [
     displayText: "Blog",
   },
 ]
+
+} 
+
+export default OtherResources
