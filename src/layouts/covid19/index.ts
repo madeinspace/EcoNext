@@ -1,18 +1,28 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-
+// impact by region (benchmark)
+const impactByRegionQuery = ({ ClientID, WebID = 10 }) =>
+  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Graph](${ClientID},${WebID})`;
+// output value added
+const outputValueAddedQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
+  `select * from CommData_Economy.[dbo].[fn_COVID19_OutputVA_Industry](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
+// local jobs and employed residents
 const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Industry_Top3](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
+  `select * from CommData_Economy.[dbo].[fn_COVID19_LocalJobsEmpRes_Industry](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
+// headline
 const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
 
 const fetchData = async ({ filters }) => {
-  if(filters.IsLite){
-    return {}
+  if (filters.IsLite) {
+    return {};
   }
   const headlineData = await sqlConnection.raw(headlineQuery(filters));
   const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
-  return { topThreeData, headlineData };
+  const impactByRegionData = await sqlConnection.raw(impactByRegionQuery(filters));
+  const outputValueAddedData = await sqlConnection.raw(outputValueAddedQuery(filters));
+
+  return { topThreeData, headlineData, impactByRegionData, outputValueAddedData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => ({});
@@ -40,6 +50,10 @@ const pageContent = {
         },
       ],
       Value: '178',
+    },
+    {
+      Title: 'Version',
+      renderString: (): string => `Version 1.2 (June 2020)`,
     },
   ],
   filterToggles: [
