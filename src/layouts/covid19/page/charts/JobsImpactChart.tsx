@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { ItemWrapper, _SubTitle, Tab, Tabs, ChartTabs, ChartTab } from '../../../../styles/MainContentStyles';
 import EntityChart from '../../../../components/chart/EntityChart';
-import { formatChangeInt, idlogo, formatPercent } from '../../../../utils';
+import { formatChangeInt, idlogo, formatPercent, formatChangePercent } from '../../../../utils';
 import { PageContext, ClientContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
 import _ from 'lodash';
@@ -80,6 +80,7 @@ const ChartSource = () => (
 
 // #region chart builder change
 const localJobsChartBuilder = (series, categories, measure, type) => {
+  console.log('measure: ', measure);
   const { LongName } = useContext(ClientContext);
   const {
     entityData: { currentAreaName },
@@ -102,8 +103,15 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${
-      type === 1 ? formatChangeInt(this.y) : formatPercent(this.y) + '%'
+      type === 1 ? formatChangeInt(this.y) : formatChangePercent(this.y) + '%'
     }`;
+  };
+
+  const tickCalc = () => {
+    if (measure === 'UR_Jobs') {
+      return type === 1 ? undefined : 1;
+    }
+    return undefined;
   };
 
   return {
@@ -139,6 +147,8 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
       },
       yAxis: [
         {
+          tickInterval: tickCalc(),
+          minorTickInterval: type === 1 ? undefined : 0.5,
           crosshair: true,
           title: {
             text: yAxisTitle,
