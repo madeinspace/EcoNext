@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const LoadingWrapper = styled.div`
-  min-height: 200px;
+  min-height: ${props => (props.height ? `${props.height}px` : `200px`)};
   display: ${props => (props.loaded ? css`none` : css`flex`)};
   align-items: center;
   justify-content: center;
@@ -15,9 +15,9 @@ const _Loader = styled.img`
   position: absolute;
 `;
 
-export const Loader = ({ loaded }) => {
+export const Loader = ({ height = null, loaded }) => {
   return (
-    <LoadingWrapper loaded={loaded}>
+    <LoadingWrapper height={height} loaded={loaded}>
       <_Loader
         src="https://econext-cdn.azureedge.net/eco-assets/images/Bar_Chart_13s_200px.gif"
         alt="loading animation"

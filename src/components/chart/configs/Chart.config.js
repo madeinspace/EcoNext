@@ -1,25 +1,17 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-// default chart: vertical
-import { getParameterByName } from '../../../utils/';
 import { formatChangePercent } from '../../../utils';
 import * as deepmerge from 'deepmerge';
 
 export const ChartDefault = (...opts) => {
-  // eslint-disable-next-line prefer-spread
   const options = Object.assign.apply(Object, [{}].concat(...opts));
   const chartDefaults = {};
 
-  const getHeight = () => {
-    const yoffset = 50;
-    const height = options.height !== undefined ? options.height : 400;
-    return getParameterByName('pdf', null) === '1' ? height : height + yoffset;
-  };
+  const getHeight = () => options.height !== undefined ? options.height : 400;
 
   chartDefaults.chart = {
     height: getHeight(),
     /* SETTING HEIGHT TO 400 FOR REPORTING TO PDF. TO FIT 2 CHARTS INSIDE ONE PAGE IN PDF EXPORT */
     spacingRight: 50,
-    spacingLeft: 30,
+    spacingLeft: 20,
     marginLeft: null,
     zoomType: 'x',
     className: 'standard-chart',
@@ -36,7 +28,6 @@ export const ChartDefault = (...opts) => {
         spacingBottom: 60,
         events: {
           load() {
-            // this.container.classList.add("export");
             // append svg logo to chart
             this.renderer
               .g()
@@ -45,8 +36,6 @@ export const ChartDefault = (...opts) => {
                 class: 'exportLogo',
               })
               .add();
-            // tslint:disable-next-line:prefer-for-of
-
             this.renderer
               .text(options.source, 20, 470)
               .css({
@@ -100,7 +89,7 @@ export const ChartDefault = (...opts) => {
         const formatedNumber = formatChangePercent(this.value);
         return formatedNumber;
       },
-      ...options.yAxis.labels,
+      // ...options.yAxis.labels,
     },
     opposite: false,
     plotBands: [],
@@ -127,7 +116,7 @@ export const ChartDefault = (...opts) => {
 
   chartDefaults.legend = {
     align: 'left',
-    enabled: options.series.length !== 1,
+    enabled: options.series != undefined ? options.series.length !== 1 : 1,
     /* only display legend when more than 1 series exists */
     symbolWidth: 25,
     symbolRadius: 0,
@@ -141,7 +130,7 @@ export const ChartDefault = (...opts) => {
 
   chartDefaults.title = {
     x: 10,
-    text: options.title.text,
+    text: options.title != undefined ? options.title.text : '',
     align: 'left',
     margin: 40,
     widthAdjust: -100,

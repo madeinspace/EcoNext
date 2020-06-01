@@ -498,4 +498,10 @@ export class Actions extends React.Component<{}, { visible: boolean }> {
 
 export const EntityContainer = styled.div`
   position: relative;
+  min-height: 300px;
+`;
+export const ChartContainer = styled.div`
+  position: relative;
+  min-height: 300px;
+  padding: 10px 0 0 0;
 `;
