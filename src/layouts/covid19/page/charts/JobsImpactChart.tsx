@@ -80,7 +80,6 @@ const ChartSource = () => (
 
 // #region chart builder change
 const localJobsChartBuilder = (series, categories, measure, type) => {
-  console.log('measure: ', measure);
   const { LongName } = useContext(ClientContext);
   const {
     entityData: { currentAreaName },
