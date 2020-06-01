@@ -63,6 +63,26 @@ export const Tab = styled.li`
   }
 `;
 
+export const ChartTabs = styled.ul`
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  top: 55px;
+`;
+
+export const ChartTab = styled.li`
+  cursor: pointer;
+  padding: 8px 20px;
+  font-size: 12px;
+  color: ${props => (props.Pane === props.id ? '#fff' : '#5f6062')};
+  background-color: ${props => (props.Pane === props.id ? `#70b859` : `#e0e0e0`)};
+  &:hover {
+    background-color: #70b859;
+    color: #fff;
+  }
+`;
+
 export const TopOrderedList = styled.ol`
   margin: 10px 0 10px 20px;
   li {
@@ -80,6 +100,11 @@ export const SubTitleAlt = styled(_SubTitle)`
   margin-bottom: 1.2em;
   color: #009a44;
 `;
+
+export const SubTitleAlt2 = styled(SubTitleAlt)`
+  font-size: 18px;
+`;
+
 export const EntityTitle = styled(_SubTitle)`
   padding-left: 10px;
   padding-top: 10px;
@@ -131,9 +156,14 @@ export const PageIntroFullWidth = styled.div`
 `;
 
 export const ItemWrapper = styled.div`
+  position: relative;
   page-break-inside: avoid;
   /* page-break-after: always; */
   margin: 20px 0;
+`;
+
+export const ShadowWrapper = styled(ItemWrapper)`
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
 `;
 
 export const MapWrapper = styled(ItemWrapper).attrs({ className: `e-shad` })`

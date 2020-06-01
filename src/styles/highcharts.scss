@@ -1010,3 +1010,11 @@ text.highcharts-drilldown-data-label,
   fill: #e4d354;
   stroke: #e4d354;
 }
+
+.covid19 {
+  .highcharts-negative {
+    &.highcharts-color-0 {
+      fill: $color-economy-dark;
+    }
+  }
+}
