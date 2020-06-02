@@ -55,7 +55,7 @@ const Disclaimers = () => {
         )}
       </p>
       <SectionTitle id="revs">Revisions</SectionTitle>
-      <Lead>Version 1.1 Revisions - model updated on 6 May 2020</Lead>
+      <Lead>Version 1.1 Revisions - model updated on 7 May 2020</Lead>
       <p>
         For the June Quarter 2020, NIEIR’s Australia GDP estimate has been revised from -16.6% to -12.4%. Compared to
         NIEIR’s previous forecast (based on information available mid-April 2020), the better than expected containment
