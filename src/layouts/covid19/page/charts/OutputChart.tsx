@@ -127,8 +127,6 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
       },
       yAxis: [
         {
-          tickInterval: type === 1 ? undefined : 1,
-          minorTickInterval: type === 1 ? undefined : 0.1,
           crosshair: true,
           title: {
             text: yAxisTitle,

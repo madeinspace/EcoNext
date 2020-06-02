@@ -11,6 +11,7 @@ const ImpactByRegionChart = () => {
     contentData: { impactByRegionData },
   } = useContext(PageContext);
   const newArr = [];
+
   impactByRegionData.forEach(element => {
     if (element.WebID > 50) {
       newArr.unshift(element);
@@ -18,22 +19,20 @@ const ImpactByRegionChart = () => {
       newArr.push(element);
     }
   });
-  const categories = Array.from(
-    new Set(
-      impactByRegionData.map((item: any) => item.Measure.replace('UR_Jobs', 'Employed Residents').replace('_', ' ')),
-    ),
-  );
+
+  const categories = ['GRP', 'Local Jobs (incl JobKeeper)', 'Employed Residents (incl Jobkeeper)'];
   const legends = Array.from(new Set(newArr.map((item: any) => item.GeoName)));
 
   const series = legends.reduce((acc: any, cur: any) => {
     const newSeries = newArr.filter(items => items.GeoName === cur);
-    const seriesObject = {
-      name: cur,
-      className: 'covid19',
-      data: newSeries.map(d => d.QtrChgPer),
-    };
-
-    return [...acc, seriesObject];
+    return [
+      ...acc,
+      {
+        name: cur,
+        className: 'covid19',
+        data: newSeries.map(d => d.QtrChgPer),
+      },
+    ];
   }, []);
   return (
     <ItemWrapper>

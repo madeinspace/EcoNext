@@ -7,10 +7,10 @@ import { IdLink } from '../../../../components/ui/links';
 import _ from 'lodash';
 import InfoBox from '../../../../components/ui/infoBox';
 import useEntityText from '../../../../utils/useEntityText';
+import ReactChart from '../../../../components/chart/ReactChart';
 
 const JobsImpactChart = ({ measure }) => {
   const [Pane, setPane] = useState(1);
-  const handleTabChange = (key, value) => setPane(value);
   const {
     filters,
     contentData: { topThreeData },
@@ -51,6 +51,15 @@ const JobsImpactChart = ({ measure }) => {
       data: localJobswithoutJKPer,
     },
   ];
+
+  const Numbers: any = localJobsChartBuilder(seriesNumber, categoriesNum, measure, 1);
+  const Percentages: any = localJobsChartBuilder(seriesPer, categoriesPer, measure, 2);
+  const [options, setHighchartsOptions] = useState(Numbers);
+  const handleTabChange = (key, value) => {
+    setPane(value);
+    setHighchartsOptions(value === 1 ? Numbers : Percentages);
+  };
+
   return (
     <ItemWrapper>
       <ChartTabs>
@@ -61,8 +70,7 @@ const JobsImpactChart = ({ measure }) => {
           Percentage
         </ChartTab>
       </ChartTabs>
-      {Pane === 1 && <EntityChart data={localJobsChartBuilder(seriesNumber, categoriesNum, measure, 1)} />}
-      {Pane === 2 && <EntityChart data={localJobsChartBuilder(seriesPer, categoriesPer, measure, 2)} />}
+      <ReactChart height="500" options={options} />
     </ItemWrapper>
   );
 };
@@ -106,15 +114,7 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
     }`;
   };
 
-  const tickCalc = () => {
-    if (measure === 'UR_Jobs') {
-      return type === 1 ? undefined : 1;
-    }
-    return undefined;
-  };
-
   return {
-    cssClass: '',
     highchartOptions: {
       height: chartHeight,
       chart: {
@@ -146,8 +146,6 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
       },
       yAxis: [
         {
-          tickInterval: tickCalc(),
-          minorTickInterval: type === 1 ? undefined : 0.5,
           crosshair: true,
           title: {
             text: yAxisTitle,
@@ -161,11 +159,14 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
         },
       ],
     },
-    rawDataSource,
-    dataSource: <ChartSource />,
-    chartContainerID,
-    logoUrl: idlogo,
-    chartTemplate,
+    reactChartOptions: {
+      className: '',
+      footer: {
+        rawDataSource,
+        dataSource: <ChartSource />,
+        logoUrl: idlogo,
+      },
+    },
   };
 };
 

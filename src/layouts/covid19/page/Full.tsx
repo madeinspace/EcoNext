@@ -15,6 +15,7 @@ import EconomicImpactChart from './charts/EconomicImpactChart';
 // #region template page
 const FullContent = () => {
   const {
+    filters,
     entityData: { currentAreaName, prefixedAreaName },
     contentData: { headlineData, topThreeData },
   } = useContext(PageContext);
@@ -41,12 +42,14 @@ const FullContent = () => {
 
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
 
-  const NegativeImpactNJK = topThreeData.filter(({ NJKQtrComp }) => NJKQtrComp < 0);
+  const LocalJobsImpactNJK = topThreeData.filter(
+    ({ NJKQtrComp, WebID, Measure }) => Measure === 'Local_Jobs' && WebID === +filters.WebID && NJKQtrComp < 0,
+  );
 
   const TopThree = Top(3);
   const topThree = TopThree(
     absSort(
-      NegativeImpactNJK.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000),
+      LocalJobsImpactNJK.filter(({ NieirInd1DigitWebKey }) => NieirInd1DigitWebKey != 22000),
       'NJKQtrComp',
     ),
   );

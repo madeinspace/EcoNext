@@ -13,7 +13,7 @@ const ReactChart = props => {
     enableExport = true,
     options: {
       highchartOptions,
-      reactChartOptions: { footer },
+      reactChartOptions: { footer = null },
     },
   } = props;
   const chartRef: any = useRef(null);
