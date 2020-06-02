@@ -1,5 +1,13 @@
 import { useState, useContext } from 'react';
-import { ItemWrapper, _SubTitle, Tab, Tabs, ChartTabs, ChartTab } from '../../../../styles/MainContentStyles';
+import {
+  ItemWrapper,
+  _SubTitle,
+  Tab,
+  Tabs,
+  ChartTabs,
+  ChartTab,
+  ShadowWrapper,
+} from '../../../../styles/MainContentStyles';
 import EntityChart from '../../../../components/chart/EntityChart';
 import { formatChangeInt, idlogo, formatPercent, formatChangePercent } from '../../../../utils';
 import { PageContext, ClientContext } from '../../../../utils/context';
@@ -61,7 +69,7 @@ const JobsImpactChart = ({ measure }) => {
   };
 
   return (
-    <ItemWrapper>
+    <ShadowWrapper>
       <ChartTabs>
         <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
           Number
@@ -71,7 +79,7 @@ const JobsImpactChart = ({ measure }) => {
         </ChartTab>
       </ChartTabs>
       <ReactChart height="500" options={options} />
-    </ItemWrapper>
+    </ShadowWrapper>
   );
 };
 
