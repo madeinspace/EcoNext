@@ -41,30 +41,12 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   const fourOfourData = { client, page: { pageData: null, filters: [], handle } };
   // no client? => 404
   if (client === null) return fourOfourData;
+  const clientPage = await client.clientPages.find(page => page.Alias === handle);
 
   const { ID, isLite } = client;
   const layoutData = await fetchLayout(handle);
   const { fetchData, pageContent, activeCustomToggles } = layoutData;
-  const pageData = {
-    Alias: 'covid19',
-    AppID: 4,
-    Disabled: false,
-    Draft: false,
-    GroupName: 'Economic tools',
-    IsParent: false,
-    MenuTitle: 'Covid19 economic outlook',
-    MetaDescription: 'Covid19 economic outlook',
-    MetaKeywords: 'covid19 impact',
-    MetaTitle: 'Covid19 economic outlook | [A] | economy.id',
-    PageID: 99999,
-    ParentPageID: 0,
-    Secure: false,
-  };
-  // #region covid19 page
-  // this is not how it should be but given the circumpstance and pressure to release
-  // we'll do it that way until we do it the proper way, this should be added as an official page in the cosmos container
-  const ind = client.clientPages.findIndex(({ Alias }) => Alias === 'economic-impact-assesment');
-  client.clientPages.splice(ind, 0, pageData);
+
   // #endregion
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
@@ -117,7 +99,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     filters,
     filterToggles,
     providedFilters: [],
-    pageData,
+    pageData: clientPage,
     entities,
     entityData: data,
   };

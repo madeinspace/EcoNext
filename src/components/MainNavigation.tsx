@@ -5,7 +5,6 @@ import _ from 'lodash';
 import groupBy from 'lodash/groupBy';
 import OtherResources from './OtherRessources';
 import { ClientContext, PageContext } from '../utils/context';
-const MainNav = styled.div``;
 
 const buildIsCurrent = currentPageAlias => navigationNode => navigationNode.Alias == currentPageAlias;
 
@@ -23,7 +22,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
-        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID } = topNode;
+        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID, New = false } = topNode;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
         const isActive = childIsCurrent || pageAlias === handle;
@@ -37,7 +36,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
                 className={isActive && 'active'}
                 href={`/${clientAlias}/${pageAlias === 'home' ? '' : pageAlias}`}
               >
-                {MenuTitle}
+                {MenuTitle} {New && <NewTag active={isActive}>NEW</NewTag>}
               </StyledLink>
             )}
             {isParent && <SubMenu>{buildMenu(handle, clientAlias, navigationNodes, PageID)}</SubMenu>}
@@ -72,6 +71,18 @@ const MainNavigation = (): JSX.Element => {
 
 export default MainNavigation;
 
+const MainNav = styled.div``;
+
+const NewTag = styled.span`
+  font-size: 8px;
+  background: ${props => (props.active ? '#fff' : '#52c41a')};
+  color: ${props => (props.active ? '#52c41a' : '#fff')};
+  padding: 3px;
+  position: relative;
+  top: -2px;
+  margin-left: 10px;
+`;
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #757575;
@@ -101,10 +112,6 @@ const DisabledLink = styled.div`
   color: #bbb;
   text-decoration: none;
   cursor: default;
-  /* :hover {
-    background-color: #70b859;
-    color: white;
-  } */
 `;
 
 const SubMenu = styled.ul`
@@ -151,6 +158,11 @@ const MenuItem = styled.li`
   }
 
   &:hover {
+    ${NewTag} {
+      background: ${props => (props.active ? '#52c41a' : '#fff')};
+      color: ${props => (props.active ? '#fff' : '#52c41a')};
+    }
+
     ${SubMenu} {
       visibility: visible;
       opacity: 1;

@@ -18,14 +18,6 @@ const Disclaimers = () => {
         new information becomes available, e.g. changes to government stimulus, shifts in quarantine conditions, or the
         release of relevant date etc. revisions and updates will be applied, and new data will be added where possible.{' '}
       </p>
-      <p>New features to be published soon, include;</p>
-      <TopList>
-        <li>jobs detail by industry</li>
-        <li>employed resident data</li>
-        <li>interactive charts and export functionality</li>
-        <li>detailed analysis of Stimulus & Recovery Phase</li>
-        <li>Benchmarks so you can compare your impacts to other regions</li>
-      </TopList>
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
         NIEIR has estimated the potential impacts of coronavirus on economic activity, employment and sectors at the LGA
