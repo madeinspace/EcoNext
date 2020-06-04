@@ -1,14 +1,13 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import { formatNumber } from '../../utils';
-import getActiveToggle from '../../utils/getActiveToggle';
 
 const fetchData = async ({ filters }) => {
   const { ClientID, WebID, IsLite, BMID } = filters;
-  const SQL = ({ ClientID, WebID, BMID }) => `
+  const SQL = ({ ClientID, WebID, BMID = 40 }) => `
   select * from CommData_Economy.[dbo].[fn_LocalJobs_Full](${+ClientID},${+WebID},${+BMID}) ORDER BY Year_End DESC
   `;
-  const SQLite = ({ ClientID, WebID, BMID }) => `
+  const SQLite = ({ ClientID, WebID, BMID = 40 }) => `
   select * from CommData_Economy.[dbo].[fn_IN_LocalJobs](${+ClientID},${+WebID},${+BMID}) ORDER BY Yr DESC
   `;
   const SQLQuery = IsLite ? SQLite({ ClientID, WebID, BMID }) : SQL({ ClientID, WebID, BMID });
@@ -16,7 +15,7 @@ const fetchData = async ({ filters }) => {
   return contentData;
 };
 
-const activeCustomToggles = ({ filterToggles }) => ({ defaultBenchmarkName: getActiveToggle(filterToggles, 'BMID') });
+const activeCustomToggles = ({ filterToggles }) => {};
 
 const pageContent = {
   entities: [
@@ -26,35 +25,11 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const localJobs = formatNumber(contentData[0].LocalJobs);
-        const yearEnding = contentData[0].Year_End;
-        return `There were ${localJobs} jobs located in ${prefixedAreaName} in the year ending June ${yearEnding}.`;
+      renderString: ({ data, contentData, filters }): string => {
+        const localJobs = formatNumber(filters.IsLite ? contentData[0].ValWebID : contentData[0].LocalJobs);
+        const yearEnding = filters.IsLite ? contentData[0].Yr : contentData[0].Year_End;
+        return `There were ${localJobs} jobs located in ${data.prefixedAreaName} in the year ending June ${yearEnding}.`;
       },
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '177',
-    },
-    {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const localJobs = formatNumber(contentData[0].ValWebID);
-        const yearEnding = contentData[0].Yr;
-        return `There were ${localJobs} jobs located in ${prefixedAreaName} in the year ending June ${yearEnding}.`;
-      },
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '178',
     },
     {
       Title: 'Description',
@@ -74,6 +49,19 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '40',
+      Label: 'Current benchmark:',
+      Params: [
+        {
+          ClientID: '9',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
+      Hidden: true,
     },
   ],
 };

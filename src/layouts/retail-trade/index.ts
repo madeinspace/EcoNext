@@ -52,6 +52,19 @@ const pageContent = {
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
     },
+    {
+      Database: 'CommApp',
+      DefaultValue: '40',
+      Label: 'Current benchmark:',
+      Params: [
+        {
+          ClientID: '9',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
+      Hidden: true,
+    },
   ],
 };
 

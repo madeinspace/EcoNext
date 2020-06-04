@@ -29,35 +29,11 @@ const pageContent = {
     },
     {
       Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const localJobs = formatNumber(contentData[0].LocalJobs);
-        const yearEnding = contentData[0].Year_End;
-        return `In ${prefixedAreaName}, there were ${localJobs} residents employed in the year ending June ${yearEnding}.`;
+      renderString: ({ data, contentData, filters }): string => {
+        const endYear = filters.IsLite ? contentData[0].Yr : contentData[0].Year_End;
+        const localJobs = formatNumber(filters.IsLite ? contentData[0].ValWebID : contentData[0].LocalJobs);
+        return `In ${data.prefixedAreaName}, there were ${localJobs} residents employed in the year ending June ${endYear}.`;
       },
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '177',
-    },
-    {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName } = data;
-        const localJobs = formatNumber(contentData[0].ValWebID);
-        const yearEnding = contentData[0].Yr;
-        return `In ${prefixedAreaName}, there were ${localJobs} residents employed in the year ending June ${yearEnding}.`;
-      },
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '178',
     },
   ],
   filterToggles: [

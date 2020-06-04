@@ -5,7 +5,7 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
 // select * from [dbo].[fn_IN_UnemploymentPivot](102,10,40)
-const SQLQuery = ({ ClientID, WebID, BMID }) =>
+const SQLQuery = ({ ClientID, WebID, BMID = 40 }) =>
   `SELECT * from CommData_Economy.[dbo].[fn_In_UnemploymentPivot](${ClientID},${WebID},${BMID}) ORDER BY Year ASC, Month ASC`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));

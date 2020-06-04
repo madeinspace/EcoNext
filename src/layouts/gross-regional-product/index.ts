@@ -5,13 +5,12 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
 // select * from [dbo].[fn_GrossRegionalProduct](223,10,40)
-const SQLQuery = ({ ClientID, WebID, BMID }) =>
+const SQLQuery = ({ ClientID, WebID, BMID = 40 }) =>
   `SELECT * from CommData_Economy.[dbo].[fn_GrossRegionalProduct](${ClientID},${WebID},${BMID}) ORDER BY Year_End DESC`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));
 
 const activeCustomToggles = ({ filterToggles }) => ({
-  currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
   currentIndustryName: getActiveToggle(filterToggles, 'Indkey'),
 });
 

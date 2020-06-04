@@ -24,11 +24,30 @@ const connection = {
   options,
 };
 
+const debug = process.env.NODE_ENV === 'development';
+const log = debug
+  ? {
+      error(message) {
+        console.log('Knex Error: ', message);
+      },
+      debug(message) {
+        console.log('Knex Debug: ', message);
+      },
+    }
+  : {};
+
 const acquireConnectionTimeout = 600000;
+
 const DBConnection = {
+  log,
+  debug,
   client,
   connection,
   acquireConnectionTimeout,
+  pool: {
+    min: 2,
+    max: 50,
+  },
 };
 
 export const sqlConnection = knex(DBConnection);

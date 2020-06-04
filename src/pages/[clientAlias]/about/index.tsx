@@ -11,7 +11,7 @@ import filterEntities from '../../../utils/filterEntities';
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, Share, ExportPage } from '../../../components/Actions';
 import Error from 'next/error';
-import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
+import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 import { activeCustomToggles } from '../../../layouts/about';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
@@ -70,10 +70,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     ...providedFilters,
   };
 
-  const filterToggles = await fetchToggleOptions(
-    tempfilters,
-    [...pageContent['filterToggles'], ...globalToggles] || [],
-  );
+  const filterToggles = await fetchToggleOptions(tempfilters, [...pageContent['filterToggles']] || []);
 
   const activeFilters = filterToggles.map(({ key, value }) => ({ [key]: value }));
 

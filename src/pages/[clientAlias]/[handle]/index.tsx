@@ -98,10 +98,7 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
     ...providedFilters,
   };
 
-  const filterToggles = await fetchToggleOptions(
-    tempfilters,
-    [...pageContent['filterToggles'], ...globalToggles] || [],
-  );
+  const filterToggles = await fetchToggleOptions(tempfilters, [...pageContent['filterToggles']] || []);
 
   const activeFilters = filterToggles.map(({ key, value }) => ({ [key]: value }));
 

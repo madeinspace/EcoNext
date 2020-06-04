@@ -10,7 +10,7 @@ import Description from '../../../components/Description';
 import filterEntities from '../../../utils/filterEntities';
 import { PageContext, ClientContext } from '../../../utils/context';
 import { Actions, ExportPage } from '../../../components/Actions';
-import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
+import fetchToggleOptions from '../../../utils/fetchToggleOptions';
 import getActiveToggle from '../../../utils/getActiveToggle';
 
 const HomePageComponent = ({ client, page }): JSX.Element => {
@@ -66,10 +66,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
     ...providedFilters,
   };
 
-  const filterToggles = await fetchToggleOptions(
-    tempfilters,
-    [...pageContent['filterToggles'], ...globalToggles] || [],
-  );
+  const filterToggles = await fetchToggleOptions(tempfilters, [...pageContent['filterToggles']] || []);
 
   const activeFilters = filterToggles.map(({ key, value }) => ({ [key]: value }));
 

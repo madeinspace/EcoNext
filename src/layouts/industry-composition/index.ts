@@ -5,7 +5,7 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
 // select * from [dbo].[fn_JTW_Employment_Broad_1Digit](102,10,40,2019,2014,2009,1,null,1)
-const SQLQuery = ({ ClientID, WebID, BMID }) =>
+const SQLQuery = ({ ClientID, WebID, BMID = 40 }) =>
   `SELECT * from CommData_Economy.[dbo].[fn_JTW_Employment_Broad_1Digit](${ClientID},${WebID},${BMID}, 2019, 2014, 2009, 1, null,1) ORDER BY LabelKey`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));

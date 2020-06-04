@@ -103,24 +103,6 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => headline({ data, contentData }),
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '177',
-    },
-    {
-      Title: 'Headline',
-      renderString: ({ data, contentData }): string => headline({ data, contentData }),
-      StoredProcedure: 'sp_Condition_IsLiteClient',
-      Params: [
-        {
-          ClientID: '0',
-        },
-      ],
-      Value: '178',
     },
   ],
   filterToggles: [],

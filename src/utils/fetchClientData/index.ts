@@ -2,19 +2,6 @@ import { sqlConnection } from '../../utils/sql';
 import fetchSitemap from '../fetchSitemap';
 import getConfig from 'next/config';
 
-const DATABASE = 'CommApp';
-const LITE_CLIENT = 178;
-
-const checkIfLite = async (clientID): Promise<boolean> => {
-  const connectionString = `exec ${DATABASE}.[dbo].[sp_Condition_IsLiteClient] ${clientID}`;
-
-  const data = await sqlConnection.raw(connectionString);
-
-  const { Result } = data[0];
-
-  return +Result === LITE_CLIENT;
-};
-
 const checkIfLitePlus = id => {
   const {
     publicRuntimeConfig: { LitePlusClients },
@@ -35,7 +22,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     return null;
   }
 
-  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix } = clientData[0];
+  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix, ClientOptions } = clientData[0];
 
   if (Pages === undefined) {
     return null;
@@ -59,6 +46,9 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     };
   });
 
+  // #region covid19 page
+  // this is not how it should be but given the circumpstance and pressure to release
+  // we'll do it that way until we do it the proper way, this should be added as an official page in the cosmos container
   const CovidPageData = {
     Alias: 'covid19',
     AppID: 4,
@@ -75,13 +65,11 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     ParentPageID: 0,
     Secure: false,
   };
-  // #region covid19 page
-  // this is not how it should be but given the circumpstance and pressure to release
-  // we'll do it that way until we do it the proper way, this should be added as an official page in the cosmos container
   const ind = clientPages.findIndex(({ Alias }) => Alias === 'economic-impact-assesment');
   clientPages.splice(ind, 0, CovidPageData);
+  //#endregion
 
-  const isLite = await checkIfLite(id);
+  const isLite = +ClientOptions.filter(({ AppID }) => AppID === 4)[0].OptionValue === 178;
   const isLitePlus = checkIfLitePlus(id);
   const cdnBaseUrl = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
   const logoUrl = `${cdnBaseUrl}/eco-assets/client-logos/${clientAlias}.png`;

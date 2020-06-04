@@ -5,7 +5,7 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import _ from 'lodash';
 
 // select * from  [dbo].[fn_IN_CPI](102,40,50)
-const SQLQuery = ({ ClientID, WebID, BMID }) => {
+const SQLQuery = ({ ClientID }) => {
   return `SELECT * from CommData_Economy.[dbo].[fn_IN_CPI](${ClientID},40, 50) ORDER BY Yr DESC, Qtr DESC`;
 };
 
@@ -56,6 +56,19 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '40',
+      Label: 'Current benchmark:',
+      Params: [
+        {
+          ClientID: '',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
+      Hidden: true,
     },
   ],
 };
