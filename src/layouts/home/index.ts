@@ -22,63 +22,70 @@ const fetchData = async ({ filters, LongName, clientAlias, mapLayers }) => {
     .catch(error => {
       console.log(error);
     });
-  mapData.layers = mapData.layers.filter(layer => +layer.id === 1 || +layer.id === 4);
-  const layerName = layer => (layer.shapes.length > 1 ? 'Local Government Areas' : layer.shapes[0].shapeName);
 
-  const clientLookup = mapData.layers.reduce((acc, cur) => {
-    return [
-      ...acc,
-      {
-        id: +cur.id,
-        name: layerName(cur),
-        color: +cur.id === 4 ? '#000' : '#00c5ff',
-      },
-    ];
-  }, []);
+  try {
+    mapData.layers = mapData.layers.filter(layer => +layer.id === 1 || +layer.id === 4);
+    const layerName = layer => (layer.shapes.length > 1 ? 'Local Government Areas' : layer.shapes[0].shapeName);
 
-  mapData.envelope = geomData[0].WKT;
-  mapData.layers.map(layer => {
-    const match = clientLookup.find(({ id }) => id === parseInt(layer.id));
-    const isMainArea = parseInt(layer.id) === 4;
-    layer.id = parseInt(layer.id);
-    layer.layerName = match.name;
-    layer.zIndex = isMainArea ? 100 : 10;
-    layer.layerOptions = {
-      styles: {
-        default: {
-          color: match.color,
-          fillOpacity: 0.3,
-          fill: !isMainArea,
-          weight: isMainArea ? 4 : 1,
+    const clientLookup = mapData.layers.reduce((acc, cur) => {
+      return [
+        ...acc,
+        {
+          id: +cur.id,
+          name: layerName(cur),
+          color: +cur.id === 4 ? '#000' : '#00c5ff',
         },
-        hover: { color: '#f00', fillColor: '#f00', fillOpacity: 0.3, fill: !isMainArea, weight: isMainArea ? 4 : 1 },
-      },
-      zIndexPriority: isMainArea,
-    };
-    layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
-    layer.infoBox = { title: match.name };
-    layer.initVisibility = true;
-    layer.shapes.forEach(shape => {
-      const styles = {
-        default: {
-          fill: !isMainArea,
-          color: isMainArea ? '#000' : '#00c5ff',
-          weight: isMainArea ? 3 : 1,
-          fillOpacity: 0.3,
-          fillColor: '#00c5ff',
+      ];
+    }, []);
+
+    mapData.envelope = geomData[0].WKT;
+    mapData.layers.map(layer => {
+      const match = clientLookup.find(({ id }) => id === parseInt(layer.id));
+      const isMainArea = parseInt(layer.id) === 4;
+      layer.id = parseInt(layer.id);
+      layer.layerName = match.name;
+      layer.zIndex = isMainArea ? 100 : 10;
+      layer.layerOptions = {
+        styles: {
+          default: {
+            color: match.color,
+            fillOpacity: 0.3,
+            fill: !isMainArea,
+            weight: isMainArea ? 4 : 1,
+          },
+          hover: { color: '#f00', fillColor: '#f00', fillOpacity: 0.3, fill: !isMainArea, weight: isMainArea ? 4 : 1 },
         },
-        hover: {
-          fill: !isMainArea,
-          color: '#f00',
-          weight: isMainArea ? 3 : 3,
-          fillColor: '#f00',
-          fillOpacity: 0.3,
-        },
+        zIndexPriority: isMainArea,
       };
-      shape.shapeOptions = { Rank: 0, InfoBox: {}, styles };
+      layer.shapeType = parseInt(layer.id) === 4 ? 'polyline' : 'polygon';
+      layer.infoBox = { title: match.name };
+      layer.initVisibility = true;
+      layer.shapes.forEach(shape => {
+        const styles = {
+          default: {
+            fill: !isMainArea,
+            color: isMainArea ? '#000' : '#00c5ff',
+            weight: isMainArea ? 3 : 1,
+            fillOpacity: 0.3,
+            fillColor: '#00c5ff',
+          },
+          hover: {
+            fill: !isMainArea,
+            color: '#f00',
+            weight: isMainArea ? 3 : 3,
+            fillColor: '#f00',
+            fillOpacity: 0.3,
+          },
+        };
+        shape.shapeOptions = { Rank: 0, InfoBox: {}, styles };
+      });
     });
-  });
-  mapData.mapHeight = 500;
+    mapData.mapHeight = 500;
+  } catch (error) {
+    console.log('error: ', error);
+    mapData = null;
+  }
+
   return { statsData, newsData, mapData };
 };
 

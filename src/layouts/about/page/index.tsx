@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { MapLoader } from '../../../components/Map/MapLoader';
 import { MapWrapper, SubTitleAlt } from '../../../styles/MainContentStyles';
-import _ from 'lodash';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
 // #endregion
@@ -65,7 +64,7 @@ const AboutPage = () => {
                 <SubTitleAlt>{title}</SubTitleAlt>
                 {displayText}
                 {key === 'IncludedAreas' ||
-                  (key === 'Location' && (
+                  (key === 'Location' && mapData && (
                     <>
                       <SubTitleAlt>Economic Region</SubTitleAlt>
                       <MapWrapper>

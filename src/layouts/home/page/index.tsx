@@ -1,5 +1,4 @@
 // #region imports
-import _ from 'lodash';
 import { useContext, useState } from 'react';
 import { PageContext } from '../../../utils/context';
 import { StatsGrid } from './StatsGrid';
@@ -33,11 +32,15 @@ const HomeTemplate = () => {
     <>
       <SectionTitle>Key Statistics</SectionTitle>
       <StatsGrid tiles={statsData} />
-      <SectionTitle>Economic Region</SectionTitle>
-      <MapWrapper>
-        <MapLoader loaded={mapLoaded} />
-        <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
-      </MapWrapper>
+      {mapData && (
+        <>
+          <SectionTitle>Economic Region</SectionTitle>
+          <MapWrapper>
+            <MapLoader loaded={mapLoaded} />
+            <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
+          </MapWrapper>
+        </>
+      )}
       <SectionTitle>News</SectionTitle>
       <NewsGrid tiles={newsData} />
     </>
