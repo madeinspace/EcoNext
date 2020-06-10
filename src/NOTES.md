@@ -80,3 +80,51 @@ the data structures when required, would be a lot of work that's outside the sco
 Ideally, we'd use a CMS-driven API to serve data from Cosmos, format it into a format readable by Next, and render pages appropriately. Right now, this would be a lot of work without immediate benefits, and as more pages are translated more edge-case scenarios will inevitably be uncovered that lead to further work maintaining a generalised solution.
 
 My focus has generally been on pulling out shared features across the majority of pages (eg the Headline, Description, Control Panel, Related Pages) and automatically including them where possible. Although the steps above cover _a lot_ of ground, most of it is "simply" finding the correct data to use -- and can be replaced with just checking the existing CMS, or looking elsewhere to find this data. 25% of the work is finding the correct SQL query and 25% of the work is fixing up the Headline and Description strings to use the correct variables. The remaining 50% is building out tables, charts, and formatting the strings that compare benchmarks etc (which has already been done for eg `workers-field-of-qualifications`).
+
+git config
+
+[core]  
+ repositoryformatversion = 0  
+ filemode = false  
+ bare = false  
+ logallrefupdates = true  
+ symlinks = false
+ignorecase = false  
+ autocrlf = false
+[remote "origin"]  
+ url = https://eyedee.visualstudio.com/EcoNext/_git/EcoNext  
+ fetch = +refs/heads/_:refs/remotes/origin/_
+[branch "master"]  
+remote = origin  
+merge = refs/heads/master
+[gitflow "branch"]  
+master = master  
+develop = develop
+[gitflow "prefix"]
+feature = Features
+bugfix = Bugfix
+release = Release
+hotfix = Hotfix support = Support
+versiontag = Ver*
+[gitflow "path"]
+hooks = C:/Users/fabrice/Documents/Workspace/EcoNext/.git/hooks
+[branch "develop"]
+remote = origin
+merge = refs/heads/develop
+[gitflow "branch..env"]
+base = develop
+[gitflow "branch.env_variables"]
+base = develop
+[gitflow "branch.removed"]
+base = develop
+[remote "github"]
+url = https://github.com/madeinspace/EcoNext.git
+fetch = +refs/heads/*:refs/remotes/github/\_
+[gitflow "branch.[base]"]
+base = develop
+[gitflow "branch.191231-101"]
+base = develop
+[gitflow "branch.^[[D^[[Drelease]191231-101"]
+base = develop
+[gitflow "branch.Release191231-101"]
+base = develop
