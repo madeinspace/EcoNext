@@ -1,19 +1,9 @@
 import { useState, useContext } from 'react';
-import {
-  ItemWrapper,
-  _SubTitle,
-  Tab,
-  Tabs,
-  ChartTabs,
-  ChartTab,
-  ShadowWrapper,
-} from '../../../../styles/MainContentStyles';
-import EntityChart from '../../../../components/chart/EntityChart';
-import { formatChangeInt, idlogo, formatPercent, formatChangePercent } from '../../../../utils';
+import { _SubTitle, ChartTabs, ChartTab, ShadowWrapper } from '../../../../styles/MainContentStyles';
+import { formatChangeInt, idlogo, formatChangePercent } from '../../../../utils';
 import { PageContext, ClientContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
 import _ from 'lodash';
-import InfoBox from '../../../../components/ui/infoBox';
 import useEntityText from '../../../../utils/useEntityText';
 import ReactChart from '../../../../components/chart/ReactChart';
 
@@ -112,9 +102,7 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
   )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
-  const chartContainerID = `${measure}JobsChart${type}`;
-  const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 550;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${
