@@ -22,7 +22,8 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
-        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID, New = false } = topNode;
+        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID, New = false, Private } = topNode;
+        if (Private) return;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
         const isActive = childIsCurrent || pageAlias === handle;

@@ -1,6 +1,7 @@
-import { sqlConnection } from '../../utils/sql';
 import fetchSitemap from '../fetchSitemap';
 import getConfig from 'next/config';
+
+const privateCovidClient = [352];
 
 const checkIfLitePlus = id => {
   const {
@@ -53,6 +54,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     Alias: 'covid19',
     AppID: 4,
     Disabled: false,
+    Private: privateCovidClient.includes(+id),
     Draft: false,
     New: true,
     GroupName: 'Economic tools',
