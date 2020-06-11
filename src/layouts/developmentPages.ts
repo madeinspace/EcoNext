@@ -98,5 +98,6 @@ export default [
   'workers-place-of-residence',
   'residents-place-of-work',
   'business-locations',
-  'employment-locations'
+  'employment-locations',
+  'reports',
 ];
