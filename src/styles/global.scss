@@ -5,9 +5,9 @@
 @import './search.scss';
 @import './EntityTable.scss';
 @import './leaflet.css';
-@import '~antd/dist/antd.css';
+@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
 body {
-  font-family: 'Arial', 'Zurich', sans-serif !important;
+  font-family: 'Zurich', 'Arial', sans-serif !important;
   color: #000;
   background-color: white;
 

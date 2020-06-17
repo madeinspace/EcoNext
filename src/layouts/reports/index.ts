@@ -6,7 +6,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: (): string => `Multi page report tool`,
+      renderString: (): string => `Economic Overview`,
     },
   ],
   filterToggles: [],
