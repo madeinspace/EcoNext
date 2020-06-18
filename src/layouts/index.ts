@@ -1,7 +1,5 @@
 import productionPages from './productionPages';
 import developmentPages from './developmentPages';
-// Lazy loading and code splitting here
-const fetchPageData = async (handle: string) => await import(`./${handle}`);
 
 export const isNextPage = (handle: string) => {
   const availablePages = process.env.DEV_PAGES_ENABLED === 'true' ? developmentPages : productionPages;
@@ -13,7 +11,10 @@ export default async (handle: string) => {
     throw Error(`The ${handle}/page/index.tsx layout file is missing`);
   }
 
-  const pageData = await fetchPageData(handle);
+  // Lazy loading and code splitting here
+  const pageData = await import(`./${handle}`);
+  const pageLayout = await import(`./${handle}/page`);
+  pageData.layout = pageLayout;
 
   return pageData;
 };

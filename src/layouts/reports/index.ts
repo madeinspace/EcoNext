@@ -1,4 +1,3 @@
-import Page from './page';
 const fetchData = async () => {};
 const activeCustomToggles = () => {};
 
@@ -12,4 +11,4 @@ const pageContent = {
   filterToggles: [],
 };
 
-export { fetchData, activeCustomToggles, Page, pageContent };
+export { fetchData, activeCustomToggles, pageContent };

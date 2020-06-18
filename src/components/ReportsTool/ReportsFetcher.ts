@@ -1,20 +1,21 @@
 import axios from 'axios';
 
-const ReportServiceFetcher = async pages => {
+const ReportServiceFetcher = async ({ clientAlias, LongName, Title, data, pages }) => {
   const apiUrl = `http://micro.id.com.au/api/report/putreportrequest`;
+
+  const pagesObject = pages.reduce((acc, curr) => {
+    return [
+      ...acc,
+      ...curr.registeredOptions.map(({ label, value }) => {
+        return { Title: label, url: `https://economy.id.com.au/${clientAlias}/${value}` };
+      }),
+    ];
+  }, []);
+
   const testReportObject = {
-    FileName: 'Test Next js page',
-    Urls: [
-      {
-        Title: 'age',
-        url: 'https://economy.id.com.au/alpine/population',
-      },
-      {
-        Title: 'age',
-        url: 'https://economy.id.com.au/monash/workers-hours-worked?Indkey=23002',
-      },
-    ],
-    EmailAddress: 'fabrice@id.com.au',
+    FileName: `${LongName} - ${Title}`,
+    Urls: pagesObject,
+    EmailAddress: data.emailAddress,
     PdfOptions: [
       {
         PropertyName: 'UserStyleSheet',
@@ -24,19 +25,17 @@ const ReportServiceFetcher = async pages => {
       { PropertyName: 'VisibleElementIds', PropertyValue: 'main-content' },
       { PropertyName: 'InvisibleElementIds', PropertyValue: 'siblings-nav;control-panel' },
     ],
-    format: 0,
+    format: +data.format,
     product: 'economy',
     CoverPageInfo: {
       Product: 4,
-      Title: '2016 Census Results',
-      ClientAlias: 'monash',
-      ClientDisplayName: 'City of Monash',
+      Title,
+      ClientAlias: clientAlias,
+      ClientDisplayName: LongName,
       ClientId: 102,
-      ComparisonYear: 2011,
-      Benchmark: 'Greater Melbourne',
     },
   };
-  return Promise.resolve('success'); //await axios.put(apiUrl, testReportObject);
+  return await axios.put(apiUrl, testReportObject);
 };
 
 export default ReportServiceFetcher;

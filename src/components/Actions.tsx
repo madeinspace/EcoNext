@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable react/prop-types */
 import React, { useState, useContext } from 'react';
 import styled, { css } from 'styled-components';
 import ExportOptions from '../utils/fecthPageReport/Formats';
@@ -137,29 +134,28 @@ const ThankyouNote = styled.div`
   color: #fff;
 `;
 
-const RequestReportForm = styled.form`
+export const RequestReportForm = styled.div`
+  display: flex;
   font-size: 14px;
   line-height: 18px;
-  padding: 10px;
-  margin: 0;
   position: relative;
-  background-color: #70b859;
   p {
     color: #fff;
   }
 `;
-const EmailAddress = styled.input`
+export const EmailAddress = styled.input`
+  padding: 0.5em 0.75em;
   display: block;
   border: 1px solid lightgray;
-  padding: 0 5px;
-  height: 25px;
+  height: 40px;
+  width: 300px;
 `;
-const ErrorMsg = styled.span`
+export const ErrorMsg = styled.span`
   color: red;
   display: block;
   margin: 10px 0;
 `;
-const Align = styled.div`
+export const Align = styled.div`
   display: grid;
   grid-gap: 10px;
   grid-template-columns: [label] auto [input];
@@ -183,7 +179,7 @@ const Align = styled.div`
   }
 `;
 
-const AlignAlt = styled.div`
+export const AlignAlt = styled.div`
   display: grid;
   grid-gap: 10px;
   grid-template-columns: [cancel] auto [submit];
@@ -192,14 +188,15 @@ const AlignAlt = styled.div`
   }
 `;
 
-const SubmitButton = styled.button`
-  background-color: #fff;
-  color: #70b859;
+export const SubmitButton = styled.button`
+  background-color: #70b859;
+  padding: 0.5em 0.75em;
+  color: #fff;
   font-weight: bold;
-  border-radius: 5px;
   border: none;
-  height: 30px;
+  height: 40px;
   grid-column: submit;
+  cursor: pointer;
 `;
 
 const CancelButton = styled(SubmitButton)`

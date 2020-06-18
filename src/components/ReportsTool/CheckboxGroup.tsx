@@ -1,51 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import Checkbox from './Checkbox';
 import styled from 'styled-components';
 import _ from 'lodash';
 
 const CheckboxGroup = ({ group, onSelect }) => {
-  const { options, label, id } = group;
+  const { options, label, id, value } = group;
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
-  const [list, setList] = useState(options.map(li => li.value));
+  const [optionIdsList, setOptionIdsList] = useState([]);
 
   useEffect(() => {
-    if (_.isEmpty(list)) return;
-    setIsCheckAll(JSON.stringify(list.sort()) === JSON.stringify(isCheck.sort()));
-  }, [list, isCheck]);
+    setOptionIdsList(options.sort().map(({ id }) => id));
+  }, []);
 
   useEffect(() => {
-    onSelect({ id, registeredValues: isCheck });
+    if (_.isEmpty(optionIdsList)) return;
+    setIsCheckAll(JSON.stringify(optionIdsList) === JSON.stringify(isCheck.sort()));
+    onSelect({ id, registeredOptions: isCheck.map(id => options.filter(item => item.id === id)[0]) });
   }, [isCheck]);
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(isCheckAll ? [] : list);
+    setIsCheck(isCheckAll ? [] : optionIdsList);
   };
 
   const handleClick = e => {
-    const { id, checked } = e.target;
+    const { id, checked, value } = e.target;
     checked ? registerValue(+id) : unregisterValue(+id);
   };
 
-  const registerValue = value => setIsCheck([...isCheck, value]);
+  const registerValue = id => setIsCheck([...isCheck, id]);
 
-  const unregisterValue = value => setIsCheck(isCheck.filter(item => item !== value));
+  const unregisterValue = id => setIsCheck(isCheck.filter(item => item !== id));
 
-  const catalog = options.map(({ value, label }) => (
+  const catalog = options.map(({ id, value, label }) => (
     <ChildCBX
       className={'cbx'}
-      key={value}
+      key={id}
       label={label}
-      id={value}
+      id={id}
+      value={value}
       handleClick={handleClick}
-      isChecked={isCheck.includes(value)}
+      isChecked={isCheck.includes(id)}
     />
   ));
 
   return (
     <CheckboxGroupContainer key={id}>
-      <ParentCBX className={'cbx'} label={label} id={id} handleClick={handleSelectAll} isChecked={isCheckAll} />
+      <ParentCBX
+        className={'cbx'}
+        label={label}
+        id={id}
+        value={value}
+        handleClick={handleSelectAll}
+        isChecked={isCheckAll}
+      />
       {catalog}
     </CheckboxGroupContainer>
   );

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-const Checkbox = ({ className, id, label, handleClick, isChecked = false }) => {
+const Checkbox = ({ className, id, label, value, handleClick, isChecked = false }) => {
   return (
     <CBX className={className}>
-      <input type="checkbox" id={id} name={label} onChange={handleClick} checked={isChecked} />
+      <input type="checkbox" id={id} value={value} name={label} onChange={handleClick} checked={isChecked} />
       <label htmlFor={id}>{label}</label>
     </CBX>
   );
