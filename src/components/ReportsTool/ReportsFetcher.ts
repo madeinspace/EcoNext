@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const ReportServiceFetcher = async ({ clientAlias, LongName, Title, data, pages }) => {
-  const apiUrl = `http://micro.id.com.au/api/report/putreportrequest`;
+  const apiUrl = `https://micro.id.com.au/api/report/putreportrequest`;
 
   const pagesObject = pages.reduce((acc, curr) => {
     return [

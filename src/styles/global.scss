@@ -1,3 +1,4 @@
+@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
 @import './variables.scss';
 @import './zurich.scss';
 @import './miniReset.scss';
@@ -5,9 +6,8 @@
 @import './search.scss';
 @import './EntityTable.scss';
 @import './leaflet.css';
-@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
 body {
-  font-family: 'Zurich', 'Arial', sans-serif !important;
+  font-family: 'Arial', 'Zurich', sans-serif !important;
   color: #000;
   background-color: white;
 

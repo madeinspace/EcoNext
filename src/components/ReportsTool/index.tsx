@@ -115,7 +115,7 @@ const ReportsTool = ({ pageGroups }) => {
               ref={register}
               value="0"
               checked={reportFormat === '0'}
-              onClick={() => setReporFormat('0')}
+              onChange={() => setReporFormat('0')}
             />
             <label htmlFor="pdf">PDF</label>
             <Rad
@@ -125,7 +125,7 @@ const ReportsTool = ({ pageGroups }) => {
               ref={register}
               value="1"
               checked={reportFormat === '1'}
-              onClick={() => setReporFormat('1')}
+              onChange={() => setReporFormat('1')}
             />
             <label htmlFor="word">WORD</label>
           </Format>
