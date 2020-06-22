@@ -22,12 +22,22 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
-        const { Disabled, MenuTitle, Alias: pageAlias, PageID, ParentPageID, New = false, Private } = topNode;
+        console.log('topNode: ', topNode);
+        const {
+          Disabled,
+          MenuTitle,
+          Alias: pageAlias,
+          PageID,
+          ParentPageID,
+          Private,
+          PageNotification = null,
+        } = topNode;
+
         if (Private) return;
         const isParent = PageID in groupedNavigation && ParentPageID === 0;
         const childIsCurrent = _.some(groupedNavigation[PageID], isCurrent);
         const isActive = childIsCurrent || pageAlias === handle;
-
+        const MainMenuNotification = PageNotification && PageNotification.MainMenuNotification.Text;
         return (
           <MenuItem key={i} className={isParent && 'parent'}>
             {Disabled ? (
@@ -37,7 +47,7 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
                 className={isActive && 'active'}
                 href={`/${clientAlias}/${pageAlias === 'home' ? '' : pageAlias}`}
               >
-                {MenuTitle} {New && <NewTag active={isActive}>NEW</NewTag>}
+                {MenuTitle} {MainMenuNotification && <NewTag active={isActive}>{MainMenuNotification}</NewTag>}
               </StyledLink>
             )}
             {isParent && <SubMenu>{buildMenu(handle, clientAlias, navigationNodes, PageID)}</SubMenu>}
