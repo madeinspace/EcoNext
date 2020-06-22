@@ -17,6 +17,7 @@ const ReportServiceFetcher = async ({ clientAlias, LongName, Title, data, pages 
     Urls: pagesObject,
     EmailAddress: data.emailAddress,
     PdfOptions: [
+      { PropertyName: 'MinLoadWaitTime', PropertyValue: 5000 },
       {
         PropertyName: 'UserStyleSheet',
         PropertyValue:
