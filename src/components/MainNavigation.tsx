@@ -22,7 +22,6 @@ const buildMenu = (handle, clientAlias, navigationNodes, ParentPageID = 0, WebID
     <React.Fragment key={groupName}>
       {validateGroupName(groupName) && <GroupName>{groupName}</GroupName>}
       {group.map((topNode, i) => {
-        console.log('topNode: ', topNode);
         const {
           Disabled,
           MenuTitle,
@@ -85,12 +84,12 @@ export default MainNavigation;
 const MainNav = styled.div``;
 
 const NewTag = styled.span`
-  font-size: 8px;
+  font-size: 10px;
   background: ${props => (props.active ? '#fff' : '#52c41a')};
   color: ${props => (props.active ? '#52c41a' : '#fff')};
   padding: 3px;
   position: relative;
-  top: -2px;
+  top: -1px;
   margin-left: 10px;
 `;
 

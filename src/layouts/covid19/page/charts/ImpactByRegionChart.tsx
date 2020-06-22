@@ -12,6 +12,8 @@ const ImpactByRegionChart = () => {
   } = useContext(PageContext);
   const newArr = [];
 
+  const sorter = { GRP: 1, Local_Jobs: 2, UR_Jobs: 3 };
+
   impactByRegionData.forEach(element => {
     if (element.WebID > 50) {
       newArr.unshift(element);
@@ -19,6 +21,8 @@ const ImpactByRegionChart = () => {
       newArr.push(element);
     }
   });
+
+  newArr.sort((a, b) => sorter[a.Measure] - sorter[b.Measure]);
 
   const categories = ['GRP', 'Local Jobs (incl JobKeeper)', 'Employed Residents (incl Jobkeeper)'];
   const legends = Array.from(new Set(newArr.map((item: any) => item.GeoName)));
