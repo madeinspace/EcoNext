@@ -158,7 +158,7 @@ export const IndustrySectorReports = [
     options: [
       { label: 'Key statistics', id: 4430, value: 'workers-key-statistics' },
       { label: 'Age structure', id: 4440, value: 'workers-age-structure' },
-      { label: 'Hours worked', id: 4330, value: 'industry-sector-analysis' },
+      { label: 'Hours worked', id: 4450, value: 'workers-hours-worked' },
       { label: 'Occupations', id: 4460, value: 'workers-occupations' },
       { label: 'Qualifications', id: 4470, value: 'workers-level-of-qualifications' },
       { label: 'Field of qualification', id: 4480, value: 'workers-field-of-qualification' },
