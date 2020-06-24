@@ -100,4 +100,6 @@ export default [
   'business-locations',
   'employment-locations',
   'reports',
+  'reports-industry',
+  'reports-employment',
 ];

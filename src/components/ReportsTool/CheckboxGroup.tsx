@@ -1,7 +1,7 @@
-import { useState, useEffect, useLayoutEffect } from 'react';
-import Checkbox from './Checkbox';
-import styled from 'styled-components';
 import _ from 'lodash';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Checkbox from './Checkbox';
 
 const CheckboxGroup = ({ group, onSelect }) => {
   const { options, label, id, value } = group;
@@ -15,7 +15,9 @@ const CheckboxGroup = ({ group, onSelect }) => {
 
   useEffect(() => {
     if (_.isEmpty(optionIdsList)) return;
-    setIsCheckAll(JSON.stringify(optionIdsList) === JSON.stringify(isCheck.sort()));
+    const is_same =
+      optionIdsList.length == isCheck.length && optionIdsList.every((element, i) => element === isCheck[i]);
+    setIsCheckAll(is_same);
     onSelect({ id, registeredOptions: isCheck.map(id => options.filter(item => item.id === id)[0]) });
   }, [isCheck]);
 
@@ -25,7 +27,8 @@ const CheckboxGroup = ({ group, onSelect }) => {
   };
 
   const handleClick = e => {
-    const { id, checked, value } = e.target;
+    console.log(' e.target: ', e.target);
+    const { id, checked } = e.target;
     checked ? registerValue(+id) : unregisterValue(+id);
   };
 

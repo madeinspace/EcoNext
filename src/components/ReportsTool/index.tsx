@@ -1,29 +1,37 @@
-import { useState, useEffect, useContext } from 'react';
 import _ from 'lodash';
-import styled from 'styled-components';
-import React from 'react';
-import ReportServiceFetcher from './ReportsFetcher';
-import CheckboxGroup from './CheckboxGroup';
-import { SectionTitle } from '../../layouts/covid19/page/Styles';
+import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
-import { emailRGX } from '../../utils/Regex';
-import { EmailAddress, ErrorMsg, SubmitButton } from '../Actions';
+import styled from 'styled-components';
+import { SectionTitle } from '../../layouts/covid19/page/Styles';
 import { ClientContext } from '../../utils/context';
+import useDropdown from '../../utils/hooks/useDropdown';
+import { emailRGX } from '../../utils/Regex';
 import useEntityText from '../../utils/useEntityText';
+import { EmailAddress, ErrorMsg, SubmitButton } from '../Actions';
+import CheckboxGroup from './CheckboxGroup';
+import ReportServiceFetcher from './ReportsFetcher';
 
-const ReportsTool = ({ pageGroups }) => {
+const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const Title = useEntityText('SubTitle');
   const [checkedPages, setCheckedPages] = useState([]);
   const [requestAttempt, setRequestAttempt] = useState(false);
   const [requestSuccesful, setRequestSuccesful] = useState(false);
   const [thanksMessage, setThanksMessage] = useState(false);
+  const [reportFormat, setReporFormat] = useState('0');
   const { register, errors, handleSubmit } = useForm({
     defaultValues: {
       format: '0',
     },
   });
-  const [reportFormat, setReporFormat] = useState('0');
+
+  const industryDropDownInitialState = {
+    key: 'IndkeyNieir',
+    label: 'All industries',
+    parent: false,
+    value: '22000',
+  };
+  const [industryKey, IndustryDropdown] = useDropdown('All industries', industryDropDownInitialState, dropdownData);
 
   const onChange = group => setCheckedPages(updateCheckedPages(group));
 
@@ -49,7 +57,8 @@ const ReportsTool = ({ pageGroups }) => {
     setRequestAttempt(true);
     if (checkedPages.length === 0) return;
     const pages = _.sortBy(checkedPages, 'id');
-    ReportServiceFetcher({ clientAlias, LongName, Title, data, pages })
+    const query = `?${industryKey.key}=${industryKey.value}`;
+    ReportServiceFetcher({ clientAlias, LongName, Title, data, pages, query })
       .then(message => {
         setRequestSuccesful(true);
       })
@@ -94,56 +103,70 @@ const ReportsTool = ({ pageGroups }) => {
 
   return (
     <>
+      {dropdownData && (
+        <>
+          <SectionTitle>
+            Select the industry you would like to produce a report for.
+            <span>All industry is selected by default</span>
+          </SectionTitle>
+          <IndustryDropdown />
+          <br />
+        </>
+      )}
       <SectionTitle>
-        1) Select the topic(s) you would like to include in the report.{' '}
+        Select the topic(s) you would like to include in the report.{' '}
         <span>All selected topics will be combined into one report.</span>
       </SectionTitle>
       <SiteMapContainer>{buildSiteMap()}</SiteMapContainer>
       <SectionTitle>
-        2) Select the report's format and request the report via email
-        <span>A download link will be emailed to you shortly after submiting your request </span>
+        Select the report's format and request the report via email
+        <span>Your report will be emailed to you shortly after submiting your request </span>
       </SectionTitle>
       {thanksMessage ? (
         <ThankYouMessage />
       ) : (
-        <form onSubmit={handleSubmit(onRequestReports)}>
-          <Format>
-            <Rad
-              type="radio"
-              name="format"
-              id="pdf"
-              ref={register}
-              value="0"
-              checked={reportFormat === '0'}
-              onChange={() => setReporFormat('0')}
-            />
-            <label htmlFor="pdf">PDF</label>
-            <Rad
-              type="radio"
-              name="format"
-              id="word"
-              ref={register}
-              value="1"
-              checked={reportFormat === '1'}
-              onChange={() => setReporFormat('1')}
-            />
-            <label htmlFor="word">WORD</label>
-          </Format>
-          <EmailContainer>
-            <EmailAddress
-              type="text"
-              name="emailAddress"
-              placeholder="Enter your email"
-              ref={register({
-                required: true,
-                pattern: emailRGX,
-              })}
-            />
-            <SubmitButton type="submit">Email me the report</SubmitButton>
-          </EmailContainer>
-          <ErrorMsg>{errors.emailAddress && 'Please enter a valid email address'}</ErrorMsg>
-          <ErrorMsg>{_.isEmpty(checkedPages) && requestAttempt && 'Please select at least one topic'}</ErrorMsg>
-        </form>
+        <>
+          <form onSubmit={handleSubmit(onRequestReports)}>
+            <Format>
+              <Rad
+                type="radio"
+                name="format"
+                id="pdf"
+                ref={register}
+                value="0"
+                checked={reportFormat === '0'}
+                onChange={() => setReporFormat('0')}
+              />
+              <label htmlFor="pdf">PDF</label>
+              <Rad
+                type="radio"
+                name="format"
+                id="word"
+                ref={register}
+                value="1"
+                checked={reportFormat === '1'}
+                onChange={() => setReporFormat('1')}
+              />
+              <label htmlFor="word">WORD</label>
+            </Format>
+            <EmailContainer>
+              <EmailAddress
+                type="text"
+                name="emailAddress"
+                placeholder="Enter your email"
+                ref={register({
+                  required: true,
+                  pattern: emailRGX,
+                })}
+              />
+              <SubmitButton type="submit">Email me the report</SubmitButton>
+            </EmailContainer>
+            <ErrorMsg>{errors.emailAddress && 'Please enter a valid email address'}</ErrorMsg>
+          </form>
+          <ErrorMsg>
+            {_.isEmpty(checkedPages) && requestAttempt && 'Please select at least one topic to export'}
+          </ErrorMsg>
+        </>
       )}
     </>
   );

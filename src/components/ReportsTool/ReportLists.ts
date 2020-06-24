@@ -108,11 +108,18 @@ export const EconomicOverviewReports = [
 ];
 
 export const IndustrySectorReports = [
-  { id: 1, col: 1, label: 'Introduction', options: [{ label: 'About the area', id: 4180, value: 'about' }] },
+  {
+    id: 1,
+    col: 1,
+    label: 'Introduction',
+    value: 'introduction',
+    options: [{ label: 'About the area', id: 4180, value: 'about' }],
+  },
   {
     id: 2,
     col: 1,
     label: 'All industries',
+    value: 'all-industries',
     options: [
       { label: 'Employment by industry (Total)', id: 4240, value: 'employment-by-industry' },
       { label: 'Employment by industry (FTE)', id: 4230, value: 'employment-by-industry-fte' },
@@ -129,6 +136,7 @@ export const IndustrySectorReports = [
     id: 3,
     col: 2,
     label: 'Industry mapping (1-digit)',
+    value: 'industry-mapping-(1-digit)',
     options: [
       { label: 'Employment locations', id: 4350, value: 'employment-locations' },
       { label: 'Workers place of residence by industry', id: 4371, value: 'workers-place-of-residence-industry' },
@@ -139,12 +147,14 @@ export const IndustrySectorReports = [
     id: 4,
     col: 3,
     label: 'Industry mapping (2-digit)',
+    value: 'industry-mapping-(2-digit)',
     options: [{ label: 'Industry sector analysis', id: 4330, value: 'industry-sector-analysis' }],
   },
   {
     id: 5,
     col: 2,
     label: 'Local workers',
+    value: 'local-workers',
     options: [
       { label: 'Key statistics', id: 4430, value: 'workers-key-statistics' },
       { label: 'Age structure', id: 4440, value: 'workers-age-structure' },
@@ -161,14 +171,24 @@ export const IndustrySectorReports = [
     id: 6,
     col: 3,
     label: 'Supporting information',
+    value: 'supporting-information',
     options: [{ label: 'Overview', id: 4550, value: 'about-economy-id' }],
   },
 ];
 
 export const EmploymentReports = [
-  { group: 'Introduction', options: [{ label: 'About the area', id: 4180, value: 'about' }] },
   {
-    group: 'Employment by industry',
+    id: 1,
+    col: 1,
+    label: 'Introduction',
+    value: 'introduction',
+    options: [{ label: 'About the area', id: 4180, value: 'about' }],
+  },
+  {
+    id: 2,
+    col: 1,
+    label: 'Employment by industry',
+    value: 'employment-by-industry',
     options: [
       { label: 'Employment by industry (Total)', id: 4240, value: 'employment-by-industry' },
       { label: 'Employment by industry (FTE)', id: 4230, value: 'employment-by-industry-fte' },
@@ -176,7 +196,10 @@ export const EmploymentReports = [
     ],
   },
   {
-    group: 'Employment by location',
+    id: 3,
+    col: 1,
+    label: 'Employment by location',
+    value: 'employment-by-location',
     options: [
       { label: 'Employment locations', id: 4350, value: 'employment-locations' },
       { label: 'Workers place of residence by industry', id: 4371, value: 'workers-place-of-residence-industry' },
@@ -184,7 +207,10 @@ export const EmploymentReports = [
     ],
   },
   {
-    group: 'Local employment capacity',
+    id: 4,
+    col: 1,
+    label: 'Local employment capacity',
+    value: 'local-employment-capacity',
     options: [
       { label: 'Jobs to workers ratio', id: 4510, value: 'Employment-capacity' },
       { label: 'Employment self-containment', id: 4400, value: 'employed-locally' },
@@ -192,7 +218,10 @@ export const EmploymentReports = [
     ],
   },
   {
-    group: 'Local workers',
+    id: 5,
+    col: 2,
+    label: 'Local workers',
+    value: 'local-workers',
     options: [
       { label: 'Key statistics', id: 4430, value: 'workers-key-statistics' },
       { label: 'Age structure', id: 4423, value: 'age-structure' },
@@ -206,11 +235,20 @@ export const EmploymentReports = [
     ],
   },
   {
-    group: 'Unemployment',
+    id: 6,
+    col: 2,
+    label: 'Unemployment',
+    value: 'unemployment',
     options: [
       { label: 'Unemployment', id: 4130, value: 'unemployment' },
       { label: 'Characteristics of the unemployed', id: 4432, value: 'unemployed-keystats' },
     ],
   },
-  { group: 'Supporting information', options: [{ label: 'Overview', id: 4550, value: 'about-economy-id' }] },
+  {
+    id: 7,
+    col: 3,
+    label: 'Supporting information',
+    value: 'supporting-information',
+    options: [{ label: 'Overview', id: 4550, value: 'about-economy-id' }],
+  },
 ];
