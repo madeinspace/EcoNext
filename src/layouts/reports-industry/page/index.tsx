@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import ReportsTool from '../../../components/ReportsTool';
-import { IndustrySectorReports } from '../../../components/ReportsTool/ReportLists';
+import { IndustrySectorOptions } from '../../../components/ReportsTool/ReportLists';
 import { PageContext } from '../../../utils/context';
+import { PageListMaker } from '../../../utils';
 
 const ReportsIndustryPage = () => {
   const {
@@ -12,14 +13,11 @@ const ReportsIndustryPage = () => {
     label: Label,
     value: Value,
     parent: ParentValue == Value,
+    parentValue: ParentValue,
     key: 'IndkeyNieir',
   }));
 
-  return (
-    <>
-      <ReportsTool dropdownData={indList} pageGroups={IndustrySectorReports}></ReportsTool>
-    </>
-  );
+  return <ReportsTool dropdownData={indList} pageGroups={PageListMaker(IndustrySectorOptions)}></ReportsTool>;
 };
 
 export default ReportsIndustryPage;

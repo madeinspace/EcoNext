@@ -1,16 +1,7 @@
 import axios from 'axios';
 
-const ReportServiceFetcher = async ({ clientAlias, LongName, Title, data, pages, query = '' }) => {
+const ReportServiceFetcher = async ({ clientAlias, LongName, reportTitle, userData, pages }) => {
   const apiUrl = `https://micro.id.com.au/api/report/putreportrequest`;
-
-  const pagesObject = pages.reduce((acc, curr) => {
-    return [
-      ...acc,
-      ...curr.registeredOptions.map(({ label, value }) => {
-        return { Title: label, url: `https://economy.id.com.au/${clientAlias}/${value}${query}` };
-      }),
-    ];
-  }, []);
 
   const PdfOptions = [
     { PropertyName: 'MinLoadWaitTime', PropertyValue: 7000 },
@@ -23,22 +14,23 @@ const ReportServiceFetcher = async ({ clientAlias, LongName, Title, data, pages,
     { PropertyName: 'InvisibleElementIds', PropertyValue: 'siblings-nav;control-panel' },
   ];
 
-  const testReportObject = {
-    FileName: `${LongName} - ${Title}`,
-    Urls: pagesObject,
-    EmailAddress: data.emailAddress,
+  const reportObject = {
+    FileName: `${LongName} - ${reportTitle}`,
+    Urls: pages,
+    EmailAddress: userData.emailAddress,
     PdfOptions,
-    format: +data.format,
+    format: +userData.format,
     product: 'economy',
     CoverPageInfo: {
       Product: 4,
-      Title,
+      reportTitle,
       ClientAlias: clientAlias,
       ClientDisplayName: LongName,
       ClientId: 102,
     },
   };
-  return await axios.put(apiUrl, testReportObject);
+
+  return await axios.put(apiUrl, reportObject);
 };
 
 export default ReportServiceFetcher;

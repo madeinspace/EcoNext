@@ -29,6 +29,7 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
     key: 'IndkeyNieir',
     label: 'All industries',
     parent: false,
+    parentValue: 22000,
     value: '22000',
   };
   const [industryKey, IndustryDropdown] = useDropdown('All industries', industryDropDownInitialState, dropdownData);
@@ -53,18 +54,32 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
     return pages;
   };
 
-  const onRequestReports = data => {
+  const onRequestReports = userData => {
     setRequestAttempt(true);
     if (checkedPages.length === 0) return;
-    const pages = _.sortBy(checkedPages, 'id');
-    const query = `?${industryKey.key}=${industryKey.value}`;
-    ReportServiceFetcher({ clientAlias, LongName, Title, data, pages, query })
+    const pages = prepareOptionsForExport();
+    ReportServiceFetcher({ clientAlias, LongName, reportTitle: Title, userData, pages })
       .then(message => {
         setRequestSuccesful(true);
       })
       .catch(e => {
         setRequestSuccesful(false);
       });
+  };
+
+  const prepareOptionsForExport = () => {
+    const sorted = _.sortBy(checkedPages, 'id');
+    const flattened = sorted.flatMap(group =>
+      group.registeredOptions.map(({ label, value, id }) => {
+        const indValue = id === 4330 ? industryKey.value : industryKey.parentValue;
+        const query = `?${industryKey.key}=${indValue}`;
+        return {
+          Title: label,
+          url: `https://economy.id.com.au/${clientAlias}/${value}${query}`,
+        };
+      }),
+    );
+    return flattened;
   };
 
   const handleCloseThankYouMessage = () => {
@@ -86,7 +101,6 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
     const uniq = [...new Set(pageGroups.map(group => group.col))];
     const finalCols = [];
     uniq.forEach(colnum => finalCols.push(pageGroups.filter(({ col }) => col === colnum)));
-
     const layout = finalCols.map((column, i) => (
       <Column key={i} col={i + 1}>
         {column.map((groups, i) => {

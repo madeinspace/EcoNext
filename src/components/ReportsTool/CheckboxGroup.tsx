@@ -27,7 +27,6 @@ const CheckboxGroup = ({ group, onSelect }) => {
   };
 
   const handleClick = e => {
-    console.log(' e.target: ', e.target);
     const { id, checked } = e.target;
     checked ? registerValue(+id) : unregisterValue(+id);
   };

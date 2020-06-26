@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import filter from 'lodash/filter';
 import getConfig from 'next/config';
+import { useContext } from 'react';
+import { ClientContext } from './context';
 const { publicRuntimeConfig } = getConfig();
 
 export const pathParts = (path: string) => {
@@ -22,3 +24,12 @@ export const IsSecure = amI('Secure', false);
 export const IsParent = amI('ParentPageID', true);
 
 export const idlogo = `${publicRuntimeConfig.EcoCDNEndPoint}/eco-assets/images/id_grey.png`;
+
+export const getPagesByID = ids => {
+  const { clientPages } = useContext(ClientContext);
+  return clientPages
+    .filter(({ PageID }) => ids.includes(PageID))
+    .map(item => ({ label: item.MenuTitle, id: item.PageID, value: item.Alias }));
+};
+
+export const PageListMaker = set => set.map(g => ({ ...g, options: getPagesByID(g.options) }));

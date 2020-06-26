@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import ReportsTool from '../../../components/ReportsTool';
 import { EmploymentReports } from '../../../components/ReportsTool/ReportLists';
 import { PageContext } from '../../../utils/context';
+import { PageListMaker } from '../../../utils';
 
 const ReportsEmploymentPage = () => {
   const {
@@ -12,12 +13,13 @@ const ReportsEmploymentPage = () => {
     label: Label,
     value: Value,
     parent: ParentValue == Value,
-    key: 'IndkeyNieir',
+    parentValue: Value,
+    key: 'Indkey',
   }));
 
   return (
     <>
-      <ReportsTool dropdownData={indList} pageGroups={EmploymentReports}></ReportsTool>
+      <ReportsTool dropdownData={indList} pageGroups={PageListMaker(EmploymentReports)}></ReportsTool>
     </>
   );
 };

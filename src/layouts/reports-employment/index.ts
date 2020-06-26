@@ -3,7 +3,7 @@ import { sqlConnection } from '../../utils/sql';
 const COM_CLIENT_DB = 'CommApp';
 
 const industrySelectorQuery = ({ ClientID }) => {
-  return `exec ${COM_CLIENT_DB}.[dbo].sp_Toggle_Econ_IndustryNieir86 0`;
+  return `exec ${COM_CLIENT_DB}.[dbo].sp_Toggle_Econ_BM_Area_Ind 0`;
 };
 const activeCustomToggles = () => {};
 const fetchData = async ({ filters }) => {
