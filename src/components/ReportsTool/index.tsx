@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 import styled from 'styled-components';
 import { SectionTitle } from '../../layouts/covid19/page/Styles';
-import { ClientContext, PageContext } from '../../utils/context';
+import { ClientContext } from '../../utils/context';
 import useDropdown from '../../utils/hooks/useDropdown';
 import { emailRGX } from '../../utils/Regex';
 import useEntityText from '../../utils/useEntityText';
@@ -14,9 +14,6 @@ import ReportServiceFetcher from './ReportsFetcher';
 const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   const Title = useEntityText('SubTitle');
   const { clientAlias, LongName } = useContext(ClientContext);
-  const {
-    contentData: { IndustryList1Digits, IndustryList2Digits },
-  } = useContext(PageContext);
   const [checkedPages, setCheckedPages] = useState([]);
   const [requestAttempt, setRequestAttempt] = useState(false);
   const [requestSuccesful, setRequestSuccesful] = useState(false);
