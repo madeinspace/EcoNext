@@ -14,7 +14,7 @@ const ReportServiceFetcher = async ({ clientAlias, LongName, reportTitle, userDa
     { PropertyName: 'InvisibleElementIds', PropertyValue: 'siblings-nav;control-panel' },
   ];
 
-  const reportObject = {
+  const testReportObject = {
     FileName: `${LongName} - ${reportTitle}`,
     Urls: pages,
     EmailAddress: userData.emailAddress,
@@ -30,7 +30,7 @@ const ReportServiceFetcher = async ({ clientAlias, LongName, reportTitle, userDa
     },
   };
 
-  return await axios.put(apiUrl, reportObject);
+  return await axios.put(apiUrl, testReportObject);
 };
 
 export default ReportServiceFetcher;

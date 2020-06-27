@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 import styled from 'styled-components';
 import { SectionTitle } from '../../layouts/covid19/page/Styles';
-import { ClientContext } from '../../utils/context';
+import { ClientContext, PageContext } from '../../utils/context';
 import useDropdown from '../../utils/hooks/useDropdown';
 import { emailRGX } from '../../utils/Regex';
 import useEntityText from '../../utils/useEntityText';
@@ -12,8 +12,11 @@ import CheckboxGroup from './CheckboxGroup';
 import ReportServiceFetcher from './ReportsFetcher';
 
 const ReportsTool = ({ dropdownData = null, pageGroups }) => {
-  const { clientAlias, LongName } = useContext(ClientContext);
   const Title = useEntityText('SubTitle');
+  const { clientAlias, LongName } = useContext(ClientContext);
+  const {
+    contentData: { IndustryList1Digits, IndustryList2Digits },
+  } = useContext(PageContext);
   const [checkedPages, setCheckedPages] = useState([]);
   const [requestAttempt, setRequestAttempt] = useState(false);
   const [requestSuccesful, setRequestSuccesful] = useState(false);
@@ -26,15 +29,24 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   });
 
   const industryDropDownInitialState = {
-    key: 'IndkeyNieir',
     label: 'All industries',
     parent: false,
-    parentValue: 22000,
+    parentValue: '22000',
+    key: 'IndkeyNieir',
+    parentKey: 'IndkeyNieir',
     value: '22000',
   };
   const [industryKey, IndustryDropdown] = useDropdown('All industries', industryDropDownInitialState, dropdownData);
 
   const onChange = group => setCheckedPages(updateCheckedPages(group));
+
+  useEffect(() => {
+    console.log('industryKey: ', industryKey);
+  }, [industryKey]);
+
+  useEffect(() => {
+    console.log('checkedPages: ', checkedPages);
+  }, [checkedPages]);
 
   useEffect(() => {
     setThanksMessage(requestSuccesful);
@@ -68,18 +80,31 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   };
 
   const prepareOptionsForExport = () => {
-    const sorted = _.sortBy(checkedPages, 'id');
-    const flattened = sorted.flatMap(group =>
-      group.registeredOptions.map(({ label, value, id }) => {
-        const indValue = id === 4330 ? industryKey.value : industryKey.parentValue;
-        const query = `?${industryKey.key}=${indValue}`;
-        return {
-          Title: label,
-          url: `https://economy.id.com.au/${clientAlias}/${value}${query}`,
-        };
-      }),
+    const sortedCheckedPages = _.sortBy(checkedPages, 'id');
+    const flattenedPagesList = sortedCheckedPages.flatMap(({ registeredOptions }) =>
+      registeredOptions.map(option => buildReportObject(option)),
     );
-    return flattened;
+    return flattenedPagesList;
+  };
+
+  const buildReportObject = ({ label, value, id }) => {
+    const query = buildQuery(id);
+    return {
+      Title: label,
+      url: `https://economy.id.com.au/${clientAlias}/${value}${query}`,
+    };
+  };
+
+  const buildQuery = pageID => {
+    const is2DigitPage = is2digitPage(pageID);
+    const indValue = is2DigitPage ? industryKey.twoDigitValue : industryKey.oneDigitValue;
+    const indKey = is2DigitPage ? industryKey.twoDigitKey : industryKey.oneDigitKey;
+    const query = `?${indKey}=${indValue}`;
+    return query;
+  };
+
+  const is2digitPage = pageID => {
+    return pageID === 4330;
   };
 
   const handleCloseThankYouMessage = () => {
