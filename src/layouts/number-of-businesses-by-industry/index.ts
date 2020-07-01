@@ -16,10 +16,12 @@ const fetchData = async ({ filters }) => {
 };
 
 const activeCustomToggles = ({ filterToggles }) => {
+  console.log('filterToggles: ', filterToggles);
   const activeCustomToggles = {
     currentBtype: getActiveToggle(filterToggles, 'BType'),
     currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
   };
+  console.log('activeCustomToggles: ', activeCustomToggles);
   return activeCustomToggles;
 };
 
@@ -99,6 +101,19 @@ const pageContent = {
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End_BR',
       ParamName: 'sEndYear',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '40',
+      Label: 'Current benchmark:',
+      Params: [
+        {
+          ClientID: '9',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      ParamName: 'BMID',
+      Hidden: true,
     },
   ],
 };
