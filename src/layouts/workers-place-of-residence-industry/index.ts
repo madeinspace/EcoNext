@@ -98,6 +98,29 @@ const activeCustomToggles = ({ filterToggles }) => {
   return activeCustomToggles;
 };
 
+const AllRdaClients = () => `
+  SELECT
+    DISTINCT(areas.ClientID),
+    CASE WHEN RDAs.IsRDA IS NOT NULL THEN 1 ELSE 0 END AS IsRDA
+    FROM [CommClient].[dbo].[ClientToAreas_Economy] areas
+    LEFT OUTER JOIN (
+    SELECT
+      DISTINCT(ClientID),
+      COUNT(WebID) AS IsRDA
+    FROM [CommClient].[dbo].[ClientToAreas_Economy] areas
+      WHERE WebID > 50
+      GROUP BY (ClientID)
+    ) AS RDAs
+    ON areas.ClientID = RDAs.ClientID
+    where IsRDA = 1
+  `;
+
+const isRda = async () => {
+  const geomData = await sqlConnection.raw(AllRdaClients());
+
+  return true;
+};
+
 const pageContent = {
   entities: [
     {
@@ -135,6 +158,7 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
+      Hidden: true,
     },
     {
       Database: 'CommApp',
