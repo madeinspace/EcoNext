@@ -447,6 +447,7 @@ const chartBuilder = () => {
 
   return {
     highchartOptions: {
+      height: 550,
       chart: {
         type: chartType,
       },
@@ -539,6 +540,7 @@ const chartBuilderChange = () => {
   return {
     cssClass: '',
     highchartOptions: {
+      height: 550,
       chart: {
         type: chartType,
       },
