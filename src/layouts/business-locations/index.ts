@@ -116,7 +116,7 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: ({ data }): string => {
-        return `Australian Business Register - filtered counts - Current at 16th Dec 2019`;
+        return `Australian Business Register - filtered counts - Current at 20th Apr 2020`;
       },
     },
     {
