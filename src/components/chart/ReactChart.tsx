@@ -13,11 +13,14 @@ const ReactChart = props => {
     enableExport = true,
     options: {
       highchartOptions,
+      reactChartOptions,
       reactChartOptions: { footer = null },
     },
   } = props;
   const chartRef: any = useRef(null);
   const [isLoaded, setisLoaded] = useState(false);
+
+  const options = ChartDefault({ ...highchartOptions, source: reactChartOptions.footer.rawDataSource });
 
   useEffect(() => {
     setisLoaded(true);
@@ -45,7 +48,7 @@ const ReactChart = props => {
           <ExportDropdown exportOptions={exportOptions} handleExport={handleExport} />
         </Actions>
       )}
-      {isLoaded && <HighchartsReact highcharts={Highcharts} options={ChartDefault(highchartOptions)} ref={chartRef} />}
+      {isLoaded && <HighchartsReact highcharts={Highcharts} options={options} ref={chartRef} />}
       {footer && <ChartFooter dataSource={footer.dataSource} />}
     </ChartContainer>
   );
