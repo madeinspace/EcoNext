@@ -1,29 +1,12 @@
 // #region imports
-import _ from 'lodash';
-import React from 'react';
-import {
-  formatShortDecimal,
-  formatNumber,
-  formatChangeNumber,
-  formatChangePercent,
-  idlogo,
-  formatChangeInt,
-  formatChangeOneDecimal,
-  formatOneDecimal,
-} from '../../../utils';
-import {
-  ItemWrapper,
-  CrossLink,
-  ForecastProductIcon,
-  PageIntro,
-  SourceBubble,
-} from '../../../styles/MainContentStyles';
-import EntityTable from '../../../components/table/EntityTable';
+import React, { useContext } from 'react';
 import EntityChart from '../../../components/chart/EntityChart';
-import { useContext } from 'react';
-import { PageContext, ClientContext } from '../../../utils/context';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { IdLink, LinkBuilder } from '../../../components/ui/links';
+import EntityTable from '../../../components/table/EntityTable';
+import { LinkBuilder } from '../../../components/ui/links';
+import { ItemWrapper, PageIntro, SourceBubble } from '../../../styles/MainContentStyles';
+import { formatChangeOneDecimal, formatNumber, formatOneDecimal, idlogo } from '../../../utils';
+import { ClientContext, PageContext } from '../../../utils/context';
 import useEntityText from '../../../utils/useEntityText';
 // #endregion
 
@@ -338,21 +321,19 @@ const tableBuilderAlt = () => {
       },
     ],
     footRows: [],
-    rows: contentData.map(
-      ({ FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer, VisitorNightsPer }, i: number) => ({
-        cssClass: i === 0 ? 'highlight' : '',
-        data: [FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer],
-        formattedData: [
-          FinYearName,
-          formatNumber(Visitors),
-          formatChangeOneDecimal(Per, '--'),
-          formatNumber(VisitorsBM),
-          formatChangeOneDecimal(PerBM),
-          formatOneDecimal(VisitorsPer),
-        ],
-        id: i,
-      }),
-    ),
+    rows: contentData.map(({ FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer }, i: number) => ({
+      cssClass: i === 0 ? 'highlight' : '',
+      data: [FinYearName, Visitors, Per, VisitorsBM, PerBM, VisitorsPer],
+      formattedData: [
+        FinYearName,
+        formatNumber(Visitors),
+        formatChangeOneDecimal(Per, '--'),
+        formatNumber(VisitorsBM),
+        formatChangeOneDecimal(PerBM),
+        formatOneDecimal(VisitorsPer),
+      ],
+      id: i,
+    })),
     noOfRowsOnInit: 0,
   };
 };
@@ -360,7 +341,6 @@ const tableBuilderAlt = () => {
 
 // #region chartbuilder
 const chartBuilder = () => {
-  const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
     entityData: { currentTourismtype },

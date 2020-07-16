@@ -55,13 +55,13 @@ const pageContent = {
     {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => {
-        const { prefixedAreaName, currentBenchmarkName } = data;
+        const { prefixedAreaName, currentBenchmarkName, currentTourismtype } = data;
         const average = contentData.filter(({ LabelKey }) => LabelKey === 9999)[0];
         const without = contentData.filter(({ LabelKey }) => LabelKey != 9999)[0];
         const comparisonText = average.AvgStay > average.AvgStayBM ? 'higher' : 'lower';
         return `In the 5 years up to ${without.FinYearName}, there were an average of ${formatNumber(
           average.Visitors,
-        )} international visitors to ${prefixedAreaName}. Average length stay for international visitors was ${
+        )} international visitors to ${prefixedAreaName}. Average length stay for ${currentTourismtype.toLowerCase()} was ${
           average.AvgStay
         } days, ${comparisonText} than the average for ${currentBenchmarkName}.`;
       },
