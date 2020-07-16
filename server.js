@@ -43,7 +43,7 @@ async function renderAndCache(req, res) {
   }
 
   // let's get the containers from cosmosDB and pass that along to the getInitialProps method on pages
-  const containers = await Cosmos.connect().catch(err => console.log('erro occured fetching cosmos db data: ', err));
+  const containers = await Cosmos.connect().catch(err => console.log('error fetching cosmos db containers: ', err));
 
   try {
     console.log(`key ${key} not found, rendering`);
