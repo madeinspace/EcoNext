@@ -61,7 +61,7 @@ const pageContent = {
         const comparisonText = average.AvgStay > average.AvgStayBM ? 'higher' : 'lower';
         return `In the 5 years up to ${without.FinYearName}, there were an average of ${formatNumber(
           average.Visitors,
-        )} international visitors to ${prefixedAreaName}. Average length stay for ${currentTourismtype.toLowerCase()} was ${
+        )} ${currentTourismtype.toLowerCase()} to ${prefixedAreaName}. Average length stay for ${currentTourismtype.toLowerCase()} was ${
           average.AvgStay
         } days, ${comparisonText} than the average for ${currentBenchmarkName}.`;
       },
