@@ -39,7 +39,7 @@
     "knex": "0.20.4",
     "leaflet": "^1.6.0",
     "leaflet-minimap": "^3.6.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lru-cache": "^5.1.1",
     "mssql": "^6.0.1",
     "next": "^9.3.5",
