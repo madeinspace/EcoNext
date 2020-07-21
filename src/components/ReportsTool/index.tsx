@@ -38,14 +38,6 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   const onChange = group => setCheckedPages(updateCheckedPages(group));
 
   useEffect(() => {
-    console.log('industryKey: ', industryKey);
-  }, [industryKey]);
-
-  useEffect(() => {
-    console.log('checkedPages: ', checkedPages);
-  }, [checkedPages]);
-
-  useEffect(() => {
     setThanksMessage(requestSuccesful);
   }, [requestSuccesful]);
 
