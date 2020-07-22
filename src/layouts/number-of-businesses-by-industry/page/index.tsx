@@ -33,8 +33,12 @@ const lookup = {
 // #region population page
 const TemplatePage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
-  const { entityData: { currentAreaName, prefixedAreaName },contentData, filterToggles } = useContext(PageContext);
-  
+  const {
+    entityData: { currentAreaName, prefixedAreaName },
+    contentData,
+    filterToggles,
+  } = useContext(PageContext);
+
   const currentYear = getActiveToggle(filterToggles, 'sStartYear', LongName);
   const benchmarkYear = getActiveToggle(filterToggles, 'sEndYear', LongName);
   const currentBtype = getActiveToggle(filterToggles, 'BType');
@@ -70,12 +74,12 @@ const TemplatePage = () => {
       <PageIntro>
         <div>
           <p>
-            Registered business by industry shows how many businesses there are {prefixedAreaName} within each
-            industry sector using the Australian Bureau of Statistics (ABS) Business Register which itself is derived
-            from the GST register held by the Australian Tax Office (ATO). Businesses are included if they are
-            registered with the ATO, with an ABN used within the previous two financial years. Businesses are split up
-            between employing and non-employing businesses. Non-employing businesses may include sole traders and
-            registered ABNs which are part of larger enterprises.
+            Registered business by industry shows how many businesses there are {prefixedAreaName} within each industry
+            sector using the Australian Bureau of Statistics (ABS) Business Register which itself is derived from the
+            GST register held by the Australian Tax Office (ATO). Businesses are included if they are registered with
+            the ATO, with an ABN used within the previous two financial years. Businesses are split up between employing
+            and non-employing businesses. Non-employing businesses may include sole traders and registered ABNs which
+            are part of larger enterprises.
           </p>
           <p>
             The distribution of businesses may reflect the industry structure of the area, or may differ significantly.
@@ -85,11 +89,14 @@ const TemplatePage = () => {
 
           <p>
             The number of businesses in {prefixedAreaName} should be viewed in conjunction with{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-by-industry`, 'Employment by industry (Total)')}{' '}
-            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/value-add-by-industry`, 'Value added')} datasets to see
-            the relative size of industries, and with{' '}
-            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-locations`, 'Employment locations')} data to see
-            where business employment occurs within the area.
+            {LinkBuilder(
+              `https://economy.id.com.au/${clientAlias}/employment-by-industry`,
+              'Employment by industry (Total)',
+            )}{' '}
+            and {LinkBuilder(`https://economy.id.com.au/${clientAlias}/value-add-by-industry`, 'Value added')} datasets
+            to see the relative size of industries, and with{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/employment-locations`, 'Employment locations')} data
+            to see where business employment occurs within the area.
           </p>
         </div>
         <SourceBubble>
@@ -272,6 +279,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
 
   return {
     highchartOptions: {
+      height: 550,
       chart: {
         type: 'bar',
       },
@@ -339,6 +347,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
   return {
     cssClass: '',
     highchartOptions: {
+      height: 550,
       chart: {
         type: 'bar',
       },

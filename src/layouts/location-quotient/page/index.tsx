@@ -375,7 +375,7 @@ const tableBuilder = () => {
           formatOneDecimal(PerYear1),
           formatPercent(BMYear1),
           formatLongNumber(LQBMYear1),
-          formatNumber(PerYear2),
+          formatOneDecimal(PerYear2),
           formatPercent(BMYear2),
           formatLongNumber(LQBMYear2),
           formatChangePercent(Change12, '--'),
@@ -386,10 +386,10 @@ const tableBuilder = () => {
             data: [LabelName, PerYear1, BMYear1, LQBMYear1, PerYear2, BMYear2, LQBMYear2, Change12],
             formattedData: [
               `${LabelName}`,
-              formatNumber(PerYear1),
+              formatOneDecimal(PerYear1),
               formatPercent(BMYear1),
               formatLongNumber(LQBMYear1),
-              formatNumber(PerYear2),
+              formatOneDecimal(PerYear2),
               formatPercent(BMYear2),
               formatLongNumber(LQBMYear2),
               formatChangePercent(Change12, '--'),
@@ -404,10 +404,10 @@ const tableBuilder = () => {
         cols: [
           { cssClass: '', displayText: `Total Industries`, colSpan: 1 },
           { cssClass: '', displayText: formatNumber(PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(BMYear1), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(BMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatLongNumber(LQBMYear1), colSpan: 1 },
           { cssClass: '', displayText: formatNumber(PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatNumber(BMYear2), colSpan: 1 },
           { cssClass: '', displayText: formatChangePercent(LQBMYear2), colSpan: 1 },
           { cssClass: '', displayText: formatChangeInt(Change12), colSpan: 1 },
         ],
@@ -447,6 +447,7 @@ const chartBuilder = () => {
 
   return {
     highchartOptions: {
+      height: 550,
       chart: {
         type: chartType,
       },
@@ -539,6 +540,7 @@ const chartBuilderChange = () => {
   return {
     cssClass: '',
     highchartOptions: {
+      height: 550,
       chart: {
         type: chartType,
       },

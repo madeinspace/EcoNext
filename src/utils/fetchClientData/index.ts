@@ -47,30 +47,6 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     };
   });
 
-  // #region covid19 page
-  // this is not how it should be but given the circumpstance and pressure to release
-  // we'll do it that way until we do it the proper way, this should be added as an official page in the cosmos container
-  const CovidPageData = {
-    Alias: 'covid19',
-    AppID: 4,
-    Disabled: false,
-    Private: privateCovidClient.includes(+id),
-    Draft: false,
-    New: true,
-    GroupName: 'Economic tools',
-    IsParent: false,
-    MenuTitle: 'Covid19 economic outlook',
-    MetaDescription: 'Covid19 economic outlook',
-    MetaKeywords: 'covid19 impact',
-    MetaTitle: 'Covid19 economic outlook | [A] | economy.id',
-    PageID: 99999,
-    ParentPageID: 0,
-    Secure: false,
-  };
-  const ind = clientPages.findIndex(({ Alias }) => Alias === 'economic-impact-assesment');
-  clientPages.splice(ind, 0, CovidPageData);
-  //#endregion
-
   const isLite = +ClientOptions.filter(({ AppID }) => AppID === 4)[0].OptionValue === 178;
   const isLitePlus = checkIfLitePlus(id);
   const cdnBaseUrl = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.net';
