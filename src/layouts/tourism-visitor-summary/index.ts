@@ -7,16 +7,16 @@ import { formatPercent, formatNumber } from '../../utils';
 const visitor_nights_numbersQuery = {
   id: 1,
   name: `visitor_nights_numbers`,
-  query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary1]( ${ClientID}, 10, ${BMID}) order by LabelKey Desc`,
+  query: ({ ClientID, BMID, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_TRA_Summary1]( ${ClientID}, ${WebID}, ${BMID}) order by LabelKey Desc`,
 };
 
 // select * from [dbo].[fn_TRA_Summary2](102,10,40) ORDER BY LabelKey DESC
 const visitor_nights_percentQuery = {
   id: 2,
   name: `visitor_nights_percent`,
-  query: ({ ClientID, BMID }) =>
-    `select * from CommData_Economy.[dbo].[fn_TRA_Summary2]( ${ClientID}, 10, ${BMID}) order by LabelKey Desc`,
+  query: ({ ClientID, BMID, WebID }) =>
+    `select * from CommData_Economy.[dbo].[fn_TRA_Summary2]( ${ClientID}, ${WebID}, ${BMID}) order by LabelKey Desc`,
 };
 
 const queries = [visitor_nights_numbersQuery, visitor_nights_percentQuery];
