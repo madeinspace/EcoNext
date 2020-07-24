@@ -135,7 +135,7 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
         <>
           <SectionTitle>
             Select the industry you would like to produce a report for.
-            <span>All industry is selected by default</span>
+            <span>All industries is selected by default</span>
           </SectionTitle>
           <IndustryDropdown />
           <br />
