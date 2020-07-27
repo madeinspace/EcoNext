@@ -97,7 +97,7 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
 
   return {
     highchartOptions: {
-      height: 550,
+      height: 650,
       chart: {
         type: chartType,
       },
