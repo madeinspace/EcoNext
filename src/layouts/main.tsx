@@ -16,14 +16,14 @@ const Layout = ({ children, Template = null }): JSX.Element => {
     return <Template />;
   }
 
-  const { clientAlias, clientID, clientPages, LongName, clientLogo } = useContext(ClientContext);
+  const { clientAlias, ClientID, clientPages, LongName, clientLogo } = useContext(ClientContext);
   const { handle } = useContext(PageContext);
   const isDisabled = IsDisabled(clientPages, handle);
 
   return (
     <>
       <SEO />
-      <SearchApp alias={clientAlias} clientID={clientID} prettyname={LongName} clientImage={clientLogo} />
+      <SearchApp alias={clientAlias} clientID={ClientID} prettyname={LongName} clientImage={clientLogo} />
       <ClientHeader />
       <ContentRow id="content-wrapper">
         <SidebarNav id="main-nav">

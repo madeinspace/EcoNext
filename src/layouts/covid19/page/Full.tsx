@@ -3,7 +3,14 @@ import _ from 'lodash';
 import { useContext } from 'react';
 import { PageContext } from '../../../utils/context';
 import { formatPercent, formatNumber, absSort, Top } from '../../../utils';
-import { _SubTitle, PageIntroFullWidth, Lead, TopList, SubTitleAlt2 } from '../../../styles/MainContentStyles';
+import {
+  _SubTitle,
+  PageIntroFullWidth,
+  Lead,
+  TopList,
+  SubTitleAlt2,
+  ItemWrapper,
+} from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { SectionTitle, TilesGrid, Tile, Title, NumberValue, Footer, TilesGrid2Col } from './Styles';
 import Disclaimers from './Disclaimers';
@@ -124,7 +131,10 @@ const FullContent = () => {
           local job impact.
         </li>
       </TopList>
-      <ImpactByRegionChart />
+      <ItemWrapper>
+        <ImpactByRegionChart />
+      </ItemWrapper>
+
       <SectionTitle>Industry Impacts</SectionTitle>
       <Lead>
         The impact of COVID-19 will vary from region to region and will depend on the regions supply chain and trade
@@ -139,7 +149,9 @@ const FullContent = () => {
         in the region, the gross operating surplus and taxes. Value added impacts show how the different industries
         impact GRP in the region.
       </p>
-      <EconomicImpactChart />
+      <ItemWrapper>
+        <EconomicImpactChart />
+      </ItemWrapper>
 
       <SubTitleAlt2>Local Jobs Impact</SubTitleAlt2>
       <p>
@@ -147,14 +159,18 @@ const FullContent = () => {
         in regions with a relatively high share of service sector and labour-intensive jobs (e.g. tourism and
         hospitality, entertainment, and business services).{' '}
       </p>
-      <JobsImpactChart measure={'Local_Jobs'} />
+      <ItemWrapper>
+        <JobsImpactChart measure={'Local_Jobs'} />
+      </ItemWrapper>
       <SubTitleAlt2>Employed Resident Impacts</SubTitleAlt2>
       <p>
         Another way of looking at the impacts is to analyse the industry impact on local residents, that is employed
         residents who live in the region but may work elsewhere. This is important in understanding the impacts on
         council rates and local unemployment.
       </p>
-      <JobsImpactChart measure={'UR_Jobs'} />
+      <ItemWrapper>
+        <JobsImpactChart measure={'UR_Jobs'} />
+      </ItemWrapper>
       <Disclaimers />
     </>
   );
