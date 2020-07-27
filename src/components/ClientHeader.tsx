@@ -4,6 +4,37 @@ import ClientProductsNav from './ClientProductsNav';
 import { HeaderRow } from './grid';
 import { ClientContext } from '../utils/context';
 
+export const ClientHeader = () => {
+  const { LongName, isLite, clientAlias, clientLogo, logoLink } = useContext(ClientContext);
+  const logoTitle = `${LongName} home page`;
+
+  return (
+    <Decoration id="client-header">
+      <HeaderRow>
+        <HeaderWrapper>
+          <Header>
+            <Stack>
+              <Title>
+                <ClientName>{LongName} </ClientName>
+                <Separator />
+                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
+              </Title>
+              <ClientProductsNav alias={clientAlias} />
+            </Stack>
+            <ClientLogo>
+              <a href={logoLink} rel="noopener" target={'_blank'} title={logoTitle}>
+                <img src={clientLogo} alt={`${clientAlias} logo`} />
+              </a>
+            </ClientLogo>
+          </Header>
+        </HeaderWrapper>
+      </HeaderRow>
+    </Decoration>
+  );
+};
+
+export default ClientHeader;
+
 const ClientLogo = styled.div`
   align-self: flex-end;
 `;
@@ -64,31 +95,3 @@ const Decoration = styled.div`
 const HeaderWrapper = styled.div`
   grid-area: header;
 `;
-
-export const ClientHeader = () => {
-  const { LongName, isLite, clientAlias, clientLogo } = useContext(ClientContext);
-
-  return (
-    <Decoration id="client-header">
-      <HeaderRow>
-        <HeaderWrapper>
-          <Header>
-            <Stack>
-              <Title>
-                <ClientName>{LongName} </ClientName>
-                <Separator />
-                <ProductName>economic profile{isLite && ' (lite)'}</ProductName>
-              </Title>
-              <ClientProductsNav alias={clientAlias} />
-            </Stack>
-            <ClientLogo>
-              <img src={clientLogo} alt={`${clientAlias} logo`} />
-            </ClientLogo>
-          </Header>
-        </HeaderWrapper>
-      </HeaderRow>
-    </Decoration>
-  );
-};
-
-export default ClientHeader;

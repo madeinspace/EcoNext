@@ -23,7 +23,20 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     return null;
   }
 
-  const { Alias, Applications, Areas, id, ShortName, LongName, Name, Pages, HasPrefix, ClientOptions } = clientData[0];
+  const {
+    Alias,
+    Applications,
+    Areas,
+    id,
+    ShortName,
+    LongName,
+    Name,
+    Pages,
+    HasPrefix,
+    ClientOptions,
+    HomePage,
+  } = clientData[0];
+  console.log('clientData[0]: ', clientData[0]);
 
   if (Pages === undefined) {
     return null;
@@ -62,6 +75,7 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     isLitePlus,
     HasPrefix,
     clientPages,
+    logoLink: HomePage,
     clientProducts: Applications,
     clientAreas: filteredAreas,
     clientLogo: logoUrl,
