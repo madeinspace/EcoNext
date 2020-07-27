@@ -20,7 +20,7 @@ const headline = ({ data, contentData }) => {
   const unemploymentRate = contentData.filter(({ LabelKey }) => LabelKey === 10004)[0];
   const unemployedArea = formatPercent(unemploymentRate.PerYear1);
   const unemployedBM = formatPercent(unemploymentRate.BMYear1);
-  return `${unemployedArea}% of the resident workforce of ${data.prefixedAreaName} were unemployed in 2011, compared to ${unemployedBM}% in ${data.currentBenchmarkName}.`;
+  return `${unemployedArea}% of the resident workforce of ${data.prefixedAreaName} were unemployed in 2016, compared to ${unemployedBM}% in ${data.currentBenchmarkName}.`;
 };
 
 const pageContent = {
