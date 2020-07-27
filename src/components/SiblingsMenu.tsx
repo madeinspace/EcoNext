@@ -16,7 +16,7 @@ const SiblingsMenu = () => {
       {Disabled ? (
         <DisabledLink>{MenuTitle}</DisabledLink>
       ) : (
-        <StyledLink href={`/${clientAlias}/${Alias.toLowerCase()}`} className={handle === Alias && 'active'}>
+        <StyledLink href={`/${clientAlias}/${Alias}`} className={handle === Alias && 'active'}>
           {MenuTitle}
         </StyledLink>
       )}

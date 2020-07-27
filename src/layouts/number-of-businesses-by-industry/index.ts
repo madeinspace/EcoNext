@@ -16,12 +16,10 @@ const fetchData = async ({ filters }) => {
 };
 
 const activeCustomToggles = ({ filterToggles }) => {
-  console.log('filterToggles: ', filterToggles);
   const activeCustomToggles = {
     currentBtype: getActiveToggle(filterToggles, 'BType'),
     currentBenchmarkName: getActiveToggle(filterToggles, 'BMID'),
   };
-  console.log('activeCustomToggles: ', activeCustomToggles);
   return activeCustomToggles;
 };
 

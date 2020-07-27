@@ -36,7 +36,6 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
     ClientOptions,
     HomePage,
   } = clientData[0];
-  console.log('clientData[0]: ', clientData[0]);
 
   if (Pages === undefined) {
     return null;
