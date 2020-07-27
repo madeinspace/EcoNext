@@ -78,14 +78,14 @@ PageComponent.getInitialProps = async function({ query, req: { containers } }): 
   if (!clientPage) return fourOfourData;
 
   const layoutData = await fetchLayout(handle);
-  const { ID, isLite, LongName } = client;
+  const { ClientID, isLite, LongName } = client;
   const { fetchData, pageContent, activeCustomToggles } = layoutData;
   const pageDefaultFilters = (pageContent['filterToggles'] || []).reduce(
     (acc, { ParamName, DefaultValue }) => ({
       ...acc,
       [ParamName]: DefaultValue,
     }),
-    { ClientID: ID, IsLite: isLite, clientAlias, LongName },
+    { ClientID, IsLite: isLite, clientAlias, LongName },
   );
 
   /**

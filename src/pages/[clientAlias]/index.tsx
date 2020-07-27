@@ -65,7 +65,7 @@ HomePageComponent.getInitialProps = async function({ query, req: { containers } 
   // we pass that data to interpolate the entities
   const data = {
     currentAreaName: client.LongName,
-    clientID: client.ClientID,
+    ClientID: client.ClientID,
     HasPrefix: client.HasPrefix,
   };
 

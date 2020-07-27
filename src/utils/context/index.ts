@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ClientProps = {
-  clientID?: number;
+  ClientID?: number;
   clientAlias?: string;
   clientAreas?: Array<any>;
   clientPages?: Array<any>;
@@ -11,6 +11,7 @@ type ClientProps = {
   isLitePlus?: boolean;
   LongName?: string;
   Name?: string;
+  logoLink?: string;
   sitemapGroups?: Array<any>;
 };
 
