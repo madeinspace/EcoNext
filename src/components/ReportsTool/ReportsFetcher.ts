@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ReportServiceFetcher = async ({ clientAlias, LongName, reportTitle, userData, pages }) => {
+const ReportServiceFetcher = async ({ ClientID, clientAlias, LongName, reportTitle, userData, pages }) => {
   const apiUrl = `https://micro.id.com.au/api/report/putreportrequest`;
 
   const PdfOptions = [
@@ -23,10 +23,10 @@ const ReportServiceFetcher = async ({ clientAlias, LongName, reportTitle, userDa
     product: 'economy',
     CoverPageInfo: {
       Product: 4,
-      reportTitle,
+      Title: reportTitle,
       ClientAlias: clientAlias,
       ClientDisplayName: LongName,
-      ClientId: 102,
+      ClientId: ClientID,
     },
   };
 
