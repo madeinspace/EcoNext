@@ -176,7 +176,7 @@ const lineChartBuilder = () => {
     ],
     [],
   );
-  const chartTitle = 'Consumer Price Index (CPI)';
+  const chartTitle = 'Retail trade - Trend estimate';
   const xAxisTitle = 'Year';
   const yAxisTitle = '% change from corresponding month of the previous year';
   const rawDataSource =
