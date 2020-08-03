@@ -32,7 +32,7 @@ const pageContent = {
           Males: 'male resident',
           Females: 'female resident',
         };
-        const { prefixedAreaName } = data;
+        const { prefixedAreaName, currentBenchmarkName } = data;
         const total = (arr, param) => arr.reduce((acc, curr) => acc + curr[param], 0);
         const without = contentData.filter(node => node.LabelKey != 999999 && node.LabelKey != 22009);
         const over40 = without.slice(5);
@@ -40,7 +40,7 @@ const pageContent = {
         const over40TotalBM = formatPercent(total(over40, 'BMYear1'));
         const headlineAlt = `${over40TotalClient}% of the ${genderLookup[data.currentGenderName]} workers (${
           data.currentIndustryName
-        }) in ${prefixedAreaName} work 40 or more hours, compared to ${over40TotalBM}% in Victoria.`;
+        }) in ${prefixedAreaName} work 40 or more hours, compared to ${over40TotalBM}% in ${currentBenchmarkName}.`;
 
         return headlineAlt;
       },
