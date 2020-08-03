@@ -1,14 +1,6 @@
 // #region imports
-import {
-  formatNumber,
-  formatPercent,
-  formatChangeInt,
-  formatShortDecimal,
-  idlogo,
-  formatChangePercent,
-  formatLongNumber,
-} from '../../../utils/';
-import { ProfileProductIcon, ItemWrapper, PageIntroFullWidth, CrossLink } from '../../../styles/MainContentStyles';
+import { formatNumber, formatPercent, idlogo, formatChangePercent } from '../../../utils/';
+import { ItemWrapper, PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import EntityTable from '../../../components/table/EntityTable';
 import EntityChart from '../../../components/chart/EntityChart';
 import { useContext } from 'react';
@@ -21,6 +13,9 @@ import * as Highcharts from 'highcharts';
 
 // #region population page
 const RetailTradePage = () => {
+  const {
+    entityData: { currentBenchmarkName },
+  } = useContext(PageContext);
   return (
     <>
       <PageIntroFullWidth>
@@ -28,8 +23,8 @@ const RetailTradePage = () => {
           <p>
             Retail Trade turnover is an important indicator of economic health. Increasing retail turnover can indicate
             a high level of consumer confidence and increased money in the economy. Retail Trade is not available at the
-            local level, so the data presented here is annual percentage change for the state of Victoria, updated
-            monthly.
+            local level, so the data presented here is annual percentage change for the state of {currentBenchmarkName},
+            updated monthly.
           </p>
         </div>
       </PageIntroFullWidth>

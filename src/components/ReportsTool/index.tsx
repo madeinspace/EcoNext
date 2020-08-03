@@ -13,7 +13,7 @@ import ReportServiceFetcher from './ReportsFetcher';
 
 const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   const Title = useEntityText('SubTitle');
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { clientAlias, LongName, ClientID } = useContext(ClientContext);
   const [checkedPages, setCheckedPages] = useState([]);
   const [requestAttempt, setRequestAttempt] = useState(false);
   const [requestSuccesful, setRequestSuccesful] = useState(false);
@@ -59,7 +59,7 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
     setRequestAttempt(true);
     if (checkedPages.length === 0) return;
     const pages = prepareOptionsForExport();
-    ReportServiceFetcher({ clientAlias, LongName, reportTitle: Title, userData, pages })
+    ReportServiceFetcher({ ClientID, clientAlias, LongName, reportTitle: Title, userData, pages })
       .then(message => {
         setRequestSuccesful(true);
       })
