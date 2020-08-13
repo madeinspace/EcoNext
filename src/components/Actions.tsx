@@ -210,10 +210,11 @@ export const ExportPage = (): JSX.Element => {
   const [ThankYouNote, setThankYouNote] = useState(false);
   const [WaitingNote, setWaitingNote] = useState(false);
   const { LongName } = useContext(ClientContext);
-  const { handle } = useContext(PageContext);
   const {
+    handle,
     pageData: { SubTitle: pageSubTitle },
   } = useContext(PageContext);
+
   let timer = null;
 
   const Submit = (value): void => {
@@ -268,14 +269,6 @@ export const ExportPage = (): JSX.Element => {
     );
   };
 
-  const ThanksMsg = (): JSX.Element => {
-    return (
-      <ThankyouNote className="e-shad">
-        Thank you, an email with a download link is on its way to {reqPayload.emailAddress}
-      </ThankyouNote>
-    );
-  };
-
   const WaitMessage = () => {
     return (
       <ThankyouNote className="e-shad">
@@ -303,11 +296,6 @@ export const ExportPage = (): JSX.Element => {
         link.download = `${LongName}-${handle}.pdf`;
         link.click();
       });
-  };
-
-  const handleRequestExport = option => {
-    setreqPayload({ formatID: option.id, LongName, pageSubTitle, emailAddress: '' });
-    setrequestFormVisible(true);
   };
 
   return (
