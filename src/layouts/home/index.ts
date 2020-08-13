@@ -4,12 +4,12 @@ import { formatShortDecimal } from '../../utils';
 import axios from 'axios';
 const DATABASE = 'WebProfile';
 
-const homeStatsDataQuery = filters =>
-  `select * from [CommClient].[dbo].[ClientEconomyBoxes] where ClientID = ${filters.ClientID} and WebID = 10 order by WebID`;
+const homeStatsDataQuery = ({ ClientID }) =>
+  `select * from [CommClient].[dbo].[ClientEconomyBoxes] where ClientID = ${ClientID} and WebID = 10 order by WebID`;
 
 const newDataQuery = () => `exec ${DATABASE}.[dbo].[spGetNewsByApplicationID] 4`;
 
-const GeomQuery = clientId => `exec CommClient.[dbo].[sp_GeomEconomyEnvelopeLGA] ${clientId}`;
+const GeomQuery = ClientID => `exec CommClient.[dbo].[sp_GeomEconomyEnvelopeLGA] ${ClientID}`;
 
 const fetchData = async ({ filters, LongName, clientAlias, mapLayers }) => {
   const statsData = await sqlConnection.raw(homeStatsDataQuery(filters));

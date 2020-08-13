@@ -13,10 +13,8 @@ import domtoimage from 'dom-to-image-more';
 import { saveAs } from 'file-saver';
 
 const LeafletMap = (props: any) => {
-  const { mapData, onMapLoaded, forwardRef } = props;
+  const { mapTitle, mapData, onMapLoaded, forwardRef } = props;
   const { LongName } = useContext(ClientContext);
-  const { pageData } = useContext(PageContext);
-  console.log('pageData: ', pageData);
   const { layers, envelope, mapHeight, legend } = mapData;
   const [map, setMap] = useState(null);
   const [mapLayers, setMapLayers] = useState(null);
@@ -155,7 +153,7 @@ const LeafletMap = (props: any) => {
       domtoimage
         .toBlob(nodeToExport)
         .then(function(blob) {
-          saveAs(blob, `map.png`);
+          saveAs(blob, mapTitle);
           nodeToCleanup.remove();
         })
         .catch(error => {

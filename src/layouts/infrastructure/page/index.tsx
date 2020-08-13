@@ -1,6 +1,6 @@
 // #region imports
 import { useContext, useState } from 'react';
-import { PageContext } from '../../../utils/context';
+import { PageContext, ClientContext } from '../../../utils/context';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { MapLoader } from '../../../components/Map/MapLoader';
@@ -30,6 +30,7 @@ const InfrastructurePage = () => {
   const {
     contentData: { mapData, textData },
   } = useContext(PageContext);
+  const { LongName } = useContext(ClientContext);
 
   const onMapLoaded = () => setMapLoaded(true);
   const data = { ...textData[0] };
@@ -70,7 +71,7 @@ const InfrastructurePage = () => {
       {ReactHtmlParser(infra.displayText)}
       <MapWrapper>
         <MapLoader loaded={mapLoaded} />
-        <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
+        <LeafletMap mapTitle={`${LongName} - Infrastructure`} mapData={mapData} onMapLoaded={onMapLoaded} />
       </MapWrapper>
       <ItemWrapper>
         <EntityChart data={chartBuilder()} />

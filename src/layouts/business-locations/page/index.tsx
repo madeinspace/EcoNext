@@ -135,6 +135,7 @@ const BusinessLocationsPage = () => {
         {Table && Table}
         <MapLoader loaded={mapLoaded} />
         <LeafletMap
+          mapTitle={`${LongName} - Business location - ${currentIndustryName}`}
           forwardRef={mapRef}
           mapData={mapData}
           onShapeSelect={handleShapeSelection}

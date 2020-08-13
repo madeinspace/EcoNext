@@ -1,6 +1,6 @@
 // #region imports
 import { useContext, useState } from 'react';
-import { PageContext } from '../../../utils/context';
+import { PageContext, ClientContext } from '../../../utils/context';
 import { StatsGrid } from './StatsGrid';
 import { NewsGrid } from './NewsGrid';
 import styled from 'styled-components';
@@ -26,6 +26,8 @@ const HomeTemplate = () => {
     contentData: { statsData, newsData, mapData },
   } = useContext(PageContext);
 
+  const { LongName } = useContext(ClientContext);
+
   const onMapLoaded = () => setMapLoaded(true);
 
   return (
@@ -37,7 +39,7 @@ const HomeTemplate = () => {
           <SectionTitle>Economic Region</SectionTitle>
           <MapWrapper>
             <MapLoader loaded={mapLoaded} />
-            <LeafletMap mapData={mapData} onMapLoaded={onMapLoaded} />
+            <LeafletMap mapTitle={`${LongName} - Economic region`} mapData={mapData} onMapLoaded={onMapLoaded} />
           </MapWrapper>
         </>
       )}
