@@ -82,6 +82,7 @@ import EmploymentLocationsPage from './employment-locations/page';
 import ReportsPage from './reports/page';
 import ReportsIndustryPage from './reports-industry/page';
 import ReportsEmploymentPage from './reports-employment/page';
+import BusinessTrendsPage from './business-trends/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -180,6 +181,7 @@ const PageMappings = {
   reports: ReportsPage,
   'reports-industry': ReportsIndustryPage,
   'reports-employment': ReportsEmploymentPage,
+  'business-trends': BusinessTrendsPage,
 };
 
 export default PageMappings;

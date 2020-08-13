@@ -348,6 +348,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
   text-indent: 1px;
 }
 
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+
 .leaflet-touch .leaflet-control-zoom-in,
 .leaflet-touch .leaflet-control-zoom-out {
   font-size: 22px;

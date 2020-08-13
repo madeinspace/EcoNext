@@ -100,4 +100,5 @@ export default [
   'reports',
   'reports-industry',
   'reports-employment',
+  'business-trends',
 ];

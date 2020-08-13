@@ -2,16 +2,21 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 import L from 'leaflet';
 import { LayerControl } from './LayerControl';
 import TileLayers, { minimapLayer } from './TileLayers';
-import { ClientContext } from '../../utils/context';
+import { ClientContext, PageContext } from '../../utils/context';
 import { getBoundariesFromWKT, createMapLayers } from './Utils';
 import ToolTip from './ToolTip';
 import { MapContainer, InfoPanel } from './MapStyledComponents';
 import MiniMap from 'leaflet-minimap';
 import { LegendPanel } from './LegendPanel';
+import ExportMapControl from './ExportMapControl';
+import domtoimage from 'dom-to-image-more';
+import { saveAs } from 'file-saver';
 
 const LeafletMap = (props: any) => {
   const { mapData, onMapLoaded, forwardRef } = props;
   const { LongName } = useContext(ClientContext);
+  const { pageData } = useContext(PageContext);
+  console.log('pageData: ', pageData);
   const { layers, envelope, mapHeight, legend } = mapData;
   const [map, setMap] = useState(null);
   const [mapLayers, setMapLayers] = useState(null);
@@ -29,6 +34,7 @@ const LeafletMap = (props: any) => {
       });
     }
   };
+
   if (forwardRef != undefined) {
     forwardRef.current = { resetLayerStyles };
   }
@@ -56,7 +62,6 @@ const LeafletMap = (props: any) => {
   const initializeMap = ({ mapContainer }) => {
     let map: L.map = L.map(mapContainer.current, {
       layers: TileLayers.road,
-      preferCanvas: true,
     });
     const bounds = getBoundariesFromWKT(envelope);
     map.fitBounds(bounds);
@@ -144,12 +149,49 @@ const LeafletMap = (props: any) => {
     });
   };
 
+  const exportToImageDownload = () => {
+    const node = document.querySelector(`.themap`);
+    cloneAndFilterNode(node).then(({ nodeToExport, nodeToCleanup }) => {
+      domtoimage
+        .toBlob(nodeToExport)
+        .then(function(blob) {
+          saveAs(blob, `map.png`);
+          nodeToCleanup.remove();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+  };
+
+  const cloneAndFilterNode = node => {
+    return new Promise(resolve => {
+      const width = node.offsetWidth;
+      const dupNode = node.cloneNode(true);
+      const div = document.createElement('div');
+      dupNode.querySelectorAll('.d-print-none').forEach(el => el.remove());
+      div.style.height = '0';
+      div.style.overflow = 'hidden';
+      div.appendChild(dupNode);
+      document.body.appendChild(div);
+      dupNode.style.width = `${width}px`;
+
+      const returnObj = {
+        nodeToExport: dupNode,
+        nodeToCleanup: div,
+      };
+
+      resolve(returnObj);
+    });
+  };
+
   return (
-    <MapContainer>
+    <MapContainer className="themap">
       <InfoPanel>
         {featureGroups && <LayerControl layers={mapLayers} onLayerToggle={handleLayerToggle} />}
         {legend && <LegendPanel legends={legend} onLegendOver={handleLegendOver} />}
       </InfoPanel>
+      <ExportMapControl handleClick={exportToImageDownload} />
       <div ref={el => (mapContainer.current = el)} style={{ width: '100%', height: `${mapHeight}px` }} />
     </MapContainer>
   );
