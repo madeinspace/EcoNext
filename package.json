@@ -25,6 +25,7 @@
     "babel-plugin-styled-components": "^1.10.6",
     "deepmerge": "^4.2.2",
     "docx": "5.0.0-rc3",
+    "dom-to-image-more": "^2.8.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
