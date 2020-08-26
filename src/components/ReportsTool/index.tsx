@@ -69,10 +69,8 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   };
 
   const prepareOptionsForExport = () => {
-    const sortedCheckedPages = _.sortBy(checkedPages, 'id');
-    const flattenedPagesList = sortedCheckedPages.flatMap(({ registeredOptions }) =>
-      registeredOptions.map(option => buildReportObject(option)),
-    );
+    const sortedCheckedPages: any = _.sortBy(checkedPages, 'id')[0];
+    const flattenedPagesList = sortedCheckedPages.registeredOptions.map(option => buildReportObject(option));
     return flattenedPagesList;
   };
 
