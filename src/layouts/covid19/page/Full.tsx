@@ -3,27 +3,18 @@ import _ from 'lodash';
 import { useContext } from 'react';
 import { PageContext } from '../../../utils/context';
 import { formatPercent, formatNumber, absSort, Top } from '../../../utils';
-import {
-  _SubTitle,
-  PageIntroFullWidth,
-  Lead,
-  TopList,
-  SubTitleAlt2,
-  ItemWrapper,
-} from '../../../styles/MainContentStyles';
+import { _SubTitle, PageIntroFullWidth, Lead, TopList, ItemWrapper } from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { SectionTitle, TilesGrid, Tile, Title, NumberValue, Footer, TilesGrid2Col } from './Styles';
+import { SectionTitle, TilesGrid, Tile, Title, NumberValue, Footer } from './Styles';
 import Disclaimers from './Disclaimers';
 import ImpactByRegionChart from './charts/ImpactByRegionChart';
-import JobsImpactChart from './charts/JobsImpactChart';
-import EconomicImpactChart from './charts/EconomicImpactChart';
 // #endregion
 
 // #region template page
 const FullContent = () => {
   const {
     filters,
-    entityData: { currentAreaName, prefixedAreaName },
+    entityData: { currentAreaName },
     contentData: { headlineData, topThreeData },
   } = useContext(PageContext);
 
@@ -63,21 +54,19 @@ const FullContent = () => {
 
   return (
     <>
-      <Lead>Version 1.1 (Model updated 7 May 2020. See revision notes below)</Lead>
+      <Lead>Version 2.0 (Model updated 9 Sept 2020. See revision notes below)</Lead>
       <PageIntroFullWidth>
         <p>
           COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
           developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws
-          on the economic forecast model developed by NIEIR and focuses on the impacts to June 2020. We will continue to
-          update our forecasts as more information is known about the health measures and the effectiveness of economic
-          policy.
+          on the economic forecast model developed by NIEIR and focuses on the impacts to September 2020.
         </p>
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
       <ControlPanel />
       <SectionTitle>
         Headline estimates - {currentAreaName}
-        <span>Impacts refer to June Quarter 2020 compared to 2018/19 4-quarter average</span>
+        <span>Impacts refer to September quarter 2020 compared to September quarter 2019</span>
       </SectionTitle>
       <TilesGrid>
         <Tile>
@@ -98,7 +87,7 @@ const FullContent = () => {
           <Footer>({formatPercent(URJOBSLGA.QtrChgPer)}% including JobKeeper recipients)</Footer>
         </Tile>
       </TilesGrid>
-      <TilesGrid2Col>
+      {/* <TilesGrid2Col>
         <Tile>
           <Title>Sector impacts - Top 3 (excluding JobKeeper)</Title>
           <TopList>
@@ -111,16 +100,16 @@ const FullContent = () => {
             })}
           </TopList>
         </Tile>
-      </TilesGrid2Col>
+      </TilesGrid2Col> */}
       <SectionTitle>Key Insights</SectionTitle>
       <TopList>
         <li>
-          Gross Regional Product is forecast to {GRPLGAText} by {formatPercent(GRPLGA.QtrChgPer)}% in the June Quarter
-          2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
+          Gross Regional Product is forecast to {GRPLGAText} by {formatPercent(GRPLGA.QtrChgPer)}% in the September
+          Quarter 2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
         </li>
         <li>
-          Local Jobs are forecast to {JOBSLGAText} by {formatPercent(JOBSLGA.ExJKCompPer)}% in the June Quarter 2020.
-          This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} local jobs.
+          Local Jobs are forecast to {JOBSLGAText} by {formatPercent(JOBSLGA.ExJKCompPer)}% in the September Quarter
+          2020. This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} local jobs.
         </li>
         <li>
           If JobKeeper recipients impacts are included then the employment {JOBSLGATextAlt} is estimated at{' '}
@@ -136,6 +125,9 @@ const FullContent = () => {
       </ItemWrapper>
 
       <SectionTitle>Industry Impacts</SectionTitle>
+      <Lead>Industry impacts data will be available soon.</Lead>
+
+      {/* <SectionTitle>Industry Impacts</SectionTitle>
       <Lead>
         The impact of COVID-19 will vary from region to region and will depend on the regions supply chain and trade
         exposure (domestic and international), reliance on tourism and exposure to consumer demand (e.g. accommodation,
@@ -144,7 +136,7 @@ const FullContent = () => {
 
       <SubTitleAlt2>Economic Impact</SubTitleAlt2>
       <p>
-        The chart below presents the output and value added impacts of COVID-19 in the June Quarter 2020. Output refers
+        The chart below presents the output and value added impacts of COVID-19 in the September Quarter 2020. Output refers
         to the total sales of each industry in the region. Value Added refers to the wages and salaries paid to workers
         in the region, the gross operating surplus and taxes. Value added impacts show how the different industries
         impact GRP in the region.
@@ -170,7 +162,7 @@ const FullContent = () => {
       </p>
       <ItemWrapper>
         <JobsImpactChart measure={'UR_Jobs'} />
-      </ItemWrapper>
+      </ItemWrapper> */}
       <Disclaimers />
     </>
   );
