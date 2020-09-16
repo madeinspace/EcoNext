@@ -54,7 +54,7 @@ const ChartSource = () => (
 );
 
 const ImpactByRegionChartBuilder = (series, categories) => {
-  const chartTitle = `COVID-19 Impacts by Region`;
+  const chartTitle = `COVID-19 Impacts by Region, Sept 2019 to Sept 2020`;
   const yAxisTitle = `Impact %`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 1.1 (May 2020) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';

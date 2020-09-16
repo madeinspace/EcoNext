@@ -37,7 +37,7 @@ const Disclaimers = () => {
       <p>
         This note applies to the updated LGA projections issued in September 2020. The initial June quarter 2020
         projection prepared in early April 2020 included a 12 per cent decline in national GDP. This has now been
-        revised upward to 7.5%. The main reason for the difference was:
+        revised upward to -7.5%. The main reason for the difference was:
       </p>
       <TopOrderedList>
         <li>earlier easing of restrictions over June than what was assumed; and</li>

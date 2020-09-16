@@ -35,7 +35,7 @@ const pageContent = {
     },
     {
       Title: 'Version',
-      renderString: (): string => `Version 1.1 (May 2020)`,
+      renderString: (): string => `Version 2.0 (Sept 2020)`,
     },
   ],
   filterToggles: [
