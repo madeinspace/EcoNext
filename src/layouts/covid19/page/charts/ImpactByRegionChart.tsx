@@ -1,12 +1,14 @@
-import { ItemWrapper } from '../../../../styles/MainContentStyles';
+import { ChartTab, ChartTabs, ItemWrapper, ShadowWrapper } from '../../../../styles/MainContentStyles';
 import EntityChart from '../../../../components/chart/EntityChart';
-import { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { PageContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
 import { idlogo, formatChangeInt } from '../../../../utils';
 import useEntityText from '../../../../utils/useEntityText';
+import ReactChart from '../../../../components/chart/ReactChart';
 
 const ImpactByRegionChart = () => {
+  const [Pane, setPane] = useState(1);
   const {
     contentData: { impactByRegionData },
   } = useContext(PageContext);
@@ -24,24 +26,44 @@ const ImpactByRegionChart = () => {
 
   newArr.sort((a, b) => sorter[a.Measure] - sorter[b.Measure]);
 
-  const categories = ['GRP', 'Local Jobs (incl JobKeeper)', 'Employed Residents (incl Jobkeeper)'];
+  const categories = ['GRP', 'Local Jobs', 'Employed Residents'];
   const legends = Array.from(new Set(newArr.map((item: any) => item.GeoName)));
 
-  const series = legends.reduce((acc: any, cur: any) => {
-    const newSeries = newArr.filter(items => items.GeoName === cur);
-    return [
-      ...acc,
-      {
-        name: cur,
-        className: 'covid19',
-        data: newSeries.map(d => d.QtrChgPer),
-      },
-    ];
-  }, []);
+  const makeSerie = param => {
+    return legends.reduce((acc: any, cur: any) => {
+      const newSeries = newArr.filter(items => items.GeoName === cur);
+      return [
+        ...acc,
+        {
+          name: cur,
+          className: 'covid19',
+          data: newSeries.map(d => d[param]),
+        },
+      ];
+    }, []);
+  };
+
+  const withJK = ImpactByRegionChartBuilder(makeSerie('ExJKCompPer'), categories);
+  const withoutJK = ImpactByRegionChartBuilder(makeSerie('QtrChgPer'), categories);
+  const [options, setHighchartsOptions] = useState(withJK);
+  const handleTabChange = (key, value) => {
+    setPane(value);
+    setHighchartsOptions(value === 1 ? withJK : withoutJK);
+  };
+
   return (
-    <ItemWrapper>
-      <EntityChart data={ImpactByRegionChartBuilder(series, categories)} />
-    </ItemWrapper>
+    <ShadowWrapper>
+      <ChartTabs>
+        <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
+          with the JK scheme
+        </ChartTab>
+        <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
+          without the JK scheme
+        </ChartTab>
+      </ChartTabs>
+      <ReactChart height="300" options={options} />
+    </ShadowWrapper>
+    // <EntityChart data={ImpactByRegionChartBuilder(series, categories)} />
   );
 };
 export default ImpactByRegionChart;
@@ -68,7 +90,6 @@ const ImpactByRegionChartBuilder = (series, categories) => {
   };
 
   return {
-    cssClass: '',
     highchartOptions: {
       height: 300,
       chart: {
@@ -77,6 +98,16 @@ const ImpactByRegionChartBuilder = (series, categories) => {
       title: {
         text: chartTitle,
       },
+      subtitle: {
+        text: '',
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      series,
       xAxis: {
         categories,
         crosshair: true,
@@ -90,24 +121,14 @@ const ImpactByRegionChartBuilder = (series, categories) => {
           text: yAxisTitle,
         },
       },
-      tooltip: {
-        headerFormat: '',
-        pointFormatter: function() {
-          return tooltip.apply(this);
-        },
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0.2,
-          borderWidth: 0,
-        },
-      },
-      series,
     },
-    rawDataSource,
-    dataSource: <ChartSource />,
-    chartContainerID,
-    logoUrl: idlogo,
-    chartTemplate,
+    reactChartOptions: {
+      className: '',
+      footer: {
+        rawDataSource,
+        dataSource: <ChartSource />,
+        logoUrl: idlogo,
+      },
+    },
   };
 };

@@ -79,12 +79,12 @@ const FullContent = () => {
         <Tile>
           <Title>Local job change</Title>
           <NumberValue>{formatPercent(JOBSLGA.ExJKCompPer)}%</NumberValue>
-          <Footer>({formatPercent(JOBSLGA.QtrChgPer)}% including JobKeeper recipients)</Footer>
+          <Footer>({formatPercent(JOBSLGA.QtrChgPer)}% without the JobKeeper scheme)</Footer>
         </Tile>
         <Tile>
           <Title>Employed resident change</Title>
           <NumberValue>{formatPercent(URJOBSLGA.ExJKCompPer)}%</NumberValue>
-          <Footer>({formatPercent(URJOBSLGA.QtrChgPer)}% including JobKeeper recipients)</Footer>
+          <Footer>({formatPercent(URJOBSLGA.QtrChgPer)}% without the JobKeeper scheme)</Footer>
         </Tile>
       </TilesGrid>
       {/* <TilesGrid2Col>
@@ -112,7 +112,7 @@ const FullContent = () => {
           2020. This equates to a {JOBSLGATextAlt} of {formatNumber(Math.abs(JOBSLGA.NJKQtrComp))} local jobs.
         </li>
         <li>
-          If JobKeeper recipients impacts are included then the employment {JOBSLGATextAlt} is estimated at{' '}
+          In the absence of JobKeeper payments, the employment {JOBSLGATextAlt} is estimated at{' '}
           {formatPercent(JOBSLGA.QtrChgPer)}% ({formatNumber(Math.abs(JOBSLGA.QtrChg))} jobs)
         </li>
         <li>
