@@ -15,14 +15,18 @@ const JobsImpactChart = ({ measure }) => {
     contentData: { topThreeData },
   } = useContext(PageContext);
 
-  const localJobsNoTotal = topThreeData.filter(
-    ({ NieirInd1DigitWebKey, WebID, Measure }) =>
-      NieirInd1DigitWebKey != 22000 && WebID === +filters.WebID && Measure === measure,
-  );
+  const localJobsNoTotal = _.sortBy(
+    topThreeData.filter(
+      ({ NieirInd1DigitWebKey, WebID, Measure }) =>
+        NieirInd1DigitWebKey != 22000 && WebID === +filters.WebID && Measure === measure,
+    ),
+    'NJKQtrComp',
+  ).reverse();
   console.log(`${measure}`, localJobsNoTotal);
   const localJobsNoTotalPer = localJobsNoTotal;
 
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
+  console.log('categoriesNum: ', categoriesNum);
 
   const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
   const impactWithoutJK = localJobsNoTotal.map(item => item.QtrChg);
