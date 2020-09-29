@@ -80,8 +80,6 @@ const ImpactByRegionChartBuilder = (series, categories) => {
   const yAxisTitle = `Impact %`;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 1.1 (May 2020) ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.';
-  const chartContainerID = `ImpactByRegionChart`;
-  const chartTemplate = 'Standard';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${

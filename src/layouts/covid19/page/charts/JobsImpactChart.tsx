@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { _SubTitle, ChartTabs, ChartTab, ShadowWrapper } from '../../../../styles/MainContentStyles';
+import { _SubTitle, ChartTabs, ChartTab, ShadowWrapper, Tab, Tabs } from '../../../../styles/MainContentStyles';
 import { formatChangeInt, idlogo, formatChangePercent } from '../../../../utils';
 import { PageContext, ClientContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
@@ -9,6 +9,7 @@ import ReactChart from '../../../../components/chart/ReactChart';
 
 const JobsImpactChart = ({ measure }) => {
   const [Pane, setPane] = useState(1);
+  const [ChartPane, setChartPane] = useState(1);
   const {
     filters,
     contentData: { topThreeData },
@@ -18,58 +19,121 @@ const JobsImpactChart = ({ measure }) => {
     ({ NieirInd1DigitWebKey, WebID, Measure }) =>
       NieirInd1DigitWebKey != 22000 && WebID === +filters.WebID && Measure === measure,
   );
-  const localJobsNoTotalPer = _.sortBy(localJobsNoTotal, 'QtrChgPer').reverse();
+  console.log(`${measure}`, localJobsNoTotal);
+  const localJobsNoTotalPer = localJobsNoTotal;
 
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
-  const categoriesPer = localJobsNoTotalPer.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
-  const localJobsWithoutJK = localJobsNoTotal.map(item => item.NJKQtrComp);
-  const localJobsWithJK = localJobsNoTotal.map(item => item.JKQtrComp);
-  const localJobswithoutJKPer = localJobsNoTotalPer.map(item => item.ExJKCompPer);
-  const localJobsWithJKPer = localJobsNoTotalPer.map(item => item.QtrChgPer - item.ExJKCompPer);
 
-  const seriesNumber = [
+  const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
+  const impactWithoutJK = localJobsNoTotal.map(item => item.QtrChg);
+  const impactWithJKComp = localJobsNoTotal.map(item => item.JKQtrComp);
+
+  const localJobsWithJKPer = localJobsNoTotalPer.map(item => item.QtrChgPer - item.ExJKCompPer);
+  const localJobswithoutJKPer = localJobsNoTotalPer.map(item => item.ExJKCompPer);
+  const localJobswithoutJKCompPer = localJobsNoTotalPer.map(item => item.JKQtrCompPer);
+
+  const seriesimpactWithJKNumber = [
     {
       className: 'jobkeeper',
-      name: `JobKeeper Component`,
-      data: localJobsWithJK,
-    },
-    {
-      name: `Not on JobKeeper`,
-      data: localJobsWithoutJK,
+      name: `With JK scheme`,
+      data: impactWithJK,
     },
   ];
-  const seriesPer = [
+  const seriesImpactWithoutJKNumber = [
     {
       className: 'jobkeeper',
-      name: `JobKeeper Component`,
+      name: `Without JK scheme`,
+      data: impactWithoutJK,
+    },
+  ];
+  const seriesImpactWithJKCompNumber = [
+    {
+      className: 'jobkeeper',
+      name: `Jobs compensated by JK`,
+      data: impactWithJKComp,
+    },
+  ];
+
+  const seriesImpactWithJKPer = [
+    {
+      className: 'jobkeeper',
+      name: `With JK scheme`,
       data: localJobsWithJKPer,
     },
+  ];
+  const serieImpactWithoutJKPer = [
     {
-      name: `Not on JobKeeper`,
+      className: 'jobkeeper',
+      name: `Without JK scheme`,
       data: localJobswithoutJKPer,
     },
   ];
+  const seriesImpactWithJKCompPer = [
+    {
+      className: 'jobkeeper',
+      name: `Jobs compensated by JK`,
+      data: localJobswithoutJKCompPer,
+    },
+  ];
 
-  const Numbers: any = localJobsChartBuilder(seriesNumber, categoriesNum, measure, 1);
-  const Percentages: any = localJobsChartBuilder(seriesPer, categoriesPer, measure, 2);
-  const [options, setHighchartsOptions] = useState(Numbers);
+  const LocalJobsWithJKNumber: any = localJobsChartBuilder(seriesimpactWithJKNumber, categoriesNum, measure, 1);
+  const LocalJobsWithoutJKNumber: any = localJobsChartBuilder(seriesImpactWithoutJKNumber, categoriesNum, measure, 1);
+  const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(seriesImpactWithJKCompNumber, categoriesNum, measure, 1);
+  const LocalJobsWithJKPer: any = localJobsChartBuilder(seriesImpactWithJKPer, categoriesNum, measure, 2);
+  const LocalJobswithoutJKPer: any = localJobsChartBuilder(serieImpactWithoutJKPer, categoriesNum, measure, 2);
+  const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(seriesImpactWithJKCompPer, categoriesNum, measure, 2);
+
+  const dataSetChoser = (key, paneID = Pane) => {
+    console.log('Pane: ', Pane);
+    switch (key) {
+      case 1:
+        return paneID === 1 ? LocalJobsWithJKNumber : LocalJobsWithJKPer;
+      case 2:
+        return paneID === 1 ? LocalJobsWithoutJKNumber : LocalJobswithoutJKPer;
+      case 3:
+        return paneID === 1 ? LocalJobsWithJKCompNumber : LocalJobswithoutJKCompPer;
+      default:
+        return LocalJobsWithJKNumber;
+    }
+  };
+
+  const [options, setHighchartsOptions] = useState(LocalJobsWithJKNumber);
+
+  const handleChartChange = key => {
+    setChartPane(key);
+    setHighchartsOptions(dataSetChoser(key));
+  };
+
   const handleTabChange = (key, value) => {
     setPane(value);
-    setHighchartsOptions(value === 1 ? Numbers : Percentages);
+    setHighchartsOptions(dataSetChoser(ChartPane, value));
   };
 
   return (
-    <ShadowWrapper>
-      <ChartTabs>
-        <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
-          Number
-        </ChartTab>
-        <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
-          Percentage
-        </ChartTab>
-      </ChartTabs>
-      <ReactChart height="500" options={options} />
-    </ShadowWrapper>
+    <>
+      <Tabs>
+        <Tab Pane={ChartPane} id={1} onClick={() => handleChartChange(1)}>
+          With JK scheme
+        </Tab>
+        <Tab Pane={ChartPane} id={2} onClick={() => handleChartChange(2)}>
+          Without JK scheme
+        </Tab>
+        <Tab Pane={ChartPane} id={3} onClick={() => handleChartChange(3)}>
+          Jobs compensated by JK
+        </Tab>
+      </Tabs>
+      <ShadowWrapper>
+        <ChartTabs>
+          <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
+            Number
+          </ChartTab>
+          <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
+            Percentage
+          </ChartTab>
+        </ChartTabs>
+        <ReactChart height="500" options={options} />
+      </ShadowWrapper>
+    </>
   );
 };
 
@@ -94,7 +158,7 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
   const chartType = 'bar';
   const chartTitle = `${
     measure === 'Local_Jobs' ? 'Local Jobs' : 'Employed Resident'
-  } Impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
+  } Impact in Sept quarter 2020 (compared to Sept quarter 2019)`;
   const chartSubtitle = `${currentAreaName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle =

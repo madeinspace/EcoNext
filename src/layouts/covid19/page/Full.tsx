@@ -1,20 +1,29 @@
 // #region imports
+import React, { useContext } from 'react';
 import _ from 'lodash';
-import { useContext } from 'react';
 import { PageContext } from '../../../utils/context';
 import { formatPercent, formatNumber, absSort, Top } from '../../../utils';
-import { _SubTitle, PageIntroFullWidth, Lead, TopList, ItemWrapper } from '../../../styles/MainContentStyles';
+import {
+  _SubTitle,
+  PageIntroFullWidth,
+  Lead,
+  TopList,
+  SubTitleAlt2,
+  ItemWrapper,
+} from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { SectionTitle, TilesGrid, Tile, Title, NumberValue, Footer } from './Styles';
+import { SectionTitle, TilesGrid, Tile, Title, NumberValue, Footer, TilesGrid2Col } from './Styles';
 import Disclaimers from './Disclaimers';
 import ImpactByRegionChart from './charts/ImpactByRegionChart';
+import EconomicImpactChart from './charts/EconomicImpactChart';
+import JobsImpactChart from './charts/JobsImpactChart';
 // #endregion
 
 // #region template page
 const FullContent = () => {
   const {
     filters,
-    entityData: { currentAreaName },
+    entityData: { currentAreaName, prefixedAreaName },
     contentData: { headlineData, topThreeData },
   } = useContext(PageContext);
 
@@ -39,7 +48,6 @@ const FullContent = () => {
   const JOBSLGATextAlt = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
 
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
-
   const LocalJobsImpactNJK = topThreeData.filter(
     ({ NJKQtrComp, WebID, Measure }) => Measure === 'Local_Jobs' && WebID === +filters.WebID && NJKQtrComp < 0,
   );
@@ -54,7 +62,7 @@ const FullContent = () => {
 
   return (
     <>
-      <Lead>Version 2.0 (Model updated 9 Sept 2020. See revision notes below)</Lead>
+      <Lead>Version 2.1 (Model updated 9 Sept 2020. See revision notes below)</Lead>
       <PageIntroFullWidth>
         <p>
           COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
@@ -87,9 +95,9 @@ const FullContent = () => {
           <Footer>({formatPercent(URJOBSLGA.QtrChgPer)}% without the JobKeeper scheme)</Footer>
         </Tile>
       </TilesGrid>
-      {/* <TilesGrid2Col>
+      <TilesGrid2Col>
         <Tile>
-          <Title>Sector impacts - Top 3 (excluding JobKeeper)</Title>
+          <Title>Sector impacts - Top 3 (without the JobKeeper scheme)</Title>
           <TopList>
             {topThree.map((item, i) => {
               return (
@@ -100,7 +108,7 @@ const FullContent = () => {
             })}
           </TopList>
         </Tile>
-      </TilesGrid2Col> */}
+      </TilesGrid2Col>
       <SectionTitle>Key Insights</SectionTitle>
       <TopList>
         <li>
@@ -125,9 +133,6 @@ const FullContent = () => {
       </ItemWrapper>
 
       <SectionTitle>Industry Impacts</SectionTitle>
-      <Lead>Industry impacts data will be available soon.</Lead>
-
-      {/* <SectionTitle>Industry Impacts</SectionTitle>
       <Lead>
         The impact of COVID-19 will vary from region to region and will depend on the regions supply chain and trade
         exposure (domestic and international), reliance on tourism and exposure to consumer demand (e.g. accommodation,
@@ -136,10 +141,10 @@ const FullContent = () => {
 
       <SubTitleAlt2>Economic Impact</SubTitleAlt2>
       <p>
-        The chart below presents the output and value added impacts of COVID-19 in the September Quarter 2020. Output refers
-        to the total sales of each industry in the region. Value Added refers to the wages and salaries paid to workers
-        in the region, the gross operating surplus and taxes. Value added impacts show how the different industries
-        impact GRP in the region.
+        The chart below presents the output and value added impacts of COVID-19 in the September Quarter 2020. Output
+        refers to the total sales of each industry in the region. Value Added refers to the wages and salaries paid to
+        workers in the region, the gross operating surplus and taxes. Value added impacts show how the different
+        industries impact GRP in the region.
       </p>
       <ItemWrapper>
         <EconomicImpactChart />
@@ -162,7 +167,7 @@ const FullContent = () => {
       </p>
       <ItemWrapper>
         <JobsImpactChart measure={'UR_Jobs'} />
-      </ItemWrapper> */}
+      </ItemWrapper>
       <Disclaimers />
     </>
   );

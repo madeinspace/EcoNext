@@ -81,7 +81,7 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
   } = useContext(PageContext);
   const measureText = `${measure === 'Output' ? measure : 'Value Added'}`;
   const chartType = 'bar';
-  const chartTitle = `${measureText} impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
+  const chartTitle = `${measureText} impact in Sept Quarter 2020 (compared to 2018/19 quarter average)`;
   const chartSubtitle = `${currentAreaName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = type === 1 ? `Change in ${measureText} ($million)` : `Change in ${measureText} (%)`;
