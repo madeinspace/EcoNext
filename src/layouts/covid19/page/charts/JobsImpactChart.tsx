@@ -119,7 +119,7 @@ const JobsImpactChart = ({ measure }) => {
           Without JK scheme
         </Tab>
         <Tab Pane={ChartPane} id={3} onClick={() => handleChartChange(3)}>
-          Jobs compensated by JK
+          Jobs compensated by JK scheme
         </Tab>
       </Tabs>
       <ShadowWrapper>
