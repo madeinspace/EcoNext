@@ -22,73 +22,25 @@ const JobsImpactChart = ({ measure }) => {
     ),
     'NJKQtrComp',
   ).reverse();
-  console.log(`${measure}`, localJobsNoTotal);
-  const localJobsNoTotalPer = localJobsNoTotal;
 
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
-  console.log('categoriesNum: ', categoriesNum);
 
   const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
   const impactWithoutJK = localJobsNoTotal.map(item => item.QtrChg);
   const impactWithJKComp = localJobsNoTotal.map(item => Math.abs(item.JKQtrComp));
 
-  const localJobsWithJKPer = localJobsNoTotalPer.map(item => item.QtrChgPer - item.ExJKCompPer);
-  const localJobswithoutJKPer = localJobsNoTotalPer.map(item => item.ExJKCompPer);
-  const localJobswithoutJKCompPer = localJobsNoTotalPer.map(item => Math.abs(item.JKQtrCompPer));
+  const localJobsWithJKPer = localJobsNoTotal.map(item => item.QtrChgPer - item.ExJKCompPer);
+  const localJobswithoutJKPer = localJobsNoTotal.map(item => item.ExJKCompPer);
+  const localJobswithoutJKCompPer = localJobsNoTotal.map(item => Math.abs(item.JKQtrCompPer));
 
-  const seriesimpactWithJKNumber = [
-    {
-      className: 'jobkeeper',
-      name: `With JK scheme`,
-      data: impactWithJK,
-    },
-  ];
-  const seriesImpactWithoutJKNumber = [
-    {
-      className: 'jobkeeper',
-      name: `Without JK scheme`,
-      data: impactWithoutJK,
-    },
-  ];
-  const seriesImpactWithJKCompNumber = [
-    {
-      className: 'jobkeeper',
-      name: `Jobs compensated by JK scheme`,
-      data: impactWithJKComp,
-    },
-  ];
-
-  const seriesImpactWithJKPer = [
-    {
-      className: 'jobkeeper',
-      name: `With JK scheme`,
-      data: localJobsWithJKPer,
-    },
-  ];
-  const serieImpactWithoutJKPer = [
-    {
-      className: 'jobkeeper',
-      name: `Without JK scheme`,
-      data: localJobswithoutJKPer,
-    },
-  ];
-  const seriesImpactWithJKCompPer = [
-    {
-      className: 'jobkeeper',
-      name: `Jobs compensated by JK scheme`,
-      data: localJobswithoutJKCompPer,
-    },
-  ];
-
-  const LocalJobsWithJKNumber: any = localJobsChartBuilder(seriesimpactWithJKNumber, categoriesNum, measure, 1);
-  const LocalJobsWithoutJKNumber: any = localJobsChartBuilder(seriesImpactWithoutJKNumber, categoriesNum, measure, 1);
-  const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(seriesImpactWithJKCompNumber, categoriesNum, measure, 1);
-  const LocalJobsWithJKPer: any = localJobsChartBuilder(seriesImpactWithJKPer, categoriesNum, measure, 2);
-  const LocalJobswithoutJKPer: any = localJobsChartBuilder(serieImpactWithoutJKPer, categoriesNum, measure, 2);
-  const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(seriesImpactWithJKCompPer, categoriesNum, measure, 2);
+  const LocalJobsWithJKNumber: any = localJobsChartBuilder(impactWithJK, categoriesNum, measure, 1);
+  const LocalJobsWithoutJKNumber: any = localJobsChartBuilder(impactWithoutJK, categoriesNum, measure, 1);
+  const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(impactWithJKComp, categoriesNum, measure, 1);
+  const LocalJobsWithJKPer: any = localJobsChartBuilder(localJobsWithJKPer, categoriesNum, measure, 2);
+  const LocalJobswithoutJKPer: any = localJobsChartBuilder(localJobswithoutJKPer, categoriesNum, measure, 2);
+  const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(localJobswithoutJKCompPer, categoriesNum, measure, 2);
 
   const dataSetChoser = (key, paneID = Pane) => {
-    console.log('Pane: ', Pane);
     switch (key) {
       case 1:
         return paneID === 1 ? LocalJobsWithJKNumber : LocalJobsWithJKPer;
@@ -108,9 +60,9 @@ const JobsImpactChart = ({ measure }) => {
     setHighchartsOptions(dataSetChoser(key));
   };
 
-  const handleTabChange = (key, value) => {
-    setPane(value);
-    setHighchartsOptions(dataSetChoser(ChartPane, value));
+  const handleTabChange = key => {
+    setPane(key);
+    setHighchartsOptions(dataSetChoser(ChartPane, key));
   };
 
   return (
@@ -128,10 +80,10 @@ const JobsImpactChart = ({ measure }) => {
       </Tabs>
       <ShadowWrapper>
         <ChartTabs>
-          <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
+          <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange(1)}>
             Number
           </ChartTab>
-          <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange('t', 2)}>
+          <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange(2)}>
             Percentage
           </ChartTab>
         </ChartTabs>
@@ -159,18 +111,9 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
     entityData: { currentAreaName },
   } = useContext(PageContext);
 
-  const chartType = 'bar';
-  const chartTitle = `${
-    measure === 'Local_Jobs' ? 'Local Jobs' : 'Employed Resident'
-  } Impact in Sept quarter 2020 (compared to Sept quarter 2019)`;
-  const chartSubtitle = `${currentAreaName}`;
-  const xAxisTitle = 'Industry sector';
-  const yAxisTitle =
-    type === 1 ? `Change in the number of employed (estimated)` : `% Change in the number of employed (estimated)`;
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
   )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
-  const chartHeight = 650;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${
@@ -180,15 +123,17 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
 
   return {
     highchartOptions: {
-      height: chartHeight,
+      height: 650,
       chart: {
-        type: chartType,
+        type: 'bar',
       },
       title: {
-        text: chartTitle,
+        text: `${
+          measure === 'Local_Jobs' ? 'Local Jobs' : 'Employed Resident'
+        } Impact in Sept quarter 2020 (compared to Sept quarter 2019)`,
       },
       subtitle: {
-        text: chartSubtitle,
+        text: `${currentAreaName}`,
       },
       tooltip: {
         headerFormat: '',
@@ -201,18 +146,26 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
           stacking: 'normal',
         },
       },
-      series,
+      series: [
+        {
+          className: 'jobkeeper',
+          data: series,
+        },
+      ],
       xAxis: {
         categories,
         title: {
-          text: xAxisTitle,
+          text: 'Industry sector',
         },
       },
       yAxis: [
         {
           crosshair: true,
           title: {
-            text: yAxisTitle,
+            text:
+              type === 1
+                ? `Change in the number of employed (estimated)`
+                : `% Change in the number of employed (estimated)`,
           },
           labels: {
             staggerLines: 0,
