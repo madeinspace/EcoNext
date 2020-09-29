@@ -16,7 +16,7 @@ const Disclaimers = () => {
       <SectionTitle>Assumptions and methodology</SectionTitle>
       <p>
         NIEIR has estimated the potential impacts of coronavirus on economic activity, employment and sectors at the LGA
-        level. Model outputs above are based on information available before September 9.
+        level. Model outputs above are based on information available before September 24.
       </p>
       <p>
         The forecast model estimates the impact on final demand on each industry and then calculates the multiplier

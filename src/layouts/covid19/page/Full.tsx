@@ -62,7 +62,7 @@ const FullContent = () => {
 
   return (
     <>
-      <Lead>Version 2.1 (Model updated 9 Sept 2020. See revision notes below)</Lead>
+      <Lead>Version 2.1 (Model updated 29 Sept 2020. See revision notes below)</Lead>
       <PageIntroFullWidth>
         <p>
           COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has

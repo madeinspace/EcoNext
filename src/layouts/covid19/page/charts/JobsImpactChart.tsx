@@ -26,11 +26,11 @@ const JobsImpactChart = ({ measure }) => {
 
   const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
   const impactWithoutJK = localJobsNoTotal.map(item => item.QtrChg);
-  const impactWithJKComp = localJobsNoTotal.map(item => item.JKQtrComp);
+  const impactWithJKComp = localJobsNoTotal.map(item => Math.abs(item.JKQtrComp));
 
   const localJobsWithJKPer = localJobsNoTotalPer.map(item => item.QtrChgPer - item.ExJKCompPer);
   const localJobswithoutJKPer = localJobsNoTotalPer.map(item => item.ExJKCompPer);
-  const localJobswithoutJKCompPer = localJobsNoTotalPer.map(item => item.JKQtrCompPer);
+  const localJobswithoutJKCompPer = localJobsNoTotalPer.map(item => Math.abs(item.JKQtrCompPer));
 
   const seriesimpactWithJKNumber = [
     {
@@ -49,7 +49,7 @@ const JobsImpactChart = ({ measure }) => {
   const seriesImpactWithJKCompNumber = [
     {
       className: 'jobkeeper',
-      name: `Jobs compensated by JK`,
+      name: `Jobs compensated by JK scheme`,
       data: impactWithJKComp,
     },
   ];
@@ -71,7 +71,7 @@ const JobsImpactChart = ({ measure }) => {
   const seriesImpactWithJKCompPer = [
     {
       className: 'jobkeeper',
-      name: `Jobs compensated by JK`,
+      name: `Jobs compensated by JK scheme`,
       data: localJobswithoutJKCompPer,
     },
   ];
