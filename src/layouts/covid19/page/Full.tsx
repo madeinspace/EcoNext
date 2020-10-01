@@ -44,8 +44,8 @@ const FullContent = () => {
   const GRPLGATextAlt = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
   const GRPCOMPText = GRPLGA.QtrChgPer < GRPBM.QtrChgPer ? 'higher' : 'lower';
 
-  const JOBSLGAText = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
-  const JOBSLGATextAlt = Math.sign(URJOBSLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
+  const JOBSLGAText = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'grow';
+  const JOBSLGATextAlt = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'growth';
 
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
   const LocalJobsImpactNJK = topThreeData.filter(
@@ -133,13 +133,14 @@ const FullContent = () => {
       </ItemWrapper>
 
       <SectionTitle>Industry Impacts</SectionTitle>
-      <Lead>
+      {/* <Lead>
         The impact of COVID-19 will vary from region to region and will depend on the regions supply chain and trade
         exposure (domestic and international), reliance on tourism and exposure to consumer demand (e.g. accommodation,
         food services, arts and recreation).
-      </Lead>
+      </Lead> */}
+      <Lead>Industry impacts data will be available soon.</Lead>
 
-      <SubTitleAlt2>Economic Impact</SubTitleAlt2>
+      {/* <SubTitleAlt2>Economic Impact</SubTitleAlt2>
       <p>
         The chart below presents the output and value added impacts of COVID-19 in the September Quarter 2020. Output
         refers to the total sales of each industry in the region. Value Added refers to the wages and salaries paid to
@@ -167,7 +168,7 @@ const FullContent = () => {
       </p>
       <ItemWrapper>
         <JobsImpactChart measure={'UR_Jobs'} />
-      </ItemWrapper>
+      </ItemWrapper> */}
       <Disclaimers />
     </>
   );
