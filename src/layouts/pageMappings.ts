@@ -82,6 +82,8 @@ import EmploymentLocationsPage from './employment-locations/page';
 import ReportsPage from './reports/page';
 import ReportsIndustryPage from './reports-industry/page';
 import ReportsEmploymentPage from './reports-employment/page';
+import CovidQuarterImpactsPage from './covid19-quarter-impacts/page';
+import CovidExtendedForecastsPage from './covid19-extended-forecasts/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -180,6 +182,9 @@ const PageMappings = {
   reports: ReportsPage,
   'reports-industry': ReportsIndustryPage,
   'reports-employment': ReportsEmploymentPage,
+  'covid19-quarter-impacts': CovidQuarterImpactsPage,
+  'covid19-economic-forecasts': Parent,
+  'covid19-extended-forecasts': CovidExtendedForecastsPage,
 };
 
 export default PageMappings;

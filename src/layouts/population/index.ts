@@ -1,6 +1,5 @@
 import { sqlConnection } from '../../utils/sql';
 import { formatNumber } from '../../utils';
-import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 
 const PopulationDataSQL = ({ ClientID, WebID }) => `
@@ -58,4 +57,4 @@ const pageContent = {
   ],
 };
 
-export { fetchData, activeCustomToggles, Page, pageContent };
+export { fetchData, activeCustomToggles, pageContent };
