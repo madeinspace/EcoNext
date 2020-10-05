@@ -10,7 +10,6 @@ const CovidExtendedForecastsPage = () => {
   const {
     contentData: { extendedData },
   } = useContext(PageContext);
-  console.log('extendedData: ', extendedData);
   return <>extended forecast here</>;
 };
 export default CovidExtendedForecastsPage;
