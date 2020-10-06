@@ -6,6 +6,10 @@ import { Loader } from '../ui/loader';
 import { ChartDefault } from './configs/Chart.config';
 import { exportOptions } from './configs/ExportOptions';
 import { ChartFooter } from './ChartFooter';
+import exporting from 'highcharts/modules/exporting';
+import offline from 'highcharts/modules/offline-exporting';
+import drilldown from 'highcharts/modules/drilldown';
+import data from 'highcharts/modules/export-data';
 
 const ReactChart = props => {
   const {
@@ -19,12 +23,18 @@ const ReactChart = props => {
   } = props;
   const chartRef: any = useRef(null);
   const [isLoaded, setisLoaded] = useState(false);
-
   const options = ChartDefault({ ...highchartOptions, source: reactChartOptions.footer.rawDataSource });
 
   useEffect(() => {
     setisLoaded(true);
   });
+
+  if (typeof Highcharts === 'object') {
+    exporting(Highcharts);
+    offline(Highcharts);
+    data(Highcharts);
+    drilldown(Highcharts);
+  }
 
   const handleExport = item => {
     switch (item.type) {
