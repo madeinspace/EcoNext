@@ -53,7 +53,7 @@ const ImpactByRegionChart = () => {
 
   return (
     <ShadowWrapper>
-      <ChartTabs>
+      <ChartTabs Top="90">
         <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('t', 1)}>
           with the JK scheme
         </ChartTab>
@@ -63,7 +63,6 @@ const ImpactByRegionChart = () => {
       </ChartTabs>
       <ReactChart height="300" options={options} />
     </ShadowWrapper>
-    // <EntityChart data={ImpactByRegionChartBuilder(series, categories)} />
   );
 };
 export default ImpactByRegionChart;
@@ -89,8 +88,9 @@ const ImpactByRegionChartBuilder = (series, categories) => {
 
   return {
     highchartOptions: {
-      height: 300,
+      height: 430,
       chart: {
+        marginTop: 130,
         type: 'column',
       },
       title: {

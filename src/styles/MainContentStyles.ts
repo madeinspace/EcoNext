@@ -68,7 +68,7 @@ export const ChartTabs = styled.ul`
   position: absolute;
   z-index: 2;
   right: 10px;
-  top: 55px;
+  top: ${props => (props.Top ? `${props.Top}px` : '55px')};
 `;
 
 export const ChartTab = styled.li`
