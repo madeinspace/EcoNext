@@ -30,12 +30,10 @@ const JobsImpactChart = ({ measure }) => {
     return [...acc, dbIbject];
   }, []);
 
-  const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
   const impactWithJKComp = localJobsNoTotal.map(item => Math.abs(item.JKQtrComp));
 
   const localJobswithoutJKCompPer = localJobsNoTotal.map(item => Math.abs(item.JKQtrCompPer));
 
-  const LocalJobsWithJKNumber: any = localJobsChartBuilder(impactWithJK, categoriesNum, measure, 1);
   const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(impactWithJKComp, categoriesNum, measure, 1);
   const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(localJobswithoutJKCompPer, categoriesNum, measure, 2);
 
@@ -48,7 +46,7 @@ const JobsImpactChart = ({ measure }) => {
       case 2:
         return paneID === 1 ? LocalJobsWithJKCompNumber : LocalJobswithoutJKCompPer;
       default:
-        return LocalJobsWithJKCompNumber;
+        return dbOptions;
     }
   };
 
@@ -70,7 +68,7 @@ const JobsImpactChart = ({ measure }) => {
         <Tab Pane={ChartPane} id={1} onClick={() => handleChartChange(1)}>
           Jobs
         </Tab>
-        <Tab Pane={ChartPane} id={3} onClick={() => handleChartChange(2)}>
+        <Tab Pane={ChartPane} id={2} onClick={() => handleChartChange(2)}>
           Jobs compensated by JobKeeper
         </Tab>
       </Tabs>
@@ -113,12 +111,6 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
     'Version',
   )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
 
-  const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${
-      type === 1 ? formatChangeInt(this.y) : formatChangePercent(this.y) + '%'
-    }`;
-  };
-
   return {
     highchartOptions: {
       height: 650,
@@ -135,8 +127,10 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
       },
       tooltip: {
         headerFormat: '',
-        pointFormatter: function() {
-          return tooltip.apply(this);
+        formatter: function() {
+          return `<span class="highcharts-color-${this.points[0].colorIndex}">\u25CF</span> ${this.x}, ${LongName}: ${
+            type === 1 ? formatChangeInt(this.y) : formatChangePercent(this.y) + '%'
+          }`;
         },
       },
       plotOptions: {
