@@ -23,20 +23,17 @@ const JobsImpactChart = ({ measure }) => {
     'NJKQtrComp',
   ).reverse();
 
+  const tabDisplayText = measure === 'Local_Jobs' ? 'Local jobs' : 'Employed residents';
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
-
   const localJobsDBSerie = localJobsNoTotal.reduce((acc, cur) => {
     const dbIbject = { name: cur.NieirIndWeb1DigitName, low: cur.NJKQtrComp, high: cur.QtrChg };
     return [...acc, dbIbject];
   }, []);
 
   const impactWithJKComp = localJobsNoTotal.map(item => Math.abs(item.JKQtrComp));
-
   const localJobswithoutJKCompPer = localJobsNoTotal.map(item => Math.abs(item.JKQtrCompPer));
-
   const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(impactWithJKComp, categoriesNum, measure, 1);
   const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(localJobswithoutJKCompPer, categoriesNum, measure, 2);
-
   const dbOptions = localJobsDumbellChartBuilder(localJobsDBSerie, measure);
 
   const dataSetChoser = (key, paneID = Pane) => {
@@ -66,10 +63,10 @@ const JobsImpactChart = ({ measure }) => {
     <>
       <Tabs>
         <Tab Pane={ChartPane} id={1} onClick={() => handleChartChange(1)}>
-          Jobs
+          {tabDisplayText}
         </Tab>
         <Tab Pane={ChartPane} id={2} onClick={() => handleChartChange(2)}>
-          Jobs compensated by JobKeeper
+          {tabDisplayText} compensated by JobKeeper
         </Tab>
       </Tabs>
       <ShadowWrapper>
