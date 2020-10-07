@@ -23,7 +23,7 @@ const JobsImpactChart = ({ measure }) => {
     'NJKQtrComp',
   ).reverse();
 
-  const tabDisplayText = measure === 'Local_Jobs' ? 'Local jobs' : 'Employed residents';
+  const measureDisplayText = measure === 'Local_Jobs' ? 'Local jobs' : 'Employed residents';
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
   const localJobsDBSerie = localJobsNoTotal.reduce((acc, cur) => {
     const dbIbject = { name: cur.NieirIndWeb1DigitName, low: cur.NJKQtrComp, high: cur.QtrChg };
@@ -49,6 +49,17 @@ const JobsImpactChart = ({ measure }) => {
 
   const [options, setHighchartsOptions] = useState(dbOptions);
 
+  const Definition = () => {
+    return (
+      <p>
+        Definition: {measureDisplayText} change – change in {measureDisplayText} as defined by the ABS; (2)
+        {measureDisplayText} change without JobKeeper – change in {measureDisplayText} in the absence of JobKeeper
+        payments; and (3) {measureDisplayText} compensated by JobKeeper – {measureDisplayText} counted as employed who
+        would have been unemployed without JobKeeper.
+      </p>
+    );
+  };
+
   const handleChartChange = key => {
     setChartPane(key);
     setHighchartsOptions(dataSetChoser(key));
@@ -61,12 +72,14 @@ const JobsImpactChart = ({ measure }) => {
 
   return (
     <>
+      <Definition />
+      <br />
       <Tabs>
         <Tab Pane={ChartPane} id={1} onClick={() => handleChartChange(1)}>
-          {tabDisplayText}
+          {measureDisplayText}
         </Tab>
         <Tab Pane={ChartPane} id={2} onClick={() => handleChartChange(2)}>
-          {tabDisplayText} compensated by JobKeeper
+          {measureDisplayText} compensated by JobKeeper
         </Tab>
       </Tabs>
       <ShadowWrapper>
@@ -88,14 +101,13 @@ const JobsImpactChart = ({ measure }) => {
 
 export default JobsImpactChart;
 
-const ChartSource = () => (
-  <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) {useEntityText('Version')}. ©2020 Compiled and
-    presented in economy.id by <IdLink />. Impacts have been split into: (1) not on JobKeeper – unemployed as defined by
-    the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing
-    to economic activity.
-  </p>
-);
+const ChartSource = measure => {
+  const measureDisplayText = measure === 'Local_Jobs' ? 'Local jobs' : 'Employed residents';
+
+  return `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
+    'Version',
+  )}. ©2020 Compiled and presented in economy.id by .id the population experts. `;
+};
 
 // #region chart builder change
 const localJobsChartBuilder = (series, categories, measure, type) => {
@@ -104,9 +116,7 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
     entityData: { currentAreaName },
   } = useContext(PageContext);
 
-  const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
-    'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
+  const rawDataSource = ChartSource(measure);
 
   return {
     highchartOptions: {
@@ -169,7 +179,7 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
       className: '',
       footer: {
         rawDataSource,
-        dataSource: <ChartSource />,
+        dataSource: ChartSource(measure),
         logoUrl: idlogo,
       },
     },
@@ -179,15 +189,11 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
 // #endregion
 
 const localJobsDumbellChartBuilder = (series, measure) => {
-  const { LongName } = useContext(ClientContext);
-  const {
-    entityData: { currentAreaName },
-  } = useContext(PageContext);
-
-  const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
-    'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
-
+  const withoutJKDisplayText = `${
+    measure === 'Local_Jobs' ? 'Local Jobs change without JobKeeper' : 'Employed Residents change without JobKeeper'
+  }`;
+  const withJKDisplayText = `${measure === 'Local_Jobs' ? 'Local Jobs change' : 'Employed Residents change'}`;
+  const rawDataSource = ChartSource(measure);
   return {
     highchartOptions: {
       height: 650,
@@ -203,7 +209,7 @@ const localJobsDumbellChartBuilder = (series, measure) => {
 
       subtitle: {
         useHTML: true,
-        text: '<ul><li class="lowDot"> Without JobKeeper</li><li class="highDot">With JobKeeper</li></ul>',
+        text: `<ul><li class="lowDot">${withoutJKDisplayText}</li><li class="highDot">${withJKDisplayText}</li></ul>`,
       },
 
       title: {
@@ -219,13 +225,13 @@ const localJobsDumbellChartBuilder = (series, measure) => {
           return (
             '<b>' +
             this.points[0].point.name +
-            '</b> <br/> <span class="lowDot" >Without JobKeeper: ' +
+            `</b> <br/> <span class="lowDot">${withoutJKDisplayText}: ` +
             formatNumber(this.points[0].point.high) +
             ' </span>' +
-            '<br/><span  class="highDot" >With JobKeeper: ' +
+            `<br/><span  class="highDot">${withJKDisplayText}: ` +
             formatNumber(this.points[0].point.low) +
             ' </span>' +
-            '<br/><span  class="highDot" >Jobs compensated by JobKeeper: ' +
+            `<br/><span  class="highDot">Jobs compensated by JobKeeper: ` +
             formatNumber(Math.abs(this.points[0].point.high - this.points[0].point.low)) +
             ' </span>'
           );
@@ -274,7 +280,7 @@ const localJobsDumbellChartBuilder = (series, measure) => {
       className: '',
       footer: {
         rawDataSource,
-        dataSource: <ChartSource />,
+        dataSource: <p>{ChartSource(measure)}</p>,
         logoUrl: idlogo,
       },
     },

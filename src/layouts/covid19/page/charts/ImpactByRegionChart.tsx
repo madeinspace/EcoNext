@@ -57,10 +57,10 @@ const ImpactByRegionChart = () => {
     <ShadowWrapper>
       <ChartTabs Top="90">
         <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange('EChImp', 1)}>
-          with the JK scheme
+          with JobKeeper
         </ChartTab>
         <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange('EChImp', 2)}>
-          without the JK scheme
+          without JobKeeper
         </ChartTab>
       </ChartTabs>
       <ReactChart height="300" options={options} />
