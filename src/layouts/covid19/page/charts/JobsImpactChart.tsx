@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { _SubTitle, ChartTabs, ChartTab, ShadowWrapper, Tab, Tabs } from '../../../../styles/MainContentStyles';
-import { formatChangeInt, idlogo, formatChangePercent } from '../../../../utils';
+import { formatChangeInt, idlogo, formatChangePercent, formatNumber } from '../../../../utils';
 import { PageContext, ClientContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
 import _ from 'lodash';
@@ -25,35 +25,34 @@ const JobsImpactChart = ({ measure }) => {
 
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
 
+  const localJobsDBSerie = localJobsNoTotal.reduce((acc, cur) => {
+    const dbIbject = { name: cur.NieirIndWeb1DigitName, low: cur.NJKQtrComp, high: cur.QtrChg };
+    return [...acc, dbIbject];
+  }, []);
+
   const impactWithJK = localJobsNoTotal.map(item => item.NJKQtrComp);
-  const impactWithoutJK = localJobsNoTotal.map(item => item.QtrChg);
   const impactWithJKComp = localJobsNoTotal.map(item => Math.abs(item.JKQtrComp));
 
-  const localJobsWithJKPer = localJobsNoTotal.map(item => item.QtrChgPer - item.ExJKCompPer);
-  const localJobswithoutJKPer = localJobsNoTotal.map(item => item.ExJKCompPer);
   const localJobswithoutJKCompPer = localJobsNoTotal.map(item => Math.abs(item.JKQtrCompPer));
 
   const LocalJobsWithJKNumber: any = localJobsChartBuilder(impactWithJK, categoriesNum, measure, 1);
-  const LocalJobsWithoutJKNumber: any = localJobsChartBuilder(impactWithoutJK, categoriesNum, measure, 1);
   const LocalJobsWithJKCompNumber: any = localJobsChartBuilder(impactWithJKComp, categoriesNum, measure, 1);
-  const LocalJobsWithJKPer: any = localJobsChartBuilder(localJobsWithJKPer, categoriesNum, measure, 2);
-  const LocalJobswithoutJKPer: any = localJobsChartBuilder(localJobswithoutJKPer, categoriesNum, measure, 2);
   const LocalJobswithoutJKCompPer: any = localJobsChartBuilder(localJobswithoutJKCompPer, categoriesNum, measure, 2);
+
+  const dbOptions = localJobsDumbellChartBuilder(localJobsDBSerie, measure);
 
   const dataSetChoser = (key, paneID = Pane) => {
     switch (key) {
       case 1:
-        return paneID === 1 ? LocalJobsWithJKNumber : LocalJobsWithJKPer;
+        return dbOptions;
       case 2:
-        return paneID === 1 ? LocalJobsWithoutJKNumber : LocalJobswithoutJKPer;
-      case 3:
         return paneID === 1 ? LocalJobsWithJKCompNumber : LocalJobswithoutJKCompPer;
       default:
-        return LocalJobsWithJKNumber;
+        return LocalJobsWithJKCompNumber;
     }
   };
 
-  const [options, setHighchartsOptions] = useState(LocalJobsWithJKNumber);
+  const [options, setHighchartsOptions] = useState(dbOptions);
 
   const handleChartChange = key => {
     setChartPane(key);
@@ -69,24 +68,23 @@ const JobsImpactChart = ({ measure }) => {
     <>
       <Tabs>
         <Tab Pane={ChartPane} id={1} onClick={() => handleChartChange(1)}>
-          With JK scheme
+          Jobs
         </Tab>
-        <Tab Pane={ChartPane} id={2} onClick={() => handleChartChange(2)}>
-          Without JK scheme
-        </Tab>
-        <Tab Pane={ChartPane} id={3} onClick={() => handleChartChange(3)}>
-          Jobs compensated by JK scheme
+        <Tab Pane={ChartPane} id={3} onClick={() => handleChartChange(2)}>
+          Jobs compensated by JobKeeper
         </Tab>
       </Tabs>
       <ShadowWrapper>
-        <ChartTabs>
-          <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange(1)}>
-            Number
-          </ChartTab>
-          <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange(2)}>
-            Percentage
-          </ChartTab>
-        </ChartTabs>
+        {ChartPane === 2 && (
+          <ChartTabs>
+            <ChartTab Pane={Pane} id={1} onClick={() => handleTabChange(1)}>
+              Number
+            </ChartTab>
+            <ChartTab Pane={Pane} id={2} onClick={() => handleTabChange(2)}>
+              Percentage
+            </ChartTab>
+          </ChartTabs>
+        )}
         <ReactChart height="500" options={options} />
       </ShadowWrapper>
     </>
@@ -188,3 +186,106 @@ const localJobsChartBuilder = (series, categories, measure, type) => {
 };
 
 // #endregion
+
+const localJobsDumbellChartBuilder = (series, measure) => {
+  const { LongName } = useContext(ClientContext);
+  const {
+    entityData: { currentAreaName },
+  } = useContext(PageContext);
+
+  const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
+    'Version',
+  )} ©2020 Compiled and presented in economy.id by .id the population experts. Impacts have been split into: (1)not on JobKeeper – unemployed as defined by the ABS; and (2) JobKeeper – performing reduced hours or not working (i.e. 0 hours). Many will not be contributing to economic activity.`;
+
+  return {
+    highchartOptions: {
+      height: 650,
+      chart: {
+        type: 'dumbbell',
+        inverted: true,
+        zoomType: 'x',
+      },
+
+      legend: {
+        enabled: false,
+      },
+
+      subtitle: {
+        useHTML: true,
+        text: '<ul><li class="lowDot"> Without JobKeeper</li><li class="highDot">With JobKeeper</li></ul>',
+      },
+
+      title: {
+        text: `${
+          measure === 'Local_Jobs' ? 'Local Jobs' : 'Employed Resident'
+        } Impact in Sept quarter 2020 (compared to Sept quarter 2019)`,
+      },
+
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        formatter: function() {
+          return (
+            '<b>' +
+            this.points[0].point.name +
+            '</b> <br/> <span class="lowDot" >Without JobKeeper: ' +
+            formatNumber(this.points[0].point.high) +
+            ' </span>' +
+            '<br/><span  class="highDot" >With JobKeeper: ' +
+            formatNumber(this.points[0].point.low) +
+            ' </span>' +
+            '<br/><span  class="highDot" >Jobs compensated by JobKeeper: ' +
+            formatNumber(Math.abs(this.points[0].point.high - this.points[0].point.low)) +
+            ' </span>'
+          );
+        },
+      },
+
+      xAxis: {
+        type: 'category',
+        title: {
+          text: 'Industry sector',
+        },
+      },
+
+      yAxis: {
+        labels: {
+          staggerLines: 0,
+          formatter: function() {
+            return formatChangeInt(this.value);
+          },
+        },
+        plotLines: [
+          {
+            dashStyle: 'longdashdot',
+            width: 1,
+            value: 0,
+            zIndex: 2,
+          },
+        ],
+        title: {
+          text: `Change in the number of employed (estimated)`,
+        },
+      },
+      plotOptions: {
+        dumbbell: {
+          grouping: false,
+        },
+      },
+
+      series: [
+        {
+          data: series,
+        },
+      ],
+    },
+    reactChartOptions: {
+      className: '',
+      footer: {
+        rawDataSource,
+        dataSource: <ChartSource />,
+        logoUrl: idlogo,
+      },
+    },
+  };
+};
