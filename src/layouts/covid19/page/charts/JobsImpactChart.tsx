@@ -52,7 +52,7 @@ const JobsImpactChart = ({ measure }) => {
   const Definition = () => {
     return (
       <p>
-        Definition: {measureDisplayText} change – change in {measureDisplayText} as defined by the ABS; (2)
+        Definition: {measureDisplayText} change – change in {measureDisplayText} as defined by the ABS; (2){' '}
         {measureDisplayText} change without JobKeeper – change in {measureDisplayText} in the absence of JobKeeper
         payments; and (3) {measureDisplayText} compensated by JobKeeper – {measureDisplayText} counted as employed who
         would have been unemployed without JobKeeper.
