@@ -183,7 +183,7 @@ const PageMappings = {
   reports: ReportsPage,
   'reports-industry': ReportsIndustryPage,
   'reports-employment': ReportsEmploymentPage,
-  'covid19-quarter-impacts': CovidQuarterImpactsPage,
+  'covid19-quarter-impacts': CovidPage,
   'covid19-economic-forecasts': Parent,
   'covid19-extended-forecasts': CovidExtendedForecastsPage,
   'business-trends': BusinessTrendsPage,
