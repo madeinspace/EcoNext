@@ -264,7 +264,7 @@ const WorkersOccupationsPage = () => {
       </InfoBox>
 
       <ItemWrapper>
-        <EntityTable data={tableParams} name={'Resident workers - Occupations of employment'} />
+        <EntityTable data={tableParams} name={'Local workers - Occupations'} />
       </ItemWrapper>
 
       {hasProfile() && (

@@ -42,7 +42,7 @@ const FullContent = () => {
 
   const GRPLGAText = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
   const GRPLGATextAlt = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
-  const GRPCOMPText = GRPLGA.QtrChgPer < GRPBM.QtrChgPer ? 'higher' : 'lower';
+  const GRPCOMPText = GRPLGA.QtrChgPer > GRPBM.QtrChgPer ? 'higher' : 'lower';
   const JOBSLGAText = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'grow';
   const JOBSLGATextAlt = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'growth';
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
