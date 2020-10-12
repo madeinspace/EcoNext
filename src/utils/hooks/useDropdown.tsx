@@ -62,6 +62,7 @@ const DropDownHeader = styled('div')`
 
 const DropDownListContainer = styled('div')`
   position: absolute;
+  z-index: 1;
 `;
 
 const DropDownList = styled('ul')`
