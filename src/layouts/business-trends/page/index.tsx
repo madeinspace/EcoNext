@@ -111,10 +111,6 @@ const ChartSource = () => (
 
 // #region chart builder change
 const registeredBizChartBuilder = (data: any[], subtitle) => {
-  const { LongName } = useContext(ClientContext);
-  const {
-    entityData: { currentAreaName },
-  } = useContext(PageContext);
   const chartType = 'column';
   const chartTitle = `Number of GST registered business`;
   const chartSubtitle = subtitle;
@@ -123,12 +119,11 @@ const registeredBizChartBuilder = (data: any[], subtitle) => {
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
   )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
-
   const serie = data.map(({ Tot_Reg_Bus }) => Tot_Reg_Bus);
   const categories = data.map(({ label }) => label);
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.y}`;
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${formatNumber(this.y)}`;
   };
 
   return {
@@ -195,10 +190,6 @@ const registeredBizChartBuilder = (data: any[], subtitle) => {
 
 // #region chart builder change
 const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
-  const { LongName } = useContext(ClientContext);
-  const {
-    entityData: { currentAreaName },
-  } = useContext(PageContext);
   const chartType = 'spline';
   const chartTitle = `Change in GST registered business`;
   const chartSubtitle = subtitle;
@@ -214,7 +205,7 @@ const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
   const categories = data.map(({ label }) => label);
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.y}`;
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${formatChangeInt(this.y)}`;
   };
 
   return {
@@ -275,7 +266,7 @@ const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
 
 // #region table builders
 const tableBuilder = (data: any[], subtitle) => {
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { clientAlias } = useContext(ClientContext);
   const rawDataSource =
     'Source: Australian Business Register. Compiled and presented in economy.id by .id , the population experts.';
   const tableTitle = `Business trends by industry sector`;
