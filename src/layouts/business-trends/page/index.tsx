@@ -281,9 +281,7 @@ const tableBuilder = (data: any[], subtitle) => {
   const tableTitle = `Business trends by industry sector`;
 
   const serie = data.reverse().map(({ After, label, Tot_Reg_Bus, New_Reg_Bus, Cancel_Reg_Bus }) => {
-    console.log('label: ', label);
     const newDate = `${label.split('-')[0]}-20${label.split('-')[1]}`;
-    console.log('newDate: ', newDate);
     return {
       id: After,
       data: [label, Tot_Reg_Bus, New_Reg_Bus, Cancel_Reg_Bus, New_Reg_Bus - Cancel_Reg_Bus],
