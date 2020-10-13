@@ -67,8 +67,8 @@ const BusinessTrendsPage = () => {
             COVID-19 pandemic is producing business conditions substantially different from normal. Using the Business
             Trends page will allow users to monitor the impact of COVID-19 locally and particularly how each industry is
             being affected. This dataset should be viewed in conjunction with{' '}
-            {LinkBuilder('https://economy.id.com.au/monash/covid19', 'COVID-19 Economic Outlook')} page, to understand
-            the magnitude and the direction of the impact of COVID-19 on economic value and employment.
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/covid19`, 'COVID-19 Economic Outlook')} page to
+            understand the magnitude and the direction of the impact of COVID-19 on economic value and employment.
           </p>
           <p>
             Changes in business counts by industry can show structural shifts within the economy and identify growth and

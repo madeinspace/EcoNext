@@ -1,7 +1,7 @@
 // #region imports
 import React, { useContext } from 'react';
 import _ from 'lodash';
-import { PageContext } from '../../../utils/context';
+import { ClientContext, PageContext } from '../../../utils/context';
 import { formatPercent, formatNumber, absSort, Top } from '../../../utils';
 import {
   _SubTitle,
@@ -22,6 +22,7 @@ import { LinkBuilder } from '../../../components/ui/links';
 
 // #region template page
 const FullContent = () => {
+  const { clientAlias } = useContext(ClientContext);
   const {
     filters,
     entityData: { currentAreaName, prefixedAreaName },
@@ -36,11 +37,7 @@ const FullContent = () => {
   const GRPBM = BM.find(item => item.Measure === 'GRP');
 
   const JOBSLGA = LGA.find(item => item.Measure === 'Local_Jobs');
-  const JOBSBM = BM.find(item => item.Measure === 'Local_Jobs');
-
   const URJOBSLGA = LGA.find(item => item.Measure === 'UR_Jobs');
-  const URJOBSBM = BM.find(item => item.Measure === 'UR_Jobs');
-
   const GRPLGAText = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
   const GRPLGATextAlt = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
   const GRPCOMPText = GRPLGA.QtrChgPer > GRPBM.QtrChgPer ? 'higher' : 'lower';
@@ -69,10 +66,10 @@ const FullContent = () => {
         </p>
         <p>
           This tool should be viewed in conjunction with{' '}
-          {LinkBuilder('https://economy.id.com.au/monash/unemployment', 'Unemployment')} and{' '}
-          {LinkBuilder('https://profile.id.com.au/monash/job-seeker', 'JobSeeker')} section to understand the impact of
-          COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the Business
-          Trends section.
+          {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'Unemployment')} and{' '}
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
+          impact of COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the
+          Business Trends section.
         </p>
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
