@@ -17,6 +17,7 @@ import Disclaimers from './Disclaimers';
 import ImpactByRegionChart from './charts/ImpactByRegionChart';
 import EconomicImpactChart from './charts/EconomicImpactChart';
 import JobsImpactChart from './charts/JobsImpactChart';
+import { LinkBuilder } from '../../../components/ui/links';
 // #endregion
 
 // #region template page
@@ -65,6 +66,13 @@ const FullContent = () => {
           COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
           developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws
           on the economic forecast model developed by NIEIR and focuses on the impacts to September 2020.
+        </p>
+        <p>
+          This tool should be viewed in conjunction with{' '}
+          {LinkBuilder('https://economy.id.com.au/monash/unemployment', 'Unemployment')} and{' '}
+          {LinkBuilder('https://profile.id.com.au/monash/job-seeker', 'JobSeeker')} section to understand the impact of
+          COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the Business
+          Trends section.
         </p>
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>

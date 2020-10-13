@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { PageIntro, SourceBubble, ItemWrapper, ShadowWrapper } from '../../../styles/MainContentStyles';
 import { PageContext, ClientContext } from '../../../utils/context';
-import { IdLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 import { formatNumber, formatChangeInt, idlogo } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
@@ -58,8 +58,23 @@ const BusinessTrendsPage = () => {
             based on Australian Business Numbers (ABNs), maintained by the Australian Taxation Office.
           </p>
           <p>
-            Data from the ABR is useful in planning and economic development, to identify the spatial patterns of
-            businesses across the City of Monash, clusters and change in business growth patterns across the area.
+            While ABR business data does not pick up all operations in a region (some companies are not registered at
+            the location where they undertake commercial operations), the time-series data can be quite insightful. It
+            can give you an indication of the short-term impacts of macro-events, and can also offer a sign as to how
+            favourable local conditions are to establishing new businesses during normal times.
+          </p>
+          <p>
+            COVID-19 pandemic is producing business conditions substantially different from normal. Using the Business
+            Trends page will allow users to monitor the impact of COVID-19 locally and particularly how each industry is
+            being affected. This dataset should be viewed in conjunction with{' '}
+            {LinkBuilder('https://economy.id.com.au/monash/covid19', 'COVID-19 Economic Outlook')} page, to understand
+            the magnitude and the direction of the impact of COVID-19 on economic value and employment.
+          </p>
+          <p>
+            Changes in business counts by industry can show structural shifts within the economy and identify growth and
+            declining industries. For example, growth industries will have high entry and exit rates due to the high
+            failure rates of first movers and smaller high growth enterprises. Declining sectors will have low entry and
+            high exit rates.
           </p>
           <p>
             The raw business register dataset contains large numbers of ABNs which are not relevant to local government
