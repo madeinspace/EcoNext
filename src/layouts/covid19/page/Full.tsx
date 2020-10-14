@@ -38,9 +38,12 @@ const FullContent = () => {
 
   const JOBSLGA = LGA.find(item => item.Measure === 'Local_Jobs');
   const URJOBSLGA = LGA.find(item => item.Measure === 'UR_Jobs');
-  const GRPLGAText = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'grow';
-  const GRPLGATextAlt = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'growth';
-  const GRPCOMPText = GRPLGA.QtrChgPer > GRPBM.QtrChgPer ? 'higher' : 'lower';
+  const GRPLGAAdj = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'lower' : 'higher';
+  const GRPLGATextAlt = Math.sign(GRPLGA.QtrChgPer) === -1 ? 'fall' : 'increase';
+  const GRPComparisonTextPos = `This increase is in contrast to that experienced by the state as a whole.`;
+  const GRPCOMPText = GRPLGA.QtrChgPer > GRPBM.QtrChgPer ? 'less' : 'greater ';
+  const GRPComparisonTextNeg = `This fall is ${GRPCOMPText} than that experienced by the state as a whole.`;
+  const GRPCompTextFinal = GRPLGATextAlt === 'fall' ? GRPComparisonTextNeg : GRPComparisonTextPos;
   const JOBSLGAText = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'grow';
   const JOBSLGATextAlt = Math.sign(JOBSLGA.ExJKCompPer) === -1 ? 'fall' : 'growth';
   const URJOBSIMPACTText = Math.abs(URJOBSLGA.ExJKCompPer) > Math.abs(JOBSLGA.ExJKCompPer) ? 'higher' : 'lower';
@@ -114,8 +117,8 @@ const FullContent = () => {
       <SectionTitle>Key Insights</SectionTitle>
       <TopList>
         <li>
-          Gross Regional Product is forecast to {GRPLGAText} by {formatPercent(GRPLGA.QtrChgPer)}% in the September
-          Quarter 2020. This {GRPLGATextAlt} was {GRPCOMPText} than the state average.
+          GRP is forecast to be {formatPercent(Math.abs(GRPLGA.QtrChgPer))}% {GRPLGAAdj} in the September quarter 2020
+          than the same quarter in 2019. {GRPCompTextFinal}
         </li>
         <li>
           Local Jobs are forecast to {JOBSLGAText} by {formatPercent(JOBSLGA.ExJKCompPer)}% in the September Quarter
