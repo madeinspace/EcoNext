@@ -1,16 +1,41 @@
 // #region imports
 import _ from 'lodash';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { PageIntroFullWidth, SubTitleAlt2, TopList } from '../../../styles/MainContentStyles';
 import { ClientContext, PageContext } from '../../../utils/context';
+import { SectionTitle } from '../../covid19/page/Styles';
+import PostCovidImpactChart from './charts/PostCovidImpactChart';
 // #endregion
 
 // #region template page
 const CovidExtendedForecastsPage = () => {
-  const { isLite } = useContext(ClientContext);
-  const {
-    contentData: { extendedData },
-  } = useContext(PageContext);
-  return <>extended forecast here</>;
+  return (
+    <>
+      <PageIntroFullWidth>
+        <p>Text intro here</p>
+      </PageIntroFullWidth>
+      <ControlPanel />
+      <SectionTitle>Post COVID-19 Forecasts</SectionTitle>
+
+      <SubTitleAlt2>Post COVID-19 Forecasts – Gross Regional Products</SubTitleAlt2>
+      <TopList>
+        <li>
+          Sunshine Coast LGA GRP is forecast to fall by [##%] in the March Quarter 2020 and then fall by [##%] in the
+          June Quarter 2020.
+        </li>
+        <li>
+          In the September Quarter 2020 positive quarterly growth resumes at [##%], with the quarterly growth rate
+          sustained into 2021.
+        </li>
+        <li>
+          Forecast show that Sunshine Coast LGA won’t be back at 2019-Q4 level for at least 2 years with GRP [##%] lower
+          than the peak in December 2019.
+        </li>
+      </TopList>
+      <PostCovidImpactChart />
+    </>
+  );
 };
 export default CovidExtendedForecastsPage;
 // #endregion

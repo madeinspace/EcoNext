@@ -14,7 +14,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ filters }): string => (filters.IsLite ? `COVID-19 update` : `COVID-19 Economic Outlook Tool`),
+      renderString: ({ filters }): string => `COVID-19 Extended forecasts`,
     },
     {
       Title: 'Version',
