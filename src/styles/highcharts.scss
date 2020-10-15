@@ -1100,4 +1100,7 @@ text.highcharts-drilldown-data-label,
 
 .dash {
   stroke-dasharray: 5;
+  &.red {
+    stroke: #ff0000;
+  }
 }

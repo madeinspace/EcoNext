@@ -10,15 +10,30 @@ import PostCovidImpactChart from './charts/PostCovidImpactChart';
 
 // #region template page
 const CovidExtendedForecastsPage = () => {
+  const {
+    contentData: { headlinesData },
+  } = useContext(PageContext);
+  console.log('headlinesData: ', headlinesData);
   return (
     <>
       <PageIntroFullWidth>
-        <p>Text intro here</p>
+        <p>
+          COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
+          developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws
+          on the economic forecast model developed by NIEIR and focuses on the impacts to September 2020.
+        </p>
+        <p>
+          This tool should be viewed in conjunction with Unemployment and JobSeeker section to understand the impact of
+          COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the Business
+          Trends section.{' '}
+        </p>
+        <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
       <ControlPanel />
-      <SectionTitle>Post COVID-19 Forecasts</SectionTitle>
 
-      <SubTitleAlt2>Post COVID-19 Forecasts – Gross Regional Products</SubTitleAlt2>
+      <SectionTitle>Headline Forecasts</SectionTitle>
+
+      <SubTitleAlt2>Key Insights</SubTitleAlt2>
       <TopList>
         <li>
           Sunshine Coast LGA GRP is forecast to fall by [##%] in the March Quarter 2020 and then fall by [##%] in the
@@ -33,6 +48,8 @@ const CovidExtendedForecastsPage = () => {
           than the peak in December 2019.
         </li>
       </TopList>
+
+      <SectionTitle>Economic and employment Forecasts</SectionTitle>
       <PostCovidImpactChart />
     </>
   );
