@@ -18,7 +18,6 @@ const BusinessTrendsPage = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
     contentData: { BusinessTrendsData, toggles },
-    filters,
     entityData: { currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
