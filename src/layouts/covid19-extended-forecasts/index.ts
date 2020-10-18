@@ -12,18 +12,14 @@ const headlinesQuery = ({ ClientID, WebID = 10, BMID = 40, EconYr = 1 }) => {
 
 const fetchData = async ({ filters }) => {
   const extendedData = await sqlConnection.raw(extendedForecastQuery(filters));
-  const headlinesData = await sqlConnection.raw(headlinesQuery(filters));
-  console.log('headlinesData: ', headlinesData);
-  return { extendedData,  headlinesData };
+  // const headlinesData = await sqlConnection.raw(headlinesQuery(filters));
+  return { extendedData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
     currentBenchmark: getActiveToggle(filterToggles, 'BMID'),
-    
     currentIndicator: getActiveToggle(filterToggles, 'Ind'),
-    currentEconYear: getActiveToggle(filterToggles, 'EconYr'),
-    currentMeasure: getActiveToggle(filterToggles, 'Measure'),
   };
   return activeCustomToggles;
 };
@@ -42,18 +38,6 @@ const pageContent = {
   filterToggles: [
     {
       Database: 'CommApp',
-      DefaultValue: '10',
-      Label: 'Current area:',
-      Params: [
-        {
-          ClientID: '2',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area',
-      ParamName: 'WebID',
-    },
-    {
-      Database: 'CommApp',
       DefaultValue: '40',
       Label: 'Current benchmark:',
       Params: [
@@ -67,27 +51,27 @@ const pageContent = {
     {
       Database: 'CommApp',
       DefaultValue: '1',
-      Label: 'indicators:',
+      Label: 'Indicators:',
       Params: [  ],
       StoredProcedure: 'sp_Toggle_Econ_Indicator',
       ParamName: 'Ind',
     },
-    {
-      Database: 'CommApp',
-      DefaultValue: '1',
-      Label: 'Year:',
-      Params: [ ],
-      StoredProcedure: 'sp_Toggle_Econ_EconYear',
-      ParamName: 'EconYr',
-    },
-    {
-      Database: 'CommApp',
-      DefaultValue: '1',
-      Label: 'Measure:',
-      Params: [  ],
-      StoredProcedure: 'sp_Toggle_Econ_Measure',
-      ParamName: 'Measure',
-    },
+    // {
+    //   Database: 'CommApp',
+    //   DefaultValue: '1',
+    //   Label: 'Year:',
+    //   Params: [ ],
+    //   StoredProcedure: 'sp_Toggle_Econ_EconYear',
+    //   ParamName: 'EconYr',
+    // },
+    // {
+    //   Database: 'CommApp',
+    //   DefaultValue: '1',
+    //   Label: 'Measure:',
+    //   Params: [  ],
+    //   StoredProcedure: 'sp_Toggle_Econ_Measure',
+    //   ParamName: 'Measure',
+    // },
   ],
 };
 

@@ -8,11 +8,9 @@ import useEntityText from '../../../../utils/useEntityText';
 import ReactChart from '../../../../components/chart/ReactChart';
 
 const PostCovidImpactChart = measure => {
-  const [Pane, setPane] = useState(1);
   const {
     contentData: { extendedData },
   } = useContext(PageContext);
-  // console.log('extendedData: ', extendedData);
 
   const lgaPost = extendedData.filter(({ WebID, Forecast }) => {
     return WebID === 10 && Forecast === 'Post';

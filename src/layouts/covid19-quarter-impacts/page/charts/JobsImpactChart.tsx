@@ -22,7 +22,6 @@ const JobsImpactChart = ({ measure }) => {
     ),
     'NJKQtrComp',
   ).reverse();
-  console.log('localJobsNoTotal: ', localJobsNoTotal);
 
   const categoriesNum = localJobsNoTotal.map(({ NieirIndWeb1DigitName }) => NieirIndWeb1DigitName);
 
