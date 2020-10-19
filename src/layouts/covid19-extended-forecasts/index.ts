@@ -58,6 +58,18 @@ const pageContent = {
     },
     // {
     //   Database: 'CommApp',
+    //   DefaultValue: '22000',
+    //   Label: 'Industry:',
+    //   Params: [
+    //     {
+    //       a: '1',
+    //     },
+    //   ],
+    //   StoredProcedure: 'sp_Toggle_Econ_IndustryNieir86',
+    //   ParamName: 'IndkeyNieir',
+    // },
+    // {
+    //   Database: 'CommApp',
     //   DefaultValue: '1',
     //   Label: 'Year:',
     //   Params: [ ],
