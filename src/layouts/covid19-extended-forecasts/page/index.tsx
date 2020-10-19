@@ -35,7 +35,7 @@ const CovidExtendedForecastsPage = () => {
       <ChangePerChart />
       <IndexChart />
       <SectionTitle>Industry Forecasts</SectionTitle>
-      <Lead>Industry Forecasts comming soon.</Lead>
+      <Lead>Industry Forecasts coming soon.</Lead>
       <Disclaimers />
     </>
   );
