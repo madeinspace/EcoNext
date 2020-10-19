@@ -11,7 +11,7 @@ const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_LocalJobsEmpRes_Industry](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
 // headline
 const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
+  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},40)`;
 
 const fetchData = async ({ filters }) => {
   if (filters.IsLite) {
