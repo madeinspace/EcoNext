@@ -2,8 +2,9 @@
 import _ from 'lodash';
 import React from 'react';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
+import { Lead, PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import Disclaimers from '../../covid19/page/Disclaimers';
+import { SectionTitle } from '../../covid19/page/Styles';
 import ActualChart from './charts/ActualChart';
 import ChangeChart from './charts/ChangeChart';
 import ChangePerChart from './charts/ChangePerChart';
@@ -33,6 +34,8 @@ const CovidExtendedForecastsPage = () => {
       <ChangeChart />
       <ChangePerChart />
       <IndexChart />
+      <SectionTitle>Industry Forecasts</SectionTitle>
+      <Lead>Industry Forecasts comming soon.</Lead>
       <Disclaimers />
     </>
   );

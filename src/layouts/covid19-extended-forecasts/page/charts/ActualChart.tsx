@@ -88,7 +88,13 @@ const ChartBuilder = () => {
       },
       yAxis: {
         title: {
-          text: yAxisTitle,
+          text: '',
+        },
+        labels: {
+          staggerLines: 0,
+          formatter: function() {
+            return `${formatNumber(this.value)} `;
+          },
         },
       },
       legend: {

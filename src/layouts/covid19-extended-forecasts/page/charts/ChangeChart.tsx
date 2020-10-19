@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
-import { formatNumber, idlogo } from '../../../../utils';
+import { formatChangeInt, formatNumber, idlogo } from '../../../../utils';
 import { ClientContext, PageContext } from '../../../../utils/context';
 
 const ChangeChart = () => {
@@ -91,6 +91,11 @@ const ChartBuilder = (series, categories) => {
         },
       },
       yAxis: {
+        labels: {
+          formatter: function() {
+            return `${formatChangeInt(this.value)} `;
+          },
+        },
         title: {
           text: yAxisTitle,
         },

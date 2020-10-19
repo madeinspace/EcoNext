@@ -98,6 +98,12 @@ const ChartBuilder = (series, categories) => {
         title: {
           text: yAxisTitle,
         },
+        labels: {
+          staggerLines: 0,
+          formatter: function() {
+            return `${this.value} `;
+          },
+        },
       },
       legend: {
         enabled: true,
