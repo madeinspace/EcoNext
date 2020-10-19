@@ -103,6 +103,11 @@ const ChartBuilder = (series, categories) => {
       legend: {
         enabled: true,
       },
+      plotOptions: {
+        series: {
+          groupPadding: 0,
+        },
+      },
     },
     reactChartOptions: {
       className: '',
