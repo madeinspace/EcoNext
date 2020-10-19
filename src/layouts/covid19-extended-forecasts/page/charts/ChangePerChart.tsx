@@ -1,16 +1,18 @@
+import Highcharts from 'highcharts';
 import React, { useContext } from 'react';
 import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
 import { formatNumber, formatPercent, idlogo } from '../../../../utils';
-import { PageContext } from '../../../../utils/context';
+import { ClientContext, PageContext } from '../../../../utils/context';
 
 const ChangePerChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind, BMID },
-    entityData: { currentIndicator, prefixedAreaName, currentBenchmark },
+    entityData: { currentBenchmark },
   } = useContext(PageContext);
+  const { LongName } = useContext(ClientContext);
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
   const lgaData = postData.filter(({ WebID }) => WebID === 10);
@@ -22,14 +24,14 @@ const ChangePerChart = () => {
   };
 
   const makeSerie = (data, name) => {
-    const serie = data.map(item => item[lookup[+Ind]]);
+    const serie = data.map(item => item[lookup[+Ind]] * 100);
     return {
       name: name,
       data: serie,
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
-  const lgaSerie = makeSerie(lgaData, prefixedAreaName);
+  const lgaSerie = makeSerie(lgaData, LongName);
   const bmSerie = makeSerie(benchmarkData, currentBenchmark);
   const lgaSerieNum = [lgaSerie, bmSerie];
   const num = ChartBuilder(lgaSerieNum, categories);
@@ -52,10 +54,11 @@ const ChartSource = () => (
 
 const ChartBuilder = (series, categories) => {
   const {
+    filters: { Ind },
     entityData: { currentIndicator },
   } = useContext(PageContext);
-  const chartTitle = `Change %`;
-  const yAxisTitle = `${currentIndicator}`;
+  const chartTitle = `Quarterly percentage change in ${currentIndicator} forecast (%)`;
+  const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
 
@@ -70,6 +73,7 @@ const ChartBuilder = (series, categories) => {
       height: 300,
       chart: {
         type: 'line',
+        className: 'extended-forecasts',
       },
       title: {
         text: chartTitle,

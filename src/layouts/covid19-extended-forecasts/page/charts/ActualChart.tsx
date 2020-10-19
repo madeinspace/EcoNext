@@ -3,13 +3,13 @@ import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
 import { formatChangeInt, formatNumber, idlogo } from '../../../../utils';
-import { PageContext } from '../../../../utils/context';
+import { ClientContext, PageContext } from '../../../../utils/context';
 import useEntityText from '../../../../utils/useEntityText';
 
 const ActualChart = () => {
   return (
     <ShadowWrapper>
-      <ReactChart height="300" options={ChartBuilder()} />
+      <ReactChart height="350" options={ChartBuilder()} />
     </ShadowWrapper>
   );
 };
@@ -29,6 +29,7 @@ const ChartBuilder = () => {
     filters: { Ind },
     entityData: { currentIndicator, prefixedAreaName },
   } = useContext(PageContext);
+  const { LongName } = useContext(ClientContext);
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
   const lgaData = postData.filter(({ WebID }) => WebID === 10);
@@ -41,27 +42,27 @@ const ChartBuilder = () => {
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
     return {
-      name: prefixedAreaName,
+      name: LongName,
       data: serie,
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
   const lgaSerieNum = [makeSerie(lgaData)];
 
-  const chartTitle = `Actual`;
-  const yAxisTitle = `${currentIndicator}`;
+  const chartTitle = `Quarterly ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
+  const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${
       this.category
-    }:  ${formatNumber(this.y)}`;
+    }:  ${formatNumber(this.y)} ${+Ind === 1 && 'm'}`;
   };
 
   return {
     highchartOptions: {
-      height: 300,
+      height: 350,
       chart: {
         type: 'column',
       },
@@ -88,6 +89,14 @@ const ChartBuilder = () => {
       yAxis: {
         title: {
           text: yAxisTitle,
+        },
+      },
+      legend: {
+        enabled: true,
+      },
+      plotOptions: {
+        series: {
+          groupPadding: 0,
         },
       },
     },

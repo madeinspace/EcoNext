@@ -3,14 +3,15 @@ import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
 import { formatNumber, formatPercent, idlogo } from '../../../../utils';
-import { PageContext } from '../../../../utils/context';
+import { ClientContext, PageContext } from '../../../../utils/context';
 
 const ChangePerChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind, BMID },
-    entityData: { currentIndicator, prefixedAreaName, currentBenchmark },
+    entityData: { currentBenchmark },
   } = useContext(PageContext);
+  const { LongName } = useContext(ClientContext);
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
   const lgaData = postData.filter(({ WebID }) => WebID === 10);
@@ -29,7 +30,7 @@ const ChangePerChart = () => {
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
-  const lgaSerie = makeSerie(lgaData, prefixedAreaName);
+  const lgaSerie = makeSerie(lgaData, LongName);
   const bmSerie = makeSerie(benchmarkData, currentBenchmark);
   const lgaSerieNum = [lgaSerie, bmSerie];
   const num = ChartBuilder(lgaSerieNum, categories);
@@ -54,15 +55,15 @@ const ChartBuilder = (series, categories) => {
   const {
     entityData: { currentIndicator },
   } = useContext(PageContext);
-  const chartTitle = `Change %`;
-  const yAxisTitle = `${currentIndicator}`;
+  const chartTitle = `Indexed ${currentIndicator} forecast (Index, 100 = March Qtr 2020)`;
+  const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${
       this.category
-    }:  ${formatPercent(this.y)}%`;
+    }:  ${formatNumber(this.y)}`;
   };
 
   return {
@@ -70,6 +71,7 @@ const ChartBuilder = (series, categories) => {
       height: 300,
       chart: {
         type: 'line',
+        className: 'extended-forecasts',
       },
       title: {
         text: chartTitle,
@@ -92,6 +94,7 @@ const ChartBuilder = (series, categories) => {
         },
       },
       yAxis: {
+        tickPositions: [85, 100, 115],
         title: {
           text: yAxisTitle,
         },

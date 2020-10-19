@@ -3,7 +3,7 @@ import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
 import { formatNumber, idlogo } from '../../../../utils';
-import { PageContext } from '../../../../utils/context';
+import { ClientContext, PageContext } from '../../../../utils/context';
 
 const ChangeChart = () => {
   const {
@@ -11,6 +11,7 @@ const ChangeChart = () => {
     filters: { Ind },
     entityData: { currentIndicator, prefixedAreaName },
   } = useContext(PageContext);
+  const { LongName } = useContext(ClientContext);
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
   const lgaData = postData.filter(({ WebID }) => WebID === 10);
@@ -23,7 +24,7 @@ const ChangeChart = () => {
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
     return {
-      name: prefixedAreaName,
+      name: LongName,
       data: serie,
     };
   };
@@ -33,7 +34,7 @@ const ChangeChart = () => {
 
   return (
     <ShadowWrapper>
-      <ReactChart height="300" options={num} />
+      <ReactChart height="350" options={num} />
     </ShadowWrapper>
   );
 };
@@ -49,22 +50,23 @@ const ChartSource = () => (
 
 const ChartBuilder = (series, categories) => {
   const {
+    filters: { Ind },
     entityData: { currentIndicator },
   } = useContext(PageContext);
-  const chartTitle = `Change`;
-  const yAxisTitle = `${currentIndicator}`;
+  const chartTitle = `Quarterly change in ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
+  const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${
       this.category
-    }:  ${formatNumber(this.y)}`;
+    }:  ${formatNumber(this.y)} ${+Ind === 1 && 'm'}`;
   };
 
   return {
     highchartOptions: {
-      height: 300,
+      height: 350,
       chart: {
         type: 'column',
       },

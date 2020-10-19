@@ -109,7 +109,7 @@ export const ChartDefault = (...opts) => {
 
   chartDefaults.plotOptions = {
     series: {
-      groupPadding: 0.2,
+      groupPadding: 0,
       pointPadding: 0,
       borderWidth: 0,
       stacking: undefined,
