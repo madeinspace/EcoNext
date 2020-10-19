@@ -61,7 +61,7 @@ const ChartBuilder = (series, categories) => {
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${
       this.category
-    }:  ${formatNumber(this.y)} ${+Ind === 1 && 'm'}`;
+    }:  ${formatNumber(this.y)} ${+Ind === 1 ? 'm' : ''}`;
   };
 
   return {
