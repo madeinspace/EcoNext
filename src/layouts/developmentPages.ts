@@ -105,5 +105,6 @@ export default [
   'covid19-economic-forecasts',
   'covid19-quarter-impacts',
   'covid19-extended-forecasts',
+  'covid19-industry-focus',
   'business-trends',
 ];
