@@ -82,8 +82,8 @@ import EmploymentLocationsPage from './employment-locations/page';
 import ReportsPage from './reports/page';
 import ReportsIndustryPage from './reports-industry/page';
 import ReportsEmploymentPage from './reports-employment/page';
-import CovidQuarterImpactsPage from './covid19-quarter-impacts/page';
 import CovidExtendedForecastsPage from './covid19-extended-forecasts/page';
+import CovidIndustryFocusPage from './covid19-industry-focus/page';
 import BusinessTrendsPage from './business-trends/page';
 
 const PageMappings = {
@@ -186,6 +186,7 @@ const PageMappings = {
   'covid19-quarter-impacts': CovidPage,
   'covid19-economic-forecasts': Parent,
   'covid19-extended-forecasts': CovidExtendedForecastsPage,
+  'covid19-industry-focus': CovidIndustryFocusPage,
   'business-trends': BusinessTrendsPage,
 };
 
