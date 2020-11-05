@@ -2,16 +2,20 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 // impact by region (benchmark)
-const industryMixQuery = ({ ClientID, WebID = 10, BMID= 40, StartYear, EndYear }) =>
+const industryMixQuery = ({ ClientID, WebID = 10, BMID = 40, StartYear, EndYear }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Industry_Mix](${ClientID},${WebID},${BMID},${StartYear}, ${EndYear})`;
+
+const industryQuery = ({ ClientID, WebID = 10, IndkeyNieir }) =>
+  `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Industry](${ClientID},${WebID},1000,${IndkeyNieir})`;
 
 const fetchData = async ({ filters }) => {
   if (filters.IsLite) {
     return {};
   }
   const industryMixData = await sqlConnection.raw(industryMixQuery(filters));
+  const industryData = await sqlConnection.raw(industryQuery(filters));
 
-  return { industryMixData };
+  return { industryMixData, industryData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => {
@@ -29,7 +33,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ filters }): string => (filters.IsLite ? `COVID-19 update` : `COVID-19 Industry focus`),
+      renderString: ({ filters }): string => `COVID-19 Extended industry forecasts`,
     },
     {
       Title: 'Version',
@@ -49,18 +53,18 @@ const pageContent = {
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
     },
-    {
-      Database: 'CommApp',
-      DefaultValue: '40',
-      Label: 'Current benchmark:',
-      Params: [
-        {
-          ClientID: '9',
-        },
-      ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
-      ParamName: 'BMID',
-    },
+    // {
+    //   Database: 'CommApp',
+    //   DefaultValue: '40',
+    //   Label: 'Current benchmark:',
+    //   Params: [
+    //     {
+    //       ClientID: '9',
+    //     },
+    //   ],
+    //   StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+    //   ParamName: 'BMID',
+    // },
     {
       Database: 'CommApp',
       DefaultValue: '22000',
