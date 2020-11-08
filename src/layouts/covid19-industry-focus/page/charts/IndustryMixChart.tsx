@@ -115,6 +115,12 @@ const chartBuilder = (prefix = '') => {
         title: {
           text: ' ',
         },
+        labels: {
+          staggerLines: 0,
+          formatter: function() {
+            return `${formatNumber(this.value)} `;
+          },
+        },
       },
       legend: {
         enabled: true,

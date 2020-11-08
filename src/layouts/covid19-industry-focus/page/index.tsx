@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import React, { useContext } from 'react';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import { LinkBuilder } from '../../../components/ui/links';
 import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import { formatNumber, formatPercent } from '../../../utils';
 import { ClientContext, PageContext } from '../../../utils/context';
@@ -14,10 +15,10 @@ import QuarterlyForecastChart from './charts/QuarterlyForecastChart';
 const CovidIndustryFocusPage = () => {
   const {
     filters: { Ind },
-    entityData: { currentIndustry, currentIndicator },
+    entityData: { currentIndustry, currentIndicator, currentBenchmark },
     contentData: { industryData },
   } = useContext(PageContext);
-  const { LongName } = useContext(ClientContext);
+  const { clientAlias, LongName } = useContext(ClientContext);
 
   const lookup = {
     1: 'Output_',
@@ -26,8 +27,23 @@ const CovidIndustryFocusPage = () => {
     4: 'UR_',
   };
 
-  const makeSerie = suffix => {
-    const serie = industryData.map(item => item[lookup[+Ind] + suffix]);
+  const makeSerie = (suffix, bm = false) => {
+    const serie = industryData.filter(({ WebID }) => WebID === 10).map(item => item[lookup[+Ind] + suffix]);
+    const serieBM = industryData.filter(({ WebID }) => WebID != 10).map(item => item[lookup[+Ind] + suffix]);
+
+    if (bm) {
+      return [
+        {
+          name: `${LongName}`,
+          data: serie,
+        },
+        {
+          className: 'alt-bm-color',
+          name: `${currentBenchmark}`,
+          data: serieBM,
+        },
+      ];
+    }
     return [
       {
         name: `${LongName}`,
@@ -35,7 +51,7 @@ const CovidIndustryFocusPage = () => {
       },
     ];
   };
-  const categories = industryData.map(({ Label }) => Label);
+  const categories = industryData.filter(({ WebID }) => WebID === 10).map(({ Label }) => Label);
 
   const makeTooltip = (format = 'num', preffix = '') => {
     return function() {
@@ -63,14 +79,14 @@ const CovidIndustryFocusPage = () => {
   const changePerChart = {
     chartTitle: `Quarterly change in ${currentIndicator} forecast - ${currentIndustry}(%)`,
     type: 'line',
-    series: makeSerie('Change_Per'),
+    series: makeSerie('Change_Per', true),
     categories,
     tooltip: makeTooltip('per', '%'),
   };
   const indexChart = {
     chartTitle: `Quarterly Index of ${currentIndicator} forecast - ${currentIndustry} (Index, 100 = March Qtr 2020)`,
     type: 'line',
-    series: makeSerie('Index'),
+    series: makeSerie('Index', true),
     categories,
     tooltip: makeTooltip(),
     yAxis: { tickPositions: [65, 100, 135] },
@@ -93,8 +109,15 @@ const CovidIndustryFocusPage = () => {
           industry subsectors and 19 main industry divisions in the ANZSIC classification.
         </p>
         <p>
-          This tool should be viewed in conjunction with the COVID-19 Extended forecast section to see the impact of
-          COVID-19 on the overall economy, and Unemployment and JobSeeker section to understand the impact of COVID-19
+          This tool should be viewed in conjunction with the{' '}
+          {LinkBuilder(
+            `https://economy.id.com.au/${clientAlias}/covid19-extended-forecasts`,
+            'COVID-19 Extended forecast',
+          )}{' '}
+          section to see the impact of COVID-19 on the overall economy, and{' '}
+          {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'unemployment')} and{' '}
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
+          impact of COVID-19
           {/* on the local labour force. To monitor the impact of COVID-19 on local businesses, see the Business Trends
           section. */}
         </p>
