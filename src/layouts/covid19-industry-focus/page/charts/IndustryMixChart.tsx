@@ -87,7 +87,7 @@ const chartBuilder = (prefix = '') => {
 
   return {
     highchartOptions: {
-      height: 600,
+      height: 650,
       chart: {
         type: 'bar',
       },
@@ -113,7 +113,7 @@ const chartBuilder = (prefix = '') => {
       },
       yAxis: {
         title: {
-          text: ' ',
+          text: `${currentIndicator} ${+Ind === 1 || +Ind === 2 ? '($M)' : ''}`,
         },
         labels: {
           staggerLines: 0,
