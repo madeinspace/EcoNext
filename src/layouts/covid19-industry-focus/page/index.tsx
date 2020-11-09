@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import React, { useContext } from 'react';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import InfoBox from '../../../components/ui/infoBox';
 import { LinkBuilder } from '../../../components/ui/links';
 import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import { formatNumber, formatPercent } from '../../../utils';
@@ -61,14 +62,15 @@ const CovidIndustryFocusPage = () => {
   };
 
   const actualChart = {
-    chartTitle: `Quarterly ${currentIndicator} forecast - ${currentIndustry}${+Ind === 1 || +Ind === 2 ? '($M)' : ''}`,
+    chartTitle: `Quarterly ${currentIndicator} Forecast - ${currentIndustry}${+Ind === 1 || +Ind === 2 ? '($M)' : ''}`,
     type: 'column',
     series: makeSerie('Actual'),
     categories,
     tooltip: makeTooltip(),
+    yAxis: { softMin: 50000 },
   };
   const changeChart = {
-    chartTitle: `Quarterly change in ${currentIndicator} forecast - ${currentIndustry}${
+    chartTitle: `Quarterly Change in ${currentIndicator} Forecast - ${currentIndustry}${
       +Ind === 1 || +Ind === 2 ? '($M)' : ''
     }`,
     type: 'column',
@@ -77,14 +79,14 @@ const CovidIndustryFocusPage = () => {
     tooltip: makeTooltip(),
   };
   const changePerChart = {
-    chartTitle: `Quarterly change in ${currentIndicator} forecast - ${currentIndustry}(%)`,
+    chartTitle: `Quarterly Change in ${currentIndicator} Forecast - ${currentIndustry}(%)`,
     type: 'line',
     series: makeSerie('Change_Per', true),
     categories,
     tooltip: makeTooltip('per', '%'),
   };
   const indexChart = {
-    chartTitle: `Quarterly Index of ${currentIndicator} forecast - ${currentIndustry} (Index, 100 = March Qtr 2020)`,
+    chartTitle: `Quarterly Index of ${currentIndicator} Forecast - ${currentIndustry} (Index, 100 = March Qtr 2020)`,
     type: 'line',
     series: makeSerie('Index', true),
     categories,
@@ -124,6 +126,12 @@ const CovidIndustryFocusPage = () => {
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
       <ControlPanel />
+      <InfoBox>
+        <span>
+          <b>Did you know? </b> By clicking/tapping on a category in the chart below you will be able to drilldown to
+          the sub categories.
+        </span>
+      </InfoBox>
       <IndustryMixChart />
       <QuarterlyForecastChart data={actualChart} />
       <QuarterlyForecastChart data={changeChart} />

@@ -92,10 +92,10 @@ const chartBuilder = (prefix = '') => {
         type: 'bar',
       },
       title: {
-        text: `Change in ${currentIndicator} by industry, ${LongName} ( ${currentStartYear} - ${currentEndYear})`,
+        text: `Change in ${currentIndicator} by Industry, ${LongName} ( ${currentStartYear} - ${currentEndYear})`,
       },
       subtitle: {
-        text: 'Click on an industry to drilldown',
+        text: '',
       },
       tooltip: {
         headerFormat: '',
@@ -141,7 +141,8 @@ const chartBuilder = (prefix = '') => {
     reactChartOptions: {
       className: '',
       footer: {
-        rawDataSource: 'source',
+        rawDataSource:
+          'Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by .id the population experts.',
         dataSource: <ChartSource />,
         logoUrl: idlogo,
       },
