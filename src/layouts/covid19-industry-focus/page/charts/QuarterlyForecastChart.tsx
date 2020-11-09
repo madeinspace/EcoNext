@@ -48,7 +48,7 @@ const ChartBuilder = data => {
       },
       yAxis: {
         title: {
-          text: 'title here',
+          text: '',
         },
         labels: {
           staggerLines: 0,

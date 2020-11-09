@@ -63,17 +63,16 @@ const CovidIndustryFocusPage = () => {
 
   const actualSerie: any = makeSerie('Actual');
   const min = Math.min(...actualSerie[0].data);
-  console.log('min: ', min);
   const indexChartSerie = makeSerie('Index', true);
   const indexMin = Math.floor(Math.min(...indexChartSerie[0].data));
   const indexMax = Math.ceil(Math.max(...indexChartSerie[0].data));
   const indexMinBm = Math.floor(Math.min(...indexChartSerie[1].data));
   const indexMaxBm = Math.ceil(Math.max(...indexChartSerie[1].data));
-  const maxDiff = () => {
-    const min = Math.abs(Math.min(indexMin, indexMax, indexMinBm, indexMaxBm) - 100);
-    const max = Math.abs(Math.max(indexMin, indexMax, indexMinBm, indexMaxBm) - 100);
-    return Math.max(min, max);
-  };
+  const maxDiff = () =>
+    Math.max(
+      Math.abs(Math.min(indexMin, indexMax, indexMinBm, indexMaxBm) - 100),
+      Math.abs(Math.max(indexMin, indexMax, indexMinBm, indexMaxBm) - 100),
+    );
   const margin = 5;
   const maxdif = maxDiff() + margin;
   const tickpos = [100 - maxdif, 100, 100 + maxdif];
