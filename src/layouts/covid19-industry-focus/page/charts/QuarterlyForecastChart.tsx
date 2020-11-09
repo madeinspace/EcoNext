@@ -13,7 +13,8 @@ const QuarterlyForecastChart = ({ data }) => (
 export default QuarterlyForecastChart;
 
 const ChartBuilder = data => {
-  const { chartTitle, type, series, categories, tooltip, yAxis, plotOptions } = data;
+  const { chartTitle, type, series, categories, tooltip, yAxis, xAxis, plotOptions } = data;
+
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
 
@@ -42,10 +43,12 @@ const ChartBuilder = data => {
         title: {
           text: '',
         },
+
+        ...xAxis,
       },
       yAxis: {
         title: {
-          text: '',
+          text: 'title here',
         },
         labels: {
           staggerLines: 0,
