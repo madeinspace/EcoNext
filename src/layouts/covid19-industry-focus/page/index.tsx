@@ -83,7 +83,7 @@ const CovidIndustryFocusPage = () => {
     series: actualSerie,
     categories,
     tooltip: makeTooltip(),
-    yAxis: { softMin: undefined, min: Math.floor(min) },
+    yAxis: { softMin: undefined, min: Math.floor(min) - margin },
   };
   const changeChart = {
     chartTitle: `Quarterly Change in ${currentIndicator} Forecast - ${currentIndustry}${
