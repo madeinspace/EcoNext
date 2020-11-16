@@ -90,7 +90,7 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
   )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
 
   const tooltip = function() {
-    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${currentAreaName}: ${
       type === 1 ? formatCurrency(this.y) + 'm' : formatChangePercent(this.y) + '%'
     }`;
   };

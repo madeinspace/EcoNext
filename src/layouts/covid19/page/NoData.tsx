@@ -6,10 +6,7 @@ export default () => {
     <>
       <ControlPanel />
       <PageIntroFullWidth>
-        <h1>
-          Economic forecasts are based on LGAs and are not available for this geography. Please refer to City of Whyalla
-          for LGA results
-        </h1>
+        <h1>Economic forecasts are based on LGAs and are not available for this geography.</h1>
       </PageIntroFullWidth>
     </>
   );
