@@ -37,7 +37,7 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: ({ data }): string => {
-        return `Australian Business Register - filtered counts - Current at 20th Apr 2020`;
+        return `Australian Business Register - filtered counts - Current at 30th Sept 2020`;
       },
     },
   ],
