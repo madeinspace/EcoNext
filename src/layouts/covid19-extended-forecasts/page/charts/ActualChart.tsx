@@ -47,7 +47,9 @@ const ChartBuilder = () => {
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
-  const lgaSerieNum = [makeSerie(lgaData)];
+  const actualSerie = makeSerie(lgaData);
+  const min = Math.min(...actualSerie.data);
+  const lgaSerieNum = [actualSerie];
 
   const chartTitle = `Quarterly ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
   const yAxisTitle = ``;
@@ -96,6 +98,8 @@ const ChartBuilder = () => {
             return `${formatNumber(this.value)} `;
           },
         },
+        softMin: undefined,
+        min: Math.floor(min) - 5,
       },
       legend: {
         enabled: true,
