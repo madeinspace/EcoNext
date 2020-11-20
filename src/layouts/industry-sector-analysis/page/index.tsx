@@ -333,17 +333,18 @@ const chartBuilder = () => {
       series: [
         {
           name: `Exports (international)`,
-          legendIndex: 2,
+          legendIndex: 3,
           data: [(exportsInt.NoYear1 / totalExports.NoYear1) * 100, (exportsInt.BMYear1 / totalExports.BMYear1) * 100],
+        },
+        {
+          name: `Exports (domestic)`,
+          legendIndex: 2,
+          data: [(exportsDom.NoYear1 / totalExports.NoYear1) * 100, (exportsDom.BMYear1 / totalExports.BMYear1) * 100],
         },
         {
           name: `Local Sales`,
           legendIndex: 1,
           data: [(localSales.NoYear1 / totalExports.NoYear1) * 100, (localSales.BMYear1 / totalExports.BMYear1) * 100],
-        },
-        {
-          name: `Exports (domestic)`,
-          data: [(exportsDom.NoYear1 / totalExports.NoYear1) * 100, (exportsDom.BMYear1 / totalExports.BMYear1) * 100],
         },
       ],
       plotOptions: {
@@ -466,6 +467,7 @@ const chartBuilderContribution = () => {
   };
 };
 // #endregion
+
 // #region  chartbuilder
 const chartBuilderShiftShare = () => {
   const {
