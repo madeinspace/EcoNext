@@ -1,10 +1,11 @@
 // #region imports
 import _ from 'lodash';
-import React from 'react';
+import React, { useContext } from 'react';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { Lead, PageIntroFullWidth } from '../../../styles/MainContentStyles';
+import { LinkBuilder } from '../../../components/ui/links';
+import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
+import { ClientContext } from '../../../utils/context';
 import Disclaimers from '../../covid19/page/Disclaimers';
-import { SectionTitle } from '../../covid19/page/Styles';
 import ActualChart from './charts/ActualChart';
 import ChangeChart from './charts/ChangeChart';
 import ChangePerChart from './charts/ChangePerChart';
@@ -13,6 +14,7 @@ import IndexChart from './charts/IndexChart';
 
 // #region template page
 const CovidExtendedForecastsPage = () => {
+  const { clientAlias, LongName } = useContext(ClientContext);
   return (
     <>
       <PageIntroFullWidth>
@@ -23,9 +25,11 @@ const CovidExtendedForecastsPage = () => {
           estimates likely quarterly economic and industry impacts out to June 2022.
         </p>
         <p>
-          This tool should be viewed in conjunction with Unemployment and JobSeeker section to understand the impact of
-          COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the Business
-          Trends section.{' '}
+          This tool should be viewed in conjunction with{' '}
+          {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'unemployment')} and{' '}
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
+          impact of COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the
+          Business Trends section.{' '}
         </p>
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
