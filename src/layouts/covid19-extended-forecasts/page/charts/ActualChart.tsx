@@ -99,7 +99,7 @@ const ChartBuilder = () => {
           },
         },
         softMin: undefined,
-        min: Math.floor(min) - 5,
+        min: Math.floor(min) - min * 0.1,
       },
       legend: {
         enabled: true,

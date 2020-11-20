@@ -73,8 +73,10 @@ const CovidIndustryFocusPage = () => {
       Math.abs(Math.min(indexMin, indexMax, indexMinBm, indexMaxBm) - 100),
       Math.abs(Math.max(indexMin, indexMax, indexMinBm, indexMaxBm) - 100),
     );
-  const margin = 5;
-  const maxdif = maxDiff() + margin;
+
+  const yAxisMinPer = Math.floor(min) - min * 0.1;
+  const marginInd = 5;
+  const maxdif = maxDiff() + marginInd;
   const tickpos = [100 - maxdif, 100, 100 + maxdif];
 
   const actualChart = {
@@ -83,7 +85,7 @@ const CovidIndustryFocusPage = () => {
     series: actualSerie,
     categories,
     tooltip: makeTooltip(),
-    yAxis: { softMin: undefined, min: Math.floor(min) - margin },
+    yAxis: { softMin: undefined, min: yAxisMinPer },
   };
   const changeChart = {
     chartTitle: `Quarterly Change in ${currentIndicator} Forecast - ${currentIndustry}${
