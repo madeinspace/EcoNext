@@ -85,6 +85,7 @@ import ReportsEmploymentPage from './reports-employment/page';
 import CovidExtendedForecastsPage from './covid19-extended-forecasts/page';
 import CovidIndustryFocusPage from './covid19-industry-focus/page';
 import BusinessTrendsPage from './business-trends/page';
+import OutlookOverviewPage from './outlook-overview/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -188,6 +189,7 @@ const PageMappings = {
   'covid19-extended-forecasts': CovidExtendedForecastsPage,
   'covid19-industry-focus': CovidIndustryFocusPage,
   'business-trends': BusinessTrendsPage,
+  'outlook-overview': OutlookOverviewPage,
 };
 
 export default PageMappings;
