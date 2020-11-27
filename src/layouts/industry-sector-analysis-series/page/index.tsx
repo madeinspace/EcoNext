@@ -161,7 +161,7 @@ const tableBuilder = () => {
           },
           {
             cssClass: 'even',
-            displayText: `${LongName}`,
+            displayText: `${currentAreaName}`,
             colSpan: 2,
           },
           {
