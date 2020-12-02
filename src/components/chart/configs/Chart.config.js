@@ -115,7 +115,7 @@ export const ChartDefault = (...opts) => {
       stacking: undefined,
     },
     column: {
-      pointPadding: 0.2,
+      pointPadding: 0.05,
       borderWidth: 0,
     },
     line: {

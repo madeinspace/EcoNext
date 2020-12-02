@@ -15,15 +15,16 @@ const FullContent = () => {
   const {
     contentData: { topThreeData, vulnerableJobsData, forecastSummaryData },
   } = useContext(PageContext);
+  console.log('forecastSummaryData: ', forecastSummaryData);
 
   const dropdownData = [
-    { label: '2019/2020', value: '2020' },
-    { label: '2020/2021', value: '2021' },
-    { label: '2021/2022', value: '2022' },
+    { label: '2019/20', value: '2020' },
+    { label: '2020/21', value: '2021' },
+    { label: '2021/22', value: '2022' },
   ];
 
   const industryDropDownInitialState = {
-    label: '2019/2020',
+    label: '2019/20',
     value: '2020',
   };
   const [econYearKey, EconYearDropdown] = useDropdown('Financial year', industryDropDownInitialState, dropdownData);
@@ -129,9 +130,9 @@ const FullContent = () => {
             tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
           </Lead>
           <p>
-            Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {GRPDiff} million, or{' '}
-            {`${formatNumber(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is well above the
-            Greater Sydney impact of {`${formatNumber(BMGRPImpacts)}%`}.
+            Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {`${formatNumber(GRPDiff)}`}{' '}
+            million, or {`${formatNumber(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is well
+            above the Greater Sydney impact of {`${formatNumber(BMGRPImpacts)}%`}.
           </p>
           <p>
             As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at $826 million over the

@@ -1,7 +1,7 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 // impact by region (benchmark)
-const forecastSummaryQuery = ({ ClientID, WebID = 10, BMID = 20, econYear = 2 }) =>
+const forecastSummaryQuery = ({ ClientID, WebID = 10, BMID = 20, econYear = 1 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary](${ClientID},${WebID},${BMID},${econYear}) `;
 // output value added
 const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) =>

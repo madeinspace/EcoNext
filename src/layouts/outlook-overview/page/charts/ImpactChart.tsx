@@ -67,10 +67,12 @@ const ChartBuilder = data => {
         enabled: true,
       },
       plotOptions: {
-        series: {
-          groupPadding: 0,
-        },
         ...plotOptions,
+        series: {
+          pointPadding: 0,
+          groupPadding: 0.14,
+          borderWidth: 0,
+        },
       },
     },
     reactChartOptions: {
