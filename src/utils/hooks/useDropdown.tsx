@@ -77,7 +77,7 @@ const DropDownList = styled('ul')`
   &:first-child {
     padding-top: 0em;
   }
-  height: 400px;
+  max-height: 400px;
   width: 100%;
   overflow: overlay;
 `;
