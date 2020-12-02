@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import _ from 'lodash';
 import { ClientContext, PageContext } from '../../../utils/context';
-import { formatNumber, Top, formatPercent, formatChangeInt } from '../../../utils';
+import { formatNumber, Top, formatPercent, formatChangeInt, formatOneDecimal } from '../../../utils';
 import { _SubTitle, TopList, Lead, Headline } from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { Tile, Title, NumberValue, Footer, DoubleColumLayout, DoubleColumn, SingleColumn } from './Styles';
@@ -89,13 +89,13 @@ const FullContent = () => {
   };
 
   const lgaGRPPre = lgaData
-    .filter(({ Forecast, EconYear }) => Forecast === 'Pre' && EconYear > 2019)
+    .filter(({ Forecast, EconYear }) => Forecast === 'Pre' && EconYear > 2019 && EconYear < 2022)
     .reduce((acc, cur) => {
       return acc + cur.GRP_Actual;
     }, 0);
 
   const lgaGRPPost = lgaData
-    .filter(({ Forecast, EconYear }) => Forecast === 'Post' && EconYear > 2019)
+    .filter(({ Forecast, EconYear }) => Forecast === 'Post' && EconYear > 2019 && EconYear < 2022)
     .reduce((acc, cur) => {
       return acc + cur.GRP_Actual;
     }, 0);
@@ -108,6 +108,7 @@ const FullContent = () => {
   };
   const lgaPostImpact = getPostImpact(lgaData);
   const bmPostImpact = getPostImpact(bmData);
+  const economyLGA = lgaPostImpact('GRP_Change');
   const LGAGRPImpacts = lgaPostImpact('GRP_Change_Per');
   const BMGRPImpacts = bmPostImpact('GRP_Change_Per');
   const LGALocalJobsImpacts = lgaPostImpact('JTW_Change_Per');
@@ -130,19 +131,19 @@ const FullContent = () => {
             tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
           </Lead>
           <p>
-            Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {`${formatNumber(GRPDiff)}`}{' '}
-            million, or {`${formatNumber(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is well
-            above the Greater Sydney impact of {`${formatNumber(BMGRPImpacts)}%`}.
+            Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {`${formatNumber(economyLGA)}`}{' '}
+            million, or {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is
+            above the Greater Sydney impact of {`${formatOneDecimal(BMGRPImpacts)}%`}.
           </p>
           <p>
-            As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at $826 million over the
-            next two years.
+            As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at{' '}
+            {`${formatNumber(GRPDiff)}`} million over the next two years.
           </p>
           <p>
             There will be around {`${formatNumber(LGALocalJobsImpactsChg)}`} fewer jobs in 2020 than the pre COVID 19
-            forecasts. This impact represents around {`${formatPercent(LGALocalJobsImpacts)}%`} of all jobs, well above
-            the impact on the Greater Sydney Region. Local Jobs are not forecast to reach pre COVID-19 levels before
-            June Qtr 2022. The impact on Employed residents is forecast to be higher than Local Jobs.
+            forecasts. This impact represents around {`${formatPercent(LGALocalJobsImpacts)}%`} of all jobs, above the
+            impact on the Greater Sydney Region. Local Jobs are not forecast to reach pre COVID-19 levels before June
+            Qtr 2022. The impact on Employed residents is forecast to be higher than Local Jobs.
           </p>
           <p>
             But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local Jobs
@@ -214,8 +215,8 @@ const FullContent = () => {
               {topThree.map((item, i) => {
                 return (
                   <li key={i}>
-                    {item.IndWebName}: <strong>{formatPercent(item.JTW_Diff_Per)}%</strong> (
-                    {formatChangeInt(item.JTW_Diff)} Local jobs)
+                    {item.IndWebName}: <strong>{formatChangeInt(item.JTW_Diff)}</strong> Local jobs (
+                    {formatPercent(item.JTW_Diff_Per)}%)
                   </li>
                 );
               })}

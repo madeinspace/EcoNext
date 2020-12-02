@@ -8,7 +8,7 @@ const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Vulnerable_Jobs](${ClientID},${WebID},${BMID}) `;
 // local jobs and employed residents
 const topThreeQuery = ({ ClientID, WebID = 10 }) =>
-  `select * from  CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Top3] (${ClientID}, ${WebID}) order by JTW_Diff_Per desc`;
+  `select * from  CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Top3] (${ClientID}, ${WebID}) `; //order by JTW_Diff_Per desc
 
 const fetchData = async ({ filters }) => {
   if (filters.IsLite) {
