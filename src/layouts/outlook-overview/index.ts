@@ -7,22 +7,18 @@ const forecastSummaryQuery = ({ ClientID, WebID = 10, BMID = 20, econYear = 2 })
 const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) =>
   `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Vulnerable_Jobs](${ClientID},${WebID},${BMID}) `;
 // local jobs and employed residents
-const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_LocalJobsEmpRes_Industry](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
-// headline
-const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
+const topThreeQuery = ({ ClientID, WebID = 10 }) =>
+  `select * from  CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Top3] (${ClientID}, ${WebID}) order by JTW_Diff_Per desc`;
 
 const fetchData = async ({ filters }) => {
   if (filters.IsLite) {
     return {};
   }
-  const headlineData = await sqlConnection.raw(headlineQuery(filters));
   const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
   const vulnerableJobsData = await sqlConnection.raw(vulnerableJobsQuery(filters));
   const forecastSummaryData = await sqlConnection.raw(forecastSummaryQuery(filters));
 
-  return { topThreeData, headlineData, vulnerableJobsData, forecastSummaryData };
+  return { topThreeData, vulnerableJobsData, forecastSummaryData };
 };
 
 const activeCustomToggles = ({ filterToggles }) => ({});
