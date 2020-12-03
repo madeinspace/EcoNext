@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import _ from 'lodash';
 import { ClientContext, PageContext } from '../../../utils/context';
 import { formatNumber, Top, formatPercent, formatChangeInt, formatOneDecimal } from '../../../utils';
-import { _SubTitle, TopList, Lead, Headline } from '../../../styles/MainContentStyles';
+import { _SubTitle, TopList, Lead, Headline, TileLink } from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { Tile, Title, NumberValue, Footer, DoubleColumLayout, DoubleColumn, SingleColumn } from './Styles';
-import { LinkBuilder } from '../../../components/ui/links';
+import { LinkBuilder, NextLinkBuilder } from '../../../components/ui/links';
 import ImpactChart from './charts/ImpactChart';
 import { FaDollarSign, FaIdBadge, FaListAlt, FaExclamationTriangle } from 'react-icons/fa';
 import useDropdown from '../../../utils/hooks/useDropdown';
@@ -15,7 +15,6 @@ const FullContent = () => {
   const {
     contentData: { topThreeData, vulnerableJobsData, forecastSummaryData },
   } = useContext(PageContext);
-  console.log('forecastSummaryData: ', forecastSummaryData);
 
   const dropdownData = [
     { label: '2019/20', value: '2020' },
@@ -124,12 +123,12 @@ const FullContent = () => {
     <>
       <DoubleColumLayout>
         <DoubleColumn>
-          <Lead>
+          <p>
             COVID19 will have a substantial negative impact on economic activity in 2020. The spatial impacts of the
             pandemic are uneven and will depend on the level of cases, industry mix and export exposure. In response,
             .id has developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This
             tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
-          </Lead>
+          </p>
           <p>
             Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {`${formatNumber(economyLGA)}`}{' '}
             million, or {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is
@@ -151,26 +150,26 @@ const FullContent = () => {
             {LGAVulnerableLocalJobs} Local Jobs, or {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} of all jobs, are at
             risk once the scheme is tapered back.
           </p>
-
-          <p>* working 0 hours but on JobKeeper (as at Sept Qtr 2020)</p>
         </DoubleColumn>
 
         <SingleColumn>
           <Headline>Compare the {econYearKey.label} Covid forecasts to the pre-covid forecasts</Headline>
           {/* <EconYearDropdown /> */}
-          <Tile>
-            <Title>
-              <span>
-                <FaDollarSign size={'30px'} />
-              </span>
-              Economic impacts on GRP
-            </Title>
-            <NumberValue>{`${formatPercent(LGAGRPImpacts)}% `}</NumberValue>
-            <Footer>
-              {`${formatPercent(BMGRPImpacts)}% `} <span>{`${bmData[0].GeoName}`}</span>
-            </Footer>
-          </Tile>
-          <Tile>
+          <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-extended-forecasts`}>
+            <Tile>
+              <Title>
+                <span>
+                  <FaDollarSign size={'30px'} />
+                </span>
+                Economic impacts on GRP
+              </Title>
+              <NumberValue>{`${formatPercent(LGAGRPImpacts)}% `}</NumberValue>
+              <Footer>
+                {`${formatPercent(BMGRPImpacts)}% `} <span>{`${bmData[0].GeoName}`}</span>
+              </Footer>
+            </Tile>
+          </TileLink>
+          <Tile margin="0 0 10px 0">
             <Title>
               <span>
                 <FaIdBadge size={'30px'} />
@@ -187,41 +186,45 @@ const FullContent = () => {
               {`${formatPercent(BMLocalJobsImpacts)}%`} <span>{bmData[0].GeoName}</span>
             </Footer>
           </Tile>
-          <Tile>
+          <Tile margin="0 0 10px 0">
             <Title>
               <span>
                 <FaExclamationTriangle size={'30px'} />
               </span>
-              Vulnerable jobs*
+              <div>
+                Vulnerable jobs <span>(working 0 hours but on JobKeeper as at Sept Qtr 2020)</span>
+              </div>
             </Title>
             <NumberValue>
               {LGAVulnerableLocalJobs} <span>Local jobs</span>
             </NumberValue>
             <NumberValue>
-              {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} <span>{LongName}</span>
+              {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} <span>of total jobs</span>
             </NumberValue>
             <Footer>
               {`${formatPercent(BMVulnerableLocalJobsPer)}%`} <span>{bmData[0].GeoName}</span>
             </Footer>
           </Tile>
-          <Tile>
-            <Title>
-              <span>
-                <FaListAlt size={'30px'} />
-              </span>
-              The 3 most impacted sectors
-            </Title>
-            <TopList>
-              {topThree.map((item, i) => {
-                return (
-                  <li key={i}>
-                    {item.IndWebName}: <strong>{formatChangeInt(item.JTW_Diff)}</strong> Local jobs (
-                    {formatPercent(item.JTW_Diff_Per)}%)
-                  </li>
-                );
-              })}
-            </TopList>
-          </Tile>
+          <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-industry-focus`}>
+            <Tile>
+              <Title>
+                <span>
+                  <FaListAlt size={'30px'} />
+                </span>
+                The 3 most impacted sectors
+              </Title>
+              <TopList>
+                {topThree.map((item, i) => {
+                  return (
+                    <li key={i}>
+                      {item.IndWebName}: <strong>{formatChangeInt(item.JTW_Diff)}</strong> Local jobs (
+                      {formatPercent(item.JTW_Diff_Per)}%)
+                    </li>
+                  );
+                })}
+              </TopList>
+            </Tile>
+          </TileLink>
         </SingleColumn>
       </DoubleColumLayout>
       <DoubleColumLayout>
@@ -232,13 +235,41 @@ const FullContent = () => {
           <ImpactChart data={jobs} />
         </SingleColumn>
       </DoubleColumLayout>
-      <p>
-        This tool should be viewed in conjunction with{' '}
-        {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'Unemployment')} and{' '}
-        {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
-        impact of COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the
-        Business Trends section.
-      </p>
+      <br />
+      <Headline>Our detailed forecast can help you:</Headline>
+      <TopList fsize="16px">
+        <li>
+          {NextLinkBuilder(
+            `/${clientAlias}/covid19-extended-forecasts`,
+            'Understand how the local economy is forecast to recover',
+          )}
+        </li>
+        <li>
+          {NextLinkBuilder(
+            `/${clientAlias}/covid19-industry-focus`,
+            'Compare the outlook in your region compared to impacts and outlook for each industry',
+          )}
+        </li>
+        <li>{NextLinkBuilder(`/${clientAlias}/unemployment`, 'Unemployment trends')}</li>
+        <li>{LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker recipients (monthly)')}</li>
+        <li>{NextLinkBuilder(`/${clientAlias}/business-trends`, 'Business Entries and Exits')}</li>
+        <li>
+          {LinkBuilder(
+            `https://forecast.id.com.au/${clientAlias}/forecast-covid19-impact`,
+            'Population forecasts – COVID impacts',
+          )}
+        </li>
+        <li>
+          {LinkBuilder(
+            `https://econext-cdn.azureedge.net/eco-assets/documents/covid19/Methodological%20paper%20-%20COVID19%20first%20release%20assumptions.docx`,
+            '.id COVID-19 Whitepaper',
+          )}
+        </li>
+        <li>
+          Assess the vulnerability of businesses once JobKeeper is removed. More information to help you prepare a
+          recovery plan (coming soon)
+        </li>
+      </TopList>
       <ControlPanel />
     </>
   );

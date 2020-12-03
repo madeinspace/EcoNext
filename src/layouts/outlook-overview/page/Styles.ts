@@ -56,13 +56,13 @@ export const Tile = styled.section`
   min-height: 110px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 1em;
+  margin: ${props => props.margin || '0px'};
 `;
 export const Title = styled.h1`
   color: #333;
   font-size: 18px;
   margin-bottom: 20px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   span {
     font-size: 14px;
