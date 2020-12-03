@@ -1,3 +1,6 @@
+import React from 'react';
+import MonolithOrNextLink from '../../Link';
+
 export const ABSLink = () =>
   ABSLinkBuilder(
     'abs@.nsf/mf/5206.0',
@@ -20,5 +23,13 @@ export const LinkBuilder = (href, displayText, target?, title?): JSX.Element => 
     <a href={href} rel="noopener" target={target || '_blank'} title={title || displayText}>
       {displayText}
     </a>
+  );
+};
+
+export const NextLinkBuilder = (href, displayText, target?, title?): JSX.Element => {
+  return (
+    <MonolithOrNextLink href={href} rel="noopener" target={target || '_blank'} title={title || displayText}>
+      {displayText}
+    </MonolithOrNextLink>
   );
 };
