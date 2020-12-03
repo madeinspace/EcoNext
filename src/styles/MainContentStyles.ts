@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import MonolithOrNextLink from '../components/Link';
 
 export const Lead = styled.p`
   font-weight: 600;
@@ -40,11 +41,22 @@ export const MainTitle = styled.h1`
 `;
 
 export const TopList = styled.ul`
-  margin: 10px 0 10px 20px;
+  margin: 0px 0 10px 20px;
+  font-size: ${props => props.fsize || '14px'};
   li {
     list-style: disc;
-    line-height: 20px;
+    line-height: 25px;
   }
+`;
+
+export const TileLink = styled(MonolithOrNextLink)`
+  text-decoration: none;
+  transition: all 0.5s cubic-bezier(0.02, 0.69, 0.14, 1);
+  &:hover {
+    box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.1), 0 12px 17px 2px rgba(0, 0, 0, 0.08),
+      0 5px 22px 4px rgba(0, 0, 0, 0.06);
+  }
+  margin: ${props => props.margin || '0px'};
 `;
 
 export const Tabs = styled.ul`
