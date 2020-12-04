@@ -18,6 +18,7 @@ const SectionTitle = styled.h3`
   padding-bottom: 10px;
   margin: 20px 0;
 `;
+
 // #region template page
 const HomeTemplate = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -27,6 +28,17 @@ const HomeTemplate = () => {
   } = useContext(PageContext);
 
   const onMapLoaded = () => setMapLoaded(true);
+
+  const extraNews = [
+    {
+      NewsID: 999999,
+      URL: 'https://home.id.com.au/demographic-resources/',
+      Title: 'Demographic resource center',
+      News: 'Find hundreds of resources to help you make informed decisions',
+    },
+  ];
+
+  const newsTiles = [...newsData, ...extraNews];
 
   return (
     <>
@@ -42,7 +54,7 @@ const HomeTemplate = () => {
         </>
       )}
       <SectionTitle>News</SectionTitle>
-      <NewsGrid tiles={newsData} />
+      <NewsGrid tiles={newsTiles} />
     </>
   );
 };
