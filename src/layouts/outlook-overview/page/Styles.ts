@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { Headline } from '../../../styles/MainContentStyles';
 
 export const DoubleColumLayout = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
   flex-wrap: wrap;
+  gap: 20px;
   width: 100%;
 `;
 
@@ -13,7 +13,8 @@ export const SingleColumn = styled.div`
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  padding-right: 1em;
+  /* grid-gap: 20px; */
+  column-gap: 20px;
 `;
 
 export const DoubleColumn = styled(SingleColumn)`

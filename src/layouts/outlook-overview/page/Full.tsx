@@ -9,6 +9,8 @@ import { LinkBuilder, NextLinkBuilder } from '../../../components/ui/links';
 import ImpactChart from './charts/ImpactChart';
 import { FaDollarSign, FaIdBadge, FaListAlt, FaExclamationTriangle } from 'react-icons/fa';
 import useDropdown from '../../../utils/hooks/useDropdown';
+import { NewsGrid } from '../../home/page/NewsGrid';
+import { ITile } from '../../home/page';
 // #region template page
 const FullContent = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
@@ -118,6 +120,33 @@ const FullContent = () => {
   const LGAVulnerableLocalJobs = vulnerableJobsData.filter(({ WebID }) => WebID === 10)[0].JTW_NoProductive;
   const LGAVulnerableLocalJobsPer = vulnerableJobsData.filter(({ WebID }) => WebID === 10)[0].JTW_NoProductive_Per;
   const BMVulnerableLocalJobsPer = vulnerableJobsData.filter(({ WebID }) => WebID === 20)[0].JTW_NoProductive_Per;
+
+  const forecastTiles: ITile[] = [
+    {
+      NewsID: 1,
+      URL: `https://economy.id.com.au/${clientAlias}/covid19-extended-forecasts`,
+      Title: 'Forecasts',
+      News: 'Understand how the local economy is forecast to recover',
+    },
+    {
+      NewsID: 2,
+      URL: `https://economy.id.com.au/${clientAlias}/covid19-industry-focus`,
+      Title: 'Benchmark',
+      News: 'Compare the outlook to other regions',
+    },
+    {
+      NewsID: 3,
+      URL: `https://economy.id.com.au/${clientAlias}/covid19-industry-focus`,
+      Title: 'Industry forecasts',
+      News: 'Identify the recovery path for each industry',
+    },
+    {
+      NewsID: 4,
+      URL: '#',
+      Title: 'JobKeeper Impacts',
+      News: 'Assess the vulnerability of businesses once JobKeeper is removed. (coming soon)',
+    },
+  ];
 
   return (
     <>
@@ -235,21 +264,12 @@ const FullContent = () => {
           <ImpactChart data={jobs} />
         </SingleColumn>
       </DoubleColumLayout>
-      <br />
+      <br /> <br />
       <Headline>Our detailed forecast can help you:</Headline>
+      <NewsGrid tiles={forecastTiles} />
+      <br />
+      <Headline>Other information to help build your recovery plans</Headline>
       <TopList fsize="16px">
-        <li>
-          {NextLinkBuilder(
-            `/${clientAlias}/covid19-extended-forecasts`,
-            'Understand how the local economy is forecast to recover',
-          )}
-        </li>
-        <li>
-          {NextLinkBuilder(
-            `/${clientAlias}/covid19-industry-focus`,
-            'Compare the outlook in your region compared to impacts and outlook for each industry',
-          )}
-        </li>
         <li>{NextLinkBuilder(`/${clientAlias}/unemployment`, 'Unemployment trends')}</li>
         <li>{LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker recipients (monthly)')}</li>
         <li>{NextLinkBuilder(`/${clientAlias}/business-trends`, 'Business Entries and Exits')}</li>
@@ -264,10 +284,6 @@ const FullContent = () => {
             `https://econext-cdn.azureedge.net/eco-assets/documents/covid19/Methodological%20paper%20-%20COVID19%20first%20release%20assumptions.docx`,
             '.id COVID-19 Whitepaper',
           )}
-        </li>
-        <li>
-          Assess the vulnerability of businesses once JobKeeper is removed. More information to help you prepare a
-          recovery plan (coming soon)
         </li>
       </TopList>
       <ControlPanel />

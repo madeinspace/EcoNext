@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import GrossProduct from './gross-product/page';
 import Parent from './parent-landing/page';
+import GrossProduct from './gross-product/page';
 import Population from './population/page';
 import ValueOfBuildingApprovals from './value-of-building-approvals/page';
 import WorkersFieldOfQualification from './workers-field-of-qualification/page';
@@ -59,7 +58,6 @@ import EmployedResidentsPage from './employed-residents/page';
 import EmploymentCapacityPage from './Employment-capacity/page';
 import TourismVisitorSummaryPage from './tourism-visitor-summary/page';
 import TourismVisitorsNightPage from './tourism-visitors-nights/page';
-import CovidPage from './covid19/page';
 import TourismVisitorsReasonPage from './tourism-visitors-reason/page';
 import TourismValuePage from './tourism-value/page';
 import TourismWorkforcePage from './tourism-workforce/page';
@@ -82,6 +80,7 @@ import EmploymentLocationsPage from './employment-locations/page';
 import ReportsPage from './reports/page';
 import ReportsIndustryPage from './reports-industry/page';
 import ReportsEmploymentPage from './reports-employment/page';
+import CovidPage from './covid19/page';
 import CovidExtendedForecastsPage from './covid19-extended-forecasts/page';
 import CovidIndustryFocusPage from './covid19-industry-focus/page';
 import BusinessTrendsPage from './business-trends/page';
@@ -184,8 +183,8 @@ const PageMappings = {
   reports: ReportsPage,
   'reports-industry': ReportsIndustryPage,
   'reports-employment': ReportsEmploymentPage,
-  'covid19-quarter-impacts': CovidPage,
   'covid19-economic-forecasts': Parent,
+  'covid19-quarter-impacts': CovidPage,
   'covid19-extended-forecasts': CovidExtendedForecastsPage,
   'covid19-industry-focus': CovidIndustryFocusPage,
   'business-trends': BusinessTrendsPage,
