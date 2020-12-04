@@ -120,7 +120,7 @@ const FullContent = () => {
   const LGAVulnerableLocalJobsPer = vulnerableJobsData.filter(({ WebID }) => WebID === 10)[0].JTW_NoProductive_Per;
   const BMVulnerableLocalJobsPer = vulnerableJobsData.filter(({ WebID }) => WebID === 20)[0].JTW_NoProductive_Per;
 
-  const forecastTiles: ITile[] = [
+  const forecastTiles = [
     {
       NewsID: 1,
       URL: `https://economy.id.com.au/${clientAlias}/covid19-extended-forecasts`,
