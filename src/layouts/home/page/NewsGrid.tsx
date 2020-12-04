@@ -38,7 +38,7 @@ export const NewsGrid = ({ tiles }) => {
         </article>
       </Tile>
     ) : (
-      <TileDisabled>
+      <TileDisabled key={news.NewsID}>
         <article>
           <h1>{news.Title}</h1>
           <p>{news.News}</p>

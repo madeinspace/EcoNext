@@ -10,7 +10,6 @@ import ImpactChart from './charts/ImpactChart';
 import { FaDollarSign, FaIdBadge, FaListAlt, FaExclamationTriangle } from 'react-icons/fa';
 import useDropdown from '../../../utils/hooks/useDropdown';
 import { NewsGrid } from '../../home/page/NewsGrid';
-import { ITile } from '../../home/page';
 // #region template page
 const FullContent = () => {
   const { clientAlias, LongName } = useContext(ClientContext);
