@@ -151,6 +151,10 @@ const FullContent = () => {
     <>
       <DoubleColumLayout>
         <DoubleColumn>
+          <Headline>
+            Impacts of COVID-19 on {LongName}'s Economy
+            <br />
+          </Headline>
           <p>
             COVID19 will have a substantial negative impact on economic activity in 2020. The spatial impacts of the
             pandemic are uneven and will depend on the level of cases, industry mix and export exposure. In response,
@@ -181,7 +185,10 @@ const FullContent = () => {
         </DoubleColumn>
 
         <SingleColumn>
-          <Headline>Compare the {econYearKey.label} Covid forecasts to the pre-covid forecasts</Headline>
+          <Headline>
+            2019/20 Covid-19 Forecasts <br />
+            <span>(compared to pre-covid forecast)</span>
+          </Headline>
           {/* <EconYearDropdown /> */}
           <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-extended-forecasts`}>
             <Tile>

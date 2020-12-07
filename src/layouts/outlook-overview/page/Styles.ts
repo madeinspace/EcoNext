@@ -22,6 +22,9 @@ export const DoubleColumn = styled(SingleColumn)`
   p:not(SingleColumn) {
     font-size: 16px;
   }
+  ${Headline} {
+    font-size: 23px;
+  }
 `;
 
 export const TilesGrid = styled.div`

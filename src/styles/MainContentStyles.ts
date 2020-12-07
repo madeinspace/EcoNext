@@ -135,6 +135,9 @@ export const Headline = styled.p`
   font-size: 23px;
   line-height: 26px;
   margin-bottom: 30px;
+  span {
+    font-size: 16px;
+  }
 `;
 
 export const PageIntro = styled.div`
