@@ -162,9 +162,9 @@ const FullContent = () => {
             tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
           </p>
           <p>
-            Compared to pre COVID-19 forecasts, Northern Beaches LGA economy will be {`${formatNumber(economyLGA)}`}{' '}
-            million, or {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is
-            above the Greater Sydney impact of {`${formatOneDecimal(BMGRPImpacts)}%`}.
+            Compared to pre COVID-19 forecasts, {LongName}'s economy will be {`${formatNumber(economyLGA)}`} million, or{' '}
+            {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is above{' '}
+            {bmData[0].GeoName} impact of {`${formatOneDecimal(BMGRPImpacts)}%`}.
           </p>
           <p>
             As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at{' '}
@@ -173,8 +173,8 @@ const FullContent = () => {
           <p>
             There will be around {`${formatNumber(LGALocalJobsImpactsChg)}`} fewer jobs in 2020 than the pre COVID 19
             forecasts. This impact represents around {`${formatPercent(LGALocalJobsImpacts)}%`} of all jobs, above the
-            impact on the Greater Sydney Region. Local Jobs are not forecast to reach pre COVID-19 levels before June
-            Qtr 2022. The impact on Employed residents is forecast to be higher than Local Jobs.
+            impact on {bmData[0].GeoName}. Local Jobs are not forecast to reach pre COVID-19 levels before June Qtr
+            2022. The impact on Employed residents is forecast to be higher than Local Jobs.
           </p>
           <p>
             But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local Jobs
