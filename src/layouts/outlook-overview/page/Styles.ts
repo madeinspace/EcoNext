@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { Headline } from '../../../styles/MainContentStyles';
 
+export const PageBreak = styled.div`
+  page-break-after: always;
+`;
+
 export const DoubleColumLayout = styled.div`
   display: inline-flex;
   flex-wrap: wrap;

@@ -4,7 +4,7 @@ import { ClientContext, PageContext } from '../../../utils/context';
 import { formatNumber, Top, formatPercent, formatChangeInt, formatOneDecimal } from '../../../utils';
 import { _SubTitle, TopList, Lead, Headline, TileLink } from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { Tile, Title, NumberValue, Footer, DoubleColumLayout, DoubleColumn, SingleColumn } from './Styles';
+import { Tile, Title, NumberValue, Footer, DoubleColumLayout, DoubleColumn, SingleColumn, PageBreak } from './Styles';
 import { LinkBuilder, NextLinkBuilder } from '../../../components/ui/links';
 import ImpactChart from './charts/ImpactChart';
 import { FaDollarSign, FaIdBadge, FaListAlt, FaExclamationTriangle } from 'react-icons/fa';
@@ -149,127 +149,129 @@ const FullContent = () => {
 
   return (
     <>
-      <DoubleColumLayout>
-        <DoubleColumn>
-          <Headline>
-            Impacts of COVID-19 on {LongName}'s Economy
-            <br />
-          </Headline>
-          <p>
-            COVID19 will have a substantial negative impact on economic activity in 2020. The spatial impacts of the
-            pandemic are uneven and will depend on the level of cases, industry mix and export exposure. In response,
-            .id has developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This
-            tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
-          </p>
-          <p>
-            Compared to pre COVID-19 forecasts, {LongName}'s economy will be {`${formatNumber(economyLGA)}`} million, or{' '}
-            {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is above{' '}
-            {bmData[0].GeoName} impact of {`${formatOneDecimal(BMGRPImpacts)}%`}.
-          </p>
-          <p>
-            As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at{' '}
-            {`${formatNumber(GRPDiff)}`} million over the next two years.
-          </p>
-          <p>
-            There will be around {`${formatNumber(LGALocalJobsImpactsChg)}`} fewer jobs in 2020 than the pre COVID 19
-            forecasts. This impact represents around {`${formatPercent(LGALocalJobsImpacts)}%`} of all jobs, above the
-            impact on {bmData[0].GeoName}. Local Jobs are not forecast to reach pre COVID-19 levels before June Qtr
-            2022. The impact on Employed residents is forecast to be higher than Local Jobs.
-          </p>
-          <p>
-            But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local Jobs
-            and Employed residents could be even higher without JobKeeper. The modelling shows that{' '}
-            {LGAVulnerableLocalJobs} Local Jobs, or {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} of all jobs, are at
-            risk once the scheme is tapered back.
-          </p>
-        </DoubleColumn>
+      <PageBreak>
+        <DoubleColumLayout>
+          <DoubleColumn>
+            <Headline>
+              Impacts of COVID-19 on {LongName}'s Economy
+              <br />
+            </Headline>
+            <p>
+              COVID19 will have a substantial negative impact on economic activity in 2020. The spatial impacts of the
+              pandemic are uneven and will depend on the level of cases, industry mix and export exposure. In response,
+              .id has developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This
+              tool draws on NIEIR’s economic forecasts of COVID-19 over a three year period.
+            </p>
+            <p>
+              Compared to pre COVID-19 forecasts, {LongName}'s economy will be {`${formatNumber(economyLGA)}`} million,
+              or {`${formatOneDecimal(LGAGRPImpacts)}%`} smaller in 2020. This impact is relatively high and is above{' '}
+              {bmData[0].GeoName} impact of {`${formatOneDecimal(BMGRPImpacts)}%`}.
+            </p>
+            <p>
+              As illustrated in the figure below, the cumulative impact of COVID-19 is estimated at{' '}
+              {`${formatNumber(GRPDiff)}`} million over the next two years.
+            </p>
+            <p>
+              There will be around {`${formatNumber(LGALocalJobsImpactsChg)}`} fewer jobs in 2020 than the pre COVID 19
+              forecasts. This impact represents around {`${formatPercent(LGALocalJobsImpacts)}%`} of all jobs, above the
+              impact on {bmData[0].GeoName}. Local Jobs are not forecast to reach pre COVID-19 levels before June Qtr
+              2022. The impact on Employed residents is forecast to be higher than Local Jobs.
+            </p>
+            <p>
+              But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local
+              Jobs and Employed residents could be even higher without JobKeeper. The modelling shows that{' '}
+              {LGAVulnerableLocalJobs} Local Jobs, or {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} of all jobs, are
+              at risk once the scheme is tapered back.
+            </p>
+          </DoubleColumn>
 
-        <SingleColumn>
-          <Headline>
-            2019/20 Covid-19 Forecasts <br />
-            <span>(compared to pre-covid forecast)</span>
-          </Headline>
-          {/* <EconYearDropdown /> */}
-          <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-extended-forecasts`}>
-            <Tile>
+          <SingleColumn>
+            <Headline>
+              2019/20 Covid-19 Forecasts <br />
+              <span>(compared to pre-covid forecast)</span>
+            </Headline>
+            {/* <EconYearDropdown /> */}
+            <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-extended-forecasts`}>
+              <Tile>
+                <Title>
+                  <span>
+                    <FaDollarSign size={'30px'} />
+                  </span>
+                  Economic impacts on GRP
+                </Title>
+                <NumberValue>{`${formatPercent(LGAGRPImpacts)}% `}</NumberValue>
+                <Footer>
+                  {`${formatPercent(BMGRPImpacts)}% `} <span>{`${bmData[0].GeoName}`}</span>
+                </Footer>
+              </Tile>
+            </TileLink>
+            <Tile margin="0 0 10px 0">
               <Title>
                 <span>
-                  <FaDollarSign size={'30px'} />
+                  <FaIdBadge size={'30px'} />
                 </span>
-                Economic impacts on GRP
+                Impacts on employment
               </Title>
-              <NumberValue>{`${formatPercent(LGAGRPImpacts)}% `}</NumberValue>
+              <NumberValue>
+                {`${formatPercent(LGALocalJobsImpacts)}%`} <span>Local Jobs</span>
+              </NumberValue>
+              <NumberValue>
+                {`${formatPercent(LGAURJobsImpacts)}%`} <span>Employed residents</span>
+              </NumberValue>
               <Footer>
-                {`${formatPercent(BMGRPImpacts)}% `} <span>{`${bmData[0].GeoName}`}</span>
+                {`${formatPercent(BMLocalJobsImpacts)}%`} <span>{bmData[0].GeoName}</span>
               </Footer>
             </Tile>
-          </TileLink>
-          <Tile margin="0 0 10px 0">
-            <Title>
-              <span>
-                <FaIdBadge size={'30px'} />
-              </span>
-              Impacts on employment
-            </Title>
-            <NumberValue>
-              {`${formatPercent(LGALocalJobsImpacts)}%`} <span>Local Jobs</span>
-            </NumberValue>
-            <NumberValue>
-              {`${formatPercent(LGAURJobsImpacts)}%`} <span>Employed residents</span>
-            </NumberValue>
-            <Footer>
-              {`${formatPercent(BMLocalJobsImpacts)}%`} <span>{bmData[0].GeoName}</span>
-            </Footer>
-          </Tile>
-          <Tile margin="0 0 10px 0">
-            <Title>
-              <span>
-                <FaExclamationTriangle size={'30px'} />
-              </span>
-              <div>
-                Vulnerable jobs <span>(working 0 hours but on JobKeeper as at Sept Qtr 2020)</span>
-              </div>
-            </Title>
-            <NumberValue>
-              {LGAVulnerableLocalJobs} <span>Local jobs</span>
-            </NumberValue>
-            <NumberValue>
-              {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} <span>of total jobs</span>
-            </NumberValue>
-            <Footer>
-              {`${formatPercent(BMVulnerableLocalJobsPer)}%`} <span>{bmData[0].GeoName}</span>
-            </Footer>
-          </Tile>
-          <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-industry-focus`}>
-            <Tile>
+            <Tile margin="0 0 10px 0">
               <Title>
                 <span>
-                  <FaListAlt size={'30px'} />
+                  <FaExclamationTriangle size={'30px'} />
                 </span>
-                The 3 most impacted sectors
+                <div>
+                  Vulnerable jobs <span>(working 0 hours but on JobKeeper as at Sept Qtr 2020)</span>
+                </div>
               </Title>
-              <TopList>
-                {topThree.map((item, i) => {
-                  return (
-                    <li key={i}>
-                      {item.IndWebName}: <strong>{formatChangeInt(item.JTW_Diff)}</strong> Local jobs (
-                      {formatPercent(item.JTW_Diff_Per)}%)
-                    </li>
-                  );
-                })}
-              </TopList>
+              <NumberValue>
+                {LGAVulnerableLocalJobs} <span>Local jobs</span>
+              </NumberValue>
+              <NumberValue>
+                {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} <span>of total jobs</span>
+              </NumberValue>
+              <Footer>
+                {`${formatPercent(BMVulnerableLocalJobsPer)}%`} <span>{bmData[0].GeoName}</span>
+              </Footer>
             </Tile>
-          </TileLink>
-        </SingleColumn>
-      </DoubleColumLayout>
-      <DoubleColumLayout>
-        <SingleColumn>
-          <ImpactChart data={grp} />
-        </SingleColumn>
-        <SingleColumn>
-          <ImpactChart data={jobs} />
-        </SingleColumn>
-      </DoubleColumLayout>
+            <TileLink margin="0 0 10px 0" href={`/${clientAlias}/covid19-industry-focus`}>
+              <Tile>
+                <Title>
+                  <span>
+                    <FaListAlt size={'30px'} />
+                  </span>
+                  The 3 most impacted sectors
+                </Title>
+                <TopList>
+                  {topThree.map((item, i) => {
+                    return (
+                      <li key={i}>
+                        {item.IndWebName}: <strong>{formatChangeInt(item.JTW_Diff)}</strong> Local jobs (
+                        {formatPercent(item.JTW_Diff_Per)}%)
+                      </li>
+                    );
+                  })}
+                </TopList>
+              </Tile>
+            </TileLink>
+          </SingleColumn>
+        </DoubleColumLayout>
+        <DoubleColumLayout>
+          <SingleColumn>
+            <ImpactChart data={grp} />
+          </SingleColumn>
+          <SingleColumn>
+            <ImpactChart data={jobs} />
+          </SingleColumn>
+        </DoubleColumLayout>
+      </PageBreak>
       <br /> <br />
       <Headline>Our detailed forecast can help you:</Headline>
       <NewsGrid tiles={forecastTiles} />
