@@ -4,14 +4,6 @@ import { Headline } from '../../../styles/MainContentStyles';
 export const PageBreak = styled.div`
   page-break-after: always;
 `;
-
-export const DoubleColumLayout = styled.div`
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  width: 100%;
-`;
-
 export const SingleColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,6 +11,18 @@ export const SingleColumn = styled.div`
   flex: 1;
   /* grid-gap: 20px; */
   column-gap: 20px;
+`;
+
+export const DoubleColumLayout = styled.div`
+  display: inline-flex;
+  flex-wrap: wrap;
+  /* gap: 20px; */
+  width: 100%;
+  ${SingleColumn} {
+    &:first-child {
+      margin-right: 20px;
+    }
+  }
 `;
 
 export const DoubleColumn = styled(SingleColumn)`
