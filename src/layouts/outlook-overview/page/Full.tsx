@@ -180,8 +180,8 @@ const FullContent = () => {
             <p>
               But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local
               Jobs and Employed residents could be even higher without JobKeeper. The modelling shows that{' '}
-              {LGAVulnerableLocalJobs} Local Jobs, or {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} of all jobs, are
-              at risk once the scheme is tapered back.
+              {formatNumber(LGAVulnerableLocalJobs)} Local Jobs, or {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} of
+              all jobs, are at risk once the scheme is tapered back.
             </p>
           </DoubleColumn>
 
@@ -232,7 +232,7 @@ const FullContent = () => {
                 </div>
               </Title>
               <NumberValue>
-                {LGAVulnerableLocalJobs} <span>Local jobs</span>
+                {formatNumber(LGAVulnerableLocalJobs)} <span>Local jobs</span>
               </NumberValue>
               <NumberValue>
                 {`${formatPercent(LGAVulnerableLocalJobsPer)}%`} <span>of total jobs</span>
