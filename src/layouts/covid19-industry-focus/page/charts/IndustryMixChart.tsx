@@ -33,7 +33,7 @@ export default IndustryMixChart;
 const ChartSource = () => (
   <p>
     Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by
-    .id the population experts.
+    .id informed decisions.
   </p>
 );
 
@@ -142,7 +142,7 @@ const chartBuilder = (prefix = '') => {
       className: '',
       footer: {
         rawDataSource:
-          'Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by .id the population experts.',
+          'Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by .id informed decisions.',
         dataSource: <ChartSource />,
         logoUrl: idlogo,
       },

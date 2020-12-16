@@ -181,7 +181,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Number employed`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -313,7 +313,7 @@ const chartCapacityBuilder = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Ration of jobs to residents`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart2';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -396,7 +396,7 @@ const tableBuilder = () => {
     entityData: { currentAreaName, currentComparaisonYear, prefixedAreaName, currentStartYear },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by .id the population experts. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by .id informed decisions. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.';
   const tableTitle = 'Employment capacity by industry';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(({ LabelKey }) => LabelKey === 999999);

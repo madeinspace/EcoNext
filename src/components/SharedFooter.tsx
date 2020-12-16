@@ -230,7 +230,7 @@ export const SharedFooter = () => {
               borderRight: '1px solid #ccc',
             }}
           >
-            <StaticFooterHeading>Powered by .id - the population experts {formattedClientName}</StaticFooterHeading>
+            <StaticFooterHeading>Powered by .id informed decisions {formattedClientName}</StaticFooterHeading>
             <StaticFooterText>
               .id community is an evidence-base for over 250 local government areas in Australia and New Zealand,
               helping you make informed decisions.

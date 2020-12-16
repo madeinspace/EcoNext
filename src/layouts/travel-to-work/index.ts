@@ -52,7 +52,7 @@ const pageContent = {
     {
       Title: 'ChartRawDataSource',
       renderString: (): string =>
-        `'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.'`,
+        `'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.'`,
     },
   ],
   filterToggles: [

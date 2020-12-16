@@ -151,7 +151,7 @@ export default TourismWorkforcePage;
 const Source = () => (
   <p>
     Source: {LinkBuilder(`https://www.abs.gov.au/census`, 'Australian Bureau of Statistics')}, Census of Population and
-    Housing 2016. Compiled and presented by .id , the population experts.
+    Housing 2016. Compiled and presented by .id informed decisions.
   </p>
 );
 // #endregion

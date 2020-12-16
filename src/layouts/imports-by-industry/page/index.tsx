@@ -375,7 +375,7 @@ const tableBuilder = ({
   exportID,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   let tableTitle = capitalise(entityData(exportID).entityTitle);
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
@@ -601,7 +601,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data, e
   const xAxisTitle = 'Industry sector by industry sector 2018/19';
   const yAxisTitle = `% of ${entityData(exportID).yAxisTitle} imports`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -691,7 +691,7 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in ${entityData(exportID).yAxisTitle} imports ($millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 500;

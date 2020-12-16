@@ -96,7 +96,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'GRP $million';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'Year_End').reverse();
   const HeadLineGRP = _.map(nodes, 'HeadLineGRP').reverse();

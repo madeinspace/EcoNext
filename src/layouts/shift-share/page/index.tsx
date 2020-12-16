@@ -187,7 +187,7 @@ const TableSource = () => {
 const ChartSource = () => (
   <p>
     Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by .id, the population experts.
+    by .id informed decisions.
     <IdLink />.
   </p>
 );
@@ -201,7 +201,7 @@ const tableBuilder = () => {
     entityData: { currentAreaName, currentBenchmarkName, currentComparisonYear, currentStartYear, currentMeasure },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Shift-share analysis to ${currentBenchmarkName}`;
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelKey === 999999);
@@ -390,7 +390,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Regional Competitive Effect - Change in number of employment (Total estimate)`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;

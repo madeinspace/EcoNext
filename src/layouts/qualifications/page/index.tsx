@@ -299,7 +299,7 @@ const ChartSource = () => (
 // #region table builders
 const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Resident workers qualifications';
   const firstColTitle = 'Qualification level';
   const parents = _.sortBy(
@@ -462,7 +462,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Qualifications';
   const yAxisTitle = `Percentage of ${genderLookup[currentGenderName]} workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -537,7 +537,7 @@ const chartBuilderChange = ({ currentAreaName, currentIndustryName, currentGende
   const xAxisTitle = 'Qualifications';
   const yAxisTitle = `Change in ${genderLookup[currentGenderName]} workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 

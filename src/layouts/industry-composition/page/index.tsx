@@ -87,7 +87,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Broad industry type';
   const yAxisTitle = '% of total employment';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'LabelName');
   const noTotal = nodes.filter(node => node.LabelKey != 999999);

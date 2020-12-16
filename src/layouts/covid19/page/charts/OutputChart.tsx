@@ -87,7 +87,7 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
   const yAxisTitle = type === 1 ? `Change in ${measureText} ($million)` : `Change in ${measureText} (%)`;
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${currentAreaName}: ${

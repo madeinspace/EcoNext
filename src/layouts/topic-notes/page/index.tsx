@@ -2798,7 +2798,7 @@ const tableData = [
 
 const tableBuilder = ({ title, data, source }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = title;
   const rows = data.map(({ term, definition }) => ({
     id: 'glossary',

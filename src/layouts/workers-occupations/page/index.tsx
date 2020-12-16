@@ -351,7 +351,7 @@ const tableBuilder = ({
   contentData,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Local workers occupations';
   const firstColTitle = 'Occupations (Click rows to view sub-categories)';
   const footerRows = contentData.filter(item => item.IndustryName === 'Total');
@@ -586,7 +586,7 @@ const chartBuilder = () => {
   const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/, '')} local workers`;
   const serieTitle = +IGBMID < 23000 ? `${currentAreaName}` : `${currentIndustryName}`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -677,7 +677,7 @@ const chartBuilderChange = ({ currentAreaName, currentIndustryName, currentGende
   const xAxisTitle = 'Occupations';
   const yAxisTitle = `Change in ${genderText.toLowerCase().replace(/s\b/, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 

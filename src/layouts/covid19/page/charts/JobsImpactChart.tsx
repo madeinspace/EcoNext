@@ -106,7 +106,7 @@ const ChartSource = measure => {
 
   return `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
-  )}. ©2020 Compiled and presented in economy.id by .id the population experts. `;
+  )}. ©2020 Compiled and presented in economy.id by .id informed decisions. `;
 };
 
 // #region chart builder change

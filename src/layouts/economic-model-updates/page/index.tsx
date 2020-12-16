@@ -284,7 +284,7 @@ const tableData = [
 
 const tableBuilder = () => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Table 1. Growth rate in composite series and change in the CVM price year';
   const rows = tableData.map(({ name, year1, year2, growth }) => ({
     id: name,

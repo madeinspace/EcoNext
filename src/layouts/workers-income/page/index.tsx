@@ -223,7 +223,7 @@ const tableBuilder = ({
   contentData,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Local workers individual income`;
   const firstColTitle = 'Gross weekly individual income';
   const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName}`;
@@ -351,7 +351,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Gross weekly individual income';
   const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/gi, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 

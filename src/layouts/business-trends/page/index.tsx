@@ -132,7 +132,7 @@ const registeredBizChartBuilder = (data: any[], subtitle) => {
   const yAxisTitle = ``;
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
   const serie = data.map(({ Tot_Reg_Bus }) => Tot_Reg_Bus);
   const categories = data.map(({ label }) => label);
 
@@ -211,7 +211,7 @@ const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
   const yAxisTitle = `Number of GST registrations`;
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
 
   const newBizSerie = data.map(({ New_Reg_Bus }) => New_Reg_Bus);
   const cancelBizSerie = data.map(({ Cancel_Reg_Bus }) => Cancel_Reg_Bus);
@@ -282,7 +282,7 @@ const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
 const tableBuilder = (data: any[], subtitle) => {
   const { clientAlias } = useContext(ClientContext);
   const rawDataSource =
-    'Source: Australian Business Register. Compiled and presented in economy.id by .id , the population experts.';
+    'Source: Australian Business Register. Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Business trends by industry sector`;
 
   const serie = data.reverse().map(({ After, label, Tot_Reg_Bus, New_Reg_Bus, Cancel_Reg_Bus }) => {

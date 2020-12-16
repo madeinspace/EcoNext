@@ -171,7 +171,7 @@ const tableBuilder = () => {
     entityData: { currentIndustryName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Business Register. Compiled and presented in economy.id by .id , the population experts.';
+    'Source: Australian Business Register. Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Australian business register by industry sector`;
 
   const serie = tableData

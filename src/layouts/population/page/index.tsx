@@ -185,7 +185,7 @@ const chartLineBuilder = nodes => {
   const australiaSerie = _.map(nodes, 'ChangeperAUS').reverse();
   const categories = _.map(nodes, 'Year').reverse();
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartTitle = 'Estimated Resident Population (ERP)';
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Percentage change';
@@ -255,7 +255,7 @@ const chartBuilder = nodes => {
   const serieData = _.map(nodes, 'Number').reverse();
   const categories = _.map(nodes, 'Year').reverse();
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Total Estimated Resident Population (ERP)';
   const chartContainerID = 'chart1';

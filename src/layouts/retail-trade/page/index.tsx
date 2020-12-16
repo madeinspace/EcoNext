@@ -180,7 +180,7 @@ const lineChartBuilder = () => {
   const xAxisTitle = 'Year';
   const yAxisTitle = '% change from corresponding month of the previous year';
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id the population experts.';
+    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'quarterly-unemployment-rate';
 
   const makeSerie = (arr, key) =>

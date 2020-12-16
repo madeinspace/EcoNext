@@ -91,7 +91,7 @@ const tableVisitorNightsNumbersBuilder = () => {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
-  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
+  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id informed decisions.`;
   const tableTitle = `Visitor nights - Numbers`;
   const firstColTitle = `Year`;
 
@@ -208,7 +208,7 @@ const tableQuartileRangesBuilder = () => {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
-  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
+  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id informed decisions.`;
   const tableTitle = `Visitor nights - Percentage`;
   const firstColTitle = `Year`;
 

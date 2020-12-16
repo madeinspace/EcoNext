@@ -254,7 +254,7 @@ const chartBuilder = () => {
     entityData: { currentAreaName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id the population experts.';
+    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'quarterly-unemployment';
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(
@@ -393,7 +393,7 @@ const lineChartBuilder = () => {
   const xAxisTitle = 'Year';
   const yAxisTitle = 'Unemployment rate';
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id the population experts.';
+    'Source: Australian Bureau of Statistics, Labour force survey, catalogue number 6202.0, and Department of Employment, Small Area Labour Markets, December 2018. Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'quarterly-unemployment-rate';
 
   const makeSerie = (arr, key) =>

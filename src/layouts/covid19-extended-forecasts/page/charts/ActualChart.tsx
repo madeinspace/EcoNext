@@ -54,7 +54,7 @@ const ChartBuilder = () => {
   const chartTitle = `Quarterly ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
   const yAxisTitle = ``;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id informed decisions.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${

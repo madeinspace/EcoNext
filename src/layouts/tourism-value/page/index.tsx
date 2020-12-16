@@ -309,7 +309,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Tourism measure';
   const yAxisTitle = `% of total industry`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -397,7 +397,7 @@ const chart2Builder = () => {
   const xAxisTitle = 'Year (ending June)';
   const yAxisTitle = `Value ($ millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart2';
   const chartTemplate = 'Standard';
 
@@ -503,7 +503,7 @@ const chart3Builder = () => {
   const xAxisTitle = 'Year (ending June)';
   const yAxisTitle = `Number of people`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2020 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart3';
   const chartTemplate = 'Standard';
 

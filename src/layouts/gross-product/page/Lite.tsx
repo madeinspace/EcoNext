@@ -144,7 +144,7 @@ const chartBuilder = nodes => {
   const yAxisTitle = 'GRP $million';
   const geoName = nodes[0].GeoName;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'GRPLite';
 
   const tooltip = function() {
