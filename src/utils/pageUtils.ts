@@ -2,8 +2,7 @@
 import filter from 'lodash/filter';
 import getConfig from 'next/config';
 import { useContext } from 'react';
-import { ClientContext, PageContext, useClient, usePage } from './context';
-import Router from 'next/router';
+import { ClientContext } from './context';
 import qs from 'qs';
 const { publicRuntimeConfig } = getConfig();
 
