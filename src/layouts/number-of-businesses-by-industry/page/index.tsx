@@ -279,7 +279,7 @@ const chartBuilder = (currentBenchmarkName, currentBtype, currentYear, benchmark
 
   return {
     highchartOptions: {
-      height: 550,
+      height: 650,
       chart: {
         type: 'bar',
       },
@@ -347,7 +347,7 @@ const chartBuilderChange = (currentBenchmarkName, currentBtype, currentYear, ben
   return {
     cssClass: '',
     highchartOptions: {
-      height: 550,
+      height: 650,
       chart: {
         type: 'bar',
       },
