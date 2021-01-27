@@ -20,16 +20,20 @@ const CovidIndustryFocusPage = () => {
     contentData: { industryData },
   } = useContext(PageContext);
   const { clientAlias, LongName } = useContext(ClientContext);
+  console.log('industryData: ', industryData);
 
   const lookup = {
     1: 'Output_',
     2: 'VA_',
     3: 'JTW_',
-    4: 'UR_',
+    4: 'JTW_P_',
+    5: 'UR_',
+    6: 'UR_P_',
   };
 
   const makeSerie = (suffix, bm = false) => {
     const serie = industryData.filter(({ WebID }) => WebID === 10).map(item => item[lookup[+Ind] + suffix]);
+    console.log('serie: ', serie);
     const serieBM = industryData.filter(({ WebID }) => WebID != 10).map(item => item[lookup[+Ind] + suffix]);
 
     if (bm) {

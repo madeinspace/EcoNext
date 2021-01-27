@@ -44,12 +44,15 @@ const chartBuilder = (prefix = '') => {
     contentData: { industryMixData },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
+  console.log('industryMixData: ', industryMixData);
 
   const lookup = {
     1: 'OutputChange',
     2: 'VAChange',
     3: 'JTWChange',
-    4: 'URChange',
+    4: 'JTW_P_Change',
+    5: 'URChange',
+    6: 'UR_P_Change',
   };
 
   const parents = industryMixData.filter(({ Hierarchy }) => Hierarchy === 'P');
