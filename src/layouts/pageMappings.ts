@@ -80,11 +80,12 @@ import EmploymentLocationsPage from './employment-locations/page';
 import ReportsPage from './reports/page';
 import ReportsIndustryPage from './reports-industry/page';
 import ReportsEmploymentPage from './reports-employment/page';
-import CovidPage from './covid19/page';
+import CovidPage from './covid19-quarter-impacts/page';
 import CovidExtendedForecastsPage from './covid19-extended-forecasts/page';
 import CovidIndustryFocusPage from './covid19-industry-focus/page';
 import BusinessTrendsPage from './business-trends/page';
 import OutlookOverviewPage from './outlook-overview/page';
+import CovidJobkeeperEstimatesPage from './jobkeeper-estimates/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -173,7 +174,6 @@ const PageMappings = {
   infrastructure: InfrastructurePage,
   'workers-place-of-residence-occupation': WorkersPlaceOfResidenceOccupationPage,
   'residents-place-of-work-occupation': ResidentsPlaceOfWorkOccupationPage,
-  covid19: CovidPage,
   'workers-place-of-residence-industry': WorkersPlaceOfResidenceIndustryPage,
   'residents-place-of-work-industry': ResidentsPlaceOfWorkIndustryPage,
   'workers-place-of-residence': WorkersPlaceOfResidencePage,
@@ -189,6 +189,7 @@ const PageMappings = {
   'covid19-industry-focus': CovidIndustryFocusPage,
   'business-trends': BusinessTrendsPage,
   'outlook-overview': OutlookOverviewPage,
+  'jobkeeper-estimates': CovidJobkeeperEstimatesPage,
 };
 
 export default PageMappings;

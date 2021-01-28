@@ -106,4 +106,5 @@ export default [
   'covid19-industry-focus',
   'business-trends',
   'outlook-overview',
+  'jobkeeper-estimates',
 ];
