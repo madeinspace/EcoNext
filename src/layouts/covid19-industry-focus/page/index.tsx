@@ -7,7 +7,7 @@ import { LinkBuilder } from '../../../components/ui/links';
 import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import { formatNumber, formatPercent } from '../../../utils';
 import { ClientContext, PageContext } from '../../../utils/context';
-import Disclaimers from '../../covid19/page/Disclaimers';
+import Disclaimers from '../../covid19-quarter-impacts/page/Disclaimers';
 import IndustryMixChart from './charts/IndustryMixChart';
 import QuarterlyForecastChart from './charts/QuarterlyForecastChart';
 // #endregion

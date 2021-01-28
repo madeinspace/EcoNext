@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 import styled from 'styled-components';
-import { SectionTitle } from '../../layouts/covid19/page/Styles';
+import { SectionTitle } from '../../layouts/covid19-quarter-impacts/page/Styles';
 import { ClientContext } from '../../utils/context';
 import useDropdown from '../../utils/hooks/useDropdown';
 import { emailRGX } from '../../utils/Regex';
