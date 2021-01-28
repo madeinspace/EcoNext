@@ -14,15 +14,16 @@ const DestByOccupationQuery = ({ ClientID, OccuKey }) => {
 };
 
 const DestByOccupationAllQuery = ({ ClientID, OccuKey }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Occupation_2016](${ClientID},10,NULL,${OccuKey}) Where Number > 9 order by Number DESC`;
-  return query;
+  const query = `select * from CommData_Economy.[dbo].[fn_AD_JTW_Dest_LGA_by_Occupation_2016](?,10,NULL,?) Where Number > 9 order by Number DESC`;
+  return { query: query, params: [ClientID, OccuKey] };
 };
 const fetchData = async ({ filters }) => {
   const { clientAlias, LongName, ClientID } = filters;
   const geomData = await sqlConnection.raw(GeomQuery(filters));
   const DestByOccupation = DestByOccupationQuery(filters);
   const DestByOccSumData = await sqlConnection.raw(DestByOccupation.query, DestByOccupation.params);
-  const DestByOccData = await sqlConnection.raw(DestByOccupationAllQuery(filters));
+  const DestByOccupationAll = DestByOccupationAllQuery(filters);
+  const DestByOccData = await sqlConnection.raw(DestByOccupationAll.query, DestByOccupationAll.params);
   const layersUrl = `https://economy.id.com.au/${clientAlias}/geo/areasbyentityid/7329?ClientID=${ClientID}&WebID=10&LGACode=0&OccuKey=${filters.OccuKey}`;
   const thematicUrl = `https://economy.id.com.au/${clientAlias}/geo/data?ClientID=${ClientID}&WebID=10&LGACode=0&Occukey=${filters.OccuKey}&dataid=387`;
 
