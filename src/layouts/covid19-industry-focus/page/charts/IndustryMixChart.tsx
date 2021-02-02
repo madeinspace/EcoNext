@@ -22,8 +22,8 @@ const IndustryMixChart = () => {
             percentage
           </ChartTab>
         </ChartTabs>
-        {Pane === 1 && <ReactChart height="600" options={optionNum} />}
-        {Pane === 2 && <ReactChart height="600" options={optionPer} />}
+        {Pane === 1 && <ReactChart height="650" options={optionNum} />}
+        {Pane === 2 && <ReactChart height="650" options={optionPer} />}
       </ShadowWrapper>
     </>
   );
