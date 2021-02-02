@@ -10,9 +10,6 @@ const a = ({ ClientID, WebID = 10, Vln, Qrt }) => {
 };
 
 const fetchData = async ({ filters }) => {
-  if (filters.IsLite) {
-    return {};
-  }
   const JobKeeperData = await sqlConnection.raw(a(filters).query, a(filters).params);
 
   return { JobKeeperData };
@@ -52,7 +49,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: 1,
+      DefaultValue: '1',
       Label: 'Vulnerability:',
       Params: [],
       StoredProcedure: 'sp_Toggle_Econ_COVID_Vulnerability',

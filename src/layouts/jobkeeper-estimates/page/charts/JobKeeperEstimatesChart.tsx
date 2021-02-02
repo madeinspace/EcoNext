@@ -39,8 +39,7 @@ const ChartSource = () => (
 
 const chartBuilder = (measure, prefix = '') => {
   const {
-    filters: { Ind },
-    entityData: { currentQuarter },
+    entityData: { currentQuarter, currentVulnerability },
     contentData: { JobKeeperData },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
@@ -85,9 +84,7 @@ const chartBuilder = (measure, prefix = '') => {
         type: 'bar',
       },
       title: {
-        text: `${
-          measure === 'LJ_JK' ? 'Local Jobs Impact' : 'Employed Resident Impact'
-        } in ${currentQuarter} (compared to Sept quarter 2019)`,
+        text: `${measure === 'LJ_JK' ? 'Local Jobs Impact' : 'Employed Resident Impact'} - ${currentVulnerability} `,
       },
       subtitle: {
         text: '',
@@ -108,7 +105,7 @@ const chartBuilder = (measure, prefix = '') => {
       },
       yAxis: {
         title: {
-          text: `${currentQuarter} ${+Ind === 1 || +Ind === 2 ? '($M)' : ''}`,
+          text: `${prefix === '_Per' ? '% Percentage of total workers' : 'Number of workers'}`,
         },
         labels: {
           staggerLines: 0,
