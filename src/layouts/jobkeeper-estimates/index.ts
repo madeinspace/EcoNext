@@ -1,42 +1,36 @@
+import getActiveToggle from '../../utils/getActiveToggle';
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
-// impact by region (benchmark)
-const a = ({ ClientID, WebID = 10 }) => {
-  return { query: `select * from CommData_Economy.[dbo].[fn_COVID19_Headline_Graph](?, ?)`, params: [ClientID, WebID] };
-};
-// output value added
-const b = ({ ClientID, WebID = 10, BMID = 40 }) => {
+
+const a = ({ ClientID, WebID = 10, Vln, Qrt }) => {
   return {
-    query: `select * from CommData_Economy.[dbo].[fn_COVID19_OutputVA_Industry](?, ?, ?) ORDER BY QtrChg DESC`,
-    params: [ClientID, WebID, BMID],
+    query: `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_JK_Mix](?, ?, ?, ?)`,
+    params: [ClientID, WebID, Qrt, Vln],
   };
 };
-// local jobs and employed residents
-const topThreeQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_LocalJobsEmpRes_Industry](${ClientID},${WebID},${BMID}) ORDER BY QtrChg DESC`;
-// headline
-const headlineQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Headline](${ClientID},${WebID},${BMID})`;
 
 const fetchData = async ({ filters }) => {
   if (filters.IsLite) {
     return {};
   }
-  const headlineData = await sqlConnection.raw(headlineQuery(filters));
-  const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
-  const impactByRegionData = await sqlConnection.raw(a(filters).query, a(filters).params);
-  const outputValueAddedData = await sqlConnection.raw(b(filters).query, b(filters).params);
+  const JobKeeperData = await sqlConnection.raw(a(filters).query, a(filters).params);
 
-  return { topThreeData, headlineData, impactByRegionData, outputValueAddedData };
+  return { JobKeeperData };
 };
 
-const activeCustomToggles = ({ filterToggles }) => ({});
+const activeCustomToggles = ({ filterToggles }) => {
+  const activeCustomToggles = {
+    currentVulnerability: getActiveToggle(filterToggles, 'Vln'),
+    currentQuarter: getActiveToggle(filterToggles, 'Qrt'),
+  };
+  return activeCustomToggles;
+};
 
 const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ filters }): string => `COVID-19 JobKeeper estimates`,
+      renderString: (): string => `COVID-19 JobKeeper estimates`,
     },
     {
       Title: 'Version',
@@ -55,6 +49,32 @@ const pageContent = {
       ],
       StoredProcedure: 'sp_Toggle_Econ_Area',
       ParamName: 'WebID',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: 1,
+      Label: 'Vulnerability:',
+      Params: [],
+      StoredProcedure: 'sp_Toggle_Econ_COVID_Vulnerability',
+      ParamName: 'Vln',
+    },
+    {
+      Database: 'CommApp',
+      DefaultValue: '20200632',
+      Label: 'Quarter:',
+      Params: [
+        {
+          ClientID: '0',
+        },
+        {
+          startDate: 20200632,
+        },
+        {
+          endDate: 20210332,
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_COVID_Forecast_EndYear',
+      ParamName: 'Qrt',
     },
   ],
 };

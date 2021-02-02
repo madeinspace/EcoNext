@@ -1,51 +1,77 @@
 // #region imports
 import React, { useContext } from 'react';
 import _ from 'lodash';
-import { ClientContext } from '../../../utils/context';
+import { ClientContext, PageContext } from '../../../utils/context';
 import { _SubTitle, PageIntroFullWidth, SubTitleAlt2, ItemWrapper } from '../../../styles/MainContentStyles';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import Disclaimers from './Disclaimers';
-import EconomicImpactChart from './charts/EconomicImpactChart';
 import { LinkBuilder } from '../../../components/ui/links';
+import OutputChart from './charts/JobKeeperEstimatesChart';
 // #endregion
 
 // #region template page
-const FullContent = () => {
+const JobKeeperPage = () => {
   const { clientAlias } = useContext(ClientContext);
+  const {
+    entityData: { currentVulnerability, currentQuarter },
+  } = useContext(PageContext);
 
   return (
     <>
       <PageIntroFullWidth>
         <p>
-          COVID19 will obviously have a substantial negative impact on economic activity in 2020. In response, .id has
-          developed a COVID-19 Outlook Tool to show the economic and industry impacts at the LGA level. This tool draws
-          on the economic forecast model developed by NIEIR and focuses on the impacts to September 2020.
+          The COVID 19 pandemic and policy responses enacted to limit its spread have generated uncertainty about the
+          future of local economies. This uncertainty has created difficulties in planning economic development
+          responses at a local government level. In response, .id has developed a COVID-19 Economic Forecast Tool that
+          estimates likely quarterly economic and industry impacts out to June 2022.
         </p>
         <p>
-          This tool should be viewed in conjunction with{' '}
-          {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'Unemployment')} and{' '}
-          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
-          impact of COVID-19 on the local labour force. To monitor the impact of COVID-19 on local businesses, see the
-          Business Trends section.
+          The COVID-19 JobKeeper estimates shows the quarterly estimates of local jobs and employed resident workers
+          supported by the JobKeeper scheme. Charts in this page show the quarterly number of workers on JobKeeper,
+          proportion of worker on JobKeeper (compared to total workers in the region) for the Local Jobs and Employed
+          Residents of industry, based on the 87 industry subsectors and 19 main industry divisions in the ANZSIC
+          classification.
         </p>
+        <p>
+          This page should be viewed in conjunction with the{' '}
+          {LinkBuilder(
+            `https://economy.id.com.au/${clientAlias}/covid19-industry-focus`,
+            ' COVID-19 Extended industry forecasts section',
+          )}{' '}
+          to see the estimated quarterly impact of COVID-19 at an industry level and{' '}
+          {LinkBuilder(
+            `https://economy.id.com.au/${clientAlias}/covid19-industry-focus`,
+            ' COVID-19 Extended forecast section',
+          )}{' '}
+          to see the impact on the overall economy. To see the impact of COVID-19 on the resident labour force (those in
+          work or looking for work and aged over 15) who are looking for work, refer to{' '}
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/unemployment`, 'Unemployment')} and{' '}
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section.
+        </p>
+
         <p>This page is subject to the disclaimer and copyright notices as set out below.</p>
       </PageIntroFullWidth>
+
       <ControlPanel />
 
-      <SubTitleAlt2>Economic Impact</SubTitleAlt2>
+      <SubTitleAlt2>Local Jobs compensated by JobKeeper</SubTitleAlt2>
       <p>
-        The chart below presents the output and value added impacts of COVID-19 in the September Quarter 2020. Output
-        refers to the total sales of each industry in the region. Value Added refers to the wages and salaries paid to
-        workers in the region, the gross operating surplus and taxes. Value added impacts show how the different
-        industries impact GRP in the region.
+        This indicator shows the estimated number of jobs compensated by JobKeeper in the Northern Beaches Council area
+        by vulnerability and industry. Workers in industries with higher share of working zero hours are more
+        vulnerability once the JobKeeper finishes.
       </p>
-      <ItemWrapper>
-        <EconomicImpactChart />
-      </ItemWrapper>
+      <ItemWrapper>{<OutputChart measure={'LJ_JK'} />}</ItemWrapper>
+      <SubTitleAlt2>Employed Resident Impacts</SubTitleAlt2>
+      <p>
+        Another way of looking at the impacts is to analyse the industry impact on local residents, that is employed
+        residents who live in the region but may work elsewhere. This is important in understanding the impacts on
+        council rates and local unemployment.
+      </p>
+      <ItemWrapper>{<OutputChart measure={'UR_JK'} />}</ItemWrapper>
 
       <Disclaimers />
     </>
   );
 };
-export default FullContent;
+export default JobKeeperPage;
 // #endregion
