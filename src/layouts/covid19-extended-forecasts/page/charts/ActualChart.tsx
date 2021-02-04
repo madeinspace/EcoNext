@@ -32,7 +32,7 @@ const ChartBuilder = () => {
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
   const preData = extendedData.filter(({ Forecast }) => Forecast === 'Pre');
-  const data = +BMID === 1000 ? preData : postData;
+  const data = BMID === 1000 ? preData : postData;
   const lgaData = data.filter(({ WebID }) => WebID === 10);
   const lookup = {
     1: 'GRP_Actual',
@@ -44,6 +44,7 @@ const ChartBuilder = () => {
 
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
+    console.log('serie: ', serie);
     return {
       name: LongName,
       data: serie,
