@@ -9,7 +9,6 @@ const ChangeChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind },
-    entityData: { currentIndicator, prefixedAreaName },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
 
@@ -18,7 +17,9 @@ const ChangeChart = () => {
   const lookup = {
     1: 'GRP_Change',
     2: 'JTW_Change',
-    3: 'UR_Change',
+    3: 'JTW_P_Change',
+    4: 'UR_Change',
+    5: 'UR_P_Change',
   };
 
   const makeSerie = data => {

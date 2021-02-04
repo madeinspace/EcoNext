@@ -14,7 +14,7 @@ import IndexChart from './charts/IndexChart';
 
 // #region template page
 const CovidExtendedForecastsPage = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
+  const { clientAlias } = useContext(ClientContext);
   return (
     <>
       <PageIntroFullWidth>

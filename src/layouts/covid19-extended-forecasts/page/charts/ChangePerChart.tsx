@@ -1,9 +1,8 @@
-import Highcharts from 'highcharts';
 import React, { useContext } from 'react';
 import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
-import { formatChangeInt, formatNumber, formatPercent, idlogo } from '../../../../utils';
+import { formatChangeInt, formatPercent, idlogo } from '../../../../utils';
 import { ClientContext, PageContext } from '../../../../utils/context';
 
 const ChangePerChart = () => {
@@ -13,14 +12,19 @@ const ChangePerChart = () => {
     entityData: { currentBenchmark },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
-
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
+  const preData = extendedData.filter(({ Forecast }) => Forecast === 'Pre');
   const lgaData = postData.filter(({ WebID }) => WebID === 10);
-  const benchmarkData = postData.filter(({ WebID }) => WebID === +BMID);
+  const BMData = +BMID === 1000 ? preData : postData;
+  const benchmarkData = BMData.filter(({ WebID }) => {
+    return WebID === +BMID;
+  });
   const lookup = {
     1: 'GRP_Change_Per',
     2: 'JTW_Change_Per',
-    3: 'UR_Change_Per',
+    3: 'JTW_P_Change_Per',
+    4: 'UR_Change_Per',
+    5: 'UR_P_Change_Per',
   };
 
   const makeSerie = (data, name) => {

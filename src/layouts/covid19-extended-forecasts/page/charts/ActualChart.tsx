@@ -2,9 +2,8 @@ import React, { useContext } from 'react';
 import ReactChart from '../../../../components/chart/ReactChart';
 import { IdLink } from '../../../../components/ui/links';
 import { ShadowWrapper } from '../../../../styles/MainContentStyles';
-import { formatChangeInt, formatNumber, idlogo } from '../../../../utils';
+import { formatNumber, idlogo } from '../../../../utils';
 import { ClientContext, PageContext } from '../../../../utils/context';
-import useEntityText from '../../../../utils/useEntityText';
 
 const ActualChart = () => {
   return (
@@ -26,17 +25,21 @@ const ChartSource = () => (
 const ChartBuilder = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind },
-    entityData: { currentIndicator, prefixedAreaName },
+    filters: { Ind, BMID },
+    entityData: { currentIndicator },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
 
   const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
-  const lgaData = postData.filter(({ WebID }) => WebID === 10);
+  const preData = extendedData.filter(({ Forecast }) => Forecast === 'Pre');
+  const data = +BMID === 1000 ? preData : postData;
+  const lgaData = data.filter(({ WebID }) => WebID === 10);
   const lookup = {
     1: 'GRP_Actual',
     2: 'JTW_Actual',
-    3: 'UR_Actual',
+    3: 'JTW_P_Actual',
+    4: 'UR_Actual',
+    5: 'UR_P_Actual',
   };
 
   const makeSerie = data => {
@@ -52,7 +55,6 @@ const ChartBuilder = () => {
   const lgaSerieNum = [actualSerie];
 
   const chartTitle = `Quarterly ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
-  const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id informed decisions.';
 

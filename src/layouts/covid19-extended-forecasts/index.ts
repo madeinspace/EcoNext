@@ -1,18 +1,13 @@
 import getActiveToggle from '../../utils/getActiveToggle';
 import { sqlConnection } from '../../utils/sql';
 
-const extendedForecastQuery = ({ ClientID, WebID = 10, BMID = 40 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Pre_Post](${ClientID},${WebID},${BMID})`;
-
-const headlinesQuery = ({ ClientID, WebID = 10, BMID = 40, EconYr = 1 }) => { 
-  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Headline](${ClientID},${WebID},${BMID}, ${EconYr})`;
-  return query;
-}
-
+const a = ({ ClientID, WebID = 10, BMID = 40 }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Pre_Post](?,?,?)`;
+  return { query, params: [ClientID, WebID, BMID] };
+};
 
 const fetchData = async ({ filters }) => {
-  const extendedData = await sqlConnection.raw(extendedForecastQuery(filters));
-  // const headlinesData = await sqlConnection.raw(headlinesQuery(filters));
+  const extendedData = await sqlConnection.raw(a(filters).query, a(filters).params);
   return { extendedData };
 };
 
@@ -45,14 +40,14 @@ const pageContent = {
           ClientID: '9',
         },
       ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM_COVID_Forecast',
       ParamName: 'BMID',
     },
     {
       Database: 'CommApp',
       DefaultValue: '1',
       Label: 'Indicators:',
-      Params: [  ],
+      Params: [],
       StoredProcedure: 'sp_Toggle_Econ_Indicator',
       ParamName: 'Ind',
     },
