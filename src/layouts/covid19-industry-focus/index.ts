@@ -54,7 +54,7 @@ const pageContent = {
           ClientID: '9',
         },
       ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM_COVID_Forecast',
       ParamName: 'BMID',
     },
     {
