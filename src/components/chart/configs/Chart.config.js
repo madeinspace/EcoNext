@@ -29,6 +29,9 @@ export const ChartDefault = (...opts) => {
   const options = Object.assign.apply(Object, [{}].concat(...opts));
   const chartDefaults = {};
   const getHeight = () => options.height !== undefined ? options.height : 400;
+  const marginBottom = 60;
+  const posSourceText = getHeight() + 30;
+  const posSourceLogo = getHeight() + 10;
 
   chartDefaults.chart = {
     height: getHeight(),
@@ -45,16 +48,17 @@ export const ChartDefault = (...opts) => {
     enabled: false,
     sourceWidth: 850,
     fallbackToExportServer: true,
+    useHTML: true,
     chartOptions: {
       chart: {
-        height: 500,
-        spacingBottom: 60,
+        height: getHeight() + marginBottom,
+        spacingBottom: marginBottom,
         events: {
           load() {
             const group = this.renderer
               .g()
               .attr({
-                transform: `translate(740, 450)`,
+                transform: `translate(740, ${posSourceLogo})`,
                 class: "exportLogo",
               })
               .add()
@@ -68,7 +72,7 @@ export const ChartDefault = (...opts) => {
                 .add(group)
             }
             this.renderer
-              .text(options.source, 20, 470)
+              .text(options.source, 20, posSourceText)
               .css({
                 width: '600px',
                 fontSize: '10px',
