@@ -44,7 +44,6 @@ const ChartBuilder = () => {
 
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
-    console.log('serie: ', serie);
     return {
       name: LongName,
       data: serie,

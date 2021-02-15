@@ -30,7 +30,6 @@ const FullContent = () => {
   const {
     filters: { Year },
   } = useContext(PageContext);
-  console.log('Year: ', Year);
 
   const dropdownData = [
     { label: '2019/20', value: '2020' },

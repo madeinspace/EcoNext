@@ -20,7 +20,6 @@ const CovidIndustryFocusPage = () => {
     contentData: { industryData },
   } = useContext(PageContext);
   const { clientAlias, LongName } = useContext(ClientContext);
-  console.log('industryData: ', industryData);
 
   const lookup = {
     1: 'Output_',
@@ -33,7 +32,6 @@ const CovidIndustryFocusPage = () => {
 
   const makeSerie = (suffix, bm = false) => {
     const serie = industryData.filter(({ WebID }) => WebID === 10).map(item => item[lookup[+Ind] + suffix]);
-    console.log('serie: ', serie);
     const serieBM = industryData.filter(({ WebID }) => WebID != 10).map(item => item[lookup[+Ind] + suffix]);
 
     if (bm) {

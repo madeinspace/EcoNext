@@ -44,7 +44,6 @@ const chartBuilder = (prefix = '') => {
     contentData: { industryMixData },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
-  console.log('industryMixData: ', industryMixData);
 
   const lookup = {
     1: 'OutputChange',

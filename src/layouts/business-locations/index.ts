@@ -123,7 +123,6 @@ const pageContent = {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
         const { IndkeyABR } = filters;
-        console.log('IndkeyABR: ', IndkeyABR);
         const { tableData } = contentData;
         if (tableData.length <= 0) {
           return `${data.currentIndustryName} doesn't have any active and registered for GST businesses in ${data.prefixedAreaName}.`;

@@ -28,7 +28,6 @@ const ChangePerChart = () => {
 
   const makeSerie = (data, name) => {
     const serie = data.map(item => item[lookup[+Ind]]);
-    console.log('serie: ', serie);
     return {
       name: name,
       data: serie,
@@ -37,7 +36,6 @@ const ChangePerChart = () => {
   const categories = lgaData.map(({ Label }) => Label);
   const lgaSerie = makeSerie(lgaData, LongName);
   const bmSerie = makeSerie(benchmarkData, currentBenchmark);
-  console.log('bmSerie: ', bmSerie);
   const lgaSerieNum = [lgaSerie, bmSerie];
   const num = ChartBuilder(lgaSerieNum, categories);
 
