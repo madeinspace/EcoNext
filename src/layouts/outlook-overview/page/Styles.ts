@@ -82,10 +82,16 @@ export const Title = styled.h1`
     color: #6a6a6a;
   }
 `;
+export const Highlight = styled.span`
+  font-size: 14px;
+`;
 export const NumberValue = styled.p`
   color: rgb(0, 154, 68);
   font-size: 30px;
   line-height: 25px;
+  ${Highlight} {
+    font-size: 30px;
+  }
   span {
     font-size: 16px;
   }

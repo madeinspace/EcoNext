@@ -1,28 +1,35 @@
 import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 // impact by region (benchmark)
-const forecastSummaryQuery = ({ ClientID, WebID = 10, BMID = 20, Year = 2020, econYear = 1 }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary](${ClientID}, ${WebID}, ${BMID}, ${econYear}) `;
-  return query;
+const forecastSummaryDataQuery = ({ ClientID, WebID = 10, BMID = 20, Year = 2020, econYear = 1 }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary](?,?,?,?,?) `;
+  const params = [ClientID, WebID, BMID, Year, econYear];
+  return { query, params };
 };
 // output value added
-const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) =>
-  `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Vulnerable_Jobs](${ClientID},${WebID},${BMID}) `;
+const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Vulnerable_Jobs](?, ?, ?) `;
+  const params = [ClientID, WebID, BMID];
+  return { query, params };
+};
 // local jobs and employed residents
-const topThreeQuery = ({ ClientID, WebID = 10, Year = 2020 }) =>
-  `select * from  CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Top3] (${ClientID}, ${WebID}) `; //order by JTW_Diff_Per desc
+const topThreeQuery = ({ ClientID, WebID = 10, Year = 2020 }) => {
+  const query = `select * from  CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Top3] (?, ?, ?) `; //order by JTW_Diff_Per desc
+  const params = [ClientID, WebID, Year];
+  return { query, params };
+};
 
 const fetchData = async ({ filters }) => {
-  if (filters.IsLite) {
-    return {};
-  }
-  const topThreeData = await sqlConnection.raw(topThreeQuery(filters));
-  const vulnerableJobsData = await sqlConnection.raw(vulnerableJobsQuery(filters));
-  const forecastSummaryData = await sqlConnection.raw(forecastSummaryQuery(filters));
+  const a = topThreeQuery(filters);
+  const b = vulnerableJobsQuery(filters);
+  const c = forecastSummaryDataQuery(filters);
+  const topThreeData = await sqlConnection.raw(a.query, a.params);
+  const vulnerableJobsData = await sqlConnection.raw(b.query, b.params);
+  const forecastSummaryData = await sqlConnection.raw(c.query, c.params);
   return { topThreeData, vulnerableJobsData, forecastSummaryData };
 };
 
-const activeCustomToggles = ({ filterToggles }) => ({});
+const activeCustomToggles = ({ filterToggles }) => {};
 
 const pageContent = {
   entities: [
@@ -35,15 +42,7 @@ const pageContent = {
       renderString: (): string => `Version 2.1 (Sept 2020)`,
     },
   ],
-  filterToggles: [
-    // {
-    //   Database: 'CommApp',
-    //   DefaultValue: '20',
-    //   Label: 'Current area:',
-    //   StoredProcedure: 'sp_Toggle_Econ_Area_BM_COVID_Forecast',
-    //   ParamName: 'BMID',
-    // },
-  ],
+  filterToggles: [],
 };
 
 export { fetchData, Page, activeCustomToggles, pageContent };
