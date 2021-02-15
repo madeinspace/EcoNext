@@ -1,14 +1,12 @@
-import { ChartTab, ChartTabs, ItemWrapper, ShadowWrapper } from '../../../../styles/MainContentStyles';
+import { ChartTab, ChartTabs, ShadowWrapper } from '../../../../styles/MainContentStyles';
 import React, { useContext, useState } from 'react';
-import { ClientContext, PageContext } from '../../../../utils/context';
+import { PageContext } from '../../../../utils/context';
 import { IdLink } from '../../../../components/ui/links';
 import { idlogo, formatChangeInt, ammendQueryStr } from '../../../../utils';
 import useEntityText from '../../../../utils/useEntityText';
 import ReactChart from '../../../../components/chart/ReactChart';
 
 const ImpactByRegionChart = () => {
-  const { clientAlias } = React.useContext(ClientContext);
-  const { handle, filterToggles } = React.useContext(PageContext);
   const [Pane, setPane] = useState(1);
   const {
     contentData: { impactByRegionData },

@@ -93,7 +93,7 @@ const JobsImpactChart = ({ measure }) => {
             </ChartTab>
           </ChartTabs>
         )}
-        <ReactChart height="500" options={options} />
+        <ReactChart height="650" options={options} />
       </ShadowWrapper>
     </>
   );
@@ -209,7 +209,7 @@ const localJobsDumbellChartBuilder = (series, measure) => {
 
       subtitle: {
         useHTML: true,
-        text: `<ul><li class="lowDot">${withoutJKDisplayText}</li><li class="highDot">${withJKDisplayText}</li></ul>`,
+        text: `<ul><li class="lowDot">${withoutJKDisplayText} vs </li><li class="highDot">${withJKDisplayText}</li></ul>`,
       },
 
       title: {
