@@ -3,13 +3,13 @@ import Page from './page';
 // impact by region (benchmark)
 const forecastSummaryDataQuery = ({ ClientID, WebID = 10, BMID = 20, Year = 2020, econYear = 1 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary](?,?,?,?,?) `;
-  const params = [ClientID, WebID, BMID, Year, econYear];
+  const params = [ClientID, WebID, 20, Year, econYear];
   return { query, params };
 };
 // output value added
 const vulnerableJobsQuery = ({ ClientID, WebID = 10, BMID = 20 }) => {
   const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Summary_Vulnerable_Jobs](?, ?, ?) `;
-  const params = [ClientID, WebID, BMID];
+  const params = [ClientID, WebID, 20];
   return { query, params };
 };
 // local jobs and employed residents
