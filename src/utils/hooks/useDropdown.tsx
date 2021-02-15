@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useOnClickOutside from './useClickOutside';
 
@@ -38,7 +38,7 @@ const useDropdown = (label, defaultState, options) => {
 export default useDropdown;
 
 const DropDownContainer = styled('div')`
-  display: flex;
+  display: inline-flex;
 `;
 
 const DropDownHeader = styled('div')`
@@ -73,7 +73,7 @@ const DropDownList = styled('ul')`
   color: #70b859;
   font-size: 0.8rem;
   font-weight: 500;
-  padding-right: 20px;
+  margin-right: 20px;
   &:first-child {
     padding-top: 0em;
   }
