@@ -129,12 +129,13 @@ export const EntityTitle = styled(_SubTitle)`
   }
 `;
 
-export const Headline = styled.p`
+export const Headline = styled.div`
   position: relative;
   color: #009a44;
   font-size: 23px;
   line-height: 26px;
   margin-bottom: 30px;
+
   span {
     font-size: 16px;
   }

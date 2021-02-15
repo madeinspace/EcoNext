@@ -1047,9 +1047,9 @@ text.highcharts-drilldown-data-label,
     margin-left: 1em;
     li {
       margin-left: 1rem;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      margin-right: 30px;
+      margin-right: 20px;
       &::before {
         content: '\2022'; /* Add content: \2022 is the CSS Code/unicode for a bullet */
         margin-left: -1em; /* Also needed for space (tweak if needed) */
