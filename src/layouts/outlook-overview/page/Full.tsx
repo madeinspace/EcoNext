@@ -165,6 +165,34 @@ const FullContent = () => {
     },
   ];
 
+  const aboveOrBelow = (num1, num2) => {
+    const a = +formatOneDecimal(Math.abs(num1));
+    const b = +formatOneDecimal(Math.abs(num2));
+    return a < b ? 'below' : a === b ? 'inline with' : 'above';
+  };
+
+  const GRPAboveOrBelow = aboveOrBelow(LGAGRPImpacts, BMGRPImpacts);
+  const EmploymentAboveOrBelow = aboveOrBelow(LGALocalJobsImpacts, BMLocalJobsImpacts);
+
+  const grpText = () => {
+    let txt = ``;
+    const lgaAboveOrBelow = GRPAboveOrBelow;
+
+    switch (lgaAboveOrBelow) {
+      case 'below':
+        txt = 'relatively low and is below';
+        break;
+      case 'inline with':
+        txt = 'inline with';
+        break;
+      default:
+        txt = 'relatively high and is above';
+        break;
+    }
+
+    return txt;
+  };
+
   return (
     <>
       <PageBreak>
@@ -186,8 +214,8 @@ const FullContent = () => {
                 Compared to pre COVID-19 forecasts, {LongName}'s economy will be{' '}
                 <span ref={React.createRef()}>{`${formatNumber(economyLGA)}`}</span> million, or{' '}
                 <span ref={React.createRef()}>{`${formatOneDecimal(LGAGRPImpacts)}%`}</span> smaller in{' '}
-                <span ref={React.createRef()}>{econYearKey.value}</span>. This impact is relatively high and is above{' '}
-                {bmData[0].GeoName} impact of{' '}
+                <span ref={React.createRef()}>{econYearKey.value}</span>. This impact is{' '}
+                <span ref={React.createRef()}>{grpText()}</span> {bmData[0].GeoName} impact of{' '}
                 <span ref={React.createRef()}>{`${formatOneDecimal(BMGRPImpacts)}%`}</span>.
               </p>
               <p>
@@ -198,9 +226,10 @@ const FullContent = () => {
                 There will be around <span ref={React.createRef()}>{`${formatNumber(LGALocalJobsImpactsChg)}`}</span>{' '}
                 fewer jobs in <span ref={React.createRef()}>{econYearKey.value}</span> than the pre COVID 19 forecasts.
                 This impact represents around{' '}
-                <span ref={React.createRef()}>{`${formatPercent(LGALocalJobsImpacts)}%`}</span> of all jobs, above the
-                impact on {bmData[0].GeoName}. Local Jobs are not forecast to reach pre COVID-19 levels before June Qtr
-                2022. The impact on Employed residents is forecast to be higher than Local Jobs.
+                <span ref={React.createRef()}>{`${formatPercent(LGALocalJobsImpacts)}%`}</span> of all jobs,{' '}
+                {EmploymentAboveOrBelow} the impact on {bmData[0].GeoName}. Local Jobs are not forecast to reach pre
+                COVID-19 levels before June Qtr 2022. The impact on Employed residents is forecast to be higher than
+                Local Jobs.
               </p>
               <p>
                 But many more jobs are vulnerable* and are currently being supported by JobKeeper. The impacts on Local
@@ -261,7 +290,7 @@ const FullContent = () => {
                     <FaExclamationTriangle size={'30px'} />
                   </span>
                   <div>
-                    Vulnerable jobs <span>(working 0 hours but on JobKeeper as at Sept Qtr 2020)</span>
+                    Vulnerable jobs <span>(working 0 hours but on JobKeeper as at March Qtr 2021)</span>
                   </div>
                 </Title>
                 <NumberValue>
