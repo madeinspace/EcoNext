@@ -71,9 +71,11 @@
   },
   "devDependencies": {
     "@azure/cosmos": "^3.5.2",
+    "@babel/core": "^7.13.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
     "@babel/plugin-transform-named-capturing-groups-regex": "^7.7.4",
     "@babel/plugin-transform-object-assign": "^7.7.4",
+    "@babel/preset-env": "^7.13.5",
     "@types/axios": "^0.14.0",
     "@types/jquery": "^3.3.31",
     "@types/js-cookie": "^2.2.4",
