@@ -7,6 +7,7 @@ const CDN_ENPOINT = process.env.CDN_ENDPOINT || 'https://econext-cdn.azureedge.n
 module.exports =
 {
   publicRuntimeConfig: {
+    foo: 'bar',
     EcoCDNEndPoint: CDN_ENPOINT,
     LitePlusClients
   },
