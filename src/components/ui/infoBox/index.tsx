@@ -5,11 +5,11 @@ import { FaInfoCircle } from 'react-icons/fa';
 const _InfoBox = styled.div`
   display: ${props => (props.visible ? css`flex` : css`none`)};
   margin: 20px 0;
-  padding: 5px 0;
+  padding: ${props => (props.type === 'warning' ? '10px' : '5px')} 0;
   align-items: center;
   color: #595959;
   background: #f2f2f2;
-  border-left: 3px solid #00a8ff;
+  border-left: 5px solid ${props => (props.type === 'warning' ? 'orange' : '#00a8ff')};
   span {
     line-height: 18px;
   }
@@ -42,12 +42,15 @@ const IconBase = styled.span`
   justify-content: center;
 `;
 
-const InfoBox = ({ children }) => {
+const InfoBox = ({ type = 'info', children }) => {
   const [visible, setVisible] = useState(true);
+  const color = () => {
+    return type === 'warning' ? 'orange' : '#00a8ff';
+  };
   return (
-    <_InfoBox visible={visible}>
+    <_InfoBox visible={visible} type={type}>
       <IconBase>
-        <FaInfoCircle size="18px" color="#00a8ff" />
+        <FaInfoCircle size="20px" color={color()} />
       </IconBase>
       {children}
       <CloseButton
