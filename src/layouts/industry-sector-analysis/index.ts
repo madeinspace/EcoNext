@@ -69,6 +69,10 @@ const pageContent = {
       Title: 'DataSource',
       renderString: (): string => `National Economics (NIEIR) - Modelled series`,
     },
+    {
+      Title: 'Banner',
+      renderString: (): string => `2019/20 Output by destination information will be updated soon`.toUpperCase(),
+    },
   ],
   filterToggles: [
     {

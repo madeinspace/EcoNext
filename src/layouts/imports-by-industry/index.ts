@@ -85,6 +85,10 @@ const pageContent = {
       Title: 'Headline',
       renderString: ({ data, contentData }): string => headline({ data, contentData }),
     },
+    {
+      Title: 'Banner',
+      renderString: (): string => `2019/20 Imports information will be updated soon`.toUpperCase(),
+    },
   ],
   filterToggles: [
     {

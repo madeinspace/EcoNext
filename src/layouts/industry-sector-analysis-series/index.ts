@@ -49,6 +49,11 @@ const pageContent = {
       Title: 'DataSource',
       renderString: (): string => `National Economics (NIEIR) - Modelled series`,
     },
+    {
+      Title: 'Banner',
+      renderString: (): string =>
+        `2019/20 Trade (imports and exports) and local sales information will be updated soon`.toUpperCase(),
+    },
   ],
   filterToggles: [
     {
