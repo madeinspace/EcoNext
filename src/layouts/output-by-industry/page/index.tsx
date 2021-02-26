@@ -268,7 +268,7 @@ const OutputByIndustryPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the output by industry sectors in {prefixedAreaName} in 2018/19 shows the three largest
+          An analysis of the output by industry sectors in {prefixedAreaName} in 2019/20 shows the three largest
           industries were:
         </p>
         <TopThreeFields areaName={prefixedAreaName} />
@@ -307,7 +307,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> (NIEIR) ©2019. Compiled and presented in economy.id by
+      Source: <NierLink /> (NIEIR) ©2021. Compiled and presented in economy.id by
       <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
       to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -317,7 +317,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> ©2019 Compiled and presented in economy.id by <IdLink />.
+    Source: <NierLink /> ©2021 Compiled and presented in economy.id by <IdLink />.
   </p>
 );
 // #endregion
@@ -565,7 +565,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% of total output`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -652,7 +652,7 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in output ($millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
