@@ -443,12 +443,12 @@ const tableBuilder = ({
       ],
       formattedData: [
         `${row.LabelName}`,
-        formatPercent(row.NoYear1),
-        formatPercent(row.PerYear1),
-        formatPercent(row.BMYear1),
-        formatPercent(row.NoYear2),
-        formatPercent(row.PerYear2),
-        formatPercent(row.BMYear2),
+        formatPercent(row.NoYear1, '--'),
+        formatPercent(row.PerYear1, '--'),
+        formatPercent(row.BMYear1, '--'),
+        formatPercent(row.NoYear2, '--'),
+        formatPercent(row.PerYear2, '--'),
+        formatPercent(row.BMYear2, '--'),
         formatChangeOneDecimal(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
@@ -465,12 +465,12 @@ const tableBuilder = ({
         ],
         formattedData: [
           `${childRow.LabelName}`,
-          formatPercent(childRow.NoYear1),
-          formatPercent(childRow.PerYear1),
-          formatPercent(childRow.BMYear1),
-          formatPercent(childRow.NoYear2),
-          formatPercent(childRow.PerYear2),
-          formatPercent(childRow.BMYear2),
+          formatPercent(childRow.NoYear1, '--'),
+          formatPercent(childRow.PerYear1, '--'),
+          formatPercent(childRow.BMYear1, '--'),
+          formatPercent(childRow.NoYear2, '--'),
+          formatPercent(childRow.PerYear2, '--'),
+          formatPercent(childRow.BMYear2, '--'),
           formatChangeOneDecimal(childRow.Change12, '--'),
         ],
       })),
@@ -480,12 +480,12 @@ const tableBuilder = ({
         cssClass: 'total',
         cols: [
           { cssClass: '', displayText: `Total industries`, colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear2, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear2, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear2, '--'), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeOneDecimal(row.Change12),
@@ -561,7 +561,7 @@ const chartBuilder = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
   return {
     highchartOptions: {
       height: chartHeight,
@@ -646,7 +646,7 @@ const chartBuilderChange = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
