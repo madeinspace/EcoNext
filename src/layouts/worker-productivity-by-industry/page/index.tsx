@@ -267,7 +267,7 @@ const WorkerProductivityByIndustryPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the jobs held by the full-time equivalent local workers in {prefixedAreaName} in 2018/19 shows
+          An analysis of the jobs held by the full-time equivalent local workers in {prefixedAreaName} in 2019/20 shows
           the three highest industries were:
         </p>
         <TopThreeFields />
@@ -306,8 +306,8 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by
-      <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by
+      <IdLink />. Data are based on a 2018-19 price base for all years. NIEIR-ID data are inflation adjusted each year
       to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
     </p>
@@ -316,7 +316,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -378,17 +378,17 @@ const tableBuilder = ({
             colSpan: 1,
           },
           {
-            cssClass: 'even',
+            cssClass: 'even XL',
             displayText: `${currentStartYear}`,
             colSpan: 2,
           },
           {
-            cssClass: 'odd',
+            cssClass: 'odd XL',
             displayText: `${currentComparaisonYear}`,
             colSpan: 2,
           },
           {
-            cssClass: 'sub even',
+            cssClass: 'sub even XL',
             displayText: 'Change',
             colSpan: 1,
           },
@@ -404,27 +404,27 @@ const tableBuilder = ({
       {
         id: 1,
         displayText: '$',
-        cssClass: 'even int',
+        cssClass: 'even int XL',
       },
       {
         id: 2,
         displayText: `${benchmark}$`,
-        cssClass: 'even int',
+        cssClass: 'even int XL',
       },
       {
         id: 3,
         displayText: '$',
-        cssClass: 'odd int',
+        cssClass: 'odd int XL',
       },
       {
         id: 4,
         displayText: `${benchmark}$ `,
-        cssClass: 'odd int',
+        cssClass: 'odd int XL',
       },
       {
         id: 5,
         displayText: `${currentComparaisonYear} - ${currentStartYear} `,
-        cssClass: 'even int',
+        cssClass: 'even int XL',
       },
     ],
     rows: parents.map(row => ({
@@ -534,15 +534,15 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data, c
   drilldownPerYear1Serie.push(...drilldownChangeYear1Serie);
 
   const chartType = 'bar';
-  const chartTitle = `Productivity per worker (annual) by industry 2018/19`;
+  const chartTitle = `Productivity per worker (annual) by industry 2019/20`;
   const chartSubtitle = ``;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `${currentTableType === 'Worker' ? '$ per worker' : '$ per worker per hour'}`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 600;
 
   return {
     highchartOptions: {
@@ -615,13 +615,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data, c
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = ({
-  areaName,
-  currentStartYear,
-  currentComparaisonYear,
-  TabularData: data,
-  currentTableType,
-}) => {
+const chartBuilderChange = ({ areaName, currentStartYear, currentComparaisonYear, TabularData: data }) => {
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey !== 999999),
     item => item.LabelKey,
@@ -634,10 +628,10 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in $ per worker`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 600;
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
       this.category

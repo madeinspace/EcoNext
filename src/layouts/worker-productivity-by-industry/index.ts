@@ -28,6 +28,7 @@ const activeCustomToggles = ({ filterToggles }) => ({
 const headline = ({ data, contentData }): string => {
   //  for some lite clietns (bayside afaik) this dataset doesn't exist
   if (contentData.length <= 0) return;
+
   const { prefixedAreaName } = data;
   const largestEmployer = largest(
     contentData.filter(item => item.Hierarchy === `P`),
@@ -35,7 +36,7 @@ const headline = ({ data, contentData }): string => {
   );
   const IndName = largestEmployer.LabelName;
   const TotalEmploymentPerc = `$${formatNumber(largestEmployer.NoYear1)}`;
-  return `In ${prefixedAreaName}, ${IndName} had the highest productivity by industry, generating ${TotalEmploymentPerc} per worker in 2018/19.`;
+  return `In ${prefixedAreaName}, ${IndName} had the highest productivity by industry, generating ${TotalEmploymentPerc} per worker in 2019/20.`;
 };
 
 const pageContent = {
@@ -76,7 +77,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2019',
+      DefaultValue: '2020',
       Label: 'Year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
@@ -85,7 +86,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2014',
+      DefaultValue: '2015',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
