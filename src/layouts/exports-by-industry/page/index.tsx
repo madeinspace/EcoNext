@@ -379,6 +379,7 @@ const tableBuilder = ({
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelKey === 999999);
+  console.log('TabularData: ', data);
 
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
@@ -492,12 +493,12 @@ const tableBuilder = ({
       ],
       formattedData: [
         `${row.LabelName}`,
-        formatPercent(row.NoYear1),
-        formatPercent(row.PerYear1),
-        formatPercent(row.BMYear1),
-        formatPercent(row.NoYear2),
-        formatPercent(row.PerYear2),
-        formatPercent(row.BMYear2),
+        formatPercent(row.NoYear1, '--'),
+        formatPercent(row.PerYear1, '--'),
+        formatPercent(row.BMYear1, '--'),
+        formatPercent(row.NoYear2, '--'),
+        formatPercent(row.PerYear2, '--'),
+        formatPercent(row.BMYear2, '--'),
         formatChangeOneDecimal(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({

@@ -87,7 +87,7 @@ const pageContent = {
     },
     {
       Title: 'Banner',
-      renderString: (): string => `2019/20 Exports information will be updated soon`.toUpperCase(),
+      renderString: (): string => `2019/20 Exports information coming soon`.toUpperCase(),
     },
   ],
   filterToggles: [
