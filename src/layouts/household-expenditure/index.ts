@@ -45,7 +45,7 @@ const pageContent = {
     },
     {
       Title: 'Banner',
-      renderString: (): string => `2019/20 Household expenditure information will be updated soon`.toUpperCase(),
+      renderString: (): string => `2019/20 Household expenditure information coming soon`.toUpperCase(),
     },
   ],
   filterToggles: [
