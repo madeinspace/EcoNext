@@ -568,7 +568,7 @@ const chartBuilder = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   return {
     highchartOptions: {
@@ -655,7 +655,7 @@ const chartBuilderChange = ({
     'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
