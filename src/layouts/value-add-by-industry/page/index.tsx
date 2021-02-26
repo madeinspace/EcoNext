@@ -88,17 +88,14 @@ const ComparisonBenchmark = ({ benchmarkName }) => {
   );
 };
 
-const MajorDifferencesHeading = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
-  return (
-    <Highlight>
-      The major differences between the value added by industries of {areaName} and {benchmarkName} were:
-    </Highlight>
-  );
-};
+const MajorDifferencesHeading = ({ areaName, benchmarkName }) => (
+  <Highlight>
+    The major differences between the value added by industries of {areaName} and {benchmarkName} were:
+  </Highlight>
+);
 
 const MajorDifferences = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -163,7 +160,7 @@ const EmergingGroups = () => {
 
 // #region page
 const ValueAddByIndustryPage = () => {
-  const { clientAlias, clientProducts, LongName } = useContext(ClientContext);
+  const { clientAlias, clientProducts } = useContext(ClientContext);
   const {
     contentData,
     entityData: {
@@ -189,8 +186,6 @@ const ValueAddByIndustryPage = () => {
   const tableParams = tableBuilder(builderPayload);
   const chartData = chartBuilder(builderPayload);
   const chartChangeData = chartBuilderChange(builderPayload);
-
-  const hasProfile = () => _.some(clientProducts, product => product.AppID === 1);
 
   return (
     <>
@@ -279,7 +274,7 @@ const ValueAddByIndustryPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the valued added by industry sectors in {prefixedAreaName} in 2018/19 shows the three largest
+          An analysis of the valued added by industry sectors in {prefixedAreaName} in 2019/20 shows the three largest
           industries were:
         </p>
         <TopThreeFields areaName={prefixedAreaName} />
@@ -318,7 +313,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id
+      Source: National Institute of Economic and Industry Research (NIEIR) ©2021. Compiled and presented in economy.id
       by
       <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
       previous years’ figures.{' '}
@@ -329,7 +324,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -339,7 +334,6 @@ const ChartSource = () => (
 const tableBuilder = ({
   clientAlias,
   areaName,
-  industryName: industry,
   bmName: benchmark,
   currentStartYear,
   currentComparaisonYear,
@@ -520,14 +514,7 @@ const tableBuilder = ({
 // #endregion
 
 // #region chart builders
-const chartBuilder = ({
-  areaName,
-  industryName: currentIndustry,
-  bmName: currentBenchmark,
-  currentStartYear,
-  currentComparaisonYear,
-  TabularData: data,
-}) => {
+const chartBuilder = ({ areaName, bmName: currentBenchmark, currentStartYear, TabularData: data }) => {
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelName !== 'Total Industries'),
     item => item.LabelKey,
@@ -578,10 +565,10 @@ const chartBuilder = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% of total value added`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   return {
     highchartOptions: {
@@ -665,10 +652,10 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in value added ($millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${
