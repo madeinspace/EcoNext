@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 // select * from [dbo].[fn_JTW_Employment_Broad_1Digit](102,10,40,2019,2014,2009,1,null,1)
 const SQLQuery = ({ ClientID, WebID, BMID = 40 }) =>
-  `SELECT * from CommData_Economy.[dbo].[fn_JTW_Employment_Broad_1Digit](${ClientID},${WebID},${BMID}, 2019, 2014, 2009, 1, null,1) ORDER BY LabelKey`;
+  `SELECT * from CommData_Economy.[dbo].[fn_JTW_Employment_Broad_1Digit](${ClientID},${WebID},${BMID}, 2020, 2015, 2010, 1, null,1) ORDER BY LabelKey`;
 
 const fetchData = async ({ filters }) => await sqlConnection.raw(SQLQuery(filters));
 
@@ -25,7 +25,7 @@ const headline = ({ data, contentData }) => {
   const largestInd = largest(contentData, 'PerYear1');
   const largestIndFirstYear = largestInd['PerYear3'];
   const comparisonText = largestIndFirstYear > largestInd['PerYear1'] ? 'declined' : 'increased';
-  return `In 2019, the ${largestInd['LabelName']} sector accounted for ${formatPercent(
+  return `In 2020, the ${largestInd['LabelName']} sector accounted for ${formatPercent(
     largestInd['PerYear1'],
   )}% of employment in ${currentAreaName}. The importance of this sector has ${comparisonText} over the last 10 years (${formatPercent(
     largestIndFirstYear,

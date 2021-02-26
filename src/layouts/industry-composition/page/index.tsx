@@ -64,7 +64,7 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
       base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
       releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}.
@@ -73,7 +73,7 @@ const Source = () => {
 };
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> ©2019 Compiled and presented in economy.id by
+    Source: <NierLink /> ©2021 Compiled and presented in economy.id by
     <IdLink />.
   </p>
 );
@@ -87,7 +87,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Broad industry type';
   const yAxisTitle = '% of total employment';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'LabelName');
   const noTotal = nodes.filter(node => node.LabelKey != 999999);
@@ -110,15 +110,15 @@ const chartBuilder = () => {
       },
       series: [
         {
-          name: '2009',
+          name: '2010',
           data: PerYear3,
         },
         {
-          name: '2014',
+          name: '2015',
           data: PerYear2,
         },
         {
-          name: '2019',
+          name: '2020',
           data: PerYear1,
         },
       ],
@@ -234,17 +234,17 @@ const tableBuilder = () => {
           },
           {
             cssClass: 'even',
-            displayText: `2019`,
+            displayText: `2020`,
             colSpan: 2,
           },
           {
             cssClass: 'odd',
-            displayText: `2014`,
+            displayText: `2015`,
             colSpan: 2,
           },
           {
             cssClass: 'even',
-            displayText: `2009`,
+            displayText: `2010`,
             colSpan: 2,
           },
         ],
