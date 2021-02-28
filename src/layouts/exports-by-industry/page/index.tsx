@@ -379,7 +379,6 @@ const tableBuilder = ({
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelKey === 999999);
-  console.log('TabularData: ', data);
 
   const parents = _.sortBy(
     data.filter(item => item.Hierarchy === 'P' && item.LabelKey != 999999),
