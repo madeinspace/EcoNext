@@ -102,9 +102,8 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
-      base for all years. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may
-      change previous years’ figures.
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. NIEIR-ID data are adjusted each
+      year, using updated employment estimates. Each release may change previous years’ figures.
       {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}.
     </p>
   );
