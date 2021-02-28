@@ -90,17 +90,14 @@ const ComparisonBenchmark = ({ benchmarkName }) => {
   );
 };
 
-const MajorDifferencesHeading = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
-  return (
-    <Highlight>
-      The major differences between output by industries of {areaName} and {benchmarkName} were:
-    </Highlight>
-  );
-};
+const MajorDifferencesHeading = ({ areaName, benchmarkName }) => (
+  <Highlight>
+    The major differences between output by industries of {areaName} and {benchmarkName} were:
+  </Highlight>
+);
 
 const MajorDifferences = ({ areaName, benchmarkName }) => {
-  const { contentData, entityData } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
   const topquals = TopLevelQualifications(contentData);
   const qualsWithData = _.filter(_.filter(topquals, 'PerYear1'), 'BMYear1');
@@ -308,7 +305,7 @@ const TableSource = () => {
   return (
     <p>
       Source: <NierLink /> (NIEIR) ©2021. Compiled and presented in economy.id by
-      <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
+      <IdLink />. Data are based on a 2018-19 price base for all years. NIEIR-ID data are inflation adjusted each year
       to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
     </p>
@@ -326,7 +323,6 @@ const ChartSource = () => (
 const tableBuilder = ({
   clientAlias,
   areaName,
-  industryName: industry,
   bmName: benchmark,
   currentStartYear,
   currentComparaisonYear,
@@ -635,7 +631,6 @@ const chartBuilder = ({
 const chartBuilderChange = ({
   areaName,
   industryName: currentIndustry,
-  bmName: currentBenchmark,
   currentStartYear,
   currentComparaisonYear,
   TabularData: data,
