@@ -8,22 +8,18 @@ import { ClientContext, PageContext } from '../../../../utils/context';
 const ChangePerChart = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind, BMID },
+    filters: { Ind },
     entityData: { currentBenchmark },
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
 
-  const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
-  const preData = extendedData.filter(({ Forecast }) => Forecast === 'Pre');
-  const lgaData = postData.filter(({ WebID }) => WebID === 10);
-  const BMData = +BMID === 1000 ? preData : postData;
+  const lgaData = extendedData.filter(({ WebID }) => WebID === 10);
+  const BMData = extendedData.filter(({ WebID }) => WebID === 40);
   const benchmarkData = BMData.filter(({ WebID }) => WebID != 10);
   const lookup = {
     1: 'GRP_Index',
     2: 'JTW_Index',
-    3: 'JTW_P_Index',
     4: 'UR_Index',
-    5: 'UR_P_Index',
   };
 
   const makeSerie = (data, name) => {

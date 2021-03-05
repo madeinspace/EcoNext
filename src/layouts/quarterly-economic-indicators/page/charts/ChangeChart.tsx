@@ -12,14 +12,12 @@ const ChangeChart = () => {
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
 
-  const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
-  const lgaData = postData.filter(({ WebID }) => WebID === 10);
+  const lgaData = extendedData.filter(({ WebID }) => WebID === 10);
+
   const lookup = {
     1: 'GRP_Change',
     2: 'JTW_Change',
-    3: 'JTW_P_Change',
-    4: 'UR_Change',
-    5: 'UR_P_Change',
+    3: 'UR_Change',
   };
 
   const makeSerie = data => {

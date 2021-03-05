@@ -30,16 +30,12 @@ const ChartBuilder = () => {
   } = useContext(PageContext);
   const { LongName } = useContext(ClientContext);
 
-  const postData = extendedData.filter(({ Forecast }) => Forecast === 'Post');
-  const preData = extendedData.filter(({ Forecast }) => Forecast === 'Pre');
-  const data = BMID === 1000 ? preData : postData;
+  const data = extendedData; //BMID === 1000 ? preData : postData;
   const lgaData = data.filter(({ WebID }) => WebID === 10);
   const lookup = {
     1: 'GRP_Actual',
     2: 'JTW_Actual',
-    3: 'JTW_P_Actual',
     4: 'UR_Actual',
-    5: 'UR_P_Actual',
   };
 
   const makeSerie = data => {

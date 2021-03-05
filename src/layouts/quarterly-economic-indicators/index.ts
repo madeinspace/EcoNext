@@ -2,12 +2,13 @@ import getActiveToggle from '../../utils/getActiveToggle';
 import { sqlConnection } from '../../utils/sql';
 
 const a = ({ ClientID, WebID = 10, BMID = 40 }) => {
-  const query = `select * from CommData_Economy.[dbo].[fn_COVID19_Forecast_Pre_Post](?,?,?)`;
+  const query = `select * from CommData_Economy.[dbo].[fn_Quarterly_Economic_Indicators](?,?,?)`;
   return { query, params: [ClientID, WebID, BMID] };
 };
 
 const fetchData = async ({ filters }) => {
   const extendedData = await sqlConnection.raw(a(filters).query, a(filters).params);
+  console.log('extendedData: ', extendedData);
   return { extendedData };
 };
 
