@@ -85,7 +85,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2019',
+      DefaultValue: '2020',
       Label: 'Year:',
       Params: null,
       Hidden: true,
@@ -94,7 +94,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2018',
+      DefaultValue: '2019',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End_BR',
