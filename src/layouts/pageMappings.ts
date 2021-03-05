@@ -86,6 +86,7 @@ import CovidIndustryFocusPage from './covid19-industry-focus/page';
 import BusinessTrendsPage from './business-trends/page';
 import OutlookOverviewPage from './outlook-overview/page';
 import CovidJobkeeperEstimatesPage from './jobkeeper-estimates/page';
+import QuarterlyEconomicIndicatorsPage from './quarterly-economic-indicators/page';
 
 const PageMappings = {
   indicator: Parent,
@@ -190,6 +191,7 @@ const PageMappings = {
   'business-trends': BusinessTrendsPage,
   'outlook-overview': OutlookOverviewPage,
   'jobkeeper-estimates': CovidJobkeeperEstimatesPage,
+  'quarterly-economic-indicators': QuarterlyEconomicIndicatorsPage,
 };
 
 export default PageMappings;

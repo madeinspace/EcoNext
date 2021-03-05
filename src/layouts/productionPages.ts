@@ -107,4 +107,5 @@ export default [
   'business-trends',
   'outlook-overview',
   'jobkeeper-estimates',
+  'quarterly-economic-indicators',
 ];
