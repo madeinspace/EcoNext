@@ -8,7 +8,6 @@ const a = ({ ClientID, WebID = 10, BMID = 40 }) => {
 
 const fetchData = async ({ filters }) => {
   const extendedData = await sqlConnection.raw(a(filters).query, a(filters).params);
-  console.log('extendedData: ', extendedData);
   return { extendedData };
 };
 
@@ -34,6 +33,18 @@ const pageContent = {
   filterToggles: [
     {
       Database: 'CommApp',
+      DefaultValue: '10',
+      Label: 'Current area:',
+      Params: [
+        {
+          ClientID: '2',
+        },
+      ],
+      StoredProcedure: 'sp_Toggle_Econ_Area',
+      ParamName: 'WebID',
+    },
+    {
+      Database: 'CommApp',
       DefaultValue: '40',
       Label: 'Current benchmark:',
       Params: [
@@ -41,7 +52,7 @@ const pageContent = {
           ClientID: '9',
         },
       ],
-      StoredProcedure: 'sp_Toggle_Econ_Area_BM_COVID_Forecast',
+      StoredProcedure: 'sp_Toggle_Econ_Area_BM',
       ParamName: 'BMID',
     },
     {
@@ -49,7 +60,7 @@ const pageContent = {
       DefaultValue: '1',
       Label: 'Indicators:',
       Params: [],
-      StoredProcedure: 'sp_Toggle_Econ_Indicator',
+      StoredProcedure: 'sp_Toggle_Econ_IndicatorNoEffective',
       ParamName: 'Ind',
     },
   ],

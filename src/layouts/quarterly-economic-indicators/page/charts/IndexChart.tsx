@@ -19,7 +19,7 @@ const ChangePerChart = () => {
   const lookup = {
     1: 'GRP_Index',
     2: 'JTW_Index',
-    4: 'UR_Index',
+    3: 'UR_Index',
   };
 
   const makeSerie = (data, name) => {
