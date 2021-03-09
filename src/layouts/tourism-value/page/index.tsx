@@ -533,12 +533,12 @@ const chart3Builder = () => {
 
       series: [
         {
-          name: 'Employment (FTE) - Direct',
+          name: 'Employment (FTE) - Indirect',
           data: serieValueAddedIndirect,
           stack: 'value',
         },
         {
-          name: 'Employment (FTE) - Indirect',
+          name: 'Employment (FTE) - Direct',
           data: serieValueAddedDirect,
           stack: 'value',
         },
