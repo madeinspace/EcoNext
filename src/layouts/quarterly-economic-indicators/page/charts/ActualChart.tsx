@@ -35,7 +35,7 @@ const ChartBuilder = () => {
   const lookup = {
     1: 'GRP_Actual',
     2: 'JTW_Actual',
-    4: 'UR_Actual',
+    3: 'UR_Actual',
   };
 
   const makeSerie = data => {
