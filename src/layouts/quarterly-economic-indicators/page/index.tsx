@@ -30,7 +30,7 @@ const QuartleryEconomicIndicatorsPage = () => {
           the COVID-19. This tool should be viewed in conjunction with{' '}
           {LinkBuilder(`https://economy.id.com.au/${clientAlias}/value-of-building-approvals`, 'building approvals')},{' '}
           {LinkBuilder(`https://economy.id.com.au/${clientAlias}/unemployment`, 'unemployment')} and{' '}
-          {LinkBuilder(`https://economy.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
+          {LinkBuilder(`https://profile.id.com.au/${clientAlias}/job-seeker`, 'JobSeeker')} section to understand the
           dynamic nature of the impact of COVID-19.
         </p>
       </PageIntroFullWidth>
