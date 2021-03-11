@@ -55,7 +55,7 @@ const ChartBuilder = (series, categories) => {
   const {
     entityData: { currentIndicator },
   } = useContext(PageContext);
-  const chartTitle = `Indexed ${currentIndicator} (Index, 100 = March Qtr 2020)`;
+  const chartTitle = `Indexed ${currentIndicator} (Index, 100 = Sept Qtr 2016)`;
   const yAxisTitle = ``;
   const rawDataSource =
     'Source: National Institute of Economic and Industry Research (NIEIR). ©2021 Compiled and presented in economy.id by .id informed decisions.';
