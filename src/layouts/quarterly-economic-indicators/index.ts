@@ -23,7 +23,7 @@ const pageContent = {
   entities: [
     {
       Title: 'SubTitle',
-      renderString: ({ filters }): string => `COVID-19 Extended forecasts`,
+      renderString: ({ filters }): string => `Quarterly economic indicators`,
     },
     {
       Title: 'Version',

@@ -46,7 +46,7 @@ export default ChangePerChart;
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR). ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -55,10 +55,10 @@ const ChartBuilder = (series, categories) => {
   const {
     entityData: { currentIndicator },
   } = useContext(PageContext);
-  const chartTitle = `Indexed ${currentIndicator} forecast (Index, 100 = March Qtr 2020)`;
+  const chartTitle = `Indexed ${currentIndicator} (Index, 100 = March Qtr 2020)`;
   const yAxisTitle = ``;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR). ©2021 Compiled and presented in economy.id by .id informed decisions.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${

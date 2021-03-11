@@ -17,7 +17,7 @@ export default ActualChart;
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR). ©2020 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR). ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -50,9 +50,9 @@ const ChartBuilder = () => {
   const min = Math.min(...actualSerie.data);
   const lgaSerieNum = [actualSerie];
 
-  const chartTitle = `Quarterly ${currentIndicator} forecast (${+Ind === 1 ? '$m' : 'Total'})`;
+  const chartTitle = `Quarterly ${currentIndicator} (${+Ind === 1 ? '$m' : 'Total'})`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) Version 2.1 (Sept 2020). ©2020 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR). ©2021 Compiled and presented in economy.id by .id informed decisions.';
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span>${this.series.name}<br/> ${
