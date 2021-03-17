@@ -13,7 +13,7 @@ import OutputChart from './charts/JobKeeperEstimatesChart';
 const JobKeeperPage = () => {
   const { clientAlias } = useContext(ClientContext);
   const {
-    entityData: { currentVulnerability, currentQuarter },
+    entityData: { currentArea },
   } = useContext(PageContext);
 
   return (
@@ -56,9 +56,9 @@ const JobKeeperPage = () => {
 
       <SubTitleAlt2>Local Jobs compensated by JobKeeper</SubTitleAlt2>
       <p>
-        This indicator shows the estimated number of jobs compensated by JobKeeper in the Northern Beaches Council area
-        by vulnerability and industry. Workers in industries with higher share of working zero hours are more
-        vulnerability once the JobKeeper finishes.
+        This indicator shows the estimated number of jobs compensated by JobKeeper in the {currentArea} area by
+        vulnerability and industry. Workers in industries with higher share of working zero hours are more vulnerability
+        once the JobKeeper finishes.
       </p>
       <ItemWrapper>{<OutputChart measure={'LJ_JK'} />}</ItemWrapper>
       <SubTitleAlt2>Employed Resident Impacts</SubTitleAlt2>

@@ -17,6 +17,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
+    currentArea: getActiveToggle(filterToggles, 'WebID'),
     currentVulnerability: getActiveToggle(filterToggles, 'Vln'),
     currentQuarter: getActiveToggle(filterToggles, 'Qrt'),
   };
