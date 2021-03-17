@@ -9,10 +9,9 @@ const ChangePerChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind, BMID },
-    entityData: { currentBenchmark },
+    entityData: { currentBenchmark, currentArea },
   } = useContext(PageContext);
-  const { LongName } = useContext(ClientContext);
-  const lgaData = extendedData.filter(({ WebID }) => WebID === 10);
+  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
   const BMData = extendedData.filter(({ WebID }) => WebID === 40);
   const benchmarkData = BMData.filter(({ WebID }) => {
     return WebID === +BMID;
@@ -31,7 +30,7 @@ const ChangePerChart = () => {
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
-  const lgaSerie = makeSerie(lgaData, LongName);
+  const lgaSerie = makeSerie(lgaData, currentArea);
   const bmSerie = makeSerie(benchmarkData, currentBenchmark);
   const lgaSerieNum = [lgaSerie, bmSerie];
   const num = ChartBuilder(lgaSerieNum, categories);

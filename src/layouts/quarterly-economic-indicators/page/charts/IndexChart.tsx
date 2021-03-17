@@ -9,11 +9,10 @@ const ChangePerChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind },
-    entityData: { currentBenchmark },
+    entityData: { currentBenchmark, currentArea },
   } = useContext(PageContext);
-  const { LongName } = useContext(ClientContext);
 
-  const lgaData = extendedData.filter(({ WebID }) => WebID === 10);
+  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
   const BMData = extendedData.filter(({ WebID }) => WebID === 40);
   const benchmarkData = BMData.filter(({ WebID }) => WebID != 10);
   const lookup = {
@@ -30,7 +29,7 @@ const ChangePerChart = () => {
     };
   };
   const categories = lgaData.map(({ Label }) => Label);
-  const lgaSerie = makeSerie(lgaData, LongName);
+  const lgaSerie = makeSerie(lgaData, currentArea);
   const bmSerie = makeSerie(benchmarkData, currentBenchmark);
   const lgaSerieNum = [lgaSerie, bmSerie];
   const num = ChartBuilder(lgaSerieNum, categories);
@@ -65,6 +64,14 @@ const ChartBuilder = (series, categories) => {
       this.category
     }:  ${formatNumber(this.y)}`;
   };
+  const values = [...series[0].data, ...series[1].data];
+  console.log('values: ', values);
+
+  const max = Math.ceil(Math.max(...values));
+  const buffer = 0.1;
+  const indexRange = [100 - (max - 100), 100, max];
+  console.log('indexRange: ', indexRange);
+  console.log('max: ', max);
 
   return {
     highchartOptions: {
@@ -94,7 +101,7 @@ const ChartBuilder = (series, categories) => {
         },
       },
       yAxis: {
-        tickPositions: [85, 100, 115],
+        tickPositions: indexRange,
         title: {
           text: yAxisTitle,
         },

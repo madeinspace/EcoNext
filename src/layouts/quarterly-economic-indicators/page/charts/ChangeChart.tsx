@@ -9,10 +9,10 @@ const ChangeChart = () => {
   const {
     contentData: { extendedData },
     filters: { Ind },
+    entityData: { currentArea },
   } = useContext(PageContext);
-  const { LongName } = useContext(ClientContext);
 
-  const lgaData = extendedData.filter(({ WebID }) => WebID === 10);
+  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
 
   const lookup = {
     1: 'GRP_Change',
@@ -23,7 +23,7 @@ const ChangeChart = () => {
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
     return {
-      name: LongName,
+      name: currentArea,
       data: serie,
     };
   };

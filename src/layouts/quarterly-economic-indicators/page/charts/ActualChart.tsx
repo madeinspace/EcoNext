@@ -25,13 +25,12 @@ const ChartSource = () => (
 const ChartBuilder = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind, BMID },
-    entityData: { currentIndicator },
+    filters: { Ind },
+    entityData: { currentIndicator, currentArea },
   } = useContext(PageContext);
-  const { LongName } = useContext(ClientContext);
 
   const data = extendedData; //BMID === 1000 ? preData : postData;
-  const lgaData = data.filter(({ WebID }) => WebID === 10);
+  const lgaData = data.filter(({ WebID }) => WebID != 40);
   const lookup = {
     1: 'GRP_Actual',
     2: 'JTW_Actual',
@@ -41,7 +40,7 @@ const ChartBuilder = () => {
   const makeSerie = data => {
     const serie = data.map(item => item[lookup[+Ind]]);
     return {
-      name: LongName,
+      name: currentArea,
       data: serie,
     };
   };

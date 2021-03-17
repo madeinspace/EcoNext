@@ -5,7 +5,6 @@ import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 import { LinkBuilder } from '../../../components/ui/links';
 import { PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import { ClientContext } from '../../../utils/context';
-import Disclaimers from '../../covid19-quarter-impacts/page/Disclaimers';
 import ActualChart from './charts/ActualChart';
 import ChangeChart from './charts/ChangeChart';
 import ChangePerChart from './charts/ChangePerChart';

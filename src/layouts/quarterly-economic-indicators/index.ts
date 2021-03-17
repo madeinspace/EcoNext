@@ -13,6 +13,7 @@ const fetchData = async ({ filters }) => {
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
+    currentArea: getActiveToggle(filterToggles, 'WebID'),
     currentBenchmark: getActiveToggle(filterToggles, 'BMID'),
     currentIndicator: getActiveToggle(filterToggles, 'Ind'),
   };
