@@ -348,7 +348,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
       base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
       releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -358,7 +358,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -374,7 +374,7 @@ const tableBuilder = ({
   TabularData: data,
   exportID,
 }) => {
-  const rawDataSource = 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019.';
+  const rawDataSource = 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021.';
   let tableTitle = `${capitalise(entityData(exportID).entityTitle)} by industry sector`;
   let anchor = entityData(exportID).anchor;
   const firstColTitle = 'Industry';
@@ -600,7 +600,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data, e
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% of ${entityData(exportID).yAxisTitle} export`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 650;
@@ -688,7 +688,7 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in ${entityData(exportID).yAxisTitle} exports ($millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 650;
