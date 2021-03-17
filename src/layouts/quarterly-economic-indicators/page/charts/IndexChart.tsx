@@ -8,13 +8,12 @@ import { ClientContext, PageContext } from '../../../../utils/context';
 const ChangePerChart = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind },
+    filters: { Ind, BMID, WebID },
     entityData: { currentBenchmark, currentArea },
   } = useContext(PageContext);
-
-  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
-  const BMData = extendedData.filter(({ WebID }) => WebID === 40);
-  const benchmarkData = BMData.filter(({ WebID }) => WebID != 10);
+  const LGAID = +WebID;
+  const lgaData = extendedData.filter(({ WebID }) => WebID === LGAID);
+  const benchmarkData = extendedData.filter(({ WebID }) => WebID === +BMID);
   const lookup = {
     1: 'GRP_Index',
     2: 'JTW_Index',
@@ -65,13 +64,14 @@ const ChartBuilder = (series, categories) => {
     }:  ${formatNumber(this.y)}`;
   };
   const values = [...series[0].data, ...series[1].data];
-  console.log('values: ', values);
 
   const max = Math.ceil(Math.max(...values));
-  const buffer = 0.1;
-  const indexRange = [100 - (max - 100), 100, max];
-  console.log('indexRange: ', indexRange);
-  console.log('max: ', max);
+  const min = Math.floor(Math.min(...values));
+
+  const maxDiff = () => Math.max(Math.abs(Math.min(max, min) - 100), Math.abs(Math.max(max, min) - 100));
+  const maxdif = maxDiff() + 2;
+
+  const indexRange = [100 - maxdif, 100, 100 + maxdif];
 
   return {
     highchartOptions: {

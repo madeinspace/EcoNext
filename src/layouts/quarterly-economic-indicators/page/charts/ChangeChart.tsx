@@ -8,11 +8,12 @@ import { ClientContext, PageContext } from '../../../../utils/context';
 const ChangeChart = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind },
+    filters: { Ind, WebID },
     entityData: { currentArea },
   } = useContext(PageContext);
 
-  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
+  const LGAID = +WebID;
+  const lgaData = extendedData.filter(({ WebID }) => WebID === LGAID);
 
   const lookup = {
     1: 'GRP_Change',

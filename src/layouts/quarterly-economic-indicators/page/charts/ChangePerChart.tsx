@@ -8,11 +8,12 @@ import { ClientContext, PageContext } from '../../../../utils/context';
 const ChangePerChart = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind, BMID },
+    filters: { Ind, BMID, WebID },
     entityData: { currentBenchmark, currentArea },
   } = useContext(PageContext);
-  const lgaData = extendedData.filter(({ WebID }) => WebID != 40);
-  const BMData = extendedData.filter(({ WebID }) => WebID === 40);
+  const LGAID = +WebID;
+  const lgaData = extendedData.filter(({ WebID }) => WebID === LGAID);
+  const BMData = extendedData.filter(({ WebID }) => WebID === +BMID);
   const benchmarkData = BMData.filter(({ WebID }) => {
     return WebID === +BMID;
   });

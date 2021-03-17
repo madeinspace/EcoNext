@@ -25,12 +25,12 @@ const ChartSource = () => (
 const ChartBuilder = () => {
   const {
     contentData: { extendedData },
-    filters: { Ind },
+    filters: { Ind, WebID },
     entityData: { currentIndicator, currentArea },
   } = useContext(PageContext);
 
-  const data = extendedData; //BMID === 1000 ? preData : postData;
-  const lgaData = data.filter(({ WebID }) => WebID != 40);
+  const LGAID = +WebID;
+  const lgaData = extendedData.filter(({ WebID }) => WebID === LGAID);
   const lookup = {
     1: 'GRP_Actual',
     2: 'JTW_Actual',
