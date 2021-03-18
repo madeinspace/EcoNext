@@ -8,8 +8,10 @@ import { formatPercent } from '../../utils';
 const contentDataQuery = {
   id: 1,
   name: 'main',
-  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
-    return `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, ${IndkeyNieir}, ${DataType}) ORDER BY SortOrder`;
+  q: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
+    const query = `select * from CommData_Economy.[dbo].[fn_WP_Contribution_Stats](?,?,?,?,?,?,?) ORDER BY SortOrder`;
+    const params = [ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType];
+    return { query, params };
   },
 };
 
@@ -17,9 +19,10 @@ const contentDataQuery = {
 const LQSSDataQuery = {
   id: 2,
   name: 'sharedAnalysis',
-  query: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
-    const query = `select * from CommData_Economy.[dbo].[fn_LQSS_Analysis_1and2Digit_chart](${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, ${IndkeyNieir}, ${DataType})`;
-    return query;
+  q: ({ ClientID, WebID, BMID, sStartYear, sEndYear, IndkeyNieir, DataType = 1 }) => {
+    const query = `select * from CommData_Economy.[dbo].[fn_LQSS_Analysis_1and2Digit_chart](?,?,?,?,?,?,?,?)`;
+    const params = [ClientID, WebID, BMID, sStartYear, sEndYear, 1, IndkeyNieir, DataType];
+    return { query, params };
   },
 };
 
@@ -27,8 +30,8 @@ const queries = [contentDataQuery, LQSSDataQuery];
 
 const fetchData = async ({ filters }) =>
   await Promise.all(
-    queries.map(async ({ query, name, id }) => {
-      return { id, name, data: await sqlConnection.raw(query(filters)) };
+    queries.map(async ({ q, name, id }) => {
+      return { id, name, data: await sqlConnection.raw(q(filters).query, q(filters).params) };
     }),
   );
 
@@ -68,10 +71,6 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: (): string => `National Economics (NIEIR) - Modelled series`,
-    },
-    {
-      Title: 'Banner',
-      renderString: (): string => `2019/20 Output by destination information coming soon`.toUpperCase(),
     },
   ],
   filterToggles: [
@@ -113,7 +112,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2019',
+      DefaultValue: '2020',
       Label: 'Year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
@@ -122,7 +121,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2014',
+      DefaultValue: '2015',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',
