@@ -97,7 +97,7 @@ const Source = () => {
 };
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> Compiled and presented in economy.id by <IdLink />.
+    Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />.
   </p>
 );
 // #endregion
