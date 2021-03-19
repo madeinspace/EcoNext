@@ -14,14 +14,13 @@ import useEntityText from '../../../utils/useEntityText';
 // #region page
 const TourismVisitorSummaryPage = () => {
   const { isLite } = useContext(ClientContext);
-  const {
-    filters: { BMID },
-    contentData,
-    entityData: { currentBenchmarkName, currentAreaName },
-  } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
-  const chart1Data = chartBuilder();
-  const chart2Data = chartBuilderChange();
+  const year = Math.max(...contentData[1].data.map(o => o.LabelKey), 0);
+  const yearLabel = contentData[1].data.find(({ LabelKey }) => LabelKey === year).FinYearName;
+
+  const chart1Data = chartBuilder(year, yearLabel);
+  const chart2Data = chartBuilderChange(yearLabel);
 
   return (
     <>
@@ -319,13 +318,14 @@ const tableQuartileRangesBuilder = () => {
 // #endregion
 
 // #region chart builders
-const chartBuilder = () => {
+const chartBuilder = (year, yearLabel) => {
   const {
     filters: { BMID },
     contentData,
     entityData: { currentBenchmarkName, currentAreaName },
   } = useContext(PageContext);
-  const data = contentData[1].data.filter(({ FinYearName }) => FinYearName === '2018/19')[0];
+
+  const data = contentData[1].data.filter(({ LabelKey }) => LabelKey === year)[0];
 
   let isMoot =
     data['International Visitor Nights'] === null &&
@@ -357,7 +357,7 @@ const chartBuilder = () => {
         type: 'bar',
       },
       title: {
-        text: 'Breakup of visitor nights 2018/19',
+        text: `Breakup of visitor nights ${yearLabel}`,
       },
       subtitle: {
         text: `${currentAreaName}`,
@@ -423,7 +423,7 @@ const chartBuilder = () => {
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = () => {
+const chartBuilderChange = yearLabel => {
   const {
     contentData,
     entityData: { currentAreaName },
@@ -461,7 +461,7 @@ const chartBuilderChange = () => {
         type: 'column',
       },
       title: {
-        text: 'Breakup of visitor nights 2018/19',
+        text: `Breakup of visitor nights ${yearLabel}`,
       },
       subtitle: {
         text: `${currentAreaName}`,
