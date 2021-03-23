@@ -1122,3 +1122,23 @@ text.highcharts-drilldown-data-label,
     stroke: #e4d354;
   }
 }
+
+.highcharts-series {
+  &.highcharts-series-1 {
+    &.benchmark {
+      fill: #e4d354;
+      stroke: #e4d354;
+    }
+  }
+}
+
+.highcharts-legend-item {
+  &.highcharts-line-series {
+    &.highcharts-series-1 {
+      &.benchmark {
+        fill: #e4d354;
+        stroke: #e4d354;
+      }
+    }
+  }
+}

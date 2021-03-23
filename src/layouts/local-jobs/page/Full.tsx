@@ -12,7 +12,7 @@ const FullContent = () => {
   const { clientAlias } = useContext(ClientContext);
   const { contentData, filterToggles } = useContext(PageContext);
   const benchmarkList: any = filterToggles.filter(({ key }) => key === 'BMID')[0];
-  const defaultBenchmarkName = benchmarkList.default.Label;
+  const defaultBenchmarkName = benchmarkList.active.Label;
   const GRPChartData = JobsChartBuilder(contentData);
   const AnnualChangeChartData = AnnualChangeJobsChartBuilder(contentData, defaultBenchmarkName);
   const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);
@@ -235,6 +235,7 @@ const AnnualChangeJobsChartBuilder = (nodes, defaultBenchmarkName) => {
           data: clientSerie,
         },
         {
+          className: 'benchmark',
           name: defaultBenchmarkName,
           data: benchmarkSerie,
         },
