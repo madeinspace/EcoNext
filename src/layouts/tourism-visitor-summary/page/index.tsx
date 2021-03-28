@@ -70,7 +70,7 @@ export default TourismVisitorSummaryPage;
 const TableSource = () => (
   <p>
     Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')}, Unpublished data from the National
-    Visitor Survey and International Visitor Survey 2018/19. Note: "--" represents unavailable data or data that has
+    Visitor Survey and International Visitor Survey 2019/20. Note: "--" represents unavailable data or data that has
     been suppressed due to a sample size of 40 or less.
   </p>
 );
@@ -78,7 +78,7 @@ const TableSource = () => (
 const ChartSource = () => (
   <p>
     Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor
-    Survey 2018/19.
+    Survey 2019/20.
   </p>
 );
 // #endregion
@@ -140,7 +140,7 @@ const tableVisitorNightsNumbersBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} -  2010/11 to 2018/19`,
+            displayText: `${currentAreaName} -  2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -257,7 +257,7 @@ const tableQuartileRangesBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} -  2010/11 to 2018/19`,
+            displayText: `${currentAreaName} -  2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -413,7 +413,7 @@ const chartBuilder = (year, yearLabel) => {
       },
     },
     rawDataSource:
-      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2018/19.',
+      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2019/20.',
     dataSource: <ChartSource />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -516,7 +516,7 @@ const chartBuilderChange = yearLabel => {
       },
     },
     rawDataSource:
-      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2018/19.',
+      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2019/20.',
     dataSource: <ChartSource />,
     chartContainerID: 'chart2',
     logoUrl: idlogo,
