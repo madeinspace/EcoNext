@@ -16,7 +16,7 @@ import useEntityText from '../../../utils/useEntityText';
 const Source = () => (
   <p>
     Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')} , Unpublished data from the
-    International Visitor Survey 2018/19. Note: "--" represents unavailable data or data that has been suppressed due to
+    International Visitor Survey 2019/20. Note: "--" represents unavailable data or data that has been suppressed due to
     a sample size of 40 or less. A 5 year aggregate is used here to minimize the figures which need to be suppressed,
     but sample sizes may still be too small for some categories.
   </p>

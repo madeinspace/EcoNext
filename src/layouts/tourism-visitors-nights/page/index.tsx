@@ -14,14 +14,14 @@ import useEntityText from '../../../utils/useEntityText';
 const Source = () => (
   <p>
     Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')} , Unpublished data from the
-    International Visitor Survey 2018/19. Note: "--" represents unavailable data or data that has been suppressed due to
+    International Visitor Survey 2019/20. Note: "--" represents unavailable data or data that has been suppressed due to
     a sample size of 40 or less. Suppressed figures are still used in the 5 year average calculations.
   </p>
 );
 const ChartSource = () => (
   <p>
     Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')} , Unpublished data from the
-    International Visitor Survey 2018/19.
+    International Visitor Survey 2019/20.
   </p>
 );
 // #endregion
@@ -99,7 +99,7 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} - 2010/11 to 2018/19`,
+            displayText: `${currentAreaName} - 2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -263,7 +263,7 @@ const tableBuilderAlt = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} - 2010/11 to 2018/19`,
+            displayText: `${currentAreaName} - 2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -348,7 +348,7 @@ const chartBuilder = () => {
   const chartType = 'column';
   const chartTitle = `${currentTourismtype}`;
   const rawDataSource =
-    'Source: Tourism Research Australia, Unpublished data from the International Visitor Survey 2018/19.';
+    'Source: Tourism Research Australia, Unpublished data from the International Visitor Survey 2019/20.';
   const xAxisTitle = 'Financial year';
   const yAxisTitle = 'Visitors';
   const chartContainerID = 'chart1';
