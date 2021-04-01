@@ -12,7 +12,7 @@ const FullContent = () => {
   const { clientAlias } = useContext(ClientContext);
   const { contentData, filterToggles } = useContext(PageContext);
   const benchmarkList: any = filterToggles.filter(({ key }) => key === 'BMID')[0];
-  const defaultBenchmarkName = benchmarkList.default.Label;
+  const defaultBenchmarkName = benchmarkList.active.Label;
   const GRPChartData = JobsChartBuilder(contentData);
   const AnnualChangeChartData = AnnualChangeJobsChartBuilder(contentData, defaultBenchmarkName);
   const tableParams = tableBuilder(defaultBenchmarkName, clientAlias, contentData);
@@ -37,7 +37,7 @@ export default FullContent;
 // #region Source
 const Source = () => (
   <p>
-    Source: <NierLink /> National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in
+    Source: <NierLink /> National Institute of Economic and Industry Research (NIEIR) ©2021. Compiled and presented in
     economy.id by <IdLink />
   </p>
 );
@@ -138,7 +138,7 @@ const tableBuilder = (defaultBenchmarkName, clientAlias, rows) => {
 };
 
 const rawDataSource =
-  'Source: National Institute of Economic and Industry Research(NIEIR) ©2019. Compiled and presented in economy.id by.id, the population experts Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
+  'Source: National Institute of Economic and Industry Research(NIEIR) ©2021. Compiled and presented in economy.id by.id informed decisions Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
 
 const JobsChartBuilder = nodes => {
   const chartTitle = 'Local jobs';
@@ -147,7 +147,7 @@ const JobsChartBuilder = nodes => {
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Local jobs';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'Year_End').reverse();
   const serie = _.map(nodes, 'LocalJobs').reverse();
@@ -235,6 +235,7 @@ const AnnualChangeJobsChartBuilder = (nodes, defaultBenchmarkName) => {
           data: clientSerie,
         },
         {
+          className: 'benchmark',
           name: defaultBenchmarkName,
           data: benchmarkSerie,
         },

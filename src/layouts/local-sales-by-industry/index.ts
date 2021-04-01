@@ -3,8 +3,11 @@ import Page from './page';
 import getActiveToggle from '../../utils/getActiveToggle';
 import { formatNumber } from '../../utils';
 
-const contentDataQuery = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) =>
-  `select * from CommData_Economy.[dbo].[fn_LocalSales_1and2Digit]( ${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null )  `;
+const q = ({ ClientID, BMID, sStartYear, sEndYear, WebID }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_LocalSales_1and2Digit]( ?,?,?,?,?,?,?)  `;
+  const params = [ClientID, WebID, BMID, sStartYear, sEndYear, 1, null];
+  return { query, params };
+};
 
 const largest = (arr, key) => {
   return arr
@@ -14,7 +17,7 @@ const largest = (arr, key) => {
     })[0];
 };
 
-const fetchData = async ({ filters }) => await sqlConnection.raw(contentDataQuery(filters));
+const fetchData = async ({ filters }) => await sqlConnection.raw(q(filters).query, q(filters).params);
 
 const activeCustomToggles = ({ filterToggles }) => {
   const activeCustomToggles = {
@@ -73,7 +76,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2019',
+      DefaultValue: '2020',
       Label: 'Year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
@@ -82,7 +85,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2014',
+      DefaultValue: '2015',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',

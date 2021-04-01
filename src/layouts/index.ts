@@ -13,8 +13,6 @@ export default async (handle: string) => {
 
   // Lazy loading and code splitting here
   const pageData = await import(`./${handle}`);
-  const pageLayout = await import(`./${handle}/page`);
-  pageData.layout = pageLayout;
 
   return pageData;
 };

@@ -3,6 +3,7 @@ import filter from 'lodash/filter';
 import getConfig from 'next/config';
 import { useContext } from 'react';
 import { ClientContext } from './context';
+import qs from 'qs';
 const { publicRuntimeConfig } = getConfig();
 
 export const pathParts = (path: string) => {
@@ -33,3 +34,11 @@ export const getPagesByID = ids => {
 };
 
 export const PageListMaker = set => set.map(g => ({ ...g, options: getPagesByID(g.options) }));
+
+export const ammendQueryStr = (key, value) => {
+  const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+  query[key] = value;
+  const stringiifiedQuery = qs.stringify(query);
+  const href = `${location.pathname}?${stringiifiedQuery}`;
+  window.history.replaceState(query, '', href);
+};

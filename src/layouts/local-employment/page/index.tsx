@@ -213,7 +213,7 @@ const tableBuilder = () => {
     entityData: { currentAreaName, currentTypeName, prefixedAreaName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = `Employment self-sufficiency by ${currentTypeName}`;
   const firstColTitle = 'Industry';
   const footerRows = data[0].data.filter(({ LabelKey }) => LabelKey === 999999);
@@ -348,7 +348,7 @@ const tableBuilder2 = () => {
     entityData: { currentAreaName, prefixedAreaName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Employment self-sufficiency by occupation';
   const firstColTitle = 'Occupation';
   const footerRows = data[1].data.filter(({ LabelKey }) => LabelKey === 99999);
@@ -490,7 +490,7 @@ const chartBuilder = () => {
   const chartTitle = `Employment self-sufficiency by industry 2016`;
   const chartSubtitle = `${currentAreaName}`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const tooltip = function() {
@@ -622,7 +622,7 @@ const chartBuilderChange = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% employed`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 
@@ -696,7 +696,7 @@ const chartBuilderOccupation = () => {
   const chartTitle = `Employment self-sufficiency by occupation 2016`;
   const chartSubtitle = `${currentAreaName}`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const tooltip = function() {
@@ -820,7 +820,7 @@ const chartBuilderOccupationChange = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% employed`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 

@@ -178,7 +178,7 @@ const chartBuilder = nodes => {
   const nonRresidentialSerie = _.map(nodes, 'NonResidential').reverse();
   const categories = _.map(nodes, 'LabelName').reverse();
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'totalValueOfBuildingApprovals';
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.series.name}: ${formatNumber(

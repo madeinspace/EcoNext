@@ -157,11 +157,13 @@ const WorkerLevelOfQualificationPage = () => {
   const totalQual = _.sumBy(WithQual, 'NoYear1');
   const totalNoQual = _.sumBy(NoQual, 'NoYear1');
   const percQualClient = formatPercent(_.sumBy(WithQual, 'PerYear1'));
-  const percNoQualClient = formatPercent(_.sumBy(NoQual, 'PerYear1'));
   const percQualBM = formatPercent(_.sumBy(WithQual, 'BMYear1'));
+  const percNoQualClient = formatPercent(_.sumBy(NoQual, 'PerYear1'));
   const percNoQualBM = formatPercent(_.sumBy(NoQual, 'BMYear1'));
-  const withQual = Math.abs(totalQual - totalNoQual) < 1 ? 'similar' : totalQual > totalNoQual ? 'higher' : 'lower';
-  const withoutQual = Math.abs(totalNoQual - totalQual) < 1 ? 'similar' : totalNoQual > totalQual ? 'higher' : 'lower';
+  const withQual =
+    Math.abs(percQualClient - percQualBM) < 1 ? 'similar' : percQualClient > percQualBM ? 'higher' : 'lower';
+  const withoutQual =
+    Math.abs(percNoQualClient - percNoQualBM) < 1 ? 'similar' : percNoQualClient > percNoQualBM ? 'higher' : 'lower';
   const genderText = +Sex === 3 ? '' : currentGenderName.toLowerCase().replace(/s\b/gi, '');
   const industryText = +Indkey === 23000 ? '' : `(${currentIndustryName})`;
 
@@ -312,7 +314,7 @@ const tableBuilder = ({
   currentIndustryName,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = `Local workers qualifications`;
   const firstColTitle = 'Qualification level';
   const parents = _.sortBy(
@@ -480,7 +482,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Qualifications';
   const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/gi, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -557,7 +559,7 @@ const chartBuilderChange = ({ currentAreaName, currentIndustryName, currentGende
   const xAxisTitle = 'Qualifications';
   const yAxisTitle = `Change in ${genderText.toLowerCase().replace(/s\b/gi, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 

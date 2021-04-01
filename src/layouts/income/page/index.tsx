@@ -214,7 +214,7 @@ const TableSource = () => (
 // #region table builders
 const tableBuilder = ({ clientAlias, currentAreaName, currentBenchmarkName, currentGenderName, contentData }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `${capitalise(genderLookup[currentGenderName])} workers individual income`;
   const firstColTitle = 'Gross weekly individual income';
 
@@ -339,7 +339,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Gross weekly income';
   const yAxisTitle = `% of ${genderLookup[currentGenderName]} workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 

@@ -69,6 +69,14 @@ async function renderAndCache(req, res) {
   }
 }
 
+/**
+ * STUCK AT v9.5.2!!
+ * https://github.com/vercel/next.js/releases/tag/v9.5.3-canary.0
+ * breaks the dynamic route for us (control panel change using route.push())
+ * I suspect this item is the culprit: https://github.com/vercel/next.js/pull/15231 
+ * can't figure it out ;(
+ */
+
 app.prepare().then(async () => {
   const server = express();
   server.use(favicon(path.join(__dirname, '/', 'favicon.ico')));
@@ -77,8 +85,13 @@ app.prepare().then(async () => {
     handle(req, res);
   });
 
+  server.get('/api/*', (req, res) => {
+    /* serving api content using next.js handler */
+    handle(req, res);
+  });
+
   server.get('*', (req, res) => {
-    /* serving page */
+    /* serving SSR pages */
     return renderAndCache(req, res);
   });
 

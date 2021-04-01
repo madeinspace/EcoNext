@@ -1,106 +1,79 @@
 // #region imports
-import dynamic from 'next/dynamic';
-import { useContext, useState, useRef } from 'react';
-import ControlPanel from '../../../components/ControlPanel/ControlPanel';
-import { MapLoader } from '../../../components/Map/MapLoader';
-import {
-  MapWrapper,
-  PageIntro,
-  SourceBubble,
-  ItemWrapper,
-  SubTitleAlt,
-  EntityTitle,
-} from '../../../styles/MainContentStyles';
+import { useContext } from 'react';
+import { PageIntro, SourceBubble, ItemWrapper, ShadowWrapper } from '../../../styles/MainContentStyles';
 import { PageContext, ClientContext } from '../../../utils/context';
-import { IdLink } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
-import { formatPercent, formatNumber } from '../../../utils';
+import { formatNumber, formatChangeInt, idlogo } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
 import RelatedPagesCTA from '../../../components/RelatedPages';
-const LeafletMap = dynamic(() => import('../../../components/Map'), { ssr: false });
-import axios from 'axios';
-import parse from 'html-react-parser';
-import React from 'react';
-import { ExportButton, ResetButton } from '../../../components/Actions';
-import { EntityFooter } from '../../../components/EntityFooter';
+import useDropdown from '../../../utils/hooks/useDropdown';
+import { Headline as StyledHeadline } from '../../../styles/MainContentStyles';
+import ReactChart from '../../../components/chart/ReactChart';
+import _ from 'lodash';
 // #endregion
 
 // #region template page
 const BusinessTrendsPage = () => {
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [Table, setTable] = useState(null);
   const { clientAlias, LongName } = useContext(ClientContext);
   const {
-    filters,
-    contentData: { mapData },
+    contentData: { BusinessTrendsData, toggles },
     entityData: { currentIndustryName, prefixedAreaName },
   } = useContext(PageContext);
 
-  const onMapLoaded = () => setMapLoaded(true);
-
-  let selectedAreas = [];
-  const handleShapeSelection = id => {
-    selectedAreas.indexOf(id) === -1 ? selectedAreas.push(id) : selectedAreas.splice(selectedAreas.indexOf(id), 1);
-    selectedAreas.length > 0 ? getTable() : setTable(null);
+  const industryDropDownInitialState = {
+    label: 'All industries',
+    value: '23000',
   };
-  const mapRef: any = useRef();
+  const dropdownData = toggles.map(toggle => {
+    return { value: toggle.Value, label: toggle.Label };
+  });
+  const [industry, IndustryDropdown] = useDropdown('All industries', industryDropDownInitialState, dropdownData);
+  const yearStart = 2015;
 
-  const reset = () => {
-    setTable(null);
-    selectedAreas = [];
-    mapRef.current.resetLayerStyles();
-  };
+  const getDataByIndustry = indKey =>
+    BusinessTrendsData.filter(({ LabelKey, Year }) => Year >= yearStart && LabelKey === indKey);
+  const data = _.sortBy(getDataByIndustry(+industry.value), ['After']);
 
-  const getTable = () => {
-    axios
-      .get(
-        `https://economy.id.com.au/${clientAlias}/entity/table/2902?IndkeyABR=${
-          filters.IndkeyABR
-        }&Title=${currentIndustryName}&ShapeId=${selectedAreas.toString()}`,
-      )
-      .then(res => {
-        const table = res.data.replace('[ShapeId]', `${currentIndustryName}`);
-        const parsedTable = parse(table, {
-          replace: domNode => {
-            if (domNode.attribs && domNode.attribs.class === 'btn-group') {
-              const url = domNode.children.filter(item => {
-                if (item.attribs) {
-                  return item.attribs.class === 'idc-controlpanel-button-export';
-                }
-              })[0].attribs.href;
-              return (
-                <>
-                  <ResetButton onClick={reset} />
-                  <ExportButton name="Export to excel" onClick={() => window.open(`${url}`, '_self')} />
-                </>
-              );
-            }
-          },
-        });
+  const lastQuarter = data.slice(-1).pop();
+  const indLabel = +industry.value === 23000 ? 'total GST registered' : `GST registered ${industry.label}`;
+  const chartSub = `${LongName} - ${industry.label}`;
 
-        setTable(parsedTable);
-      });
-  };
-
-  const MapSource = () => (
-    <p>
-      Source: Australian Business Register. Compiled and presented in economy.id by <IdLink />. <strong>Note</strong>:
-      The data presented in this map and table are subjected to a confidentiality process. This is done to avoid the
-      identification of particular businesses.
-    </p>
-  );
+  const registeredBizQuarterly = registeredBizChartBuilder(data, chartSub);
+  const ChangeInRegisteredBizQuarterly = registeredBizChangeChartBuilder(data, chartSub);
+  const tabledata = tableBuilder(data, chartSub);
 
   return (
     <>
+      <StyledHeadline>
+        There were an estimated {formatNumber(lastQuarter.Tot_Reg_Bus)} {indLabel} businesses in {prefixedAreaName} in
+        the {lastQuarter.label} quarter. There were {formatNumber(lastQuarter.New_Reg_Bus)} new businesses and{' '}
+        {formatNumber(lastQuarter.Cancel_Reg_Bus)} business GST cancellations in the same quarter.
+      </StyledHeadline>
       <PageIntro>
         <div>
           <p>
-            The Australian Business Register is a register of all business entities and sole traders in Australia, based
-            on Australian Business Numbers (ABNs), maintained by the Australian Taxation Office.
+            The Australian Business Register (ABR) is a register of all business entities and sole traders in Australia,
+            based on Australian Business Numbers (ABNs), maintained by the Australian Taxation Office.
           </p>
           <p>
-            Data from the ABR is useful in planning and economic development, to identify the spatial patterns of
-            businesses across {prefixedAreaName}, clusters and change in business growth patterns across the area.
+            While ABR business data does not pick up all operations in a region (some companies are not registered at
+            the location where they undertake commercial operations), the time-series data can be quite insightful. It
+            can give you an indication of the short-term impacts of macro-events, and can also offer a sign as to how
+            favourable local conditions are to establishing new businesses during normal times.
+          </p>
+          <p>
+            COVID-19 pandemic is producing business conditions substantially different from normal. Using the Business
+            Trends page will allow users to monitor the impact of COVID-19 locally and particularly how each industry is
+            being affected. This dataset should be viewed in conjunction with{' '}
+            {LinkBuilder(`https://economy.id.com.au/${clientAlias}/covid19`, 'COVID-19 Economic Outlook')} page to
+            understand the magnitude and the direction of the impact of COVID-19 on economic value and employment.
+          </p>
+          <p>
+            Changes in business counts by industry can show structural shifts within the economy and identify growth and
+            declining industries. For example, growth industries will have high entry and exit rates due to the high
+            failure rates of first movers and smaller high growth enterprises. Declining sectors will have low entry and
+            high exit rates.
           </p>
           <p>
             The raw business register dataset contains large numbers of ABNs which are not relevant to local government
@@ -109,9 +82,9 @@ const BusinessTrendsPage = () => {
             Local Government Decision making.
           </p>
           <p>
-            Data are presented as aggregates of ABNs at the Destination Zone level, for the most recent time period. The
-            distribution of industries shown here can be selected at the 1 or 2-digit ANZSIC classification level, and
-            the table below the map shows a further breakdown into more detailed business categories. For more
+            Data are presented as aggregates of ABNs at the Local Government level for each of the time period. The
+            graph of the number of GST registered businesses, the number of new GST registered businesses, and the
+            number of cancelled GST registerations can be selected at the 1-digit ANZSIC classification level. For more
             information, including actual business locations and name and address details, LGAs are entitled to access
             the raw ABR unit record dataset directly from the ATO.
           </p>
@@ -123,31 +96,18 @@ const BusinessTrendsPage = () => {
           </div>
         </SourceBubble>
       </PageIntro>
-      <ControlPanel />
-
-      <MapWrapper>
-        {mapLoaded && (
-          <EntityTitle>
-            {currentIndustryName}
-            <span>{LongName} - Number of businesses by destination zone</span>
-          </EntityTitle>
-        )}
-        {Table && Table}
-        <MapLoader loaded={mapLoaded} />
-        <LeafletMap
-          mapTitle={`${LongName} - Business location - ${currentIndustryName}`}
-          forwardRef={mapRef}
-          mapData={mapData}
-          onShapeSelect={handleShapeSelection}
-          onMapLoaded={onMapLoaded}
-        />
-        {mapLoaded && <EntityFooter Source={MapSource} />}
-      </MapWrapper>
+      {/* <ControlPanel /> */}
+      <IndustryDropdown />
+      <>
+        <ShadowWrapper>
+          <ReactChart height="400" options={registeredBizQuarterly} />
+        </ShadowWrapper>
+        <ShadowWrapper>
+          <ReactChart height="400" options={ChangeInRegisteredBizQuarterly} />
+        </ShadowWrapper>
+      </>
       <ItemWrapper>
-        <EntityTable
-          data={tableBuilder()}
-          name={`Employment location of resident workers by industry - ${currentIndustryName}`}
-        />
+        <EntityTable data={tabledata} name={`Business trends by industry sector - ${currentIndustryName}`} />
       </ItemWrapper>
       <RelatedPagesCTA />
     </>
@@ -156,48 +116,185 @@ const BusinessTrendsPage = () => {
 export default BusinessTrendsPage;
 // #endregion
 
-// #region sources
-const TableSource = () => (
+const ChartSource = () => (
   <p>
-    Source: Australian Business Register. Compiled and presented in economy.id by <IdLink />.
+    Source: Australian Business Register. ©2020 Compiled and presented in economy.id by <IdLink />.
   </p>
 );
+
+// #region chart builder change
+const registeredBizChartBuilder = (data: any[], subtitle) => {
+  const chartType = 'column';
+  const chartTitle = `Number of GST registered business`;
+  const chartSubtitle = subtitle;
+  const xAxisTitle = ``;
+  const yAxisTitle = ``;
+  const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
+    'Version',
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
+  const serie = data.map(({ Tot_Reg_Bus }) => Tot_Reg_Bus);
+  const categories = data.map(({ label }) => label);
+
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${formatNumber(this.y)}`;
+  };
+
+  return {
+    highchartOptions: {
+      height: 400,
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+        },
+      },
+      series: [
+        {
+          data: serie,
+        },
+      ],
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          crosshair: true,
+          title: {
+            text: yAxisTitle,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return this.value;
+            },
+          },
+        },
+      ],
+    },
+    reactChartOptions: {
+      className: '',
+      footer: {
+        rawDataSource,
+        dataSource: <ChartSource />,
+        logoUrl: idlogo,
+      },
+    },
+  };
+};
+
+// #endregion
+
+// #region chart builder change
+const registeredBizChangeChartBuilder = (data: any[], subtitle) => {
+  const chartType = 'spline';
+  const chartTitle = `Change in GST registered business`;
+  const chartSubtitle = subtitle;
+  const xAxisTitle = ``;
+  const yAxisTitle = `Number of GST registrations`;
+  const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
+    'Version',
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
+
+  const newBizSerie = data.map(({ New_Reg_Bus }) => New_Reg_Bus);
+  const cancelBizSerie = data.map(({ Cancel_Reg_Bus }) => Cancel_Reg_Bus);
+  const netChange = data.map(({ New_Reg_Bus, Cancel_Reg_Bus }) => New_Reg_Bus - Cancel_Reg_Bus);
+  const categories = data.map(({ label }) => label);
+
+  const tooltip = function() {
+    return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${formatChangeInt(this.y)}`;
+  };
+
+  return {
+    highchartOptions: {
+      chart: {
+        type: chartType,
+      },
+      title: {
+        text: chartTitle,
+      },
+      subtitle: {
+        text: chartSubtitle,
+      },
+      tooltip: {
+        headerFormat: '',
+        pointFormatter: function() {
+          return tooltip.apply(this);
+        },
+      },
+      series: [
+        { className: 'new', name: 'New GST registrations', data: newBizSerie },
+        { className: 'cancelled', name: 'Cancelled GST registrations', data: cancelBizSerie },
+        { className: 'change', name: 'Net change', data: netChange },
+      ],
+      xAxis: {
+        categories,
+        title: {
+          text: xAxisTitle,
+        },
+      },
+      yAxis: [
+        {
+          crosshair: true,
+          title: {
+            text: yAxisTitle,
+          },
+          labels: {
+            staggerLines: 0,
+            formatter: function() {
+              return this.value;
+            },
+          },
+        },
+      ],
+    },
+    reactChartOptions: {
+      className: '',
+      footer: {
+        rawDataSource,
+        dataSource: <ChartSource />,
+        logoUrl: idlogo,
+      },
+    },
+  };
+};
+
 // #endregion
 
 // #region table builders
-const tableBuilder = () => {
-  const { clientAlias, LongName } = useContext(ClientContext);
-  const {
-    contentData: { tableData },
-    entityData: { currentIndustryName },
-  } = useContext(PageContext);
+const tableBuilder = (data: any[], subtitle) => {
+  const { clientAlias } = useContext(ClientContext);
   const rawDataSource =
-    'Source: Australian Business Register. Compiled and presented in economy.id by .id , the population experts.';
-  const tableTitle = `Australian business register by industry sector`;
+    'Source: Australian Business Register. Compiled and presented in economy.id by .id informed decisions.';
+  const tableTitle = `Business trends by industry sector`;
 
-  const serie = tableData
-    .filter(({ LabelKey }) => LabelKey != 99999)
-    .map(({ LabelKey, LabelName, Number, Per, IndustryCode }) => {
-      return {
-        id: LabelKey,
-        data: [LabelName, Number, Per],
-        formattedData: [
-          `${LabelKey === 1 || LabelKey === 2 ? '-  ' : ''}${LabelName}`,
-          IndustryCode,
-          formatNumber(Number),
-          formatPercent(Per),
-        ],
-      };
-    });
-  const footerRows = tableData.filter(({ LabelKey }) => LabelKey === 99999);
-  const footerRowSerie = footerRows.map(row => {
+  const serie = data.reverse().map(({ After, label, Tot_Reg_Bus, New_Reg_Bus, Cancel_Reg_Bus }) => {
+    const newDate = `${label.split('-')[0]}-20${label.split('-')[1]}`;
     return {
-      cssClass: 'total',
-      cols: [
-        { cssClass: '', displayText: `${row.LabelName}`, colSpan: 1 },
-        { cssClass: '', displayText: `${row.IndustryCode}`, colSpan: 1 },
-        { cssClass: '', displayText: `${row.Number}`, colSpan: 1 },
-        { cssClass: '', displayText: `${row.Per}`, colSpan: 1 },
+      id: After,
+      data: [label, Tot_Reg_Bus, New_Reg_Bus, Cancel_Reg_Bus, New_Reg_Bus - Cancel_Reg_Bus],
+      formattedData: [
+        newDate,
+        formatNumber(Tot_Reg_Bus),
+        formatNumber(New_Reg_Bus),
+        formatNumber(Cancel_Reg_Bus),
+        formatChangeInt(New_Reg_Bus - Cancel_Reg_Bus),
       ],
     };
   });
@@ -205,7 +302,7 @@ const tableBuilder = () => {
   return {
     cssClass: '',
     clientAlias,
-    source: <TableSource />,
+    source: <ChartSource />,
     rawDataSource,
     anchorName: '#business-locations',
     headRows: [
@@ -215,7 +312,7 @@ const tableBuilder = () => {
           {
             cssClass: 'table-area-name',
             displayText: tableTitle,
-            colSpan: 10,
+            colSpan: 5,
           },
         ],
       },
@@ -224,13 +321,8 @@ const tableBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${LongName} - ${currentIndustryName}`,
-            colSpan: 2,
-          },
-          {
-            cssClass: 'even',
-            displayText: `${LongName}`,
-            colSpan: 2,
+            displayText: `${subtitle}`,
+            colSpan: 5,
           },
         ],
       },
@@ -238,27 +330,32 @@ const tableBuilder = () => {
     cols: [
       {
         id: 0,
-        displayText: 'Industry',
-        cssClass: 'odd first',
+        displayText: 'Quarter',
+        cssClass: 'odd first XL',
       },
       {
         id: 1,
-        displayText: 'ANZSIC code',
+        displayText: 'Number of registered businesses',
         cssClass: 'odd int XXXL',
       },
       {
         id: 2,
-        displayText: 'Number',
-        cssClass: 'even int XL',
+        displayText: 'New GST Registration',
+        cssClass: 'even int XXXL',
       },
       {
         id: 3,
-        displayText: '%',
-        cssClass: 'even int XL',
+        displayText: 'Cancelled GST Registration',
+        cssClass: 'odd int XXXL',
+      },
+      {
+        id: 4,
+        displayText: 'Net change',
+        cssClass: 'even int XXXL',
       },
     ],
     rows: serie,
-    footRows: footerRowSerie,
+    footRows: [],
     noOfRowsOnInit: 0,
   };
 };

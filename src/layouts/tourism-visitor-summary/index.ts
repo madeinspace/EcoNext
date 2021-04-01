@@ -59,7 +59,7 @@ const pageContent = {
         const headlineAlt = `In ${prefixedAreaName} there were ${formatNumber(
           domVisitors,
         )} Domestic Visitor Nights in 2018/19`;
-        const headlineNone = `${currentAreaName} tourism visitor data is suppressed in 2018/19 due to low sample size`;
+        const headlineNone = `${currentAreaName} tourism visitor data is suppressed in 2019/20 due to low sample size`;
         const headline = intVisitors != null ? headlineMain : domVisitors != null ? headlineAlt : headlineNone;
         return headline;
       },

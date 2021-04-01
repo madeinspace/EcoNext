@@ -89,7 +89,7 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. NIEIR-ID data are adjusted each
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. NIEIR-ID data are adjusted each
       year, using updated employment estimates. Each release may change previous years’ figures.{' '}
       {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
     </p>
@@ -97,7 +97,7 @@ const Source = () => {
 };
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> Compiled and presented in economy.id by <IdLink />.
+    Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />.
   </p>
 );
 // #endregion
@@ -161,7 +161,7 @@ const tableBuilder = () => {
           },
           {
             cssClass: 'even',
-            displayText: `${LongName}`,
+            displayText: `${currentAreaName}`,
             colSpan: 2,
           },
           {
@@ -300,7 +300,7 @@ const chartBuilder = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -374,7 +374,7 @@ const chartBuilderPer = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'chartPer',
     logoUrl: idlogo,
@@ -447,7 +447,7 @@ const chartBuilderPerBM = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'chartPerBM',
     logoUrl: idlogo,
@@ -522,7 +522,7 @@ const chartBuilderIndex = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'chartIndex',
     logoUrl: idlogo,

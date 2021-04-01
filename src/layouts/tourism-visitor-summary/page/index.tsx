@@ -14,14 +14,13 @@ import useEntityText from '../../../utils/useEntityText';
 // #region page
 const TourismVisitorSummaryPage = () => {
   const { isLite } = useContext(ClientContext);
-  const {
-    filters: { BMID },
-    contentData,
-    entityData: { currentBenchmarkName, currentAreaName },
-  } = useContext(PageContext);
+  const { contentData } = useContext(PageContext);
 
-  const chart1Data = chartBuilder();
-  const chart2Data = chartBuilderChange();
+  const year = Math.max(...contentData[1].data.map(o => o.LabelKey), 0);
+  const yearLabel = contentData[1].data.find(({ LabelKey }) => LabelKey === year).FinYearName;
+
+  const chart1Data = chartBuilder(year, yearLabel);
+  const chart2Data = chartBuilderChange(yearLabel);
 
   return (
     <>
@@ -71,7 +70,7 @@ export default TourismVisitorSummaryPage;
 const TableSource = () => (
   <p>
     Source: {LinkBuilder('https://www.tra.gov.au/', 'Tourism Research Australia')}, Unpublished data from the National
-    Visitor Survey and International Visitor Survey 2018/19. Note: "--" represents unavailable data or data that has
+    Visitor Survey and International Visitor Survey 2019/20. Note: "--" represents unavailable data or data that has
     been suppressed due to a sample size of 40 or less.
   </p>
 );
@@ -79,7 +78,7 @@ const TableSource = () => (
 const ChartSource = () => (
   <p>
     Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor
-    Survey 2018/19.
+    Survey 2019/20.
   </p>
 );
 // #endregion
@@ -91,7 +90,7 @@ const tableVisitorNightsNumbersBuilder = () => {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
-  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
+  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id informed decisions.`;
   const tableTitle = `Visitor nights - Numbers`;
   const firstColTitle = `Year`;
 
@@ -141,7 +140,7 @@ const tableVisitorNightsNumbersBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} -  2010/11 to 2018/19`,
+            displayText: `${currentAreaName} -  2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -208,7 +207,7 @@ const tableQuartileRangesBuilder = () => {
     contentData,
     entityData: { currentAreaName, currentBenchmarkName },
   } = useContext(PageContext);
-  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
+  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id informed decisions.`;
   const tableTitle = `Visitor nights - Percentage`;
   const firstColTitle = `Year`;
 
@@ -258,7 +257,7 @@ const tableQuartileRangesBuilder = () => {
         cols: [
           {
             cssClass: 'sub first',
-            displayText: `${currentAreaName} -  2010/11 to 2018/19`,
+            displayText: `${currentAreaName} -  2010/11 to 2019/20`,
             colSpan: 1,
           },
           {
@@ -319,13 +318,14 @@ const tableQuartileRangesBuilder = () => {
 // #endregion
 
 // #region chart builders
-const chartBuilder = () => {
+const chartBuilder = (year, yearLabel) => {
   const {
     filters: { BMID },
     contentData,
     entityData: { currentBenchmarkName, currentAreaName },
   } = useContext(PageContext);
-  const data = contentData[1].data.filter(({ FinYearName }) => FinYearName === '2018/19')[0];
+
+  const data = contentData[1].data.filter(({ LabelKey }) => LabelKey === year)[0];
 
   let isMoot =
     data['International Visitor Nights'] === null &&
@@ -357,7 +357,7 @@ const chartBuilder = () => {
         type: 'bar',
       },
       title: {
-        text: 'Breakup of visitor nights 2018/19',
+        text: `Breakup of visitor nights ${yearLabel}`,
       },
       subtitle: {
         text: `${currentAreaName}`,
@@ -413,7 +413,7 @@ const chartBuilder = () => {
       },
     },
     rawDataSource:
-      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2018/19.',
+      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2019/20.',
     dataSource: <ChartSource />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -423,7 +423,7 @@ const chartBuilder = () => {
 // #endregion
 
 // #region chart builder change
-const chartBuilderChange = () => {
+const chartBuilderChange = yearLabel => {
   const {
     contentData,
     entityData: { currentAreaName },
@@ -461,7 +461,7 @@ const chartBuilderChange = () => {
         type: 'column',
       },
       title: {
-        text: 'Breakup of visitor nights 2018/19',
+        text: `Breakup of visitor nights ${yearLabel}`,
       },
       subtitle: {
         text: `${currentAreaName}`,
@@ -516,7 +516,7 @@ const chartBuilderChange = () => {
       },
     },
     rawDataSource:
-      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2018/19.',
+      'Source: Tourism Research Australia, Unpublished data from the National Visitor Survey and International Visitor Survey 2019/20.',
     dataSource: <ChartSource />,
     chartContainerID: 'chart2',
     logoUrl: idlogo,

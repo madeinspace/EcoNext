@@ -1,7 +1,5 @@
 const { CosmosClient } = require('@azure/cosmos');
-
 require('dotenv').config();
-
 const cosmosClient = new CosmosClient({ endpoint: process.env.COSMOS_ENDPOINT, key: process.env.COSMOS_KEY });
 
 const connect = async () => {

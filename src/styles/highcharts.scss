@@ -1018,3 +1018,127 @@ text.highcharts-drilldown-data-label,
     }
   }
 }
+
+.highcharts-point {
+  &.highcharts-color-0 {
+    &.highcharts-lollipop-high {
+      fill: #e4d354;
+      stroke: #e4d354;
+    }
+  }
+}
+.highcharts-point {
+  &.highcharts-color-0 {
+    &.highcharts-lollipop-low {
+      fill: #80ca9f;
+      stroke: #80ca9f;
+    }
+  }
+}
+
+.highcharts-lollipop-stem {
+  fill: $gray-light;
+  stroke: $gray-light;
+}
+
+.highcharts-subtitle {
+  ul {
+    display: flex;
+    margin-left: 1em;
+    li {
+      margin-left: 1rem;
+      display: inline-flex;
+      align-items: center;
+      margin-right: 20px;
+      &::before {
+        content: '\2022'; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        margin-left: -1em; /* Also needed for space (tweak if needed) */
+        font-size: 30px;
+        margin-right: 5px;
+      }
+      &.lowDot {
+        &::before {
+          color: #e4d354; /* Change the color */
+        }
+      }
+      &.highDot {
+        &::before {
+          color: #80ca9f; /* Change the color */
+        }
+      }
+    }
+  }
+}
+
+.new {
+  &.highcharts-color-0 {
+    fill: #80d090;
+    stroke: #80d090;
+    .highcharts-color-0 {
+      fill: #80d090;
+    }
+  }
+}
+.cancelled {
+  &.highcharts-color-1 {
+    fill: #ff0000;
+    stroke: #ff0000;
+    .highcharts-color-1 {
+      fill: #ff0000;
+    }
+  }
+}
+.change {
+  &.highcharts-color-2 {
+    fill: #e4d354;
+    stroke: #e4d354;
+    .highcharts-color-2 {
+      fill: #e4d354;
+    }
+  }
+}
+
+.dash {
+  stroke-dasharray: 5;
+  &.red {
+    stroke: #ff0000;
+  }
+}
+
+.extended-forecasts {
+  .highcharts-color-1 {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
+}
+
+.alt-bm-color {
+  &.highcharts-color-1 {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
+  .highcharts-color-1 {
+    fill: #e4d354;
+    stroke: #e4d354;
+  }
+}
+
+.highcharts-series {
+  &.highcharts-series-1 {
+    &.benchmark {
+      fill: #e4d354;
+      stroke: #e4d354;
+    }
+  }
+}
+
+.highcharts-legend-item {
+  &.highcharts-line-series {
+    &.highcharts-series-1 {
+      &.benchmark {
+        fill: #e4d354;
+        stroke: #e4d354;
+      }
+    }
+  }
+}

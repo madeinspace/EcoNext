@@ -8,6 +8,7 @@ import ParentLandingPageLayout from '../../../layouts/parentLandingPages';
 import fetchToggleOptions, { globalToggles } from '../../../utils/fetchToggleOptions';
 import PageHeader from '../../../components/PageHeader';
 import Headline from '../../../components/Headline';
+import Banner from '../../../components/ui/Banner';
 import Description from '../../../components/Description';
 import filterEntities from '../../../utils/filterEntities';
 import getActiveToggle from '../../../utils/getActiveToggle';
@@ -46,6 +47,7 @@ const PageTemplate = (): JSX.Element => {
           <ExportPage />
         </Actions>
       </PageHeader>
+      <Banner />
       <Headline />
       <Description />
       <MainContent />

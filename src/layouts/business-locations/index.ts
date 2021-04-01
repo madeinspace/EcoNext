@@ -2,7 +2,7 @@ import { sqlConnection } from '../../utils/sql';
 import Page from './page';
 import axios from 'axios';
 import getActiveToggle from '../../utils/getActiveToggle';
-import { adjust, Largest } from '../../utils';
+import { adjust, formatNumber, Largest } from '../../utils';
 import _ from 'lodash';
 const COM_CLIENT_DB = 'CommClient';
 
@@ -116,12 +116,13 @@ const pageContent = {
     {
       Title: 'DataSource',
       renderString: ({ data }): string => {
-        return `Australian Business Register - filtered counts - Current at 20th Apr 2020`;
+        return `Australian Business Register - filtered counts - Current at 21th Dec 2020`;
       },
     },
     {
       Title: 'Headline',
       renderString: ({ data, contentData, filters }): string => {
+        const { IndkeyABR } = filters;
         const { tableData } = contentData;
         if (tableData.length <= 0) {
           return `${data.currentIndustryName} doesn't have any active and registered for GST businesses in ${data.prefixedAreaName}.`;
@@ -129,7 +130,12 @@ const pageContent = {
         const IndustryTotal = tableData.filter(({ LabelKey }) => LabelKey === 99999)[0];
         const noTotal = tableData.filter(({ LabelKey }) => LabelKey != 99999);
         const largestSubInd = Largest(noTotal, 'Number');
-        const mainHeadline = `${data.currentIndustryName} has ${IndustryTotal.Number} active and registered for GST businesses in ${data.prefixedAreaName}. The largest subcategory within this is ${largestSubInd.LabelName}.`;
+        const industryText = IndkeyABR === '23000' ? `There are a total of` : `${data.currentIndustryName} has`;
+        const mainHeadline = `${industryText} ${formatNumber(
+          IndustryTotal.Number,
+        )} active and registered for GST businesses in ${
+          data.prefixedAreaName
+        }. The largest subcategory within this is ${largestSubInd.LabelName}.`;
         const mainHeadLineAlt = `${data.currentIndustryName} doesn't have any active and registered for GST businesses in ${data.prefixedAreaName}.`;
         return IndustryTotal.Number === 0 ? mainHeadLineAlt : mainHeadline;
       },

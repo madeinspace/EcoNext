@@ -298,7 +298,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink /> NIEIR-ID data are adjusted each
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink /> NIEIR-ID data are adjusted each
       year, using updated employment estimates.
       <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
       to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.
@@ -309,7 +309,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -326,7 +326,7 @@ const tableBuilder = ({
   TabularData: data,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Local sales by industry sector';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelName === 'Total Industries');
@@ -443,12 +443,12 @@ const tableBuilder = ({
       ],
       formattedData: [
         `${row.LabelName}`,
-        formatPercent(row.NoYear1),
-        formatPercent(row.PerYear1),
-        formatPercent(row.BMYear1),
-        formatPercent(row.NoYear2),
-        formatPercent(row.PerYear2),
-        formatPercent(row.BMYear2),
+        formatPercent(row.NoYear1, '--'),
+        formatPercent(row.PerYear1, '--'),
+        formatPercent(row.BMYear1, '--'),
+        formatPercent(row.NoYear2, '--'),
+        formatPercent(row.PerYear2, '--'),
+        formatPercent(row.BMYear2, '--'),
         formatChangeOneDecimal(row.Change12, '--'),
       ],
       childRows: row.children.map(childRow => ({
@@ -465,12 +465,12 @@ const tableBuilder = ({
         ],
         formattedData: [
           `${childRow.LabelName}`,
-          formatPercent(childRow.NoYear1),
-          formatPercent(childRow.PerYear1),
-          formatPercent(childRow.BMYear1),
-          formatPercent(childRow.NoYear2),
-          formatPercent(childRow.PerYear2),
-          formatPercent(childRow.BMYear2),
+          formatPercent(childRow.NoYear1, '--'),
+          formatPercent(childRow.PerYear1, '--'),
+          formatPercent(childRow.BMYear1, '--'),
+          formatPercent(childRow.NoYear2, '--'),
+          formatPercent(childRow.PerYear2, '--'),
+          formatPercent(childRow.BMYear2, '--'),
           formatChangeOneDecimal(childRow.Change12, '--'),
         ],
       })),
@@ -480,12 +480,12 @@ const tableBuilder = ({
         cssClass: 'total',
         cols: [
           { cssClass: '', displayText: `Total industries`, colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.NoYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.PerYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.BMYear1), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.NoYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.PerYear2), colSpan: 1 },
-          { cssClass: '', displayText: formatPercent(row.BMYear2), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear1, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.NoYear2, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.PerYear2, '--'), colSpan: 1 },
+          { cssClass: '', displayText: formatPercent(row.BMYear2, '--'), colSpan: 1 },
           {
             cssClass: '',
             displayText: formatChangeOneDecimal(row.Change12),
@@ -558,10 +558,10 @@ const chartBuilder = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `% of total local sales`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
   return {
     highchartOptions: {
       height: chartHeight,
@@ -643,10 +643,10 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in local sales ($ millions)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
-  const chartHeight = 500;
+  const chartHeight = 650;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${

@@ -11,17 +11,20 @@ const SiblingsMenu = () => {
   const currentParentPageID = (currentPageNode && currentPageNode.ParentPageID) || 0;
   const siblingPages = clientPages.filter(node => node.ParentPageID === currentParentPageID);
 
-  const siblings = siblingPages.map(({ Disabled, MenuTitle, Alias }) => (
-    <React.Fragment key={Alias}>
-      {Disabled ? (
-        <DisabledLink>{MenuTitle}</DisabledLink>
-      ) : (
-        <StyledLink href={`/${clientAlias}/${Alias}`} className={handle === Alias && 'active'}>
-          {MenuTitle}
-        </StyledLink>
-      )}
-    </React.Fragment>
-  ));
+  const siblings = siblingPages.map(({ Private, Disabled, MenuTitle, Alias }) => {
+    if (Private) return;
+    return (
+      <React.Fragment key={Alias}>
+        {Disabled ? (
+          <DisabledLink>{MenuTitle}</DisabledLink>
+        ) : (
+          <StyledLink href={`/${clientAlias}/${Alias}`} className={handle === Alias && 'active'}>
+            {MenuTitle}
+          </StyledLink>
+        )}
+      </React.Fragment>
+    );
+  });
 
   return <SiblingsMenuContainer id="siblings-nav">{siblings}</SiblingsMenuContainer>;
 };

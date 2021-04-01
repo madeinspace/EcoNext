@@ -58,8 +58,8 @@ const TopThreeFields = () => {
   return (
     <>
       <Highlight>
-        An analysis of employment (Total) change between {currentComparisonYear} and 2018/19 in {prefixedAreaName} in{' '}
-        {currentStartYear} shows the three industries with the highest regional competitive effect in {prefixedAreaName}{' '}
+        An analysis of employment (Total) change between {currentComparisonYear} and {currentStartYear} in{' '}
+        {prefixedAreaName} shows the three industries with the highest regional competitive effect in {prefixedAreaName}{' '}
         relative to {currentBenchmarkName} were:
       </Highlight>
       <TopList>
@@ -176,7 +176,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2018-19 price
       base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
       releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -186,8 +186,8 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by .id, the population experts.
+    Source: Australian Bureau of Statistics, Census of Population and Housing, @2021 Compiled and presented in
+    economy.id by .id informed decisions.
     <IdLink />.
   </p>
 );
@@ -201,7 +201,7 @@ const tableBuilder = () => {
     entityData: { currentAreaName, currentBenchmarkName, currentComparisonYear, currentStartYear, currentMeasure },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, @2021 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Shift-share analysis to ${currentBenchmarkName}`;
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelKey === 999999);
@@ -390,7 +390,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Regional Competitive Effect - Change in number of employment (Total estimate)`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, @2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;

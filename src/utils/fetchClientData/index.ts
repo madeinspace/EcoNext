@@ -1,8 +1,6 @@
 import fetchSitemap from '../fetchSitemap';
 import getConfig from 'next/config';
 
-const privateCovidClient = [352];
-
 const checkIfLitePlus = id => {
   const {
     publicRuntimeConfig: { LitePlusClients },
@@ -82,22 +80,29 @@ const queryClientDB = async ({ clientAlias, containers }): Promise<{}> => {
 };
 
 const fetchClientData = async ({ clientAlias, containers }): Promise<{}> => {
-  const clientData: any = await queryClientDB({
-    clientAlias,
-    containers,
-  });
+  try {
+    const clientData: any = await queryClientDB({
+      clientAlias,
+      containers,
+    });
+    if (clientData === null) return null;
 
-  if (clientData === null) return null;
+    const { ClientID } = clientData;
 
-  const { ClientID } = clientData;
+    const sitemapGroups = await fetchSitemap();
 
-  const sitemapGroups = await fetchSitemap();
-
-  return {
-    ID: ClientID,
-    sitemapGroups,
-    ...clientData,
-  };
+    return {
+      ID: ClientID,
+      sitemapGroups,
+      ...clientData,
+    };
+  } catch (e) {
+    console.error(
+      `Couldn't fetch Client Data, possible connection issue with CosmosDB\n${
+        process.env.NODE_ENV === 'development' ? 'Is you VPN connected ?' : ''
+      }`,
+    );
+  }
 };
 
 export default fetchClientData;

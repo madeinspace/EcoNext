@@ -36,7 +36,8 @@ export const ClientHeader = () => {
 export default ClientHeader;
 
 const ClientLogo = styled.div`
-  align-self: flex-end;
+  margin-top: -60px;
+  /* align-self: flex-end; */
 `;
 
 const Header = styled.div`

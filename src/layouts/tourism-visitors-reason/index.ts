@@ -75,7 +75,7 @@ const pageContent = {
         }
 
         if (isMoot)
-          return `${currentAreaName} ${currentTourismtype} data is suppressed in 2018/19 due to low sample size`;
+          return `${currentAreaName} ${currentTourismtype} data is suppressed in 2019/20 due to low sample size`;
         const largestReason = largest(withoutTotal, 'Per');
         const visitorsReason =
           largestReason.LabelKey === 1001

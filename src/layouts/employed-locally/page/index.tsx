@@ -33,7 +33,6 @@ import qs from 'qs';
 
 // #region autotext / dynamic content
 
-
 // #endregion
 const Tabs = styled.ul`
   display: flex;
@@ -222,7 +221,7 @@ const tableBuilder = () => {
     entityData: { currentAreaName, prefixedAreaName, currentTypeName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016 Compiled and presented in economy.id by .id , the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = `Employment self-containment by ${currentTypeName}`;
   const firstColTitle = 'Industry';
   const footerRows = data[0].data.filter(({ LabelKey }) => LabelKey === 99999);
@@ -357,7 +356,7 @@ const tableBuilder2 = () => {
     entityData: { currentAreaName, prefixedAreaName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Employment self-containment by occupation';
   const firstColTitle = 'Occupation';
   const footerRows = data[1].data.filter(({ LabelKey }) => LabelKey === 99999);

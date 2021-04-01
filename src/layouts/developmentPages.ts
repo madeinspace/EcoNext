@@ -102,5 +102,12 @@ export default [
   'reports',
   'reports-industry',
   'reports-employment',
+  'covid19-economic-forecasts',
+  'covid19-quarter-impacts',
+  'covid19-extended-forecasts',
+  'covid19-industry-focus',
   'business-trends',
+  'outlook-overview',
+  'jobkeeper-estimates',
+  'quarterly-economic-indicators',
 ];

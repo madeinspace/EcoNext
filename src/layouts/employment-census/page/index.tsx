@@ -318,7 +318,7 @@ const TableSource = () => {
 const ChartSource = () => (
   <p>
     Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id
-    by .id, the population experts.
+    by .id informed decisions.
     <IdLink />.
   </p>
 );
@@ -327,7 +327,7 @@ const ChartSource = () => (
 // #region table builders
 const tableBuilder = ({ clientAlias, areaName, bmName: benchmark, TabularData: data }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const tableTitle = 'Employment (Census) by industry sector';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelName === 'Total [genders]');
@@ -552,7 +552,7 @@ const chartBuilder = ({ areaName, bmName: currentBenchmark, TabularData: data })
   const xAxisTitle = 'Industry';
   const yAxisTitle = `% of workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 600;
@@ -641,7 +641,7 @@ const chartBuilderChange = ({ areaName, TabularData: data }) => {
   const xAxisTitle = 'Industry';
   const yAxisTitle = `Change in workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2011 and 2016 Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Census of Population and Housing, 2011 and 2016 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 600;

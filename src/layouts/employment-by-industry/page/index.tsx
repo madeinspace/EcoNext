@@ -285,7 +285,7 @@ const EmploymentByIndustryTotalPage = () => {
       <AnalysisContainer>
         <h3>Dominant groups</h3>
         <p>
-          An analysis of the jobs held by the local workers in {prefixedAreaName} in 2018/19 shows the three largest
+          An analysis of the jobs held by the local workers in {prefixedAreaName} in 2019/20 shows the three largest
           industries were:
         </p>
         <TopThreeFields />
@@ -324,7 +324,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id
+      Source: National Institute of Economic and Industry Research (NIEIR) ©2021. Compiled and presented in economy.id
       by
       <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
       previous years’ figures.{' '}
@@ -335,7 +335,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by{' '}
+    Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by{' '}
     <IdLink />.
   </p>
 );
@@ -352,7 +352,7 @@ const tableBuilder = ({
   TabularData: data,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Employment (total) by industry';
   const firstColTitle = 'Industry';
   const footerRows = data.filter(item => item.LabelName === 'Total Industries');
@@ -584,7 +584,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Percentage of the employed (estimated)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 600;
@@ -671,7 +671,7 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = `Change in the number of employed (estimated)`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 600;

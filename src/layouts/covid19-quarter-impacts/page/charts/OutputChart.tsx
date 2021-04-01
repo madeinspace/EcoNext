@@ -81,13 +81,13 @@ const EconomicImpactChartBuilder = (series, categories, measure, type) => {
   } = useContext(PageContext);
   const measureText = `${measure === 'Output' ? measure : 'Value Added'}`;
   const chartType = 'bar';
-  const chartTitle = `${measureText} impact in June Quarter 2020 (compared to 2018/19 quarter average)`;
+  const chartTitle = `${measureText} impact in Sept Quarter 2020 (compared to Sept quarter 2019)`;
   const chartSubtitle = `${currentAreaName}`;
   const xAxisTitle = 'Industry sector';
   const yAxisTitle = type === 1 ? `Change in ${measureText} ($million)` : `Change in ${measureText} (%)`;
   const rawDataSource = `Source: National Institute of Economic and Industry Research (NIEIR) ${useEntityText(
     'Version',
-  )} ©2020 Compiled and presented in economy.id by .id the population experts. `;
+  )} ©2020 Compiled and presented in economy.id by .id informed decisions. `;
 
   const tooltip = function() {
     return `<span class="highcharts-color-${this.colorIndex}">\u25CF</span> ${this.category}, ${LongName}: ${

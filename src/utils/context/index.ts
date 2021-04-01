@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 type ClientProps = {
   ClientID?: number;
@@ -28,5 +28,7 @@ type PageProps = {
 
 const ClientContext = React.createContext<Partial<ClientProps>>({});
 const PageContext = React.createContext<Partial<PageProps>>({});
+const useClient = () => useContext(ClientContext);
+const usePage = () => useContext(PageContext);
 
-export { ClientContext, PageContext };
+export { ClientContext, PageContext, useClient, usePage };

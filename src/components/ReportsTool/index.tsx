@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import useForm from 'react-hook-form';
 import styled from 'styled-components';
-import { SectionTitle } from '../../layouts/covid19/page/Styles';
+import { SectionTitle } from '../../layouts/covid19-quarter-impacts/page/Styles';
 import { ClientContext } from '../../utils/context';
 import useDropdown from '../../utils/hooks/useDropdown';
 import { emailRGX } from '../../utils/Regex';
@@ -28,10 +28,10 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   const industryDropDownInitialState = {
     label: 'All industries',
     parent: false,
-    parentValue: '22000',
+    parentValue: '23000',
     key: 'IndkeyNieir',
     parentKey: 'IndkeyNieir',
-    value: '22000',
+    value: '23000',
   };
   const [industryKey, IndustryDropdown] = useDropdown('All industries', industryDropDownInitialState, dropdownData);
 
@@ -69,8 +69,9 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
   };
 
   const prepareOptionsForExport = () => {
-    const sortedCheckedPages: any = _.sortBy(checkedPages, 'id')[0];
-    const flattenedPagesList = sortedCheckedPages.registeredOptions.map(option => buildReportObject(option));
+    const sortedCheckedPages: any = _.sortBy(checkedPages, 'id');
+    const flat = sortedCheckedPages.reduce((acc, val) => acc.concat(val.registeredOptions), []);
+    const flattenedPagesList = flat.map(buildReportObject);
     return flattenedPagesList;
   };
 
@@ -84,8 +85,16 @@ const ReportsTool = ({ dropdownData = null, pageGroups }) => {
 
   const buildQuery = pageID => {
     const is2DigitPage = is2digitPage(pageID);
-    const indValue = is2DigitPage ? industryKey.twoDigitValue : industryKey.oneDigitValue;
-    const indKey = is2DigitPage ? industryKey.twoDigitKey : industryKey.oneDigitKey;
+    const indValue = is2DigitPage
+      ? industryKey.twoDigitValue
+      : industryKey.oneDigitValue
+      ? industryKey.oneDigitValue
+      : industryKey.value;
+    const indKey = is2DigitPage
+      ? industryKey.twoDigitKey
+      : industryKey.oneDigitKey
+      ? industryKey.oneDigitKey
+      : industryKey.key;
     const query = `?${indKey}=${indValue}`;
     return query;
   };

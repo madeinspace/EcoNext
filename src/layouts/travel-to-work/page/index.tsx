@@ -252,7 +252,7 @@ const tableBuilder = () => {
     entityData: { currentBenchmarkName, currentAreaName },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Resident workers method of travel to work';
   const firstColTitle = `Main method of travel`;
   const rows = contentData

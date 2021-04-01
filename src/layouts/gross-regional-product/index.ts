@@ -18,8 +18,8 @@ const headline = ({ data, contentData }) => {
   const GRP = formatShortDecimal(contentData[0]['HeadLineGRP'] / 1000);
   const GRPPrevious = formatNumber(contentData[1]['HeadLineGRP']);
   const change = formatPercent(contentData[0]['ChangePer']);
-  const changeText = GRP > GRPPrevious ? 'growing' : 'decreasing';
-  return `${data.currentAreaName}’s Gross Regional Product was $${GRP} billion in the year ending June 2019, ${changeText} ${change}% since the previous year.`;
+  const changeText = parseFloat(GRP) > parseFloat(GRPPrevious) ? 'growing' : 'decreasing';
+  return `${data.currentAreaName}’s Gross Regional Product was $${GRP} billion in the year ending June 2020, ${changeText} ${change}% since the previous year.`;
 };
 
 const pageContent = {

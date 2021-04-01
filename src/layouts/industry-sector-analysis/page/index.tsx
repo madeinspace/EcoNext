@@ -109,7 +109,7 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2018-19 price
       base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
       releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -333,17 +333,18 @@ const chartBuilder = () => {
       series: [
         {
           name: `Exports (international)`,
-          legendIndex: 2,
+          legendIndex: 3,
           data: [(exportsInt.NoYear1 / totalExports.NoYear1) * 100, (exportsInt.BMYear1 / totalExports.BMYear1) * 100],
+        },
+        {
+          name: `Exports (domestic)`,
+          legendIndex: 2,
+          data: [(exportsDom.NoYear1 / totalExports.NoYear1) * 100, (exportsDom.BMYear1 / totalExports.BMYear1) * 100],
         },
         {
           name: `Local Sales`,
           legendIndex: 1,
           data: [(localSales.NoYear1 / totalExports.NoYear1) * 100, (localSales.BMYear1 / totalExports.BMYear1) * 100],
-        },
-        {
-          name: `Exports (domestic)`,
-          data: [(exportsDom.NoYear1 / totalExports.NoYear1) * 100, (exportsDom.BMYear1 / totalExports.BMYear1) * 100],
         },
       ],
       plotOptions: {
@@ -380,7 +381,7 @@ const chartBuilder = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'chart1',
     logoUrl: idlogo,
@@ -458,7 +459,7 @@ const chartBuilderContribution = () => {
         },
       },
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'contribution',
     logoUrl: idlogo,
@@ -466,6 +467,7 @@ const chartBuilderContribution = () => {
   };
 };
 // #endregion
+
 // #region  chartbuilder
 const chartBuilderShiftShare = () => {
   const {
@@ -528,7 +530,7 @@ const chartBuilderShiftShare = () => {
         },
       ],
     },
-    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2019',
+    rawDataSource: 'Source: National Institute of Economic and Industry Research (NIEIR) ©2021',
     dataSource: <ChartSource />,
     chartContainerID: 'shiftShare',
     logoUrl: idlogo,

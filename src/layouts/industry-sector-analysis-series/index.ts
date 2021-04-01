@@ -24,12 +24,12 @@ const activeCustomToggles = ({ filterToggles }) => {
 const headLine = ({ data, contentData, filters }) => {
   const indText = +filters.IndkeyNieir === 22000 ? '' : data.currentIndustryName;
   const year2019 = contentData.filter(({ SeriesYear }) => SeriesYear === 2019)[0];
-  const headline = `In 2018/19, ${data.prefixedAreaName} contributed ${formatPercent(year2019.CperBM)}% to ${
+  const headline = `In 2019/20, ${data.prefixedAreaName} contributed ${formatPercent(year2019.CperBM)}% to ${
     data.currentBenchmarkName
   }’s ${indText} ${data.currentMeasure.toLowerCase()}.`;
   const mostRecentYear = contentData[0];
   const comparisonText = mostRecentYear.NUmber > mostRecentYear.BMNumber ? 'higher' : 'lower';
-  const headlineAlt = `In 2018/19, ${indText} worker productivity ($ per worker) in ${data.prefixedAreaName} was ${comparisonText} compared to ${data.currentBenchmarkName}.`;
+  const headlineAlt = `In 2019/20, ${indText} worker productivicty ($ per worker) in ${data.prefixedAreaName} was ${comparisonText} compared to ${data.currentBenchmarkName}.`;
   return +filters.Measure === 100001 ? headlineAlt : headline;
 };
 

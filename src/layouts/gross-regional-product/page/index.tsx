@@ -71,7 +71,7 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by <IdLink />. Data are based on a 2016-17 price
+      Source: <NierLink /> 2021. Compiled and presented in economy.id by <IdLink />. Data are based on a 2018/19 price
       base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data
       releases adjust previous years’ figures to a new base year.
       {LinkBuilder(`http://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}.
@@ -80,7 +80,7 @@ const Source = () => {
 };
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> ©2019 Compiled and presented in economy.id by
+    Source: <NierLink /> 2021 Compiled and presented in economy.id by
     <IdLink />.
   </p>
 );
@@ -96,7 +96,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'GRP $million';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'Year_End').reverse();
   const HeadLineGRP = _.map(nodes, 'HeadLineGRP').reverse();

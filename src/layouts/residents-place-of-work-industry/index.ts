@@ -147,9 +147,6 @@ const pageContent = {
       Label: 'Select industry:',
       Params: [
         {
-          IGBMID: '0',
-        },
-        {
           a: '0',
         },
       ],

@@ -1,3 +1,6 @@
+import React from 'react';
+import MonolithOrNextLink from '../../Link';
+
 export const ABSLink = () =>
   ABSLinkBuilder(
     'abs@.nsf/mf/5206.0',
@@ -7,7 +10,7 @@ export const ABSLink = () =>
 export const NierLink = () =>
   LinkBuilder('http://www.nieir.com.au/', 'National Institute of Economic and Industry Research (NIEIR)');
 
-export const IdLink = () => LinkBuilder('http://home.id.com.au/about-us/', ' .id the population experts');
+export const IdLink = () => LinkBuilder('http://home.id.com.au/about-us/', ' .id informed decisions');
 
 export const ABSCensusHousingLink = () =>
   LinkBuilder('http://www.abs.gov.au/census', 'Census of Population and Housing');
@@ -20,5 +23,13 @@ export const LinkBuilder = (href, displayText, target?, title?): JSX.Element => 
     <a href={href} rel="noopener" target={target || '_blank'} title={title || displayText}>
       {displayText}
     </a>
+  );
+};
+
+export const NextLinkBuilder = (href, displayText, target?, title?): JSX.Element => {
+  return (
+    <MonolithOrNextLink href={href} rel="noopener" target={target || '_blank'} title={title || displayText}>
+      {displayText}
+    </MonolithOrNextLink>
   );
 };

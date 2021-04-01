@@ -167,7 +167,7 @@ const Source = () => {
   );
 };
 const rawDataSource =
-  'Source: National Institute of Economic and Industry Research(NIEIR) ©2019. Compiled and presented in economy.id by.id, the population experts Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
+  'Source: National Institute of Economic and Industry Research(NIEIR) ©2019. Compiled and presented in economy.id by.id informed decisions Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
 
 // #endregion
 // #endregion
@@ -185,7 +185,7 @@ const chartBuilder = (LongName, nodes) => {
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Employed residents';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'JobsLite';
 
   const tooltip = function() {

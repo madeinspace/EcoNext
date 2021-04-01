@@ -204,7 +204,7 @@ const tableIncomeQuartilesBuilder = ({
   currentIndustryName,
   contentData,
 }) => {
-  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id , the population experts.`;
+  const rawDataSource = `Source: Derived from the Australian Bureau of Statistics, Census of Population and Housing 2011 and 2016. Compiled and presented in profile.id by .id informed decisions.`;
   const tableTitle = `Local workers individual income quartiles`;
   const firstColTitle = `Quartile group`;
   const genderText = currentGenderName === 'Persons' ? '' : `${currentGenderName}`;
@@ -451,7 +451,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Income quartile group';
   const yAxisTitle = `% of ${genderText.toLowerCase().replace(/s\b/gi, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -535,7 +535,7 @@ const chartBuilderChange = ({
   const xAxisTitle = 'Income quartile group';
   const yAxisTitle = `Change in ${genderText.toLowerCase().replace(/s\b/gi, '')} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 

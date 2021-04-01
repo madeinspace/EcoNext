@@ -5,12 +5,15 @@ import { formatCurrency } from '../../utils';
 
 /* #region  contentDataQuery */
 //select * from [dbo].[fn_HHExpend](102,10,40,2015,2010,1,null)
-const contentDataQuery = ({ ClientID, WebID, BMID, sStartYear, sEndYear }) =>
-  `select * from CommData_Economy.[dbo].[fn_HHExpend]( ${ClientID}, ${WebID}, ${BMID}, ${sStartYear}, ${sEndYear}, 1, null)`;
+const q = ({ ClientID, WebID, BMID, sStartYear, sEndYear }) => {
+  const query = `select * from CommData_Economy.[dbo].[fn_HHExpend](?,?,?,?,?,?,?)`;
+  const params = [ClientID, WebID, BMID, sStartYear, sEndYear, 1, null];
+  return { query, params };
+};
 /* #endregion */
 
 const fetchData = async ({ filters }) => {
-  const contentData = await sqlConnection.raw(contentDataQuery(filters));
+  const contentData = await sqlConnection.raw(q(filters).query, q(filters).params);
   return contentData;
 };
 
@@ -71,7 +74,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2019',
+      DefaultValue: '2020',
       Label: 'Year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_Start',
@@ -80,7 +83,7 @@ const pageContent = {
     },
     {
       Database: 'CommApp',
-      DefaultValue: '2014',
+      DefaultValue: '2015',
       Label: 'Comparison year:',
       Params: null,
       StoredProcedure: 'sp_Toggle_Econ_Struct_Years_End',

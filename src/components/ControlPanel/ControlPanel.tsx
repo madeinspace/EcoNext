@@ -29,7 +29,7 @@ const StyledControlPanel = styled.div`
   }
 `;
 
-const ControlPanel: React.SFC<{}> = () => {
+const ControlPanel: React.FunctionComponent<{}> = () => {
   const { clientAlias } = React.useContext(ClientContext);
   const { handle, filterToggles } = React.useContext(PageContext);
 

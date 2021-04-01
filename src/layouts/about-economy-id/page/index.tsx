@@ -57,7 +57,7 @@ const AboutEconomyId = () => {
       </p>
       {LinkBuilder('http://www.nieir.com.au/', 'Learn more about NIEIR')}
 
-      <SubTitleAlt>About .id, the population experts</SubTitleAlt>
+      <SubTitleAlt>About .id informed decisions</SubTitleAlt>
       <p>
         .id is a company of population experts - demographers, spatial analysts, urban planners, forecasters, census
         data and IT experts who build demographic information products for Australia & New Zealand.

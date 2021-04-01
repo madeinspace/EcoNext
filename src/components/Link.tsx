@@ -1,7 +1,13 @@
 import React, { useContext } from 'react';
-import { isNextPage } from '../layouts';
 import { PageContext } from '../utils/context';
 import { pathParts } from '../utils';
+import productionPages from '../layouts/productionPages';
+import developmentPages from '../layouts/developmentPages';
+
+export const isNextPage = (handle: string) => {
+  const availablePages = process.env.DEV_PAGES_ENABLED === 'true' ? developmentPages : productionPages;
+  return availablePages.indexOf(handle) >= 0;
+};
 
 const MonolithOrNextLink = ({ href, ...props }) => {
   const { providedFilters } = useContext(PageContext);

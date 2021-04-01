@@ -1,27 +1,23 @@
 import { LinkBuilder } from '../../../components/ui/links';
 import getConfig from 'next/config';
-import { TopList, Lead } from '../../../styles/MainContentStyles';
+import { TopList, Lead, TopOrderedList } from '../../../styles/MainContentStyles';
 import { SectionTitle } from './Styles';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { PageContext } from '../../../utils/context';
 const { publicRuntimeConfig } = getConfig();
 const paperUrl = `${publicRuntimeConfig.EcoCDNEndPoint}/eco-assets/documents/covid19/Methodological paper - COVID19 first release assumptions.docx`;
+const paper2Url = `${publicRuntimeConfig.EcoCDNEndPoint}/eco-assets/documents/covid19/PJB1256-ID-Notes on LGA projections-September 2020.docx`;
 const Disclaimers = () => {
   const {
     entityData: { prefixedAreaName },
   } = useContext(PageContext);
   return (
     <>
-      <SectionTitle>Data updates</SectionTitle>
-      <p>
-        This page is the latest version of up-to-date economic data showing the local impact of COVID-19. However, as
-        new information becomes available, e.g. changes to government stimulus, shifts in quarantine conditions, or the
-        release of relevant date etc. revisions and updates will be applied, and new data will be added where possible.{' '}
-      </p>
       <SectionTitle>Assumptions and methodology</SectionTitle>
+      <Lead>Version 2.1 (Model updated 7 October 2020. See revision notes below)</Lead>
       <p>
         NIEIR has estimated the potential impacts of coronavirus on economic activity, employment and sectors at the LGA
-        level. Model outputs above are based on information available before May 7.
+        level. Model outputs above are based on information available before September 24.
       </p>
       <p>
         The forecast model estimates the impact on final demand on each industry and then calculates the multiplier
@@ -31,15 +27,6 @@ const Disclaimers = () => {
         risks (e.g. productivity impacts from working at home).{' '}
       </p>
       <p>
-        The modelling assumes that rigid social distancing measures are maintained well into June. A gradual unwinding
-        of social distancing measures are assumed but a more complete recovery only becomes possible when a vaccine
-        becomes generally available by the March or June quarter 2021.
-      </p>
-      <p>
-        These forecasts are subject to a high degree of uncertainty and will continue to be improved and updated as more
-        information is released.{' '}
-      </p>
-      <p>
         For more details, see{' '}
         {LinkBuilder(
           `${paperUrl}`,
@@ -47,13 +34,25 @@ const Disclaimers = () => {
         )}
       </p>
       <SectionTitle id="revs">Revisions</SectionTitle>
-      <Lead>Version 1.1 Revisions - model updated on 7 May 2020</Lead>
+      <Lead>Notes on LGA projections – September 2020</Lead>
       <p>
-        For the June Quarter 2020, NIEIR’s Australia GDP estimate has been revised from -16.6% to -12.4%. Compared to
-        NIEIR’s previous forecast (based on information available mid-April 2020), the better than expected containment
-        of the virus has impacted assumptions related to household spending and social distancing impacts. This has
-        resulted in lower impacts across a numbe of sectors. For example, impacts on Education have not been as high
-        (e.g. restrictions on schools not as severe as first thought).
+        This note applies to the updated LGA projections issued in September 2020. The initial June quarter 2020
+        projection prepared in early April 2020 included a 12 per cent decline in national GDP. This has now been
+        revised upward to -7.5%. The main reason for the difference was:
+      </p>
+      <TopOrderedList>
+        <li>earlier easing of restrictions over June than what was assumed; and</li>
+        <li>
+          a higher increase in household savings because of an assumed 50 per cent fall in other discretionary household
+          expenditures.
+        </li>
+      </TopOrderedList>
+      <p>
+        That is, it was assumed that settings close to Stage Four restrictions would apply to the general retail sector
+        even if not made mandatory because high infection levels will produce the same result. It would appear that
+        Australia’s success in controlling initial infection rates saved between 3 and 5 per cent of GDP. This is
+        consistent with international evidence. More information on the update can be found{' '}
+        {LinkBuilder(`${paper2Url}`, `here`)}.
       </p>
       <SectionTitle>Disclaimer</SectionTitle>
       <p>

@@ -1,18 +1,12 @@
 import { PageContext, ClientContext } from '../../../utils/context';
 import { useContext } from 'react';
 import getActiveToggle from '../../../utils/getActiveToggle';
-import {
-  ItemWrapper,
-  CrossLink,
-  ProfileProductIcon,
-  PageIntro,
-  PageIntroFullWidth,
-} from '../../../styles/MainContentStyles';
+import { ItemWrapper, CrossLink, ProfileProductIcon, PageIntroFullWidth } from '../../../styles/MainContentStyles';
 import EntityChart from '../../../components/chart/EntityChart';
 import _ from 'lodash';
 import { formatNumber, formatChangeNumber, idlogo, formatPercent, formatShortDecimal } from '../../../utils';
 import EntityTable from '../../../components/table/EntityTable';
-import { NierLink, IdLink, LinkBuilder } from '../../../components/ui/links';
+import { IdLink, LinkBuilder } from '../../../components/ui/links';
 import useEntityText from '../../../utils/useEntityText';
 import ControlPanel from '../../../components/ControlPanel/ControlPanel';
 const FullContent = () => {
@@ -80,7 +74,7 @@ const Source = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id
+      Source: National Institute of Economic and Industry Research (NIEIR) ©2021. Compiled and presented in economy.id
       by <IdLink />. NIEIR-ID data are adjusted each year, using updated employment estimates. Each release may change
       previous years’ figures.{' '}
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -88,16 +82,15 @@ const Source = () => {
   );
 };
 const ChartSource = () => {
-  const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by
-      .id the population experts
+      Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by
+      .id informed decisions
     </p>
   );
 };
 const rawDataSource =
-  'Source: National Institute of Economic and Industry Research(NIEIR) ©2019. Compiled and presented in economy.id by.id, the population experts Data are based on a 2016 - 17 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
+  'Source: National Institute of Economic and Industry Research(NIEIR) ©2021. Compiled and presented in economy.id by.id informed decisions Data are based on a 2018/19 price base for all years.NIEIR - ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.Learn more * Cumulative change uses 2010 as the base year.';
 
 // #endregion
 
@@ -204,7 +197,7 @@ const JobsChartBuilder = nodes => {
   const xAxisTitle = 'Year ending June';
   const yAxisTitle = 'Employed residents';
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'grp-chart';
   const categories = _.map(nodes, 'Year_End').reverse();
   const serie = _.map(nodes, 'LocalJobs').reverse();

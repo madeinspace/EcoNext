@@ -67,7 +67,7 @@ const TableSource = () => {
   const { clientAlias } = useContext(ClientContext);
   return (
     <p>
-      Source: <NierLink /> ©2019. Compiled and presented in economy.id by
+      Source: <NierLink /> ©2021. Compiled and presented in economy.id by
       <IdLink />. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year
       to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.{' '}
       {LinkBuilder(`https://economy.id.com.au/${clientAlias}/economic-model-updates`, 'Learn more')}
@@ -77,7 +77,7 @@ const TableSource = () => {
 
 const ChartSource = () => (
   <p>
-    Source: <NierLink /> ©2019 Compiled and presented in economy.id by <IdLink />.
+    Source: <NierLink /> ©2021 Compiled and presented in economy.id by <IdLink />.
   </p>
 );
 // #endregion
@@ -90,7 +90,7 @@ const tableBuilder = () => {
     entityData: { currentBenchmarkName, currentAreaName, currentStartYear, currentComparaisonYear },
   } = useContext(PageContext);
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019. Compiled and presented in economy.id by .id, the population experts. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021. Compiled and presented in economy.id by .id informed decisions. Data are based on a 2016-17 price base for all years. NIEIR-ID data are inflation adjusted each year to allow direct comparison, and annual data releases adjust previous years’ figures to a new base year.';
   const tableTitle = 'Household expenditure';
   const firstColTitle = 'Household expenditure (totals)';
   const without = [99999999, 9999999, 999999];
@@ -288,7 +288,7 @@ const chartBuilder = () => {
   const xAxisTitle = 'Household expenditure';
   const yAxisTitle = `% of expenditure`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
   const chartHeight = 500;
@@ -368,7 +368,7 @@ const chartBuilderChange = () => {
   const xAxisTitle = 'Household expenditure';
   const yAxisTitle = `% per household`;
   const rawDataSource =
-    'Source: National Institute of Economic and Industry Research (NIEIR) ©2019 Compiled and presented in economy.id by .id the population experts.';
+    'Source: National Institute of Economic and Industry Research (NIEIR) ©2021 Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
   const chartHeight = 500;

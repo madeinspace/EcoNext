@@ -290,7 +290,7 @@ const tableBuilder = ({
   currentGenderName,
 }) => {
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by.id informed decisions.';
   const tableTitle = 'Local workers age structure';
   const firstColTitle = `Ten year age groups (years)`;
   const rows = contentData
@@ -464,7 +464,7 @@ const chartBuilder = ({
   const xAxisTitle = 'Age structure';
   const yAxisTitle = `% of ${genderText} local workforce`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chart1';
   const chartTemplate = 'Standard';
 
@@ -541,7 +541,7 @@ const chartBuilderChange = ({ currentGenderName, currentAreaName, currentIndustr
   const xAxisTitle = 'Age structure';
   const yAxisTitle = `Change in ${genderText.toLowerCase()} local workers`;
   const rawDataSource =
-    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id, the population experts.';
+    'Source: Australian Bureau of Statistics, Regional Population Growth, Australia (3218.0). Compiled and presented in economy.id by .id informed decisions.';
   const chartContainerID = 'chartwfoqChange';
   const chartTemplate = 'Standard';
 
